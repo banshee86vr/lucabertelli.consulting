@@ -4468,7 +4468,7 @@ h6 {
   font-size: 20px;
   color: var(--white);
   width: 100px;
-  height: 100px;
+  height: 50%;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -6999,10 +6999,10 @@ section {
 .light .architect-portfolio__title {
   color: var(--black-2);
 }
-.light .architect-award__title {
+.light .lb-award__title {
   color: var(--black-2);
 }
-.light .architect-award__item {
+.light .lb-award__item {
   border-color: var(--white-4);
 }
 .light .architect-cta__title {
@@ -7936,7 +7936,7 @@ section {
 }
 
 .play_btn_5 {
-  height: 100px;
+  height: 50%;
   width: 100px;
   border-radius: 50%;
   display: inline-flex;
@@ -9850,7 +9850,7 @@ section {
   align-items: center;
   justify-content: center;
   width: 100px;
-  height: 100px;
+  height: 50%;
   border-radius: 100%;
   transform: translate(-50%, -50%);
   z-index: 999;
@@ -11176,7 +11176,7 @@ section {
 @media only screen and (max-width: 991px) {
   .wcf__testimonial.style-5 .image::after {
     width: 160px;
-    height: 100px;
+    height: 50%;
   }
 }
 @media only screen and (max-width: 767px) {
@@ -12221,7 +12221,7 @@ section {
 }
 .wcf__testimonial-2.style-3 .picture img {
   width: 100px;
-  height: 100px;
+  height: 50%;
   border-radius: 100%;
   -o-object-fit: cover;
      object-fit: cover;
@@ -12232,7 +12232,7 @@ section {
 .wcf__testimonial-2.style-3 .image {
   margin-bottom: 0;
   width: 100px;
-  height: 100px;
+  height: 50%;
   background-color: var(--primary);
   border-radius: 100%;
   display: flex;
@@ -14573,7 +14573,7 @@ section {
 }
 .wcf__priceTable.style-1 .ribon {
   width: 100px;
-  height: 100px;
+  height: 50%;
   position: absolute;
   top: -10px;
   inset-inline-start: -10px;
@@ -16354,7 +16354,7 @@ section {
 @media only screen and (max-width: 1919px) {
   .offcanvas-6__menu a:after {
     width: 100px;
-    height: 100px;
+    height: 50%;
   }
 }
 @media only screen and (max-width: 1199px) {
@@ -17510,7 +17510,7 @@ body .btn4 {
 }
 @media only screen and (max-width: 1199px) {
   .line-btm::after {
-    height: 100px;
+    height: 50%;
   }
 }
 @media only screen and (max-width: 767px) {
@@ -21568,7 +21568,7 @@ body .btn4 {
   content: "";
   inset-inline-start: 66px;
   top: 0;
-  height: 100px;
+  height: 50%;
   background: #E8BF96;
   width: 100px;
   border-radius: 50px;
@@ -27698,7 +27698,7 @@ body .btn4 {
 @media only screen and (max-width: 767px) {
   .photographer__abouthero-arrowdown {
     width: 60px;
-    height: 100px;
+    height: 50%;
     margin-top: 50px;
     margin-bottom: 70px;
   }
@@ -40065,38 +40065,38 @@ body .btn4 {
     padding-bottom: 50px;
   }
 }
-.architect-award__area .sec-title-5 {
+.lb-award__area .sec-title-5 {
   padding-bottom: 60px;
 }
 @media only screen and (max-width: 767px) {
-  .architect-award__area .sec-title-5 {
+  .lb-award__area .sec-title-5 {
     padding-bottom: 40px;
   }
 }
-.architect-award__area .sec-text {
+.lb-award__area .sec-text {
   max-width: 330px;
 }
 @media only screen and (max-width: 767px) {
-  .architect-award__area .sec-text {
+  .lb-award__area .sec-text {
     padding-bottom: 30px;
   }
 }
-.architect-award__area .sec-text p {
+.lb-award__area .sec-text p {
   font-size: 18px;
 }
-.architect-award__area .shape {
+.lb-award__area .shape {
   position: absolute;
   bottom: -12px;
   inset-inline-start: calc(33.33% - 11px);
   z-index: 1;
 }
-.architect-award__area .shape-2 {
+.lb-award__area .shape-2 {
   position: absolute;
   bottom: -12px;
   inset-inline-start: calc(66.66% - 11px);
   z-index: 1;
 }
-.architect-award__item {
+.lb-award__item {
   display: grid;
   grid-template-columns: 1fr 3.2fr 1fr 1fr;
   align-items: center;
@@ -40104,33 +40104,33 @@ body .btn4 {
   border-top: 1px solid var(--black-5);
 }
 @media only screen and (max-width: 767px) {
-  .architect-award__item {
+  .lb-award__item {
     gap: 20px;
   }
 }
-.architect-award__item:last-child {
+.lb-award__item:last-child {
   border-bottom: 1px solid var(--black-5);
 }
-.architect-award__number {
+.lb-award__number {
   font-size: 18px;
 }
-.architect-award__date {
+.lb-award__date {
   font-size: 18px;
   text-align: end;
 }
 @media only screen and (max-width: 767px) {
-  .architect-award__date {
+  .lb-award__date {
     text-align: start;
   }
 }
-.architect-award__title {
+.lb-award__title {
   font-weight: 500;
   font-size: 18px;
   line-height: 1.5;
   color: var(--white);
 }
 @media only screen and (max-width: 767px) {
-  .architect-award__title br {
+  .lb-award__title br {
     display: block;
   }
 }
@@ -40253,10 +40253,10 @@ body .btn4 {
 .light .architect-portfolio__title {
   color: var(--black-2);
 }
-.light .architect-award__title {
+.light .lb-award__title {
   color: var(--black-2);
 }
-.light .architect-award__item {
+.light .lb-award__item {
   border-color: var(--white-4);
 }
 .light .architect-cta__title {
@@ -48146,7 +48146,7 @@ body .btn4 {
 }
 .athletic__video-playbtn {
   display: inline-block;
-  height: 100px;
+  height: 50%;
   width: 100px;
   border-radius: 50%;
   background-color: var(--orange-deep);
@@ -63075,7 +63075,7 @@ body .btn4 {
 }
 .ep-ts-pagination .dash {
   width: 1px;
-  height: 100px;
+  height: 50%;
   display: inline-block;
   background-color: var(--white);
 }
@@ -66360,7 +66360,7 @@ body .btn4 {
 
 .section-separator__line-vertical {
   width: 1px;
-  height: 100px;
+  height: 50%;
   background: var(--white);
   margin: 0 auto;
 }
