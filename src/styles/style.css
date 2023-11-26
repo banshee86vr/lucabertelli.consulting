@@ -1,0 +1,11 @@
+
+.dir-rtl .swiper-slide {
+  direction: rtl;
+}
+
+
+/* Test Purpose */
+.offcanvas-area {
+  opacity: 0;
+  visibility: hidden;
+}
