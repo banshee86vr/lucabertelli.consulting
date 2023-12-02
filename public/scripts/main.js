@@ -358,14 +358,14 @@
   ///////////////////////////////////////////////////
   // Developer Portfolio Slider
   var dev_portf_slider_opts = document.querySelector(
-    ".developer-portfolio__slider"
+    ".lb-portfolio__slider"
   );
 
   if (dev_portf_slider_opts) {
     var auto_play = dev_portf_slider_opts.getAttribute("data-autoplay");
     var items = dev_portf_slider_opts.getAttribute("data-items");
 
-    var portfolio_slider = new Swiper(".developer-portfolio__slider", {
+    var portfolio_slider = new Swiper(".lb-portfolio__slider", {
       loop: true,
       speed: 3000,
       autoplay: auto_play == "true" ? true : false,
@@ -407,7 +407,7 @@
 
   ///////////////////////////////////////////////////
   // Developer Testimonial Slider
-  var testimonial_slider = new Swiper(".developer-testimonial__slider", {
+  var testimonial_slider = new Swiper(".lb-testimonial__slider", {
     loop: false,
     speed: 2500,
     slidesPerView: 1,
@@ -486,7 +486,7 @@
   /////////////////////////////////////////////////////
 
   /////////////////////////////////////////////////////
-  var about_slider = new Swiper(".developer-about__slider", {
+  var about_slider = new Swiper(".lb-about__slider", {
     loop: true,
     freemode: true,
     spaceBetween: 80,
@@ -501,13 +501,13 @@
   /////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////
-  $(".developer-resume__tab-menu li a").on("click", function () {
+  $(".lb-resume__tab-menu li a").on("click", function () {
     var target = $(this).attr("data-rel");
-    $(".developer-resume__tab-menu li a").removeClass("active");
+    $(".lb-resume__tab-menu li a").removeClass("active");
     $(this).addClass("active");
     $("#" + target)
       .fadeIn("slow")
-      .siblings(".developer-resume-tab-box")
+      .siblings(".lb-resume-tab-box")
       .hide();
     return false;
   });

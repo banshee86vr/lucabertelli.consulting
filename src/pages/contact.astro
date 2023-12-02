@@ -1,0 +1,142 @@
+---
+import Layout from "../layouts/Layout.astro";
+import sendGrid from "@sendgrid/mail";
+sendGrid.setApiKey(import.meta.env.SENDGRID_API_KEY);
+
+if (Astro.request.method === "POST") {
+  try {
+    // Getting posted data from our contact form
+    const data = await Astro.request.formData();
+    const name = data.get("Name");
+    const email = data.get("Email");
+    const message = data.get("Messages");
+
+    // TODO: Do not forget to do validation and error handling over received data from your contact form.
+
+    // Sending email
+    const msg = {
+      to: "info@lucabertelli.consulting", // Change to your recipient
+      from: `${email}`, // Change to your verified sender
+      replyTo: { email: email, name: name },
+      subject: `Contact form submission from ${name}`,
+      text: message,
+    };
+    await sendGrid
+      .send(msg)
+      .then(() => {
+        console.log("Email sent");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  } catch (error) {
+    console.error(error);
+  }
+}
+---
+
+<Layout title="lucabertelli.consulting">
+  <main>
+    <!-- Contact area start  -->
+    <section class="lb__innercontact plr-50 pt-120 pb-120">
+      <div class="lb__innercontact-top">
+        <div class="lb__innercontact-wrapper">
+          <div class="lb__innercontact-titlewrap">
+            <h1 class="lb__innercontact-title pb-35">
+              Let’s <br /> Get in Touch
+            </h1>
+            <div class="cf_text lb__innercontact-dis">
+              <p style="padding-right: 75px">
+                Feel free to reach out and connect! Whether you have questions
+                about DevOps, Cloud Native solutions, or platform engineering,
+                I'm here to help. Let's explore how we can collaborate to
+                enhance your IT landscape. Feel free to contact me at
+                <a href="mailto:info@lucabertelli.consulting"
+                  >info@lucabertelli.consulting</a
+                > or connect on <a
+                  href="www.linkedin.com/in/luca-bertelli-a1413b77"
+                  target="_blank">LinkedIn profile</a
+                >. Looking forward to hearing from you!
+              </p>
+            </div>
+            <div class="lb__innercontact-contactItem pb-15">
+              <span>Email</span>
+              <a href="mailTo:info@lucabertelli.consulting"
+                >info@lucabertelli.consulting</a
+              >
+            </div>
+            <div class="lb__innercontact-contactItem">
+              <span>Phone:</span>
+              <a href="callto:+39 3401234567">+39 3401234567</a>
+            </div>
+          </div>
+          <div class="lb__innercontact-form">
+            <!-- https://medium.com/@rezahedi/how-to-build-a-contact-form-in-astro-vercel-and-sendgrid-b924a76fd739 -->
+            <form method="post">
+              <div class="lb__contact-wrap">
+                <div class="lb__contact-formwrapper">
+                  <div class="lb__contact-formfield">
+                    <input
+                      type="text"
+                      name="Name"
+                      id="Name"
+                      placeholder="Name*"
+                    />
+                  </div>
+                  <div class="lb__contact-formfield">
+                    <input
+                      type="text"
+                      name="Email"
+                      id="Email"
+                      placeholder="Email*"
+                    />
+                  </div>
+                </div>
+                <div class="lb__contact-formwrapper">
+                  <div class="lb__contact-formfield">
+                    <input
+                      type="text"
+                      name="Subject"
+                      id="Subject"
+                      placeholder="Subject*"
+                    />
+                  </div>
+                </div>
+                <div class="lb__contact-msg mt-0">
+                  <input
+                    type="text"
+                    name="Messages"
+                    id="Messages"
+                    placeholder="Messages*"
+                  />
+                </div>
+                <div class="lb__contact-checkbox">
+                  <input type="checkbox" id="remember" />
+                  <label for="remember"
+                    >Save my information for the next connect</label
+                  >
+                </div>
+                <div class="film-submit__btn mt-40">
+                  <button
+                    type="submit"
+                    class="btn-hover-mask text-uppercase"
+                    data-text="Submit Now">Submit Now</button
+                  >
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Contact area end  -->
+
+    <!-- map  -->
+    <div class="film-contact__map mbm-1">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d44802.58617703316!2d10.951331914333318!3d45.4262429445608!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477f5f68699be0e3%3A0x53f85a636882595b!2sVerona%2C%20VR!5e0!3m2!1sen!2sit!4v1701554941842!5m2!1sen!2sit"
+        class="w-100"></iframe>
+    </div>
+    <!-- /map  -->
+  </main>
+</Layout>
