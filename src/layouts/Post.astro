@@ -1,0 +1,169 @@
+---
+import BaseLayout from "./Common.astro";
+import { type CollectionEntry } from "astro:content";
+
+type Props = CollectionEntry<"blog">["data"];
+
+const { title, subtitle, date, category, image, tags } = Astro.props;
+---
+
+<BaseLayout>
+  <!-- Blog Details section end -->
+  <section class="blog__details__area pt-80 pb-30">
+    <div class="container">
+      <div class="row">
+        <div class="col-xxl-12">
+          <div class="blog__details-top cf_parallax_image">
+            <img
+              src={image}
+              alt={title}
+              data-speed="0.9"
+              style="    max-height: 400px;
+              width: 100%;
+              object-fit:cover;"
+            />
+          </div>
+
+          <div class="blog__details-wrap">
+            <div class="blog__details-info">
+              <ul>
+                <li>
+                  <span>Category</span>
+                  <a href="#">{category}</a>
+                </li>
+                <li>
+                  <span>Date</span>
+                  <a href="javascript:void(0)"
+                    >{
+                      date.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })
+                    }</a
+                  >
+                </li>
+              </ul>
+              <h1 class="blog__details_title">
+                {title}
+              </h1>
+              <h5>{subtitle}</h5>
+            </div>
+
+            <div class="blog__details">
+              <slot />
+            </div>
+
+            <div class="blog__tag">
+              <p class="blog__tag-title">Tags /</p>
+              <ul>
+                {tags.map((tag) => (
+                  <li><a href="#">{tag} </a> / </li>
+                )
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Blog Details section start -->
+
+  <!-- Recent Blog section start -->
+  <section class="blog__related pb-120">
+    <div class="container">
+      <div class="row">
+        <div class="col-xxl-12">
+          <div class="sec-title-wrapper pt-120">
+            <h2 class="sec-sub-title mb-20">Blog</h2>
+            <h3 class="sec-title">Releted Articles</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xxl-12">
+          <div class="blog__related-grid">
+            <article class="freelancer-blog__item blog-img-zoom">
+              <div class="thumb">
+                <a href="blog-details.html"
+                  ><img
+                    src="../assets/imgs/blog/blog-01.jpg"
+                    alt="Blog Thumbnail"
+                  /></a
+                >
+              </div>
+              <ul class="freelancer-blog__meta">
+                <li><a href="#">UI design</a><span>, 03 May 2019</span></li>
+              </ul>
+              <a href="blog-details.html">
+                <h3 class="freelancer-blog__title">
+                  Right-To-Left behind Development In Mobile web Design
+                </h3>
+              </a>
+            </article>
+
+            <article class="freelancer-blog__item blog-img-zoom">
+              <div class="thumb">
+                <a href="blog-details.html"
+                  ><img
+                    src="../assets/imgs/blog/blog-10.jpg"
+                    alt="Blog Thumbnail"
+                  /></a
+                >
+              </div>
+              <ul class="freelancer-blog__meta">
+                <li><a href="#">UI design</a><span>, 03 May 2019</span></li>
+              </ul>
+              <a href="blog-details.html">
+                <h3 class="freelancer-blog__title">
+                  A Sneak-Peek Inside The Southeast Asian Web Community
+                </h3>
+              </a>
+            </article>
+
+            <article class="freelancer-blog__item blog-img-zoom">
+              <div class="thumb">
+                <a href="blog-details.html"
+                  ><img
+                    src="../assets/imgs/blog/blog-11.jpg"
+                    alt="Blog Thumbnail"
+                  /></a
+                >
+              </div>
+              <ul class="freelancer-blog__meta">
+                <li><a href="#">UI design</a><span>, 03 May 2019</span></li>
+              </ul>
+              <a href="blog-details.html">
+                <h3 class="freelancer-blog__title">
+                  A Sneak-Peek Inside The Southeast Asian Web Community
+                </h3>
+              </a>
+            </article>
+
+            <article class="freelancer-blog__item blog-img-zoom">
+              <div class="thumb">
+                <a href="blog-details.html"
+                  ><img
+                    src="../assets/imgs/blog/blog-12.jpg"
+                    alt="Blog Thumbnail"
+                  /></a
+                >
+              </div>
+              <ul class="freelancer-blog__meta">
+                <li><a href="#">UI design</a><span>, 03 May 2019</span></li>
+              </ul>
+              <a href="blog-details.html">
+                <h3 class="freelancer-blog__title">
+                  A Sneak-Peek Inside The Southeast Asian Web Community
+                </h3>
+              </a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Recent Blog section end -->
+</BaseLayout>
