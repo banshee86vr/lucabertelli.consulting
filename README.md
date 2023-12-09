@@ -1,54 +1,118 @@
-# Astro Starter Kit: Basics
+[![.github/workflows/release.yml](https://github.com/banshee86vr/lucabertelli.consulting/actions/workflows/release.yml/badge.svg)](https://github.com/banshee86vr/lucabertelli.consulting/actions/workflows/release.yml)
 
-```sh
-npm create astro@latest -- --template basics
+# lucabertelli.consulting Portfolio and Blog
+
+Welcome to the official repository for Luca Bertelli's portfolio and blog site, showcasing the expertise and experience of a Cloud Native Engineer, Advisor, Consultant, and Developer. 🚀
+
+## Overview
+
+This website is designed to provide a comprehensive view of Luca Bertelli's professional journey, skills, and insights into the world of cloud-native technologies. Whether you are looking for information about cloud architecture, development strategies, or seeking consultation services, this site is the go-to resource. 🌐
+
+## Technologies Used
+
+The site is built with [Astro](https://astro.build/), a modern front-end framework that blends the best of traditional server-rendered static sites with modern client-side rendering (CSR). Astro allows for a fast and optimized user experience while maintaining the simplicity and performance of static sites. 🛠️
+
+## Features
+
+- **Portfolio Showcase:** Explore Luca's past projects and discover the innovative solutions implemented in various cloud environments.
+
+- **Blog:** Stay updated with the latest trends, insights, and best practices in cloud-native engineering. Luca shares his knowledge and experiences through thought-provoking articles and tutorials. 📚
+
+- **Consultation Services:** Interested in leveraging cloud-native technologies for your business? Luca Bertelli offers advisory and consulting services. Get in touch to discuss how to optimize your cloud strategy. 🤝
+
+- **Contact:** Reach out to Luca for inquiries, collaboration opportunities, or to schedule a consultation. The contact form ensures a seamless communication process. 📬
+
+## Project structure
+
+Certainly! Below is a standard project structure for an Astro project site:
+
+```plaintext
+lucabertelli.consulting/
+├── public
+│   ├── about
+│   │   └── certifications
+│   ├── blog
+│   ├── contact
+│   ├── fonts
+│   ├── scripts
+│   └── webfonts
+└── src
+    ├── components
+    ├── content
+    │   ├── blog
+    │   └── certifications
+    ├── layouts
+    ├── pages
+    │   └── blog
+    └── styles
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+Explanation of key directories and files:
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- **.astro/:** Configuration directory for Astro. It contains the `config.mjs` file, where you can customize Astro settings.
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+- **src/:** The source directory where you write your site's components, layouts, pages, and styles.
 
-## 🚀 Project Structure
+  - **components/:** Reusable components used across the site.
+  
+  - **layouts/:** Layouts define the structure of pages. The `DefaultLayout.svelte` is a default layout used for most pages.
 
-Inside of your Astro project, you'll see the following folders and files:
+  - **pages/:** Contains pages of the site. Each `.mdx` file corresponds to a page.
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+  - **styles/:** Global styles for the site, such as `global.css`.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+- **.gitignore:** Specifies intentionally untracked files that Git should ignore.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- **README.md:** Project documentation.
 
-Any static assets, like images, can be placed in the `public/` directory.
+- **package.json:** Configuration file for Node.js projects. Contains metadata about the project, dependencies, and scripts.
 
-## 🧞 Commands
+- **public/:** The build output directory. Astro generates static files here during the build process.
 
-All commands are run from the root of the project, from a terminal:
+- **LICENSE.md:** Licensing information for the project.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- **.github/:** GitHub-related configuration, including issue templates.
 
-## 👀 Want to learn more?
+Feel free to adapt this structure based on your specific needs and preferences.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Getting Started
+
+To run this project locally, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/luca-bertelli/lucabertelli.consulting.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd lucabertelli.consulting
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+   Open your browser and visit [http://localhost:3000](http://localhost:3000) to view the site locally. 🌐
+
+## Contributions
+
+If you have suggestions, improvements, or would like to report issues, feel free to open an [issue](https://github.com/luca-bertelli/lucabertelli.consulting/issues) or submit a [pull request](https://github.com/luca-bertelli/lucabertelli.consulting/pulls). 🙌
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details. 📄
+
+---
+
+Thank you for visiting Luca Bertelli Consulting! Explore, learn, and connect with the cloud-native community. 🌟
