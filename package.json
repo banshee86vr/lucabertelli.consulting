@@ -25,5 +25,6 @@
   },
   "devDependencies": {
     "semantic-release": "^22.0.10"
-  }
+  },
+  "repository": "https://github.com/banshee86vr/lucabertelli.consulting.git"
 }
