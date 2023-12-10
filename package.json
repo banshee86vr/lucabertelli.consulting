@@ -2,6 +2,11 @@
   "name": "lucabertelli.consulting",
   "type": "module",
   "version": "0.0.1",
+  "release": {
+    "branches": [
+      "main"
+    ]
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -13,11 +18,12 @@
     "@astrojs/check": "^0.3.1",
     "@astrojs/cloudflare": "^8.0.0",
     "@sendgrid/mail": "^8.1.0",
-    "@sentry/astro": "^7.86.0",
-    "@spotlightjs/astro": "^1.0.2",
     "astro": "^4.0.0",
     "astro-purgecss": "^4.0.0",
     "purgecss": "^5.0.0",
     "typescript": "^5.3.2"
+  },
+  "devDependencies": {
+    "semantic-release": "^22.0.10"
   }
 }

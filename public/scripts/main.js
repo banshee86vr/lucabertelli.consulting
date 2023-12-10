@@ -31,7 +31,7 @@
 28. Side Navbar
 29. Button Hover
 30. Offcanvas Toggle
-31. Progress Bar 
+31. Progress Bar
 
 
 ****************************************************/

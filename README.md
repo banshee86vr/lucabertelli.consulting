@@ -54,7 +54,7 @@ Explanation of key directories and files:
 - **src/:** The source directory where you write your site's components, layouts, pages, and styles.
 
   - **components/:** Reusable components used across the site.
-  
+
   - **layouts/:** Layouts define the structure of pages. The `DefaultLayout.svelte` is a default layout used for most pages.
 
   - **pages/:** Contains pages of the site. Each `.mdx` file corresponds to a page.
