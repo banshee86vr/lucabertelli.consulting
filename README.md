@@ -82,7 +82,7 @@ To run this project locally, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/luca-bertelli/lucabertelli.consulting.git
+   git clone https://github.com/banshee86vr/lucabertelli.consulting.git
    ```
 
 2. Navigate to the project directory:
@@ -107,7 +107,7 @@ To run this project locally, follow these steps:
 
 ## Contributions
 
-If you have suggestions, improvements, or would like to report issues, feel free to open an [issue](https://github.com/luca-bertelli/lucabertelli.consulting/issues) or submit a [pull request](https://github.com/luca-bertelli/lucabertelli.consulting/pulls). 🙌
+If you have suggestions, improvements, or would like to report issues, feel free to open an [issue](https://github.com/banshee86vr/lucabertelli.consulting/issues) or submit a [pull request](https://github.com/banshee86vr/lucabertelli.consulting/pulls). 🙌
 
 ## License
 
