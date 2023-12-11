@@ -1,10 +1,18 @@
 ---
 import BaseLayout from "./Common.astro";
 import { type CollectionEntry } from "astro:content";
-
 type Props = CollectionEntry<"blog">["data"];
-
 const { title, subtitle, date, category, image, tags } = Astro.props;
+
+import { getCollection } from "astro:content";
+const blogEntries = (await getCollection("blog"))
+  .filter(function (blogEntry) {
+    return blogEntry.data.tags.some((element: any) => {
+      return tags.indexOf(element) !== -1;
+    });
+  })
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 4);
 ---
 
 <BaseLayout>
@@ -57,10 +65,13 @@ const { title, subtitle, date, category, image, tags } = Astro.props;
             <div class="blog__tag">
               <p class="blog__tag-title">Tags /</p>
               <ul>
-                {tags.map((tag) => (
-                  <li><a href="#">{tag} </a> / </li>
-                )
-                )}
+                {
+                  tags.map((tag) => (
+                    <li>
+                      <a href="#">{tag} </a> /{" "}
+                    </li>
+                  ))
+                }
               </ul>
             </div>
           </div>
@@ -85,81 +96,31 @@ const { title, subtitle, date, category, image, tags } = Astro.props;
       <div class="row">
         <div class="col-xxl-12">
           <div class="blog__related-grid">
-            <!-- <article class="freelancer-blog__item blog-img-zoom">
-              <div class="thumb">
-                <a href="blog-details.html"
-                  ><img
-                    src="../assets/imgs/blog/blog-01.jpg"
-                    alt="Blog Thumbnail"
-                  /></a
-                >
-              </div>
-              <ul class="freelancer-blog__meta">
-                <li><a href="#">UI design</a><span>, 03 May 2019</span></li>
-              </ul>
-              <a href="blog-details.html">
-                <h3 class="freelancer-blog__title">
-                  Right-To-Left behind Development In Mobile web Design
-                </h3>
-              </a>
-            </article>
-
-            <article class="freelancer-blog__item blog-img-zoom">
-              <div class="thumb">
-                <a href="blog-details.html"
-                  ><img
-                    src="../assets/imgs/blog/blog-10.jpg"
-                    alt="Blog Thumbnail"
-                  /></a
-                >
-              </div>
-              <ul class="freelancer-blog__meta">
-                <li><a href="#">UI design</a><span>, 03 May 2019</span></li>
-              </ul>
-              <a href="blog-details.html">
-                <h3 class="freelancer-blog__title">
-                  A Sneak-Peek Inside The Southeast Asian Web Community
-                </h3>
-              </a>
-            </article>
-
-            <article class="freelancer-blog__item blog-img-zoom">
-              <div class="thumb">
-                <a href="blog-details.html"
-                  ><img
-                    src="../assets/imgs/blog/blog-11.jpg"
-                    alt="Blog Thumbnail"
-                  /></a
-                >
-              </div>
-              <ul class="freelancer-blog__meta">
-                <li><a href="#">UI design</a><span>, 03 May 2019</span></li>
-              </ul>
-              <a href="blog-details.html">
-                <h3 class="freelancer-blog__title">
-                  A Sneak-Peek Inside The Southeast Asian Web Community
-                </h3>
-              </a>
-            </article>
-
-            <article class="freelancer-blog__item blog-img-zoom">
-              <div class="thumb">
-                <a href="blog-details.html"
-                  ><img
-                    src="../assets/imgs/blog/blog-12.jpg"
-                    alt="Blog Thumbnail"
-                  /></a
-                >
-              </div>
-              <ul class="freelancer-blog__meta">
-                <li><a href="#">UI design</a><span>, 03 May 2019</span></li>
-              </ul>
-              <a href="blog-details.html">
-                <h3 class="freelancer-blog__title">
-                  A Sneak-Peek Inside The Southeast Asian Web Community
-                </h3>
-              </a>
-            </article> -->
+            {
+              blogEntries.map((post) => (
+                <article class="lb-blog__item blog-img-zoom">
+                  <div class="thumb">
+                    <a href={`/blog/${post.slug}`}>
+                      <img src={post.data.image} />
+                    </a>
+                  </div>
+                  <ul class="lb-blog__meta">
+                    <li>
+                      <span>
+                        {post.data.date.toLocaleString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
+                    </li>
+                  </ul>
+                  <a href="blog-details.html">
+                    <h3 class="lb-blog__title">{post.data.title}</h3>
+                  </a>
+                </article>
+              ))
+            }
           </div>
         </div>
       </div>
