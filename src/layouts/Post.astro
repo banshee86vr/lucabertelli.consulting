@@ -79,7 +79,7 @@ const blogEntries = (await getCollection("blog"))
                 {
                   tags.map((tag) => (
                     <li>
-                      <a href="#">{tag} </a> /{" "}
+                      <a href={`/${lang}/blog?tag=${tag}`}>{tag} </a> /{" "}
                     </li>
                   ))
                 }

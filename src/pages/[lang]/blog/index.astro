@@ -1,15 +1,22 @@
 ---
 import BaseLayout from "../../../layouts/Common.astro";
-import { getLangFromUrl } from '../../../i18n/utils';
+import { getLangFromUrl } from "../../../i18n/utils";
 import { getBlogPosts } from "../../../content/config";
 
 const lang = getLangFromUrl(Astro.url);
+const tag = Astro.url.searchParams.get("tag")! || "";
 
-const posts = (await getBlogPosts())
+var posts = (await getBlogPosts())
   ?.filter((blog) => {
     return blog?.data?.lang === lang;
   })
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+if (tag.length > 0) {
+  posts = posts.filter(function (blogEntry) {
+    return blogEntry.data.tags.indexOf(tag) !== -1;
+    });
+}
 
 export async function getStaticPaths() {
   return ["en", "it"].map((lang) => {
@@ -29,7 +36,8 @@ export async function getStaticPaths() {
                 <article class="lb-blog__item blog-img-zoom">
                   <div class="thumb">
                     <a href={`/${lang}/blog/${post.blog_slug}`}>
-                      <img style=""
+                      <img
+                        style=""
                         src={post.data.image}
                         alt={post.data.title}
                       />
