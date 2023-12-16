@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../../layouts/Common.astro";
+import { getCollection } from "astro:content";
+
+const blogEntries = (await getCollection("blog")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout>
+  <div class="main-blog__area pt-130 pt-120 pb-120">
+    <div class="container ptf-0">
+      <div class="row">
+        <div class="col-xxl-12">
+          <div class="main-blog__grid">
+            {
+              blogEntries.map((post) => (
+                <article class="lb-blog__item blog-img-zoom">
+                  <div class="thumb">
+                    <a href={`${post.slug.split('/')[1]}`}>
+                      <img style=""
+                        src={post.data.image}
+                        alt={post.data.title}
+                      />
+                    </a>
+                  </div>
+                  <ul class="lb-blog__meta">
+                    <li>
+                      {post.data.date.toLocaleString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </li>
+                  </ul>
+                  <a href={`${post.slug.split('/')[1]}`}>
+                    <h3 class="lb-blog__title">{post.data.title}</h3>
+                    {post.data.subtitle}
+                  </a>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

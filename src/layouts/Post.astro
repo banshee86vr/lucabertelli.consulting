@@ -100,7 +100,7 @@ const blogEntries = (await getCollection("blog"))
               blogEntries.map((post) => (
                 <article class="lb-blog__item blog-img-zoom">
                   <div class="thumb">
-                    <a href={`/blog/${post.slug}`}>
+                    <a href={`${post.slug.split('/')[1]}`}>
                       <img src={post.data.image} />
                     </a>
                   </div>

@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/Common.astro";
+import BaseLayout from "../../layouts/Common.astro";
 // import sendGrid from "@sendgrid/mail";
 // sendGrid.setApiKey(import.meta.env.SENDGRID_API_KEY);
 
@@ -35,7 +35,6 @@ import BaseLayout from "../layouts/Common.astro";
 // }
 ---
 
-
 <BaseLayout>
   <!-- Contact area start  -->
   <section class="lb__innercontact plr-50 pt-120 pb-120">
@@ -47,16 +46,14 @@ import BaseLayout from "../layouts/Common.astro";
           </h1>
           <div class="cf_text lb__innercontact-dis">
             <p style="padding-right: 75px">
-              Feel free to reach out and connect! Whether you have questions
-              about DevOps, Cloud Native solutions, or platform engineering, I'm
-              here to help. Let's explore how we can collaborate to enhance your
-              IT landscape. Feel free to contact me at
-              <a href="mailto:info@lucabertelli.consulting"
-                >info@lucabertelli.consulting</a
-              > or connect on <a
+              Non esitate a contattarmi per condividere domande su pratiche
+              DevOps, soluzioni Cloud Native, o sul Platform Engineering.
+              Eploreremo insieme come poter collaborare ed adottare in modo
+              efficace le ultime tecnologie disponibili sul mercato. Potete
+              contattarmi a questi recapiti o tramite il mio <a
                 href="www.linkedin.com/in/luca-bertelli-a1413b77"
-                target="_blank">LinkedIn profile</a
-              >. Looking forward to hearing from you!
+                target="_blank">profilo LinkedIn</a
+              >.
             </p>
           </div>
           <div class="lb__innercontact-contactItem pb-15">
@@ -66,7 +63,7 @@ import BaseLayout from "../layouts/Common.astro";
             >
           </div>
           <div class="lb__innercontact-contactItem">
-            <span>Phone:</span>
+            <span>Tel:</span>
             <a href="callto:+(39) 3401234567">+(39) 3401234567</a>
           </div>
         </div>
@@ -80,7 +77,7 @@ import BaseLayout from "../layouts/Common.astro";
                     type="text"
                     name="Name"
                     id="Name"
-                    placeholder="Name*"
+                    placeholder="Nome*"
                   />
                 </div>
                 <div class="lb__contact-formfield">
@@ -98,7 +95,7 @@ import BaseLayout from "../layouts/Common.astro";
                     type="text"
                     name="Subject"
                     id="Subject"
-                    placeholder="Subject*"
+                    placeholder="Oggetto*"
                   />
                 </div>
               </div>
@@ -107,20 +104,14 @@ import BaseLayout from "../layouts/Common.astro";
                   type="text"
                   name="Messages"
                   id="Messages"
-                  placeholder="Messages*"
+                  placeholder="Messaggio*"
                 />
-              </div>
-              <div class="lb__contact-checkbox">
-                <input type="checkbox" id="remember" />
-                <label for="remember"
-                  >Save my information for the next connect</label
-                >
               </div>
               <div class="lb-submit__btn mt-40">
                 <button
                   type="submit"
                   class="btn-hover-mask text-uppercase"
-                  data-text="Submit Now">Submit Now</button
+                  data-text="Invia">Invia</button
                 >
               </div>
             </div>

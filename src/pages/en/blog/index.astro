@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../../layouts/Common.astro";
+import BaseLayout from "../../../layouts/Common.astro";
 import { getCollection } from "astro:content";
 
 const blogEntries = (await getCollection("blog")).sort(
@@ -17,7 +17,7 @@ const blogEntries = (await getCollection("blog")).sort(
               blogEntries.map((post) => (
                 <article class="lb-blog__item blog-img-zoom">
                   <div class="thumb">
-                    <a href={`/blog/${post.slug}`}>
+                    <a href={`${post.slug.split('/')[1]}`}>
                       <img style=""
                         src={post.data.image}
                         alt={post.data.title}
@@ -33,7 +33,7 @@ const blogEntries = (await getCollection("blog")).sort(
                       })}
                     </li>
                   </ul>
-                  <a href={`/blog/${post.slug}`}>
+                  <a href={`${post.slug.split('/')[1]}`}>
                     <h3 class="lb-blog__title">{post.data.title}</h3>
                     {post.data.subtitle}
                   </a>

@@ -1,0 +1,64 @@
+---
+import { getCollection } from "astro:content";
+
+const certifications = (await getCollection("certifications")).sort(
+  (a, b) => b.data.issueDate.valueOf() - a.data.issueDate.valueOf()
+);
+---
+
+<!-- Award section start -->
+<section class="about__award-area pt-120 pb-130">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="sec-title-wrapper">
+            <h2 class="sec-sub-title has_text_reveal_anim">Certifications</h2>
+            <div class="about__award-title-pd">
+              <h3 class="about__award-title has_text_reveal_anim">
+                Learning Unbound: Never Stop, Never Settle
+              </h3>
+            </div>
+            <div class="cols-2">
+              <div class="line-left">
+                <p>Achievement</p>
+              </div>
+              <img src="/about/shape-5.png" alt="shape" class="shape arrow" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xxl-12">
+          <div class="lb-award__list">
+            {
+              certifications.map((certification, index) => (
+                <div class="lb-award__item has_fade_anim">
+                  <p class="lb-award__number">{index + 1}</p>
+                  <p class="lb-award__title">
+                    <a href={certification.data.url} target="_blank">
+                      {certification.data.title}
+                    </a>
+                  </p>
+                  <a href={certification.data.url} target="_blank">
+                    <img
+                      src={`${certification.data.badgeImage}`}
+                      style="max-height: 100px;max-height: 100px;"
+                      class="show-dark"
+                      alt="Award Image"
+                    />
+                  </a>
+                  <p class="lb-award__date">
+                    {certification.data.issueDate.toLocaleString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                    })}
+                  </p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Award section end -->

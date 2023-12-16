@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../layouts/Common.astro";
+import Experience from "../../components/Experience.astro";
+import Certifications from "../../components/Certifications.astro";
+---
+
+<BaseLayout>
+  <!-- Hero area start -->
+  <section class="about__hero plr-50 pt-100 pb-120">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div
+            class="about__experience-img cf_img img_anim_reveal"
+            style="align-items:unset"
+          >
+            <img src="/about/lucabertelli.jpeg" alt="Luca Bertelli" />
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="about__hero-right">
+            <h1 class="lb__hero-subtitle has_char_anim" data-on-scroll="0">
+              Hi 🖐 I'm Luca
+            </h1>
+            <h2
+              class="lb__hero-title has_fade_anim"
+              data-on-scroll="0"
+              data-delay=".6"
+            >
+              Cloud Native <br />
+              <span id="typed_list">
+                <span>Engineer</span>
+                <span>Advisor</span>
+                <span>Consultant</span>
+                <span>Developer</span>
+              </span>
+              <span id="typed"></span>
+            </h2>
+            <div class="cf_text has_fade_anim">
+              <p style="max-width:100%">
+                As a Cloud Native consultant and engineer, I assist customers
+                who desire to adopt the latest cloud technologies in a
+                sustainable and scalable way. Based on a long hands-on
+                experience gained with customers operating in the Fintech,
+                Insurtech, and Industrial sectors. My primary focus is on listening
+                to understand needs and solve tangible problems. Specializing in
+                Platform Engineering, I propose solutions that provide a solid
+                foundation for a smooth user experience, optimizing the processes
+                and making them more efficient and safe.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Hero area end -->
+
+  <Experience />
+
+  <Certifications />
+</BaseLayout>

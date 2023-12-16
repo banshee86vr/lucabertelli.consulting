@@ -3369,132 +3369,132 @@
 /*----------------------------------------*/
 @font-face {
   font-family: euclid_Circular_B;
-  src: url("../fonts/euclid-circular-b/Euclid-Circular-B-Light.ttf");
+  src: url("/fonts/euclid-circular-b/Euclid-Circular-B-Light.ttf");
   font-weight: 300;
 }
 @font-face {
   font-family: euclid_Circular_B;
-  src: url("../fonts/euclid-circular-b/Euclid-Circular-B-Regular.ttf");
+  src: url("/fonts/euclid-circular-b/Euclid-Circular-B-Regular.ttf");
   font-weight: 400;
 }
 @font-face {
   font-family: euclid_Circular_B;
-  src: url("../fonts/euclid-circular-b/Euclid-Circular-B-Medium.ttf");
+  src: url("/fonts/euclid-circular-b/Euclid-Circular-B-Medium.ttf");
   font-weight: 500;
 }
 @font-face {
   font-family: euclid_Circular_B;
-  src: url("../fonts/euclid-circular-b/Euclid-Circular-B-SemiBold.ttf");
+  src: url("/fonts/euclid-circular-b/Euclid-Circular-B-SemiBold.ttf");
   font-weight: 600;
 }
 @font-face {
   font-family: euclid_Circular_B;
-  src: url("../fonts/euclid-circular-b/Euclid-Circular-B-Bold.ttf");
+  src: url("/fonts/euclid-circular-b/Euclid-Circular-B-Bold.ttf");
   font-weight: 700;
 }
 @font-face {
   font-family: Estedad;
-  src: url("../fonts/estedad/Estedad-SemiBold.ttf");
+  src: url("/fonts/estedad/Estedad-SemiBold.ttf");
   font-weight: 600;
 }
 @font-face {
   font-family: Estedad;
-  src: url("../fonts/estedad/Estedad-Medium.ttf");
+  src: url("/fonts/estedad/Estedad-Medium.ttf");
   font-weight: 500;
 }
 @font-face {
   font-family: Estedad;
-  src: url("../fonts/estedad/Estedad-Regular.ttf");
+  src: url("/fonts/estedad/Estedad-Regular.ttf");
   font-weight: 400;
 }
 @font-face {
   font-family: newYork;
-  src: url("../fonts/newyork/FontsFree-Net-NewYork.ttf");
+  src: url("/fonts/newyork/FontsFree-Net-NewYork.ttf");
   font-weight: 400;
 }
 @font-face {
   font-family: gallient;
-  src: url("../fonts/gallient/GallientRegular-eZoMp.ttf");
+  src: url("/fonts/gallient/GallientRegular-eZoMp.ttf");
   font-weight: 400;
 }
 @font-face {
   font-family: RomanStory;
-  src: url("../fonts/roman/Romans-Story.ttf");
+  src: url("/fonts/roman/Romans-Story.ttf");
   font-weight: 400;
 }
 @font-face {
   font-family: ClashDisplay;
-  src: url("../fonts/ClashDisplay/ClashDisplay-Light.ttf");
+  src: url("/fonts/ClashDisplay/ClashDisplay-Light.ttf");
   font-weight: 300;
 }
 @font-face {
   font-family: ClashDisplay;
-  src: url("../fonts/ClashDisplay/ClashDisplay-Regular.ttf");
+  src: url("/fonts/ClashDisplay/ClashDisplay-Regular.ttf");
   font-weight: 400;
 }
 @font-face {
   font-family: ClashDisplay;
-  src: url("../fonts/ClashDisplay/ClashDisplay-Medium.ttf");
+  src: url("/fonts/ClashDisplay/ClashDisplay-Medium.ttf");
   font-weight: 500;
 }
 @font-face {
   font-family: ClashDisplay;
-  src: url("../fonts/ClashDisplay/ClashDisplay-Semibold.ttf");
+  src: url("/fonts/ClashDisplay/ClashDisplay-Semibold.ttf");
   font-weight: 600;
 }
 @font-face {
   font-family: ClashDisplay;
-  src: url("../fonts/ClashDisplay/ClashDisplay-Bold.ttf");
+  src: url("/fonts/ClashDisplay/ClashDisplay-Bold.ttf");
   font-weight: 700;
 }
 @font-face {
   font-family: Glorify DEMO;
-  src: url("../fonts/glorify/Glorifydemo-BW3J3.otf");
+  src: url("/fonts/glorify/Glorifydemo-BW3J3.otf");
   font-weight: 400;
 }
 @font-face {
   font-family: Canela;
-  src: url("../fonts/canela/Canela-Regular-Trial.otf");
+  src: url("/fonts/canela/Canela-Regular-Trial.otf");
   font-weight: 400;
 }
 @font-face {
   font-family: Canela;
-  src: url("../fonts/canela/Canela-Medium-Trial.otf");
+  src: url("/fonts/canela/Canela-Medium-Trial.otf");
   font-weight: 500;
 }
 @font-face {
   font-family: Graphik;
-  src: url("../fonts/graphik/GraphikBold.otf");
+  src: url("/fonts/graphik/GraphikBold.otf");
   font-weight: 700;
 }
 @font-face {
   font-family: Graphik;
-  src: url("../fonts/graphik/GraphikMedium.otf");
+  src: url("/fonts/graphik/GraphikMedium.otf");
   font-weight: 500;
 }
 @font-face {
   font-family: Graphik;
-  src: url("../fonts/graphik/GraphikRegular.otf");
+  src: url("/fonts/graphik/GraphikRegular.otf");
   font-weight: 400;
 }
 @font-face {
   font-family: Graphik;
-  src: url("../fonts/graphik/GraphikSemibold.otf");
+  src: url("/fonts/graphik/GraphikSemibold.otf");
   font-weight: 600;
 }
 @font-face {
   font-family: tropline;
-  src: url("../fonts/tropline/Tropiline-Regular.ttf");
+  src: url("/fonts/tropline/Tropiline-Regular.ttf");
   font-weight: 400;
 }
 @font-face {
   font-family: tropline;
-  src: url("../fonts/tropline/Tropiline-SemiBold.ttf");
+  src: url("/fonts/tropline/Tropiline-SemiBold.ttf");
   font-weight: 600;
 }
 @font-face {
   font-family: tropline;
-  src: url("../fonts/tropline/Tropiline-Bold.ttf");
+  src: url("/fonts/tropline/Tropiline-Bold.ttf");
   font-weight: 700;
 }
 :root {
@@ -17024,52 +17024,52 @@ body .btn4 {
     height: 50px;
   }
 }
-.about__education-grid {
+.about__experience-grid {
   gap: 40px;
   display: grid;
 }
 @media only screen and (max-width: 1199px) {
-  .about__education-grid {
+  .about__experience-grid {
     gap: 30px;
   }
 }
-.about__education p {
+.about__experience p {
   font-size: 14px;
   font-weight: 400;
   color: var(--black-9);
   padding-bottom: 10px;
 }
-.about__education p i {
+.about__experience p i {
   padding-inline-end: 5px;
 }
-.about__education .title {
+.about__experience .title {
   font-size: 18px;
   font-weight: 600;
   line-height: 1.5;
   color: var(--white);
   padding-bottom: 5px;
 }
-.about__education .company {
+.about__experience .company {
   font-size: 16px;
   font-weight: 500;
   line-height: 1.5;
   color: var(--black-9);
 }
-.about__education-title {
+.about__experience-title {
   font-size: 24px;
   font-weight: 600;
   line-height: 1.5;
   color: var(--white);
 }
-.about__education-title-pd {
+.about__experience-title-pd {
   padding-bottom: 55px;
 }
 @media only screen and (max-width: 1199px) {
-  .about__education-title-pd {
+  .about__experience-title-pd {
     padding-bottom: 40px;
   }
 }
-.about__education-list {
+.about__experience-list {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17077,27 +17077,27 @@ body .btn4 {
   height: 100%;
 }
 @media only screen and (max-width: 1199px) {
-  .about__education-list {
+  .about__experience-list {
     padding-inline-start: 60px;
   }
 }
 @media only screen and (max-width: 991px) {
-  .about__education-list {
+  .about__experience-list {
     padding-inline-start: 0;
   }
 }
 @media only screen and (max-width: 767px) {
-  .about__education-list {
+  .about__experience-list {
     padding-top: 50px;
   }
 }
-.about__education-img {
+.about__experience-img {
   height: 100%;
   align-items: center;
   display: inline-flex;
 }
 @media only screen and (max-width: 767px) {
-  .about__education-img {
+  .about__experience-img {
     display: block;
   }
 }
@@ -17277,12 +17277,12 @@ body .btn4 {
 .light .about__textslider .title {
   color: var(--black-2);
 }
-.light .about__education p,
-.light .about__education .company {
+.light .about__experience p,
+.light .about__experience .company {
   color: var(--gray);
 }
-.light .about__education-title,
-.light .about__education .title {
+.light .about__experience-title,
+.light .about__experience .title {
   color: var(--black-2);
 }
 .light .about__award-title {

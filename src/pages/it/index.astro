@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../../layouts/Common.astro";
+import Experience from "../../components/Experience.astro";
+import Certifications from "../../components/Certifications.astro";
+---
+
+<BaseLayout>
+  <!-- Hero area start -->
+  <section class="about__hero plr-50 pt-100 pb-120">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div
+            class="about__experience-img cf_img img_anim_reveal"
+            style="align-items:unset"
+          >
+            <img src="/about/lucabertelli.jpeg" alt="Luca Bertelli" />
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="about__hero-right">
+            <h1 class="lb__hero-subtitle has_char_anim" data-on-scroll="0">
+              Ciao 🖐 sono Luca
+            </h1>
+            <h2
+              class="lb__hero-title has_fade_anim"
+              data-on-scroll="0"
+              data-delay=".6"
+            >
+              Cloud Native <br />
+              <span id="typed_list">
+                <span>Engineer</span>
+                <span>Advisor</span>
+                <span>Developer</span>
+              </span>
+              <span id="typed"></span>
+            </h2>
+            <div class="cf_text has_fade_anim">
+              <p style="max-width:100%">
+                Come consulente ed ingegnere Cloud Native, supporto le realtà
+                che cercano di adottare in modo sostenibile e scalabile le
+                ultime tecnologie cloud disponibili. Basandomi su una prolungata
+                esperienza diretta maturata con clienti operanti nei settori
+                Fintech, Insurtech e Industrial mi pongo l'obiettivo di ascoltare
+                per comprendere le esigenze e risolvere i problemi concreti.
+                Specializzato nel Platform Engineering, propongo soluzioni che
+                forniscono una base solida per poter ottenere un'esperienza utente
+                efficace ed ottimizzare allo stesso tempo i processi rendendoli più
+                efficenti e sicuri.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Hero area end -->
+
+  <Experience />
+
+  <Certifications />
+
+</BaseLayout>
