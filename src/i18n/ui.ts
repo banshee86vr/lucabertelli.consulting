@@ -1,19 +1,48 @@
-export const languages = {
-    en: 'English',
-    it: 'Italiano',
-  };
-
-  export const defaultLang = 'en';
-
-  export const ui = {
-    en: {
-      'nav.home': 'Home',
-      'nav.blog': 'Blog',
-      'nav.contact': 'Contact',
-    },
-    it: {
-        'nav.home': 'Home',
-        'nav.blog': 'Blog',
-        'nav.contact': 'Contatti',
-    },
-  } as const;
+export const ui = {
+  en: {
+    'nav.home': 'Home',
+    'nav.blog': 'Blog',
+    'nav.contact': 'Contact',
+    'nav.lang': '/lang/en.png',
+    'index.hi': "Hi 🖐 I'm Luca",
+    'index.bio': 'As a Cloud Native consultant and engineer, I assist customers who desire to adopt the latest cloud technologies in a sustainable and scalable way. Based on a long hands-on experience gained with customers operating in the Fintech, Insurtech, and Industrial sectors. My primary focus is on listening to understand needs and solve tangible problems. Specializing in Platform Engineering, I propose solutions that provide a solid foundation for a smooth user experience, optimizing the processes and making them more efficient and safe.',
+    'index.certification.title': "Learning Paths: Earned badges",
+    'index.certification.subtitle': "Certifications",
+    'index.certification.list': "Achievement",
+    'contact.invite': "Feel free to contact me to share any questions about DevOps practices, Cloud Native Solutions, or Platform Engineering. We will discuss together how we can collaborate together to adopt the latest technologies available on the market. You can contact me at these addresses or via ",
+    'contact.email': 'Email',
+    'contact.phone': 'Phone',
+    'contact.form.name': 'Name*',
+    'contact.form.email': 'Email*',
+    'contact.form.subject': 'Subject*',
+    'contact.form.message': 'Message*',
+    'contact.form.submit': 'Submit Now',
+    'post.header.category': 'Category',
+    'post.header.language': 'Language',
+    'post.header.date': 'Published date',
+    'post.related.title': 'Related Articles'
+  },
+  it: {
+    'nav.home': 'Home',
+    'nav.blog': 'Blog',
+    'nav.contact': 'Contatti',
+    'nav.lang': '/lang/it.png',
+    'index.hi': "Ciao 🖐 sono Luca",
+    'index.bio': "Come consulente ed ingegnere Cloud Native, supporto le realtà che cercano di adottare in modo sostenibile e scalabile le ultime tecnologie cloud disponibili. Basandomi su una prolungata esperienza diretta maturata con clienti operanti nei settori Fintech, Insurtech e Industrial mi pongo l'obiettivo di ascoltare per comprendere le esigenze e risolvere i problemi concreti. Specializzato nel Platform Engineering, propongo soluzioni che forniscono una base solida per poter ottenere un'esperienza utente efficace ed ottimizzare allo stesso tempo i processi rendendoli più efficenti e sicuri.",
+    'index.certification.title': "Percorsi formativi: Badge ottenuti",
+    'index.certification.subtitle': "Certificazioni",
+    'index.certification.list': "Conseguimenti",
+    'contact.invite': "Non esitate a contattarmi per condividere domande su pratiche DevOps, soluzioni Cloud Native, o sul Platform Engineering. Eploreremo insieme come poter collaborare ed adottare in modo efficace le ultime tecnologie disponibili sul mercato. Potete contattarmi a questi recapiti o tramite ",
+    'contact.email': 'Email',
+    'contact.phone': 'Telefono',
+    'contact.form.name': 'Nome*',
+    'contact.form.email': 'Email*',
+    'contact.form.subject': 'Oggetto*',
+    'contact.form.message': 'Messaggio*',
+    'contact.form.submit': 'Invia',
+    'post.header.category': 'Categoria',
+    'post.header.language': 'Lingua',
+    'post.header.date': 'Data di pubblicazione',
+    'post.related.title': 'Articoli simili'
+  },
+} as const;

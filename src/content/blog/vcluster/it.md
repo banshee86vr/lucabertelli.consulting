@@ -1,11 +1,11 @@
 ---
-title: Ephemeral test environments for CI workflows
-subtitle: How to use vCluster, ArgoCD ApplicationSet and Pull request generator to manage short-live test ephemeral environments
+title: Ambienti di TEST effimeri per workflow di CI
+subtitle: Come usare vCluster, Argocd CD ApplicationSet con il Pull Request generator per gestire ambienti di test effimeri
 date: 1 Jan 2025
 category: DevOps
 image: "/blog/vcluster.png"
 tags: ["vcluster", "argo", "cicd", "devsecops", "kubernetes","multi-tenancy"]
-lang: it
+lang: 'it'
 ---
 
 Contenuto

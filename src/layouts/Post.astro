@@ -1,8 +1,14 @@
 ---
 import BaseLayout from "./Common.astro";
 import { type CollectionEntry } from "astro:content";
+
 type Props = CollectionEntry<"blog">["data"];
-const { title, subtitle, date, category, image, tags } = Astro.props;
+const { title, subtitle, date, category, image, tags, lang } = Astro.props;
+
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 
 import { getCollection } from "astro:content";
 const blogEntries = (await getCollection("blog"))
@@ -11,6 +17,7 @@ const blogEntries = (await getCollection("blog"))
       return tags.indexOf(element) !== -1;
     });
   })
+  .filter((blogEntry) => blogEntry.data.lang == currentLang)
   .sort(() => Math.random() - 0.5)
   .slice(0, 4);
 ---
@@ -36,14 +43,18 @@ const blogEntries = (await getCollection("blog"))
             <div class="blog__details-info">
               <ul>
                 <li>
-                  <span>Category</span>
+                  <span>{t('post.header.category')}</span>
                   <a href="#">{category}</a>
                 </li>
                 <li>
-                  <span>Date</span>
+                  <span>{t('post.header.language')}</span>
+                  <a href="#">{lang}</a>
+                </li>
+                <li>
+                  <span>{t('post.header.date')}</span>
                   <a href="javascript:void(0)"
                     >{
-                      date.toLocaleDateString("en-US", {
+                      date.toLocaleDateString(lang, {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
@@ -88,7 +99,7 @@ const blogEntries = (await getCollection("blog"))
         <div class="col-xxl-12">
           <div class="sec-title-wrapper pt-120">
             <h2 class="sec-sub-title mb-20">Blog</h2>
-            <h3 class="sec-title">Releted Articles</h3>
+            <h3 class="sec-title">{t('post.related.title')}</h3>
           </div>
         </div>
       </div>
@@ -100,7 +111,7 @@ const blogEntries = (await getCollection("blog"))
               blogEntries.map((post) => (
                 <article class="lb-blog__item blog-img-zoom">
                   <div class="thumb">
-                    <a href={`${post.slug.split('/')[1]}`}>
+                    <a href={`${post.slug.split("/")[1]}`}>
                       <img src={post.data.image} />
                     </a>
                   </div>

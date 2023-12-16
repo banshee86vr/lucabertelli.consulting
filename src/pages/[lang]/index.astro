@@ -2,6 +2,11 @@
 import BaseLayout from "../../layouts/Common.astro";
 import Experience from "../../components/Experience.astro";
 import Certifications from "../../components/Certifications.astro";
+
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <BaseLayout>
@@ -19,9 +24,7 @@ import Certifications from "../../components/Certifications.astro";
         </div>
         <div class="col-lg-8">
           <div class="about__hero-right">
-            <h1 class="lb__hero-subtitle has_char_anim" data-on-scroll="0">
-              Ciao 🖐 sono Luca
-            </h1>
+            <h1 class="lb__hero-subtitle has_char_anim" data-on-scroll="0">{t('index.hi')}</h1>
             <h2
               class="lb__hero-title has_fade_anim"
               data-on-scroll="0"
@@ -31,23 +34,13 @@ import Certifications from "../../components/Certifications.astro";
               <span id="typed_list">
                 <span>Engineer</span>
                 <span>Advisor</span>
+                <span>Consultant</span>
                 <span>Developer</span>
               </span>
               <span id="typed"></span>
             </h2>
             <div class="cf_text has_fade_anim">
-              <p style="max-width:100%">
-                Come consulente ed ingegnere Cloud Native, supporto le realtà
-                che cercano di adottare in modo sostenibile e scalabile le
-                ultime tecnologie cloud disponibili. Basandomi su una prolungata
-                esperienza diretta maturata con clienti operanti nei settori
-                Fintech, Insurtech e Industrial mi pongo l'obiettivo di ascoltare
-                per comprendere le esigenze e risolvere i problemi concreti.
-                Specializzato nel Platform Engineering, propongo soluzioni che
-                forniscono una base solida per poter ottenere un'esperienza utente
-                efficace ed ottimizzare allo stesso tempo i processi rendendoli più
-                efficenti e sicuri.
-              </p>
+              <p style="max-width:100%">{t('index.bio')}</p>
             </div>
           </div>
         </div>
@@ -59,5 +52,4 @@ import Certifications from "../../components/Certifications.astro";
   <Experience />
 
   <Certifications />
-
 </BaseLayout>

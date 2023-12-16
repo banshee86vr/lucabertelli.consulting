@@ -1,0 +1,26 @@
+---
+import PostLayout from "../../../layouts/Post.astro";
+import { getBlogPosts } from "../../../content/config";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const pages = await getBlogPosts();
+
+  const paths = pages.map((page) => {
+    return {
+      params: { lang: page?.data.lang || "en", slug: page.blog_slug },
+      props: page,
+    };
+  });
+
+  return paths;
+}
+
+const page = Astro.props;
+const { Content } = await page.render();
+---
+
+<PostLayout {...page.data}>
+  <Content />
+</PostLayout>

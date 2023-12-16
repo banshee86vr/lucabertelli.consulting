@@ -1,27 +1,41 @@
 ---
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const homeSlug = `/${lang || ""}`;
+const blogSlug = `/${lang || ""}/blog`;
+const contactSlug = `/${lang || ""}/contact`;
+
+import { getLocalizedPathname } from "../i18n/utils";
+const { pathname } = Astro.url;
 ---
 
 <header class="header__area pos-abs plr-50">
   <div class="header__inner">
     <div class="header__logo-3">
-      <a href={`/${lang}/`}>
-        <img
-          src="/logo.png"
-          class="show-dark"
-          alt="Site Logo"
-        />
+      <a href={homeSlug}>
+        <img src="/logo.png" class="show-dark" alt="Site Logo" />
       </a>
     </div>
     <div class="header__nav">
       <nav class="main-menu">
         <ul>
-          <li><a href={`/${lang}/`}>{t('nav.home')}</a></li>
-          <li><a href={`/${lang}/blog/`}>{t('nav.blog')}</a></li>
-          <li><a href={`/${lang}/contact/`}>{t('nav.contact')}</a></li>
+          <li><a href={homeSlug}>{t("nav.home")}</a></li>
+          <li><a href={blogSlug}>{t("nav.blog")}</a></li>
+          <li><a href={contactSlug}>{t("nav.contact")}</a></li>
+          <li class="menu-item-has-children">
+            <a href="#"><img src={t("nav.lang")} style="max-height:20px" /></a>
+            <ul class="dp-menu">
+              <li><a href={getLocalizedPathname(pathname, "it")}
+                ><img src="/lang/it.png" style="max-height:20px;margin-right: 15px;" /> Italiano</a
+              ></li>
+              <li><a href={getLocalizedPathname(pathname, "en")}
+                ><img src="/lang/en.png" style="max-height:20px;margin-right: 15px;" /> English</a
+              ></li>
+            </ul>
+          </li>
         </ul>
       </nav>
     </div>

@@ -1,5 +1,11 @@
 ---
 import BaseLayout from "../../layouts/Common.astro";
+
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 // import sendGrid from "@sendgrid/mail";
 // sendGrid.setApiKey(import.meta.env.SENDGRID_API_KEY);
 
@@ -45,25 +51,20 @@ import BaseLayout from "../../layouts/Common.astro";
             Let’s <br /> Get in Touch
           </h1>
           <div class="cf_text lb__innercontact-dis">
-            <p style="padding-right: 75px">
-              Non esitate a contattarmi per condividere domande su pratiche
-              DevOps, soluzioni Cloud Native, o sul Platform Engineering.
-              Eploreremo insieme come poter collaborare ed adottare in modo
-              efficace le ultime tecnologie disponibili sul mercato. Potete
-              contattarmi a questi recapiti o tramite il mio <a
+            <p style="padding-right: 75px">{t('contact.invite')}<a
                 href="www.linkedin.com/in/luca-bertelli-a1413b77"
-                target="_blank">profilo LinkedIn</a
+                target="_blank">LinkedIn</a
               >.
             </p>
           </div>
           <div class="lb__innercontact-contactItem pb-15">
-            <span>Email</span>
+            <span>{t('contact.email')}:</span>
             <a href="mailTo:info@lucabertelli.consulting"
               >info@lucabertelli.consulting</a
             >
           </div>
           <div class="lb__innercontact-contactItem">
-            <span>Tel:</span>
+            <span>{t('contact.phone')}:</span>
             <a href="callto:+(39) 3401234567">+(39) 3401234567</a>
           </div>
         </div>
@@ -77,7 +78,7 @@ import BaseLayout from "../../layouts/Common.astro";
                     type="text"
                     name="Name"
                     id="Name"
-                    placeholder="Nome*"
+                    placeholder={t('contact.form.name')}
                   />
                 </div>
                 <div class="lb__contact-formfield">
@@ -85,7 +86,7 @@ import BaseLayout from "../../layouts/Common.astro";
                     type="text"
                     name="Email"
                     id="Email"
-                    placeholder="Email*"
+                    placeholder={t('contact.form.email')}
                   />
                 </div>
               </div>
@@ -95,7 +96,7 @@ import BaseLayout from "../../layouts/Common.astro";
                     type="text"
                     name="Subject"
                     id="Subject"
-                    placeholder="Oggetto*"
+                    placeholder={t('contact.form.subject')}
                   />
                 </div>
               </div>
@@ -104,14 +105,14 @@ import BaseLayout from "../../layouts/Common.astro";
                   type="text"
                   name="Messages"
                   id="Messages"
-                  placeholder="Messaggio*"
+                  placeholder={t('contact.form.message')}
                 />
               </div>
               <div class="lb-submit__btn mt-40">
                 <button
                   type="submit"
                   class="btn-hover-mask text-uppercase"
-                  data-text="Invia">Invia</button
+                  data-text={t('contact.form.submit')}>{t('contact.form.submit')}</button
                 >
               </div>
             </div>

@@ -1,4 +1,5 @@
 import { defineCollection, z } from "astro:content";
+import { getCollection } from "astro:content";
 
 const certifications = defineCollection({
   type: "content",
@@ -20,7 +21,8 @@ const blog = defineCollection({
     date: z.coerce.date(),
     category: z.string(),
     image: z.string(),
-    tags: z.array(z.string())
+    tags: z.array(z.string()),
+    lang: z.enum(['en', 'it']),
   }),
 });
 
@@ -28,3 +30,15 @@ export const collections = {
   certifications: certifications,
   blog: blog
 };
+
+export async function getBlogPosts() {
+	const posts = await getCollection('blog');
+
+	return posts.map((post) => {
+		const blog_slug = post.slug.split('/')[0];
+		return {
+			...post,
+			blog_slug
+		}
+	})
+}

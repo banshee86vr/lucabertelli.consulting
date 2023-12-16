@@ -4,6 +4,11 @@ import { getCollection } from "astro:content";
 const certifications = (await getCollection("certifications")).sort(
   (a, b) => b.data.issueDate.valueOf() - a.data.issueDate.valueOf()
 );
+
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <!-- Award section start -->
@@ -12,15 +17,13 @@ const certifications = (await getCollection("certifications")).sort(
       <div class="row">
         <div class="col-lg-9">
           <div class="sec-title-wrapper">
-            <h2 class="sec-sub-title has_text_reveal_anim">Certifications</h2>
+            <h2 class="sec-sub-title has_text_reveal_anim">{t('index.certification.subtitle')}</h2>
             <div class="about__award-title-pd">
-              <h3 class="about__award-title has_text_reveal_anim">
-                Learning Unbound: Never Stop, Never Settle
-              </h3>
+              <h3 class="about__award-title has_text_reveal_anim">{t('index.certification.title')}</h3>
             </div>
             <div class="cols-2">
               <div class="line-left">
-                <p>Achievement</p>
+                <p>{t('index.certification.list')}</p>
               </div>
               <img src="/about/shape-5.png" alt="shape" class="shape arrow" />
             </div>
@@ -48,7 +51,7 @@ const certifications = (await getCollection("certifications")).sort(
                     />
                   </a>
                   <p class="lb-award__date">
-                    {certification.data.issueDate.toLocaleString("en-US", {
+                    {certification.data.issueDate.toLocaleString(lang, {
                       year: "numeric",
                       month: "short",
                     })}

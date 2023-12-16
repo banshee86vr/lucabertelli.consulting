@@ -1,42 +1,59 @@
-import { ui, defaultLang, showDefaultLang, routes } from './ui';
+import { ui } from "./ui";
+
+export const LANGUAGES = {
+  en: "English",
+  it: "Italiano"
+};
+
+export const DEFAULT_LANG = "en";
+
+export type UiType = keyof typeof ui;
 
 export function getLangFromUrl(url: URL) {
-  const [, lang] = url.pathname.split('/');
-  if (lang in ui) return lang as keyof typeof ui;
-  return defaultLang;
+  const [, lang] = url.pathname.split("/");
+  if (lang in ui) return lang as UiType;
+  return DEFAULT_LANG;
 }
 
-export function useTranslations(lang: keyof typeof ui) {
-  return function t(key: keyof typeof ui[typeof defaultLang]) {
-    return ui[lang][key] || ui[defaultLang][key];
-  }
+export function useTranslations(lang?: UiType) {
+  return function t(
+    key: keyof (typeof ui)[typeof DEFAULT_LANG],
+    ...args: any[]
+  ) {
+    let translation = ui[lang ?? DEFAULT_LANG][key] || ui[DEFAULT_LANG][key];
+    if (args.length > 0) {
+      for (let i = 0; i < args.length; i++) {
+        translation = translation.replace(`{${i}}`, args[i]);
+      }
+    }
+    return translation;
+  };
 }
 
-export function getRouteFromUrl(url: URL): string | undefined {
-  const pathname = new URL(url).pathname
-  const parts = pathname?.split('/')
-  const path = parts.pop() || parts.pop()
+export function pathNameIsInLanguage(pathname: string, lang: UiType) {
+  return pathname.startsWith(`/${lang}`) || (lang === DEFAULT_LANG && !pathNameStartsWithLanguage(pathname));
+}
 
-  if (path === undefined) {
-    return undefined
+function pathNameStartsWithLanguage(pathname: string) {
+  let startsWithLanguage = false;
+  const languages = Object.keys(LANGUAGES);
+
+  for (let i = 0; i < languages.length; i++) {
+    const lang = languages[i];
+    if (pathname.startsWith(`/${lang}`)) {
+      startsWithLanguage = true;
+      break;
+    }
   }
 
-  const currentLang = getLangFromUrl(url);
+  return startsWithLanguage;
+}
 
-  if (defaultLang === currentLang) {
-    const route = Object.values(routes)[0];
-    return route[path] !== undefined ? route[path] : undefined
+export function getLocalizedPathname(pathname: string, lang: UiType) {
+  if (pathNameStartsWithLanguage(pathname)) {
+    const availableLanguages = Object.keys(LANGUAGES).join('|');
+    const regex = new RegExp(`^\/(${availableLanguages})`);
+    return pathname.replace(regex, `/${lang}`);
   }
-
-  const getKeyByValue = (obj: Record<string, string>, value: string): string | undefined  => {
-      return Object.keys(obj).find((key) => obj[key] === value)
-  }
-
-  const reversedKey = getKeyByValue(routes[currentLang], path)
-
-  if (reversedKey !== undefined) {
-    return reversedKey
-  }
-
-  return undefined
+  return `/${lang}${pathname}`;
 }

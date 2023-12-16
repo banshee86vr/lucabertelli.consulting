@@ -5,7 +5,7 @@ date: 1 Jan 2025
 category: DevOps
 image: "/blog/vcluster.png"
 tags: ["vcluster", "argo", "cicd", "devsecops", "kubernetes","multi-tenancy"]
-lang: en
+lang: 'en'
 ---
 
 Content
@@ -23,5 +23,3 @@ asdfasdfas
 export TEST='ciao'
 echo $TEST
 ```
-
-S
