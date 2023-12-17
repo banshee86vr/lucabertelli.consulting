@@ -56,7 +56,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Macondo&display=swap");
 :root {
-  --primary: #E8BF96;
+  --primary: #FFE24C;
   --secondary: #2c2c2c;
   --black: #000;
   --black-2: #1C1D20;
@@ -3788,7 +3788,7 @@ a {
   color: inherit;
 }
 a:hover {
-  color: inherit;
+  color: var(--primary);
 }
 
 button {
@@ -8232,7 +8232,7 @@ section {
   animation: mask_animation_2 0.7s steps(22) forwards;
 }
 .btn-hover-mask:hover {
-  color: var(--white);
+  color: var(--primary);
 }
 .btn-hover-mask:hover::after {
   animation: mask_animation 0.7s steps(22) forwards;
@@ -18563,6 +18563,9 @@ body .btn4 {
 .lb-blog__item {
   overflow: hidden;
 }
+.lb-blog__item a:hover{
+  color: var(--primary);
+}
 .lb-blog__item img {
   width: 100%;
   margin-bottom: 20px;
@@ -19156,6 +19159,13 @@ body .btn4 {
   font-weight: 400;
   line-height: 1.5;
   color: var(--white);
+  font-family: "Estedad";
+}
+.blog__tag ul li a:hover {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--primary);
   font-family: "Estedad";
 }
 .light .blog__tag ul li a {
