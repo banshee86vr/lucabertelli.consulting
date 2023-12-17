@@ -15,19 +15,10 @@ export function getLangFromUrl(url: URL) {
   return DEFAULT_LANG;
 }
 
-export function useTranslations(lang?: UiType) {
-  return function t(
-    key: keyof (typeof ui)[typeof DEFAULT_LANG],
-    ...args: any[]
-  ) {
-    let translation = ui[lang ?? DEFAULT_LANG][key] || ui[DEFAULT_LANG][key];
-    if (args.length > 0) {
-      for (let i = 0; i < args.length; i++) {
-        translation = translation.replace(`{${i}}`, args[i]);
-      }
-    }
-    return translation;
-  };
+export function useTranslations(lang: keyof typeof ui) {
+  return function t(key: keyof typeof ui[typeof DEFAULT_LANG]) {
+    return ui[lang][key] || ui[DEFAULT_LANG][key];
+  }
 }
 
 export function pathNameIsInLanguage(pathname: string, lang: UiType) {

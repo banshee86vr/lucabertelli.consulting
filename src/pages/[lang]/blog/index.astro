@@ -3,6 +3,8 @@ import BaseLayout from "../../../layouts/Common.astro";
 import { getLangFromUrl } from "../../../i18n/utils";
 import { getBlogPosts } from "../../../content/config";
 
+export const prerender = true;
+
 const lang = getLangFromUrl(Astro.url);
 const tag = Astro.url.searchParams.get("tag")! || "";
 
