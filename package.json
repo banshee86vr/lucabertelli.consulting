@@ -2,6 +2,7 @@
   "name": "lucabertelli.consulting",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "release": {
     "branches": [
       "main"
