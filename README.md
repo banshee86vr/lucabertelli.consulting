@@ -24,7 +24,7 @@ The site is built with [Astro](https://astro.build/), a modern front-end framewo
 
 ## Project structure
 
-Certainly! Below is a standard project structure for an Astro project site:
+Below is a standard project structure for an Astro project site:
 
 ```plaintext
 lucabertelli.consulting/
