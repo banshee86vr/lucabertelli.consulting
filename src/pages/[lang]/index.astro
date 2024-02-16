@@ -2,6 +2,8 @@
 import BaseLayout from "../../layouts/Common.astro";
 import Experience from "../../components/Experience.astro";
 import Certifications from "../../components/Certifications.astro";
+import Services from "../../components/Services.astro";
+import Tickets from "../../components/Tickets.astro";
 
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
@@ -51,5 +53,9 @@ const t = useTranslations(lang);
 
   <Experience />
 
+  <Services />
+
   <Certifications />
+
+  <Tickets />
 </BaseLayout>

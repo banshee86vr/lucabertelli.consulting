@@ -1,3 +1,12 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const contactSlug = `/${lang || ""}/contact`;
+---
+
 <!-- Text Slider start -->
 <section class="about__textslider-area pb-100">
   <div class="about__textslider">
@@ -9,17 +18,22 @@
       <div class="swiper-wrapper">
         <div class="swiper-slide">
           <div class="text-slide-content">
-            <h2 class="title">Skills</h2>
+            <h2 class="title">{t('index.experience.skills')}</h2>
           </div>
         </div>
         <div class="swiper-slide">
           <div class="text-slide-content">
-            <h2 class="title">Experience</h2>
+            <h2 class="title">{t('index.experience.experiences')}</h2>
           </div>
         </div>
         <div class="swiper-slide">
           <div class="text-slide-content">
-            <h2 class="title">Education</h2>
+            <h2 class="title">{t('index.experience.services')}</h2>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="text-slide-content">
+            <h2 class="title">{t('index.experience.educations')}</h2>
           </div>
         </div>
       </div>
@@ -44,9 +58,9 @@
             </div>
             <div class="about__experience">
               <p>
-                <i class="fa-regular fa-calendar-days"></i> 2023 -
+                <i class="fa-regular fa-calendar-days"></i> 2023 - 2024
               </p>
-              <p class="title">Co-Founder</p>
+              <p class="title">Client Success Manager & Co-Founder</p>
               <p class="company">
                 <a href="https://www.krateo.io" target="_blank"
                   >Krateo PlatformOps</a>
@@ -145,3 +159,41 @@
   </div>
 </section>
 <!-- Experience area end -->
+
+<!-- Notification section start-->
+<section class="lb__notification pb-130">
+  <div class="container">
+    <div class="row">
+      <div class="col-xxl-12">
+        <div class="lb__notification-wrapper has_fade_anim" data-fade-from="top" data-duration="3"
+          data-fade-offset="150" data-ease="bounce">
+          <div class="lb__notification-grid">
+            <div class="lb__notification-left">
+              <div class="lb__notification-thumb cf_image">
+                <img src="/notification/notification.png" alt="notification">
+              </div>
+              <div class="lb__notification-content">
+                <h2 class="lb__notification-title">{t('index.experience.contact.title')}</h2>
+              </div>
+            </div>
+            <div class="lb__notification-right">
+              <div class="cf_text">
+                <p>{t('index.experience.contact.text')}</p>
+              </div>
+              <div class="cf_btn">
+                <a href={contactSlug} class="wc-btn-primary btn-rollover-top">{t("nav.contact")}
+                  <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <img class="lb__notification-sh1" src="/notification/shape-01.png" alt="image">
+          <img class="lb__notification-sh2" src="/notification/shape-02.png" alt="image">
+          <img class="lb__notification-sh3" src="/notification/shape-03.png" alt="image">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Notification area end -->
