@@ -13,8 +13,8 @@ try {
 
   const responseData = await fetchedEvents.json();
   events = responseData.events
-    .filter((event) => event.startDate > new Date().toISOString())
-    .sort(function (a, b) {
+    .filter((event: { startDate: String; }) => event.startDate > new Date().toISOString())
+    .sort(function (a: { startDate: String; }, b: { startDate: String; }) {
       return a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0;
     })
     .slice(0, 3);
@@ -49,7 +49,7 @@ try {
   </div>
   <div class="lb__ticket-items">
     {
-      events.map((event) => (
+      events.map((event: any) => (
         <div
           class="lb__ticket-item bg-white has_fade_anim"
           data-fade-from="left"
