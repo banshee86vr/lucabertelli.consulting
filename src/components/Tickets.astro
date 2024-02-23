@@ -1,0 +1,109 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const contactSlug = `/${lang || ""}/contact`;
+
+let events = [];
+try {
+  if (import.meta.env.SECRET_LOAD_EVENTS === "true") {
+    const fetchedEvents = await fetch(import.meta.env.SECRET_EVENTS_API_URL);
+
+  const responseData = await fetchedEvents.json();
+  events = responseData.events
+    .filter((event: { startDate: String; }) => event.startDate > new Date().toISOString())
+    .sort(function (a: { startDate: String; }, b: { startDate: String; }) {
+      return a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0;
+    })
+    .slice(0, 3);
+    console.info(events.length) 
+  }
+} catch (error) {
+  console.debug('Impossible to load events from api.eventitech.it')
+  console.debug(error)
+  events = [];
+}
+---
+
+{
+  events.length > 0 && (
+  <!-- Ticket area start  -->
+<div class="lb__ticket plr-100">
+  <div class="container">
+    <div class="lb__ticket-topwrap">
+      <h1 class="lb__innerevent-title2 has_char_anim">
+        {t("index.tickets.title")} powered by <a
+          href="https://eventitech.it/"
+          target="_new"
+          ><img
+            class="has_fade_anim"
+            src="/tickets/eventitech.png"
+            alt="Eventitech"
+            style="width: 400px;"
+          /></a
+        >
+      </h1>
+    </div>
+  </div>
+  <div class="lb__ticket-items">
+    {
+      events.map((event: any) => (
+        <div
+          class="lb__ticket-item bg-white has_fade_anim"
+          data-fade-from="left"
+          data-delay=".5"
+        >
+          <span class="circle-1" />
+          <span class="circle-2" />
+          <div class="lb__ticket-up">
+            <div class="lb__ticket-upleft">
+              <span class="categ">{event.groups[0]?.name}</span>
+              <h2 class="title">
+                <a href={event.url} target="_new">
+                  {event.name}
+                </a>
+              </h2>
+              <p>
+                {new Date(event.startDate).toLocaleDateString(lang, {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+                {new Date(event.endDate) > new Date(event.startDate) &&
+                  -new Date(event.endDate).toLocaleDateString(lang, {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+              </p>
+              <img
+                class="lb__ticket-line1"
+                src="/tickets/line-1.png"
+                alt="img-1"
+              />
+            </div>
+            <div class="lb__ticket-upright">
+              <span class="availble">{event.topics.join(", ")}</span>
+            </div>
+          </div>
+          <div class="lb__ticket-bottom">
+            <div class="lb__ticket-address">
+              <p>{event.location}</p>
+            </div>
+            <div class="lb__ticket-link">
+              <a href={event.url} target="_new">
+                Ticket <img src="/tickets/arrow-up.png" alt="arrow" />
+              </a>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+<!-- Ticket area end -->
+
+  )
+}
