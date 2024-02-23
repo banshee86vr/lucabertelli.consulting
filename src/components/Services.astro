@@ -1,0 +1,92 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<!-- Services section start  -->
+<section class="lb-ins__area pb-100">
+  <div class="container">
+    <div class="lb-inp__project-sec-title-wrap">
+      <h1 class="lb-inp__project-title has_text_move_anim">{t('index.services.title')}</h1>
+    </div>
+    <div class="lb-ins__area-service-items">
+      <div class="lb__expertise-grid">
+        <div class="lb__expertise-item cf_service_card has_fade_anim" data-fade-from="left"
+          data-speed="1.15">
+          <a href="service-details.html">
+            <div class="lb__expertise-content">
+              <div class="lb__expertise-heading">
+                <h4 class="lb__expertise-title">{t('index.services.1.title')}</h4>
+              </div>
+              <div class="lb__expertise-body">
+                <div class="lb__expertise-bthumb">
+                  <img src="/expertise/vector-01.png" alt="expert">
+                </div>
+              </div>
+              <div class="lb__expertise-footer">
+                <p>{t('index.services.1.text')}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="lb__expertise-item cf_service_card has_fade_anim" data-fade-from="left"
+          data-speed="0.95">
+          <a href="service-details.html">
+            <div class="lb__expertise-content">
+              <div class="lb__expertise-heading">
+                <h4 class="lb__expertise-title">{t('index.services.2.title')}</h4>
+              </div>
+              <div class="lb__expertise-body">
+                <div class="lb__expertise-bthumb">
+                  <img src="/expertise/vector-02.png" alt="expert">
+                </div>
+              </div>
+              <div class="lb__expertise-footer">
+                <p>{t('index.services.2.text')}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="lb__expertise-item cf_service_card has_fade_anim" data-fade-from="left"
+          data-speed="1.15">
+          <a href="service-details.html">
+            <div class="lb__expertise-content">
+              <div class="lb__expertise-heading">
+                <h4 class="lb__expertise-title">{t('index.services.3.title')}</h4>
+              </div>
+              <div class="lb__expertise-body">
+                <div class="lb__expertise-bthumb ">
+                  <img src="/expertise/vector-03.png" alt="expert">
+                </div>
+              </div>
+              <div class="lb__expertise-footer">
+                <p>{t('index.services.3.text')}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="lb__expertise-item cf_service_card has_fade_anim" data-fade-from="left"
+          data-speed=".95">
+          <a href="service-details.html">
+            <div class="lb__expertise-content">
+              <div class="lb__expertise-heading">
+                <h4 class="lb__expertise-title">{t('index.services.4.title')}</h4>
+              </div>
+              <div class="lb__expertise-body">
+                <div class="lb__expertise-bthumb">
+                  <img src="/expertise/vector-04.png" alt="expert">
+                </div>
+              </div>
+              <div class="lb__expertise-footer">
+                <p>{t('index.services.4.text')}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /Services section end  -->

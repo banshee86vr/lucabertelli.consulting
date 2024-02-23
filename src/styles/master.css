@@ -6900,52 +6900,52 @@ section {
 /*----------------------------------------*/
 /*   MARKETER LIGHT VERSION
 /*----------------------------------------*/
-.light .marketer__expertise, .light .marketer__testimonial {
+.light .lb__expertise, .light .lb__testimonial {
   background-color: var(--white-2);
 }
-.light .marketer__hero-line span, .light .marketer__about-left::after {
+.light .lb__hero-line span, .light .lb__about-left::after {
   background-color: var(--black-9);
 }
-.light .marketer__hero-shape2, .light .marketer__hero-shape3, .light .marketer__hero-shape6, .light .marketer__hero-shape9 {
+.light .lb__hero-shape2, .light .lb__hero-shape3, .light .lb__hero-shape6, .light .lb__hero-shape9 {
   filter: invert(0.8);
 }
-.light .marketer__work-date {
+.light .lb__work-date {
   color: var(--white);
 }
-.light .marketer__expertise-dis p, .light .marketer__award-content span, .light .marketer__testimonial-position, .light .marketer__work-workdetails p, .light .marketer__expertise-footer p {
+.light .lb__expertise-dis p, .light .lb__award-content span, .light .lb__testimonial-position, .light .lb__work-workdetails p, .light .lb__expertise-footer p {
   color: var(--gray);
 }
-.light .marketer__expertise-item {
+.light .lb__expertise-item {
   background: linear-gradient(180deg, var(--white-3) 0%, rgba(255, 255, 255, 0) 100%);
 }
-.light .marketer__expertise-item:hover {
+.light .lb__expertise-item:hover {
   background-color: var(--white-3);
 }
-.light .marketer__experience-items {
+.light .lb__experience-items {
   border-color: var(--black-9);
 }
-.light .marketer__experience-items.b-left::before {
+.light .lb__experience-items.b-left::before {
   background-color: var(--black-9);
 }
-.light .marketer__testimonial-item {
+.light .lb__testimonial-item {
   background-color: var(--white-4);
 }
-.light .marketer__testimonial-wrapper .swiper-pagination span {
+.light .lb__testimonial-wrapper .swiper-pagination span {
   color: var(--black-2);
 }
-.light .marketer__testimonial-wrapper .dash {
+.light .lb__testimonial-wrapper .dash {
   background: var(--black-2);
 }
-.light .marketer__about .sec-title-3 {
+.light .lb__about .sec-title-3 {
   color: var(--black-2);
 }
-.light .marketer__counter-item .text p {
+.light .lb__counter-item .text p {
   color: var(--black-2);
 }
-.light .marketer__about-right a {
+.light .lb__about-right a {
   color: var(--black-2);
 }
-.light .marketer__textslider .title {
+.light .lb__textslider .title {
   color: var(--black-2);
 }
 
@@ -8905,7 +8905,7 @@ section {
   padding: 7px 25px;
   display: inline-block;
   color: var(--white-14);
-  background-image: url(../imgs/motivational-speaker/shape-3.png);
+  background-image: url(../imgs/lbal-speaker/shape-3.png);
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
@@ -9006,7 +9006,7 @@ section {
 }
 
 .light .sec-sub-title-6 {
-  background-image: url(../imgs/motivational-speaker/shape-4.png);
+  background-image: url(../imgs/lbal-speaker/shape-4.png);
 }
 .light .sec-title-11 {
   background-image: url(../imgs/writer/start-dark.png);
@@ -17094,7 +17094,7 @@ body .btn4 {
 .about__experience-img {
   height: 100%;
   align-items: center;
-  display: inline-flex;
+  display: flex;
 }
 @media only screen and (max-width: 767px) {
   .about__experience-img {
