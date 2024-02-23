@@ -3,7 +3,7 @@ title: Article Title
 subtitle: Article Subtitle
 date: 1 Jan 1900
 category: CategoryTitle
-image: "/blog/vcluster.png"
+image: "/blog/vcluster/vcluster.png"
 tags: ["tag1", "tag2", "tagN"]
 lang: en
 ---
