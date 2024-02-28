@@ -31,7 +31,7 @@ It's typing time!!!
 URL: <https://github.com/banshee86vr/ephemeral-test-environment>
 Project structure:
 
-```text
+```plaintext
 .
 ├── argo-workflow
 │   └── lang
@@ -153,7 +153,7 @@ The CI pipeline performs these steps inside the [ci.yaml](https://github.com/ban
 
 To submit the CI pipeline, you can use the [official APIs](https://argo-workflows.readthedocs.io/en/latest/rest-api/):
 
-```text
+```plaintext
 <ArgoWorkflow URL>/api/v1/workflows/{namespace}/submit
 ```
 
@@ -176,7 +176,7 @@ The CD pipeline performs these steps inside the [cd.yaml](https://github.com/ban
 
 To submit the CD pipeline, you can use the [official APIs](https://argo-workflows.readthedocs.io/en/latest/rest-api/):
 
-```text
+```plaintext
 <ArgoWorkflow URL>/api/v1/workflows/{namespace}/submit
 ```
 
