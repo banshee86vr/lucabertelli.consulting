@@ -21,7 +21,6 @@ try {
       return a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0;
     })
     .slice(0, 3);
-    console.info(events.length) 
   }
 } catch (error) {
   console.debug('Impossible to load events from api.eventitech.it')

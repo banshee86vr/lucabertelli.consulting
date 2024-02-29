@@ -20892,6 +20892,11 @@ ul li:last-child .default-details-comment-wrapper.has-reply::before {
     text-align: center;
   }
 }
+.footer__social ul {
+  padding-inline-start: 15px;
+  display: inline-block;
+  padding-left: 0;
+}
 .footer__social li {
   padding-inline-start: 15px;
   display: inline-block;
