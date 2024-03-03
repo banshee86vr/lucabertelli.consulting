@@ -39,5 +39,47 @@ const { pathname } = Astro.url;
         </ul>
       </nav>
     </div>
+    <div class="header__navicon">
+      <button id="open_offcanvas" data-bs-toggle="offcanvas" data-bs-target="#offcanvasOne">
+        <img src="/shape/menu-bar.png" alt="menu">
+      </button>
+    </div>
   </div>
 </header>
+
+<!-- Offcanves start -->
+<div class="offcanvas__area">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasOne">
+    <button class="offcanvas__close" data-bs-dismiss="offcanvas"><i class="fa-solid fa-xmark"></i></button>
+    <div class="offcanvas__body">
+      <div class="offcanvas__logo">
+        <a href={homeSlug}>
+          <img src="/logo.png">
+        </a>
+      </div>
+
+      <div class="offcanvas__menu-area">
+        <div class="offcanvas__menu-wrapper">
+        </div>
+      </div>
+      <div class="offcanvas__media">
+        <h2 class="offcanvas__title">Follow</h2>
+        <ul>
+          <li>
+            <a href="https://github.com/banshee86vr" target="_blank"><i class="fa-brands fa-github"></i></a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/luca-bertelli-a1413b77" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+          </li>
+          <li>
+            <a href="https://medium.com/@bertelli.luca" target="_blank"><i class="fa-brands fa-medium"></i></a>
+          </li>
+          <li>
+            <a href="https://www.credly.com/users/luca-bertelli" target="_blank"><i class="fa-solid fa-c"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Offcanves end -->
