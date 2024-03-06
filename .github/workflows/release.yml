@@ -20,6 +20,8 @@ jobs:
           node-version: "latest"
       - name: check npm version
         run: npm -v
+      - name: update npm version
+        run: npm i -g npm@latest
       - name: Install dependencies
         run: npm clean-install
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
