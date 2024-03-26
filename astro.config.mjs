@@ -4,6 +4,9 @@ import purgecss from "astro-purgecss";
 
 // https://astro.build/config
 export default defineConfig({
+  build: {
+    inlineStylesheets: 'never'
+  },
   output: "server",
   adapter: cloudflare({
     imageService: "passthrough"
