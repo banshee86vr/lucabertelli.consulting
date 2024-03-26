@@ -3,5 +3,27 @@
     "include": [
       "/*"
     ],
-    "exclude": []
+    "exclude": [
+      "/logo.png",
+      "/en/blog/*",
+      "/it/blog/*",
+      "/body-bg.png",
+      "/favicon.svg",
+      "/lang/*",
+      "/logo@3x.png",
+      "/shape/*",
+      "/about/*",
+      "/scripts/*",
+      "/tickets/*",
+      "/contact/*",
+      "/contact/*",
+      "/expertise/*",
+      "/notification/*",
+      "/social-influence/*",
+      "/webfonts/*",
+      "/_astro/_slug_.jN1f2yxx.css",
+      "/blog/*",
+      "/social-influence/*",
+      "/fonts/*"
+    ]
   }
