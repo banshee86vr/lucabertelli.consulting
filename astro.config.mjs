@@ -7,6 +7,5 @@ export default defineConfig({
   output: "server",
   adapter: cloudflare({
     imageService: "passthrough"
-  }),
-  integrations: [purgecss()]
+  })
 });
