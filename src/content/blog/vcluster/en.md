@@ -3,7 +3,7 @@ title: Ephemeral test environments for CI workflows
 subtitle: How to use vCluster and Argo Workflow to manage ephemeral test environments
 date: 1 March 2024
 category: DevOps
-image: "/blog/vcluster/vcluster.png"
+image: "/blog/vcluster/vcluster.jpg"
 tags: ["vcluster", "argo", "cicd", "devsecops", "kubernetes", "multi-tenancy"]
 lang: 'en'
 ---

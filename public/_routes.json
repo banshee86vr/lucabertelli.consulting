@@ -24,6 +24,7 @@
       "/_astro/*",
       "/blog/*",
       "/social-influence/*",
-      "/fonts/*"
+      "/fonts/*",
+      "/styles/*"
     ]
   }
