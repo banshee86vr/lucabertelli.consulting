@@ -18890,6 +18890,9 @@ body .btn4 {
   margin-bottom: 60px;
 }
 
+.main-blog__area .container {
+  margin-top: 20px;
+}
 .main-blog__grid {
   display: grid;
   grid-gap: 70px;
@@ -19069,6 +19072,9 @@ body .btn4 {
   .blog__details_title {
     font-size: 32px;
   }
+}
+.blog__details__area .container {
+  margin-top: 45px;
 }
 .blog__details h1,
 .blog__details h2,
