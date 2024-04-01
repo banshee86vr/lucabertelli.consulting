@@ -226,3 +226,28 @@ Come riportato [qui](https://www.vcluster.com/docs/using-vclusters/access), è p
   ```bash
   vcluster connect my-vcluster -n my-vcluster --server=my-vcluster.my-vcluster --insecure --update-current=false
   ```
+
+## Abbiamo veramente risolto il nostro problema?
+
+Con il progetto demo è stato dimostrato quanto sia facile integrare un flusso di CI usando l'engine di Argo Workflow per effettuare il rilascio di un'applicazione in un ambiente temporaneo ed isolato creato tramite vCluster che contiene tutte le eventuali dipendendenze. Per questo è importante considerare che ogni vCluster può essere inizializzato e personalizzato tramite manifest `.yaml` o Helm charts. Tipicamente ogni microservizio può contenere già le proprie dipendenze in altri Helm charts o in manifest `.yaml`. Quindi con i vCluster il gruppo di sviluppo può decidere quale versione del chart utilizzare per inizializzare il vCluster per testare la relativa applicazione.
+
+## Come possiamo governare il ciclo di vita di questi vCluster effimeri?
+
+Durante il progetto demo abbiamo visto come creare cluster dinamicamente. Ma ora dovremmo preoccuparci della loro gestione:
+
+* Come possiamo ottimizzare le risorse utilizzare del vCluster?
+* Possiamo eliminare il vCluster automaticamente?
+* In quale modo posso automatizzare qualsiasi operatività manuale?
+* Come posso prevenire la proliferazione di questi ambienti effimeri?
+
+Il team di Loft ci aiuta per poter soddisfare tutti queste tematiche. La versione open source non è sufficiente a coprire nativamente tutti i requisiti, ma:
+
+* *Quotas e limits* (già disponibile con la versione open source): un manifest standard Kubernetes `ResourceQuota` può essere applicato per poter prevenire l'eccessivo utilizzo di risorse da parte del vCluster
+* *Creazione ed eliminazione automatica*: Queste operazioni possono essere scatenate utilizzando Argo Events. Questo framwork event-driven permette di agganciare eventi e workflow a webhook forniti dai tool di gestione centralizzata del codice; ad esempio, il cambio di stato di una pull request.
+* *Ottimizzazione delle risorse usate dai vCluster*: a riguardo Lof fornisce una funzionalità di monitoraggio per gestire i periodi di inattività del vcluster ed evitare sprechi di risorse. La versione Enterprise del tool (vCluster.PRO) offre due funzionalità che ci possono tornare utili in tal senso. La prima si chiama `Sleep Mode` e permette di impostare il vCluster in una modalità dormiente quando non viene utilizzato, eliminando tutti i pod ma mantenendo tutte le risorse all'interno del vCluster. La seconda si chiama `Auto-delete` e permette di eliminare l'intero vCluster dopo un certo periodo di inattività. Per questo, nel caso non sia possibile adottare vCluster.PRO, è possibile implementare un workaround utilizzando i CronJob l'immagine Docker contenente la CLI di vCluster per poter schedulare lo start e lo sleep/resume del vCluster seguendo il formato standard di schedulazione di cron.
+
+## Quindi cosa ci portiamo a casa?
+
+Integrando Argo Workflows con vCluster abbiamo implementato una soluzione veloce e scalabile, permettendo ad ogni gruppo di sviluppo di poter testare la propria applicazione in maniera indipendente in un ambiente sicuro ed isolato. La possibilità di personalizzare l'inizializzazione del vCLuster permette di aggiungere qualsiasi dipendendenza necessaria, alzando il livello di qualità dei test effettuati sull'applicazione.
+
+La stessa architettura, integrando anche Argo Events, può divenire event-driven, collegando eventi ai webhook forniti dagli strumenti di gestione centralizzata del codice, rendendola una soluzione molto conveniente in termini economici.
