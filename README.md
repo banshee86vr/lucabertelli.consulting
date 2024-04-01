@@ -97,7 +97,7 @@ To run this project locally, follow these steps:
    npm run dev
    ```
 
-   Open your browser and visit [http://localhost:3000](http://localhost:3000) to view the site locally. 🌐
+   Open your browser and visit [http://localhost:4321](http://localhost:4321) to view the site locally. 🌐
 
 ## Contributions
 
