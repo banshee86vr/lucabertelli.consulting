@@ -21500,6 +21500,7 @@ ul li:last-child .default-details-comment-wrapper.has-reply::before {
 @media only screen and (max-width: 767px) {
   .lb__hero-subtitle {
     font-size: 22px;
+    margin-top: 10px;
   }
 }
 
