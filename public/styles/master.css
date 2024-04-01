@@ -19073,6 +19073,10 @@ body .btn4 {
     font-size: 32px;
   }
 }
+.blog__details a{
+  color: var(--primary);
+  text-decoration: underline;
+}
 .blog__details__area .container {
   margin-top: 45px;
 }

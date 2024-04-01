@@ -1,7 +1,7 @@
 ---
 title: Ephemeral test environments for CI workflows
 subtitle: How to use vCluster and Argo Workflow to manage ephemeral test environments
-date: 1 March 2024
+date: 1 April 2024
 category: DevOps
 image: "/blog/vcluster/vcluster.jpeg"
 tags: ["vcluster", "argo", "cicd", "devsecops", "kubernetes", "multi-tenancy"]
@@ -12,7 +12,14 @@ lang: 'en'
 
 Since the early 2000s, it was clear that monolithic applications needed to be more scalable to avoid hindering business growth. After a few years, in 2011, during a workshop of software architects near Venice, a new software architectural style was emerging: microservices. The micro-services architecture model can scale to meet business needs by running multiple copies of each service on as many servers as necessary; with separate teams working on each micro-service, productivity and ownership of the code increase, which can be challenging with a monolithic architecture. Therefore, it is essential to implement a micro-services architecture to enable scalability for the application and the team.
 But All that glitters is not gold! Are there any drawbacks to adopting this kind of approach? And what happens if we try it in the cloud-native world using Kubernetes environments?
-Everyone who has already followed this journey can witness the risk of building a nightmare called *dependency hell*. During the software development lifecycle, one of the goals of every developer team is to develop and test their application using the correct version of dependencies like other application services or DBs. How can I obtain a temporary environment to perform all these checks safely?
+Everyone who has already followed this journey can witness the risk of building a nightmare called *dependency hell*. 
+
+> Dependency hell is a colloquial term for the frustration of some software users who have installed software packages which have dependencies on specific versions of other software packages.
+> The dependency issue arises when several packages have dependencies on the same shared packages or libraries, but they depend on different and incompatible versions of the shared packages. If the shared package or library can only be installed in a single version, the user may need to address the problem by obtaining newer or older versions of the dependent packages. This, in turn, may break other dependencies and push the problem to another set of packages.
+
+During the software development lifecycle, one of the goals of every developer team is to develop and test their application using the correct version of dependencies like other application services or DBs.
+
+How can I obtain a temporary environment to perform all these checks safely?
 
 ## So, what's the problem?
 
@@ -20,7 +27,7 @@ This kind of gap is a common scenario that usually requires many infrastructure 
 
 ## Finding a solution: vCluster + Argo Workflow
 
-Deeping dive into this use case, one of the possible solutions is to use [vCluster powered by Loft](https://www.vcluster.com). Using this tool, the user can create a temporary Kubernetes cluster inside an existing one. The virtual cluster has separate control plane APIs that can be exposed differently. VCluster is a valid option when multiple tenants must be managed with a single Kubernetes Cluster, sharing the same infrastructure. It's easy to use and adopt by existing Kubernetes users, as it doesn't require installing anything on your existing clusters. New vCluster users need no training, as they can access a standard Kubernetes API Server endpoint. In this experiment, I enjoy integrating this technology with [Argo Workflow](https://argoproj.github.io/workflows), a popular workflow execution engine for Kubernetes. This engine provides a way to efficiently configure the orchestration of the deployment, testing, and teardown processes. The tool lets the final user define processes drawing DAGs. This feature also supports complex scenarios where there is a requirement to maximize parallelism when running tasks.
+Deeping dive into this use case, one of the possible solutions is to use [vCluster powered by Loft](https://www.vcluster.com). Using this tool, the user can create a temporary Kubernetes cluster inside an existing one. The virtual cluster has separate control plane APIs that can be exposed differently. VCluster is a valid option when multiple tenants must be managed with a single Kubernetes Cluster, sharing the same infrastructure. It's easy to use and adopt by existing Kubernetes users, as it doesn't require installing anything on your existing clusters. New vCluster users need no training, as they can access a standard Kubernetes API Server endpoint. In this experiment, I enjoy integrating this technology with [Argo Workflow](https://argoproj.github.io/workflows), a popular workflow execution engine for Kubernetes. This engine provides a way to efficiently configure the orchestration of the deployment, testing, and teardown processes. The tool lets the final user define processes drawing DAGs (Directed acyclic graph). This feature also supports complex scenarios where there is a requirement to maximize parallelism when running tasks.
 This combination offers a fast, cost-effective, and scalable solution, avoiding many of the day-2 activities required for creating and managing a new dedicated cluster every time.
 It's typing time!!!
 
@@ -28,7 +35,7 @@ It's typing time!!!
 
 ## Demo Project
 
-URL: <https://github.com/banshee86vr/ephemeral-test-environment>
+URL: <https://github.com/banshee86vr/ephemeral-test-environment> \
 Project structure:
 
 ```plaintext
@@ -58,7 +65,7 @@ helm repo add argo https://argoproj.github.io/argo-helm
 helm install argo-workflows argo/argo-workflows -n argo --create-namespace
 ```
 
-This command installs Argo Workflows in the default namespace of your Kubernetes cluster.
+This command installs Argo Workflows in the `argo` namespace of your Kubernetes cluster.
 
 ### 2. Verify the Installation
 
@@ -208,7 +215,7 @@ demo-pr-request-hello-world-7f6d78645f-bjmjc   1/1     Running   0          7s
 As reported [here](https://www.vcluster.com/docs/using-vclusters/access), you can expose the ephemeral vCluster created differently.
 
 - **Via Ingress**: An Ingress Controller with SSL passthrough support will provide the best user experience. Ensure your ingress controller is installed and healthy on the cluster hosting your virtual clusters. More details [here](https://www.vcluster.com/docs/using-vclusters/access#via-ingress)
-- **Via LoadBalancer service**: The easiest way is to use the flag `--expose` in vcluster create to tell vCluster to use a LoadBalancer service. It depends on the specific implementation of the host Kubernetes cluster.
+- **Via LoadBalancer service**: The easiest way is to use the flag `--expose` in the vcluster create phase to tell vCluster to use a LoadBalancer service. It depends on the specific implementation of the host Kubernetes cluster.
 - **Via NodePort service**: You can also expose the vCluster via a NodePort service. In this case, you must create a NodePort service and change the `values.yaml` file to use for the creation of the vCluster. More details [here](https://www.vcluster.com/docs/using-vclusters/access#via-nodeport-service)
 - **From Host Cluster**: To access the virtual cluster from within the host cluster, you can directly connect to the vCluster service. Make sure you can access that service and then create a kube config in the following form:
   
