@@ -222,3 +222,26 @@ As reported [here](https://www.vcluster.com/docs/using-vclusters/access), you ca
   ```bash
   vcluster connect my-vcluster -n my-vcluster --server=my-vcluster.my-vcluster --insecure --update-current=false
   ```
+
+## How have we filled the gap?
+
+The demo project has demonstrated how easily it can be to integrate CI workflow using the Argo workflow engine by deploying an application in a temporary and isolated environment based on vCluster  that includes all the dependencies. Furthermore, it's essential to evaluate the possibility of customizing the initialization of the vCluster, applying .yaml manifests or helm charts. Typically, every microservice can have dependencies already packaged with another Helm chart or available with a .yaml manifest. With vCluster, the developer team can choose the chart version to init the vCluster to test the application.
+
+## How can we manage the lifecycle of this ephemeral vCluster?
+
+During the demo project, we saw how to create a dynamically dedicated cluster on demand. But now we have to think about its management:
+* How can I optimize the resources utilized by the vCluster?
+* When can I delete the vCluster automatically?
+* Can I automate everything, avoiding any manual operations?
+* How can I prevent the proliferation of vClusters?
+
+Loft guys help us to satisfy all these tricky topics. The OSS version is not enough to cover all of it, but let's go step-by-step:
+* *Quotas and limits* (available with OSS version): A Kubernetes standard `ResourceQuota` manifest applied in the namespace where the virtual cluster is running prevents the vCluster from consuming excessive resources in the host cluster.
+* *Automated creation and deletion*: These operations can be triggered using Argo Events. This event-driven workflow automation framework allows linking an event to the webhooks provided by the SCM tool, for example, about the change of the state of a pull request.
+* *Optimization of vCluster resources usage*: about this topic, Loft provides a feature to monitor and manage the inactivity and avoid any waste of resources. The enterprise version of the tool (vCluster.PRO) offers two valuable functionalities that can help minimize Kubernetes expenses. Firstly, the "Sleep Mode" feature enables virtual clusters to go to sleep mode when they are not being used, which means that all the pods are removed, but the resources are retained within the virtual clusters during the inactive period. Secondly, the "Auto-Delete" feature automatically deletes virtual clusters that have been idle for a specific period. Suppose it's not possible to adopt vCluster.PRO, there is a workaround using CronJob and the vCluster CLI Docker image scheduling the start and the sleep/resume of the cluster following the cron scheduling format.
+
+## What do we bring at home?
+
+By integrating Argo Workflow with vCluster, we have implemented a fast and scalable solution, enabling each development team to test their applications independently in a secure and isolated environment. The possibility to customize the initialization of the vCluster permits the addition of any dependency needed, elevating the test quality performed on the deployed application.
+
+The same architecture can also be event-driven by adding ArgoEvents, linking events to webhooks of the SCM tools, and making it a cost-effective solution.
