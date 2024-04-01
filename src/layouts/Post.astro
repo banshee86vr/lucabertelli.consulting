@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "./Common.astro";
+import { getBlogPosts } from "../content/config";
 import { type CollectionEntry } from "astro:content";
 
 type Props = CollectionEntry<"blog">["data"];
@@ -10,8 +11,7 @@ import { getLangFromUrl, useTranslations } from "../i18n/utils";
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
 
-import { getCollection } from "astro:content";
-const blogEntries = (await getCollection("blog"))
+const blogEntries = (await getBlogPosts())
   .filter(function (blogEntry) {
     return blogEntry.data.tags.some((element: any) => {
       return tags.indexOf(element) !== -1;
@@ -111,7 +111,7 @@ const blogEntries = (await getCollection("blog"))
               blogEntries.map((post) => (
                 <article class="lb-blog__item blog-img-zoom">
                   <div class="thumb">
-                    <a href={`${post.slug.split("/")[1]}`}>
+                    <a href={`/${lang}/blog/${post.blog_slug}`}>
                       <img src={post.data.image} />
                     </a>
                   </div>
@@ -126,7 +126,7 @@ const blogEntries = (await getCollection("blog"))
                       </span>
                     </li>
                   </ul>
-                  <a href="blog-details.html">
+                  <a href={`/${lang}/blog/${post.blog_slug}`}>
                     <h3 class="lb-blog__title">{post.data.title}</h3>
                   </a>
                 </article>
