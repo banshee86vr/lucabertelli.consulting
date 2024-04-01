@@ -21738,7 +21738,9 @@ ul li:last-child .default-details-comment-wrapper.has-reply::before {
   opacity: 1;
   visibility: visible;
 }
-
+.lb__innercontact-top {
+  margin-top: 20px;
+}
 .lb__innercontact-wrapper {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
