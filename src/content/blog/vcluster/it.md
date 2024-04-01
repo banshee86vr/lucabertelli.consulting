@@ -3,8 +3,8 @@ title: Ambienti di test effimeri per flussi di CI
 subtitle: Come usare i vCluster e Argo Workflow per gestire ambienti di test effimeri
 date: 1 Aprile 2024
 category: DevOps
-image: "/blog/vcluster/vcluster.jpg"
-tags: ["vcluster", "argo", "cicd", "devsecops", "kubernetes", "multi-tenancy"]
+image: "/blog/vcluster/vcluster.jpeg"
+tags: ["vcluster", "argo", "cicd", "devsecops", "kubernetes","multi-tenancy"]
 lang: 'it'
 ---
 

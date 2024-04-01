@@ -32,46 +32,40 @@ lucabertelli.consulting/
 │   ├── about
 │   │   └── certifications
 │   ├── blog
+│   │   └── ...
 │   ├── contact
+│   ├── expertise
 │   ├── fonts
+│   ├── lang
+│   ├── notification
 │   ├── scripts
+│   ├── shape
+│   ├── social-influence
+│   ├── styles
+│   ├── tickets
 │   └── webfonts
 └── src
     ├── components
     ├── content
     │   ├── blog
+    │   │   └── ...
     │   └── certifications
+    ├── i18n
     ├── layouts
-    ├── pages
-    │   └── blog
-    └── styles
+    └── pages
+        └── [lang]
+            └── blog
 ```
 
 Explanation of key directories and files:
 
-- **.astro/:** Configuration directory for Astro. It contains the `config.mjs` file, where you can customize Astro settings.
-
 - **src/:** The source directory where you write your site's components, layouts, pages, and styles.
-
   - **components/:** Reusable components used across the site.
-
-  - **layouts/:** Layouts define the structure of pages. The `DefaultLayout.svelte` is a default layout used for most pages.
-
-  - **pages/:** Contains pages of the site. Each `.mdx` file corresponds to a page.
-
-  - **styles/:** Global styles for the site, such as `global.css`.
-
-- **.gitignore:** Specifies intentionally untracked files that Git should ignore.
-
-- **README.md:** Project documentation.
-
-- **package.json:** Configuration file for Node.js projects. Contains metadata about the project, dependencies, and scripts.
-
-- **public/:** The build output directory. Astro generates static files here during the build process.
-
-- **LICENSE.md:** Licensing information for the project.
-
-- **.github/:** GitHub-related configuration, including issue templates.
+  - **content/:** Blog articles and certifications badges.
+  - **i18n/:** Translation files.
+  - **layouts/:** Layouts define the structure of pages.
+  - **pages/:** Contains pages of the site. Each `.astro` file corresponds to a page.
+- **public/:** Static assets that you want to be publicly accessible on your website. These assets can include files like images, fonts, CSS files, JavaScript files, and other resources that don't need to be processed by a build step.
 
 Feel free to adapt this structure based on your specific needs and preferences.
 
@@ -103,7 +97,7 @@ To run this project locally, follow these steps:
    npm run dev
    ```
 
-   Open your browser and visit [http://localhost:3000](http://localhost:3000) to view the site locally. 🌐
+   Open your browser and visit [http://localhost:4321](http://localhost:4321) to view the site locally. 🌐
 
 ## Contributions
 
