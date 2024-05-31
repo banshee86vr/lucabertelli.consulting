@@ -8,11 +8,11 @@ const contactSlug = `/${lang || ""}/contact`;
 
 let events = [];
 try {
-  if (import.meta.env.SECRET_LOAD_EVENTS === "true") {
+  if (process.env.SECRET_LOAD_EVENTS === "true") {
     const headers = new Headers({
-        'Authorization': `Basic ${btoa(import.meta.env.SECRET_EVENTS_API_USERNAME + ':' + import.meta.env.SECRET_EVENTS_API_PASSWORD)}`
+        Authorization: `Basic ${btoa(`${process.env.SECRET_EVENTS_API_USERNAME}:${process.env.SECRET_EVENTS_API_PASSWORD}`)}`
     });
-    const fetchedEvents = await fetch(import.meta.env.SECRET_EVENTS_API_URL, {headers: headers});
+    const fetchedEvents = await fetch(process.env.SECRET_EVENTS_API_URL, {headers: headers});
 
   const responseData = await fetchedEvents.json();
   events = responseData.events
