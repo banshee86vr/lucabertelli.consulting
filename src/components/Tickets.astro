@@ -8,6 +8,11 @@ const contactSlug = `/${lang || ""}/contact`;
 
 let events = [];
 try {
+
+  console.log(process.env.SECRET_LOAD_EVENTS)
+  console.log(process.env.SECRET_EVENTS_API_USERNAME)
+  console.log(process.env.SECRET_EVENTS_API_URL)
+
   if (process.env.SECRET_LOAD_EVENTS === "true") {
     const headers = new Headers({
         Authorization: `Basic ${btoa(`${process.env.SECRET_EVENTS_API_USERNAME}:${process.env.SECRET_EVENTS_API_PASSWORD}`)}`
