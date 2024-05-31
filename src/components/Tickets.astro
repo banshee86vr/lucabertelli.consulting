@@ -1,5 +1,11 @@
 ---
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import {
+	SECRET_EVENTS_API_PASSWORD,
+	SECRET_EVENTS_API_URL,
+	SECRET_EVENTS_API_USERNAME,
+	SECRET_LOAD_EVENTS,
+} from "../../setupEnv";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -8,29 +14,62 @@ const contactSlug = `/${lang || ""}/contact`;
 
 let events = [];
 try {
+	let loadEvents = SECRET_LOAD_EVENTS;
+	let apiUrl = SECRET_EVENTS_API_URL;
+	let apiUsername = SECRET_EVENTS_API_USERNAME;
+	let apiPassword = SECRET_EVENTS_API_PASSWORD;
 
-  console.log(process.env.SECRET_LOAD_EVENTS)
-  console.log(process.env.SECRET_EVENTS_API_USERNAME)
-  console.log(process.env.SECRET_EVENTS_API_URL)
+	if (
+		typeof SECRET_LOAD_EVENTS === "undefined" &&
+		process.env.SECRET_LOAD_EVENTS
+	) {
+		loadEvents = process.env.SECRET_LOAD_EVENTS;
+	}
 
-  if (process.env.SECRET_LOAD_EVENTS === "true") {
-    const headers = new Headers({
-        Authorization: `Basic ${btoa(`${process.env.SECRET_EVENTS_API_USERNAME}:${process.env.SECRET_EVENTS_API_PASSWORD}`)}`
-    });
-    const fetchedEvents = await fetch(process.env.SECRET_EVENTS_API_URL, {headers: headers});
+	if (
+		typeof SECRET_EVENTS_API_URL === "undefined" &&
+		process.env.SECRET_EVENTS_API_URL
+	) {
+		apiUrl = process.env.SECRET_EVENTS_API_URL;
+	}
 
-  const responseData = await fetchedEvents.json();
-  events = responseData.events
-    .filter((event: { startDate: String; }) => event.startDate > new Date().toISOString())
-    .sort(function (a: { startDate: String; }, b: { startDate: String; }) {
-      return a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0;
-    })
-    .slice(0, 3);
-  }
+	if (
+		typeof SECRET_EVENTS_API_USERNAME === "undefined" &&
+		process.env.SECRET_EVENTS_API_USERNAME
+	) {
+		apiUsername = process.env.SECRET_EVENTS_API_USERNAME;
+	}
+
+	if (
+		typeof SECRET_EVENTS_API_PASSWORD === "undefined" &&
+		process.env.SECRET_EVENTS_API_PASSWORD
+	) {
+		apiPassword = process.env.SECRET_EVENTS_API_PASSWORD;
+	}
+
+	if (loadEvents === "true") {
+		const headers = new Headers({
+			Authorization: `Basic ${btoa(`${apiUsername}:${apiPassword}`)}`,
+		});
+		const fetchedEvents = await fetch(apiUrl, {
+			headers: headers,
+		});
+
+		const responseData = await fetchedEvents.json();
+		events = responseData.events
+			.filter(
+				(event: { startDate: string }) =>
+					event.startDate > new Date().toISOString(),
+			)
+			.sort((a: { startDate: string }, b: { startDate: string }) =>
+				a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0,
+			)
+			.slice(0, 3);
+	}
 } catch (error) {
-  console.debug('Impossible to load events from api.eventitech.it')
-  console.debug(error)
-  events = [];
+	console.debug("Impossible to load events from api.eventitech.it");
+	console.debug(error);
+	events = [];
 }
 ---
 
