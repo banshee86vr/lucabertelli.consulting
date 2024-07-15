@@ -1,11 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
-import {
-	SECRET_EVENTS_API_PASSWORD,
-	SECRET_EVENTS_API_URL,
-	SECRET_EVENTS_API_USERNAME,
-	SECRET_LOAD_EVENTS,
-} from "../../setupEnv";
+const lbKV = Astro.locals.runtime.env.lb_consulting;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -14,38 +9,10 @@ const contactSlug = `/${lang || ""}/contact`;
 
 let events = [];
 try {
-	let loadEvents = SECRET_LOAD_EVENTS;
-	let apiUrl = SECRET_EVENTS_API_URL;
-	let apiUsername = SECRET_EVENTS_API_USERNAME;
-	let apiPassword = SECRET_EVENTS_API_PASSWORD;
-
-	if (
-		typeof SECRET_LOAD_EVENTS === "undefined" &&
-		process.env.SECRET_LOAD_EVENTS
-	) {
-		loadEvents = process.env.SECRET_LOAD_EVENTS;
-	}
-
-	if (
-		typeof SECRET_EVENTS_API_URL === "undefined" &&
-		process.env.SECRET_EVENTS_API_URL
-	) {
-		apiUrl = process.env.SECRET_EVENTS_API_URL;
-	}
-
-	if (
-		typeof SECRET_EVENTS_API_USERNAME === "undefined" &&
-		process.env.SECRET_EVENTS_API_USERNAME
-	) {
-		apiUsername = process.env.SECRET_EVENTS_API_USERNAME;
-	}
-
-	if (
-		typeof SECRET_EVENTS_API_PASSWORD === "undefined" &&
-		process.env.SECRET_EVENTS_API_PASSWORD
-	) {
-		apiPassword = process.env.SECRET_EVENTS_API_PASSWORD;
-	}
+	const loadEvents = await lbKV.get("SECRET_LOAD_EVENTS");
+	const apiUrl = await lbKV.get("SECRET_EVENTS_API_URL");
+	const apiUsername = await lbKV.get("SECRET_EVENTS_API_USERNAME");
+	const apiPassword = await lbKV.get("SECRET_EVENTS_API_PASSWORD");
 
 	if (loadEvents === "true") {
 		const headers = new Headers({
