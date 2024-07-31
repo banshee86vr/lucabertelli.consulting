@@ -22,23 +22,34 @@ const blog = defineCollection({
     category: z.string(),
     image: z.string(),
     tags: z.array(z.string()),
-    lang: z.enum(['en', 'it']),
+    lang: z.enum(["en", "it"]),
   }),
 });
 
 export const collections = {
   certifications: certifications,
-  blog: blog
+  blog: blog,
 };
 
-export async function getBlogPosts() {
-	const posts = await getCollection('blog');
+export interface BlogPost {
+  data: {
+    lang: string;
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    [key: string]: any; // Aggiungi altre proprietà se necessario
+  };
+  blog_slug: string;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  [key: string]: any; // Aggiungi altre proprietà se necessario
+}
 
-	return posts.map((post) => {
-		const blog_slug = post.slug.split('/')[0];
-		return {
-			...post,
-			blog_slug
-		}
-	})
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  const posts = await getCollection("blog");
+
+  return posts.map((post) => {
+    const blog_slug = post.slug.split("/")[0];
+    return {
+      ...post,
+      blog_slug,
+    };
+  });
 }

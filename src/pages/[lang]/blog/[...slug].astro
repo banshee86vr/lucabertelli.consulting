@@ -1,26 +1,41 @@
 ---
 import PostLayout from "../../../layouts/Post.astro";
 import { getBlogPosts } from "../../../content/config";
+import type { BlogPost } from "../../../content/config"; // Assicurati di importare il tipo corretto
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const pages = await getBlogPosts();
+  const pages: BlogPost[] = await getBlogPosts();
 
   const paths = pages.map((page) => {
     return {
-      params: { lang: page?.data.lang || "en", slug: page.blog_slug },
+      params: { lang: page.data.lang || "en", slug: page.blog_slug },
       props: page,
     };
   });
 
-  return paths;
+  return paths; // Restituisci direttamente l'array paths
 }
 
-const page = Astro.props;
+const page: BlogPost = Astro.props as BlogPost; // Cast esplicito a BlogPost
+
+// Destruttura le proprietà necessarie da page.data
+const { title, image, subtitle, date, category, tags } = page.data;
+const lang =
+	page.data.lang === "en" || page.data.lang === "it" ? page.data.lang : "en";
+
 const { Content } = await page.render();
 ---
 
-<PostLayout {...page.data}>
+<PostLayout
+  title={title}
+  image={image}
+  subtitle={subtitle}
+  date={new Date(date)}
+  category={category}
+  tags={tags}
+  lang={lang}
+>
   <Content />
 </PostLayout>
