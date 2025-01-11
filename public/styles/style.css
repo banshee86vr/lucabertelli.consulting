@@ -9,3 +9,11 @@
   opacity: 0;
   visibility: hidden;
 }
+
+/* Disable animations for mobile devices */
+@media (max-width: 768px) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
