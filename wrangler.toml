@@ -1,0 +1,18 @@
+name = "lucabertelli-consulting"
+compatibility_date = "2024-01-01"
+
+# KV namespace for storing environment variables
+[[kv_namespaces]]
+binding = "lb_consulting"
+id = "01ee33bd3673427c975a9804434376d6"
+preview_id = "01ee33bd3673427c975a9804434376d6"
+
+[env.production]
+[[env.production.kv_namespaces]]
+binding = "lb_consulting"
+id = "01ee33bd3673427c975a9804434376d6"
+
+[env.development]
+[[env.development.kv_namespaces]]
+binding = "lb_consulting"
+id = "01ee33bd3673427c975a9804434376d6"
