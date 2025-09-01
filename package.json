@@ -17,14 +17,14 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/cloudflare": "^12.5.1",
+    "@astrojs/cloudflare": "^12.6.7",
     "@sendgrid/mail": "^8.1.5",
-    "astro": "^5.7.0",
+    "astro": "^5.13.2",
     "astro-seo": "^0.8.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
-    "semantic-release": "^24.2.3"
+    "semantic-release": "^24.2.7"
   },
   "repository": "https://github.com/banshee86vr/lucabertelli.consulting.git"
 }
