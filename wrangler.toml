@@ -1,6 +1,13 @@
 name = "lucabertelli-consulting"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "dist"
+node_compat = true
+
+[build]
+command = "npm run build"
+
+[vars]
+NODE_VERSION = "20"
 
 # KV namespace for storing environment variables
 [[kv_namespaces]]
