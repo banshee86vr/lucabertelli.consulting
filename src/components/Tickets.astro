@@ -115,7 +115,7 @@ try {
                   day: "numeric",
                 })}
                 {new Date(event.endDate) > new Date(event.startDate) &&
-                  -new Date(event.endDate).toLocaleDateString(lang, {
+                  " - " + new Date(event.endDate).toLocaleDateString(lang, {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
