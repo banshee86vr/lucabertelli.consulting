@@ -8,24 +8,65 @@ const contactSlug = `/${lang || ""}/contact`;
 
 let events = [];
 try {
-  if (import.meta.env.SECRET_LOAD_EVENTS === "true") {
-    const headers = new Headers({
-        'Authorization': `Basic ${btoa(import.meta.env.SECRET_EVENTS_API_USERNAME + ':' + import.meta.env.SECRET_EVENTS_API_PASSWORD)}`
-    });
-    const fetchedEvents = await fetch(import.meta.env.SECRET_EVENTS_API_URL, {headers: headers});
+	const lbKV = Astro.locals?.runtime?.env?.lb_consulting;
+	
+	if (!lbKV) {
+		// Fallback to environment variables in development
+		const loadEvents = process.env.SECRET_LOAD_EVENTS;
+		const apiUrl = process.env.SECRET_EVENTS_API_URL;
+		const apiUsername = process.env.SECRET_EVENTS_API_USERNAME;
+		const apiPassword = process.env.SECRET_EVENTS_API_PASSWORD;
+		
+		if (loadEvents === "true" && apiUrl && apiUsername && apiPassword) {
+			const headers = new Headers({
+				Authorization: `Basic ${btoa(`${apiUsername}:${apiPassword}`)}`,
+			});
+			const fetchedEvents = await fetch(apiUrl, {
+				headers: headers,
+			});
 
-  const responseData = await fetchedEvents.json();
-  events = responseData.events
-    .filter((event: { startDate: String; }) => event.startDate > new Date().toISOString())
-    .sort(function (a: { startDate: String; }, b: { startDate: String; }) {
-      return a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0;
-    })
-    .slice(0, 3);
-  }
+			const responseData = await fetchedEvents.json();
+			events = responseData.events
+				.filter(
+					(event: { startDate: string }) =>
+						event.startDate > new Date().toISOString(),
+				)
+				.sort((a: { startDate: string }, b: { startDate: string }) =>
+					a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0,
+				)
+				.slice(0, 3);
+		}
+	} else {
+		// Use Cloudflare KV in production
+		const loadEvents = await lbKV.get("SECRET_LOAD_EVENTS");
+		const apiUrl = await lbKV.get("SECRET_EVENTS_API_URL");
+		const apiUsername = await lbKV.get("SECRET_EVENTS_API_USERNAME");
+		const apiPassword = await lbKV.get("SECRET_EVENTS_API_PASSWORD");
+
+		if (loadEvents === "true") {
+			const headers = new Headers({
+				Authorization: `Basic ${btoa(`${apiUsername}:${apiPassword}`)}`,
+			});
+			const fetchedEvents = await fetch(apiUrl, {
+				headers: headers,
+			});
+
+			const responseData = await fetchedEvents.json();
+			events = responseData.events
+				.filter(
+					(event: { startDate: string }) =>
+						event.startDate > new Date().toISOString(),
+				)
+				.sort((a: { startDate: string }, b: { startDate: string }) =>
+					a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0,
+				)
+				.slice(0, 3);
+		}
+	}
 } catch (error) {
-  console.debug('Impossible to load events from api.eventitech.it')
-  console.debug(error)
-  events = [];
+	console.debug("Impossible to load events from api.eventitech.it");
+	console.debug(error);
+	events = [];
 }
 ---
 
@@ -74,7 +115,7 @@ try {
                   day: "numeric",
                 })}
                 {new Date(event.endDate) > new Date(event.startDate) &&
-                  -new Date(event.endDate).toLocaleDateString(lang, {
+                  " - " + new Date(event.endDate).toLocaleDateString(lang, {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
