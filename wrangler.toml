@@ -13,7 +13,7 @@ preview_id = "01ee33bd3673427c975a9804434376d6"
 binding = "lb_consulting"
 id = "01ee33bd3673427c975a9804434376d6"
 
-[env.development]
-[[env.development.kv_namespaces]]
+[env.preview]
+[[env.preview.kv_namespaces]]
 binding = "lb_consulting"
 id = "01ee33bd3673427c975a9804434376d6"
