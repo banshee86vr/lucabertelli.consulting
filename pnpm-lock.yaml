@@ -16,7 +16,7 @@ importers:
         version: 12.6.8(@types/node@24.5.1)(astro@5.13.8(@types/node@24.5.1)(rollup@4.50.2)(typescript@5.9.2)(yaml@2.8.1))(yaml@2.8.1)
       '@sendgrid/mail':
         specifier: ^8.1.5
-        version: 8.1.5
+        version: 8.1.6
       astro:
         specifier: ^5.13.5
         version: 5.13.8(@types/node@24.5.1)(rollup@4.50.2)(typescript@5.9.2)(yaml@2.8.1)
@@ -965,16 +965,16 @@ packages:
     peerDependencies:
       semantic-release: '>=20.1.0'
 
-  '@sendgrid/client@8.1.5':
-    resolution: {integrity: sha512-Jqt8aAuGIpWGa15ZorTWI46q9gbaIdQFA21HIPQQl60rCjzAko75l3D1z7EyjFrNr4MfQ0StusivWh8Rjh10Cg==}
+  '@sendgrid/client@8.1.6':
+    resolution: {integrity: sha512-/BHu0hqwXNHr2aLhcXU7RmmlVqrdfrbY9KpaNj00KZHlVOVoRxRVrpOCabIB+91ISXJ6+mLM9vpaVUhK6TwBWA==}
     engines: {node: '>=12.*'}
 
   '@sendgrid/helpers@8.0.0':
     resolution: {integrity: sha512-Ze7WuW2Xzy5GT5WRx+yEv89fsg/pgy3T1E3FS0QEx0/VvRmigMZ5qyVGhJz4SxomegDkzXv/i0aFPpHKN8qdAA==}
     engines: {node: '>= 12.0.0'}
 
-  '@sendgrid/mail@8.1.5':
-    resolution: {integrity: sha512-W+YuMnkVs4+HA/bgfto4VHKcPKLc7NiZ50/NH2pzO6UHCCFuq8/GNB98YJlLEr/ESDyzAaDr7lVE7hoBwFTT3Q==}
+  '@sendgrid/mail@8.1.6':
+    resolution: {integrity: sha512-/ZqxUvKeEztU9drOoPC/8opEPOk+jLlB2q4+xpx6HVLq6aFu3pMpalkTpAQz8XfRfpLp8O25bh6pGPcHDCYpqg==}
     engines: {node: '>=12.*'}
 
   '@shikijs/core@3.12.2':
@@ -1165,8 +1165,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  axios@1.11.0:
-    resolution: {integrity: sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==}
+  axios@1.12.2:
+    resolution: {integrity: sha512-vMJzPewAlRyOgxV2dU0Cuz2O8zzzx9VYtbJOaBgXFeLc4IV/Eg50n4LowmehOOR61S8ZMpc2K5Sa7g6A4jfkUw==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -4143,10 +4143,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sendgrid/client@8.1.5':
+  '@sendgrid/client@8.1.6':
     dependencies:
       '@sendgrid/helpers': 8.0.0
-      axios: 1.11.0
+      axios: 1.12.2
     transitivePeerDependencies:
       - debug
 
@@ -4154,9 +4154,9 @@ snapshots:
     dependencies:
       deepmerge: 4.3.1
 
-  '@sendgrid/mail@8.1.5':
+  '@sendgrid/mail@8.1.6':
     dependencies:
-      '@sendgrid/client': 8.1.5
+      '@sendgrid/client': 8.1.6
       '@sendgrid/helpers': 8.0.0
     transitivePeerDependencies:
       - debug
@@ -4463,7 +4463,7 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.11.0:
+  axios@1.12.2:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.4
