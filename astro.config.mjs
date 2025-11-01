@@ -10,9 +10,28 @@ if (process.env.NODE_ENV !== "production") {
 export default defineConfig({
   output: "server",
   adapter: cloudflare({
-    imageService: "passthrough",
+    imageService: "cloudflare",
   }),
   platformProxy: {
     enabled: true,
+  },
+  vite: {
+    build: {
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          drop_console: false,
+        },
+      },
+      cssCodeSplit: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'gsap': ['gsap'],
+            'vendor': ['jquery', 'bootstrap'],
+          },
+        },
+      },
+    },
   },
 });

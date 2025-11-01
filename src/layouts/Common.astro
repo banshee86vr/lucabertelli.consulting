@@ -20,12 +20,29 @@ import { SEO } from "astro-seo";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Luca Bertelli Consulting Services" />
 
-    <link rel="stylesheet" href="/styles/all.min.css" />
+    <!-- Critical CSS - Inline critical above-the-fold styles -->
+    <link rel="stylesheet" href="/styles/critical.css" />
+    <link rel="stylesheet" href="/styles/fonts.css" />
+
+    <!-- Preload key resources for early discovery -->
+    <link rel="preload" href="/styles/bootstrap.min.css" as="style" />
+    <link rel="preload" href="/styles/all.min.css" as="style" />
+    <link rel="preload" as="font" href="https://fonts.gstatic.com/s/manrope/v15/xn7gD6CjM8zsqJ5HMlkKNsAP_cxB.woff2" type="font/woff2" crossorigin />
+    <link rel="preload" as="font" href="https://fonts.gstatic.com/s/plusjakartasans/v8/tFysOo_xfx8cHwYzHCQkkFhnBISr64zDdV.woff2" type="font/woff2" crossorigin />
+
+    <!-- DNS prefetch for external CDN resources -->
+    <link rel="dns-prefetch" href="https://code.jquery.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+    <!-- Core CSS - Load critical stylesheets -->
     <link rel="stylesheet" href="/styles/bootstrap.min.css" />
-    <link rel="stylesheet" href="/styles/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="/styles/progressbar.css" />
-    <link rel="stylesheet" href="/styles/meanmenu.min.css" />
-    <link rel="stylesheet" href="/styles/master.css" />
+    <link rel="stylesheet" href="/styles/all.min.css" />
+
+    <!-- Non-critical CSS - Defer loading until after page interactive -->
+    <link rel="stylesheet" href="/styles/swiper-bundle.min.css" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="/styles/progressbar.css" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="/styles/meanmenu.min.css" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="/styles/master.css" media="print" onload="this.media='all'" />
     <link rel="stylesheet" href="/styles/style.css" />
 
     <SEO
@@ -116,28 +133,30 @@ import { SEO } from "astro-seo";
     <!-- Offcanves end -->
     </div>
 
-    <script is:inline src="https://code.jquery.com/jquery-3.7.0.min.js"
-    ></script>
-    <script is:inline src="/scripts/bootstrap.bundle.min.js"></script>
-    <script is:inline src="/scripts/jquery.magnific-popup.min.js"></script>
-    <script is:inline src="/scripts/swiper-bundle.min.js"></script>
-    <script is:inline src="/scripts/counter.js"></script>
-    <script is:inline src="/scripts/typed.js"></script>
-    <script is:inline src="/scripts/mixitup.min.js"></script>
-    <script is:inline src="/scripts/progressbar.js"></script>
-    <script is:inline src="/scripts/gsap.min.js"></script>
-    <script is:inline src="/scripts/ScrollSmoother.min.js"></script>
-    <script is:inline src="/scripts/ScrollToPlugin.min.js"></script>
-    <script is:inline src="/scripts/ScrollTrigger.min.js"></script>
-    <script is:inline src="/scripts/SplitText.min.js"></script>
-    <script is:inline src="/scripts/TweenMax.min.js"></script>
-    <script is:inline src="/scripts/jquery.meanmenu.min.js"></script>
-    <script is:inline src="/scripts/tilt.jquery.min.js"></script>
-    <script is:inline src="/scripts/beforeafter.jquery-1.0.0.min.js"></script>
-    <script is:inline src="/scripts/basictable.min.js"></script>
-    <script is:inline src="/scripts/backToTop.js"></script>
-    <script is:inline src="/scripts/main.js"></script>
-    <script is:inline src="/scripts/error-handling.js"></script>
-    <script is:inline src="/scripts/offcanvas.js"></script>
+    <!-- Critical scripts (defer loading) -->
+    <script is:inline defer src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script is:inline defer src="/scripts/bootstrap.bundle.min.js"></script>
+
+    <!-- Non-critical scripts (async or defer) -->
+    <script is:inline defer src="/scripts/jquery.magnific-popup.min.js"></script>
+    <script is:inline defer src="/scripts/swiper-bundle.min.js"></script>
+    <script is:inline defer src="/scripts/counter.js"></script>
+    <script is:inline defer src="/scripts/typed.js"></script>
+    <script is:inline defer src="/scripts/mixitup.min.js"></script>
+    <script is:inline defer src="/scripts/progressbar.js"></script>
+    <script is:inline defer src="/scripts/gsap.min.js"></script>
+    <script is:inline defer src="/scripts/ScrollSmoother.min.js"></script>
+    <script is:inline defer src="/scripts/ScrollToPlugin.min.js"></script>
+    <script is:inline defer src="/scripts/ScrollTrigger.min.js"></script>
+    <script is:inline defer src="/scripts/SplitText.min.js"></script>
+    <script is:inline defer src="/scripts/TweenMax.min.js"></script>
+    <script is:inline defer src="/scripts/jquery.meanmenu.min.js"></script>
+    <script is:inline defer src="/scripts/tilt.jquery.min.js"></script>
+    <script is:inline defer src="/scripts/beforeafter.jquery-1.0.0.min.js"></script>
+    <script is:inline defer src="/scripts/basictable.min.js"></script>
+    <script is:inline defer src="/scripts/backToTop.js"></script>
+    <script is:inline defer src="/scripts/main.js"></script>
+    <script is:inline defer src="/scripts/error-handling.js"></script>
+    <script is:inline defer src="/scripts/offcanvas.js"></script>
   </body>
 </html>
