@@ -20,7 +20,12 @@ const t = useTranslations(lang);
             class="about__experience-img cf_img img_anim_reveal"
             style="align-items:unset"
           >
-            <img src="/about/lucabertelli.jpeg" alt="Luca Bertelli" loading="lazy" width="1000" height="1333" />
+            <picture>
+              <source media="(max-width: 768px)" srcset="/about/lucabertelli.jpeg?format=webp&w=627 1x, /about/lucabertelli.jpeg?format=webp&w=1254 2x" type="image/webp" />
+              <source media="(max-width: 768px)" srcset="/about/lucabertelli.jpeg?w=627 1x, /about/lucabertelli.jpeg?w=1254 2x" />
+              <source srcset="/about/lucabertelli.jpeg?format=webp&w=473 1x, /about/lucabertelli.jpeg?format=webp&w=946 2x" type="image/webp" />
+              <img src="/about/lucabertelli.jpeg?w=473" alt="Luca Bertelli" width="1000" height="1333" fetchpriority="high" decoding="async" />
+            </picture>
           </div>
         </div>
         <div class="col-lg-8">

@@ -1,11 +1,5 @@
 /* Font optimization strategy - Load only essential fonts with display=swap */
 
-/* System fonts as fallback */
-html {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: Georgia, "Times New Roman", Times, serif;
-}
-
 /* Primary headings font - Manrope (optimized with fewer weights) */
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&display=swap");
 
@@ -14,6 +8,12 @@ html {
 
 /* Body text - Use system fonts, fall back to inter for consistency */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+/* System fonts as fallback */
+html {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: Georgia, "Times New Roman", Times, serif;
+}
 
 /* Font assignments */
 body {
@@ -29,18 +29,6 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Plus Jakarta Sans", var(--font-sans);
 }
 
-/* Preload fonts to reduce CLS */
-@font-face {
-  font-family: "Manrope";
-  src: url("https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&display=swap");
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Plus Jakarta Sans";
-  src: url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap");
-  font-display: swap;
-}
 
 /* Prevent font flash - Use optimized font loading */
 @supports (font-variation-settings: normal) {

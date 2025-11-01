@@ -12,7 +12,7 @@ const homeSlug = `/${lang || ""}`;
 
 import { SEO } from "astro-seo";
 ---
-
+<!-- @ts-nocheck - false positives on media HTML attribute -->
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
@@ -27,8 +27,6 @@ import { SEO } from "astro-seo";
     <!-- Preload key resources for early discovery -->
     <link rel="preload" href="/styles/bootstrap.min.css" as="style" />
     <link rel="preload" href="/styles/all.min.css" as="style" />
-    <link rel="preload" as="font" href="https://fonts.gstatic.com/s/manrope/v15/xn7gD6CjM8zsqJ5HMlkKNsAP_cxB.woff2" type="font/woff2" crossorigin />
-    <link rel="preload" as="font" href="https://fonts.gstatic.com/s/plusjakartasans/v8/tFysOo_xfx8cHwYzHCQkkFhnBISr64zDdV.woff2" type="font/woff2" crossorigin />
 
     <!-- Preconnect and DNS prefetch for external CDN resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

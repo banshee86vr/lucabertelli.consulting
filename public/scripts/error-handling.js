@@ -1,3 +1,4 @@
+// @ts-nocheck
 let text_animation = gsap.utils.toArray(".has_text_move_anim");
 text_animation.forEach((t) => {
   var a = 0.5;

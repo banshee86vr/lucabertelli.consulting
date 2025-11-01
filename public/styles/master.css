@@ -4015,20 +4015,6 @@ h6 {
   color: var(--black-2) !important;
 }
 
-.body-overlay {
-  position: fixed;
-  z-index: 9;
-  pointer-events: none;
-  top: 0;
-  opacity: 1;
-  inset-inline-start: 0;
-  width: 100vw;
-  height: 100vh;
-  background-repeat: repeat;
-  background-position: top left;
-  background-image: url(/body-bg.png);
-}
-
 .sidebar-left {
   padding-inline-start: 315px;
 }

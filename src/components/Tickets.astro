@@ -4,8 +4,6 @@ import { getLangFromUrl, useTranslations } from "../i18n/utils";
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const contactSlug = `/${lang || ""}/contact`;
-
 let events = [];
 try {
 	const lbKV = Astro.locals?.runtime?.env?.lb_consulting;
@@ -80,12 +78,18 @@ try {
         {t("index.tickets.title")} powered by <a
           href="https://eventitech.it/"
           target="_new"
-          ><img
-            class="has_fade_anim"
-            src="/tickets/eventitech.png"
-            alt="Eventitech"
-            style="width: 400px;"
-          /></a
+          ><picture>
+            <source media="(max-width: 768px)" srcset="/tickets/eventitech.png?format=webp&w=280 1x, /tickets/eventitech.png?format=webp&w=560 2x" type="image/webp" />
+            <source media="(max-width: 768px)" srcset="/tickets/eventitech.png?w=280 1x, /tickets/eventitech.png?w=560 2x" />
+            <source srcset="/tickets/eventitech.png?format=webp&w=400 1x, /tickets/eventitech.png?format=webp&w=800 2x" type="image/webp" />
+            <img
+              class="has_fade_anim"
+              src="/tickets/eventitech.png?w=400"
+              alt="Eventitech"
+              style="width: 400px;"
+              decoding="async"
+            />
+          </picture></a
         >
       </h1>
     </div>
