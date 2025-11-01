@@ -27,13 +27,13 @@ const { pathname } = Astro.url;
           <li><a href={contactSlug}>{t("nav.contact")}</a></li>
           <li><a href="https://github.com/banshee86vr/lucabertelli.consulting" target="_blank"><i class="fa-brands fa-github"></i></a></li>
           <li class="menu-item-has-children">
-            <a href="#"><img src={t("nav.lang")} style="max-height:20px" /></a>
+            <a href="#"><img src={t("nav.lang") + "?w=20"} style="max-height:20px" alt="Language selector" decoding="async" /></a>
             <ul class="dp-menu">
               <li><a href={getLocalizedPathname(pathname, "it")}
-                ><img src="/lang/it.png" style="max-height:20px;margin-right: 15px;" /> Italiano</a
+                ><img src="/lang/it.png?w=20" style="max-height:20px;margin-right: 15px;" alt="Italiano" decoding="async" /> Italiano</a
               ></li>
               <li><a href={getLocalizedPathname(pathname, "en")}
-                ><img src="/lang/en.png" style="max-height:20px;margin-right: 15px;" /> English</a
+                ><img src="/lang/en.png?w=20" style="max-height:20px;margin-right: 15px;" alt="English" decoding="async" /> English</a
               ></li>
             </ul>
           </li>

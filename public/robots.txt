@@ -1,0 +1,24 @@
+# Robots.txt for lucabertelli.consulting
+# Allow all bots to index the site
+User-agent: *
+Allow: /
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Disallow access to certain directories if needed
+# Uncomment if you want to disallow specific paths:
+# Disallow: /private/
+# Disallow: /admin/
+
+# Specify sitemap location
+Sitemap: https://lucabertelli.consulting/sitemap.xml
+Sitemap: https://lucabertelli.consulting/en/sitemap.xml
+Sitemap: https://lucabertelli.consulting/it/sitemap.xml
+
+# Crawl delay (in seconds)
+Crawl-delay: 1
