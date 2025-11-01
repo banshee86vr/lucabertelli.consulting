@@ -9,16 +9,16 @@ importers:
   .:
     dependencies:
       '@astrojs/check':
-        specifier: ^0.9.4
+        specifier: ^0.9.5
         version: 0.9.5(typescript@5.9.3)
       '@astrojs/cloudflare':
-        specifier: ^12.6.7
+        specifier: ^12.6.10
         version: 12.6.10(@types/node@24.9.2)(astro@5.15.3(@types/node@24.9.2)(rollup@4.52.5)(typescript@5.9.3)(yaml@2.8.1))(yaml@2.8.1)
       '@sendgrid/mail':
         specifier: ^8.1.5
         version: 8.1.6
       astro:
-        specifier: ^5.13.5
+        specifier: ^5.15.3
         version: 5.15.3(@types/node@24.9.2)(rollup@4.52.5)(typescript@5.9.3)(yaml@2.8.1)
       astro-seo:
         specifier: ^0.8.4

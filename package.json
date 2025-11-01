@@ -16,10 +16,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/cloudflare": "^12.6.7",
+    "@astrojs/check": "^0.9.5",
+    "@astrojs/cloudflare": "^12.6.10",
     "@sendgrid/mail": "^8.1.5",
-    "astro": "^5.13.5",
+    "astro": "^5.15.3",
     "astro-seo": "^0.8.4",
     "dotenv": "^17.2.1",
     "typescript": "^5.9.2"

@@ -30,9 +30,11 @@ import { SEO } from "astro-seo";
     <link rel="preload" as="font" href="https://fonts.gstatic.com/s/manrope/v15/xn7gD6CjM8zsqJ5HMlkKNsAP_cxB.woff2" type="font/woff2" crossorigin />
     <link rel="preload" as="font" href="https://fonts.gstatic.com/s/plusjakartasans/v8/tFysOo_xfx8cHwYzHCQkkFhnBISr64zDdV.woff2" type="font/woff2" crossorigin />
 
-    <!-- DNS prefetch for external CDN resources -->
+    <!-- Preconnect and DNS prefetch for external CDN resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://code.jquery.com" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://code.jquery.com" />
 
     <!-- Core CSS - Load critical stylesheets -->
     <link rel="stylesheet" href="/styles/bootstrap.min.css" />
@@ -43,7 +45,7 @@ import { SEO } from "astro-seo";
     <link rel="stylesheet" href="/styles/progressbar.css" media="print" onload="this.media='all'" />
     <link rel="stylesheet" href="/styles/meanmenu.min.css" media="print" onload="this.media='all'" />
     <link rel="stylesheet" href="/styles/master.css" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="/styles/style.css" media="print" onload="this.media='all'" />
 
     <SEO
       title={title}
