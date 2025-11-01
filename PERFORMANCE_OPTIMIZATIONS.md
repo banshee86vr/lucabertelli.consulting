@@ -166,13 +166,23 @@ Fallback: System fonts (-apple-system, BlinkMacSystemFont, Roboto, etc.)
 
 ### PageSpeed Insights Score Expectations
 
-**Mobile:**
-- Previous estimate: 25-40/100
-- Expected: 65-80/100
+**After Phase 1 Optimizations:**
+**Mobile:** 25-40/100 → Expected: 65-80/100
+**Desktop:** 45-60/100 → Expected: 80-90/100
 
-**Desktop:**
-- Previous estimate: 45-60/100
-- Expected: 80-90/100
+**After Phase 2 Optimizations (Current):**
+**Mobile:** Expected: 70-85/100 (additional improvements from image & CSS optimization)
+**Desktop:** Expected: 85-95/100 (background image & CLS improvements)
+
+### Actual Reported Scores (Before All Optimizations)
+**Mobile:** 61/100 Performance
+**Desktop:** 64/100 Performance
+
+**Identified Issues to Fix:**
+- Render-blocking requests: 1,010 ms (desktop) / 2,800 ms (mobile)
+- Image delivery optimization: 2,466 KiB (desktop) / 2,713 KiB (mobile) potential savings
+- Unused CSS: 103 KiB (desktop) / 102 KiB (mobile)
+- Font display optimization: 30 ms potential savings
 
 ---
 
@@ -221,12 +231,82 @@ Browser-native lazy loading, no JavaScript required.
 
 ---
 
+## Additional Optimizations (Phase 2 - Completed)
+
+### 7. Background Image Optimization
+
+**File:** `public/body-bg.png`
+
+**Changes:**
+- Applied aggressive PNG optimization using optipng with maximum compression
+- Reduced file size from 4.5 MB to 1.8 MB (59.66% reduction)
+- Retained image quality while reducing palette colors from full RGBA to optimized palette
+
+**Impact:**
+- Initial page load reduced by ~2.7 MB
+- Significant improvement for mobile users on limited bandwidth
+- No visual quality loss
+
+---
+
+### 8. Explicit Image Dimensions
+
+**Files Modified:**
+- `src/pages/[lang]/index.astro` - Profile image
+- `src/components/Services.astro` - All 4 service icons
+- `src/components/Certifications.astro` - Certification badge images and shape decorations
+
+**Changes:**
+- Added explicit width/height attributes to all images
+- Profile image: 1000x1333
+- Service icons: 128x128
+- Certification badges: 100x100
+- Decoration shapes: 128x128
+
+**Impact:**
+- Eliminated layout shifts caused by images loading asynchronously
+- Reduced Cumulative Layout Shift (CLS) score
+- Browser can reserve space during rendering
+
+---
+
+### 9. Additional CSS Loading Optimization
+
+**File:** `src/layouts/Common.astro`
+
+**Changes:**
+- Deferred `style.css` loading using print media trick
+- Now loaded asynchronously after page becomes interactive
+- Reduced critical render path
+
+**Impact:**
+- Further reduction in render-blocking CSS
+- Faster First Contentful Paint (FCP)
+
+---
+
+### 10. Enhanced Resource Hints
+
+**File:** `src/layouts/Common.astro`
+
+**Changes:**
+- Upgraded dns-prefetch to preconnect for Google Fonts CDN
+- Added preconnect to fonts.gstatic.com with crossorigin attribute
+- Added preconnect to jQuery CDN
+- Browser can establish connection before resource is needed
+
+**Impact:**
+- Faster DNS resolution (saves 50-300ms per domain)
+- Reduced Time to First Byte (TTFB) for external resources
+- Better perceived performance
+
+---
+
 ## Remaining Opportunities (Future Improvements)
 
-1. **Background Image Optimization**
-   - Current: `/public/body-bg.png` (4.5 MB uncompressed PNG)
-   - Opportunity: Convert to WebP, implement responsive variants
-   - Potential savings: 2-3 MB
+1. **Additional Background Image Optimization**
+   - Current: `/public/body-bg.png` (now 1.8 MB - already optimized)
+   - Future: Consider SVG gradient alternative or responsive image variants
 
 2. **Animation Library Reduction**
    - Current: GSAP (69 KB) + TweenMax (114 KB) + ScrollTrigger (40 KB) = 223 KB
