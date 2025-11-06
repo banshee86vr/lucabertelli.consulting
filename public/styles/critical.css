@@ -19,12 +19,16 @@
   box-sizing: border-box;
 }
 
-html, body {
+html {
   width: 100%;
   height: 100%;
 }
 
 body {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
   color: var(--secondary);
@@ -181,6 +185,18 @@ section {
   .nav-link {
     margin: 0 0.5rem;
   }
+}
+
+/* Smooth Scroll Wrapper - Ensure proper layout */
+#smooth-wrapper {
+  width: 100%;
+}
+
+#smooth-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
 }
 
 /* Loading Overlay */

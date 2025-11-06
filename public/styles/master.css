@@ -3878,8 +3878,9 @@ img {
   }
 }
 main {
-  display: inline-block;
+  display: block;
   width: 100%;
+  flex: 1;
 }
 
 h1 {
@@ -6527,6 +6528,9 @@ body.light {
 }
 
 .body-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   background-color: var(--black-2);
 }
 .light .body-wrapper {
@@ -20859,6 +20863,14 @@ ul li:last-child .default-details-comment-wrapper.has-reply::before {
     height: auto;
     justify-content: center;
     margin-bottom: 60px;
+  }
+}
+
+/* Center footer logo on mobile devices */
+@media only screen and (max-width: 768px) {
+  .footer__top .row > div:first-child {
+    display: flex;
+    justify-content: center;
   }
 }
 .footer__logo-3 {
