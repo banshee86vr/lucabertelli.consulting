@@ -61,9 +61,67 @@ import { SEO } from "astro-seo";
 
     <!-- Fav Icon -->
     <link rel="icon" type="image/x-icon" href="/favicon.svg" />
+
+    <!-- Loading Overlay Critical Styles -->
+    <style is:inline>
+      .loading-overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background-color: #1c1d20 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 99999 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transition: opacity 0.6s ease, visibility 0.6s ease !important;
+      }
+
+      .loading-overlay.fade-out {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+
+      .loading-overlay__content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .loading-overlay__logo {
+        max-width: 130px;
+        max-height: 45px;
+        width: 100%;
+        height: auto;
+      }
+    </style>
+
+    <!-- Loading Overlay Fade Out Script -->
+    <script is:inline>
+      // Fade out loading overlay 1 second after page is ready
+      window.addEventListener('load', function() {
+        setTimeout(() => {
+          const loadingOverlay = document.getElementById('loadingOverlay');
+          if (loadingOverlay) {
+            loadingOverlay.classList.add('fade-out');
+          }
+        }, 500);
+      });
+    </script>
   </head>
 
   <body class="font-heading-estedad">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-overlay__content">
+        <img src="/logo.png" alt="Loading" class="loading-overlay__logo" />
+      </div>
+    </div>
+
     <div class="body-overlay"></div>
 
     <!-- Sroll to top -->
