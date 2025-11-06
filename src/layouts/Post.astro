@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "./Common.astro";
+import Tickets from "../components/Tickets.astro";
+
 import { getBlogPosts } from "../content/config";
 import { type CollectionEntry } from "astro:content";
 
@@ -138,4 +140,6 @@ const blogEntries = (await getBlogPosts())
     </div>
   </section>
   <!-- Recent Blog section end -->
+
+  <Tickets />
 </BaseLayout>
