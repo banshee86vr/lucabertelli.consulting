@@ -2,6 +2,7 @@
 import BaseLayout from "../../../layouts/Common.astro";
 import { getLangFromUrl } from "../../../i18n/utils";
 import { getBlogPosts } from "../../../content/config";
+import Tickets from "../../../components/Tickets.astro";
 
 export const prerender = true;
 
@@ -66,4 +67,6 @@ export async function getStaticPaths() {
       </div>
     </div>
   </div>
+
+  <Tickets />
 </BaseLayout>
