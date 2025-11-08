@@ -21,7 +21,7 @@ try {
 	if (!loadEvents || loadEvents === "" || !apiUrl || apiUrl === "" || !apiUsername || apiUsername === "" || !apiPassword || apiPassword === "") {
 		const lbKV = Astro.locals?.runtime?.env?.lb_consulting;
 		if (lbKV) {
-			console.log("[Tickets] Env vars not found or empty, trying Cloudflare KV");
+			console.debug("[Tickets] Env vars not found or empty, trying Cloudflare KV");
 			loadEvents = loadEvents && loadEvents !== "" ? loadEvents : (await lbKV.get("SECRET_LOAD_EVENTS")) || "";
 			apiUrl = apiUrl && apiUrl !== "" ? apiUrl : (await lbKV.get("SECRET_EVENTS_API_URL")) || "";
 			apiUsername = apiUsername && apiUsername !== "" ? apiUsername : (await lbKV.get("SECRET_EVENTS_API_USERNAME")) || "";
@@ -30,7 +30,7 @@ try {
 	}
 
 	if (loadEvents === "true" && apiUrl && apiUrl !== "" && apiUsername && apiUsername !== "" && apiPassword && apiPassword !== "") {
-		console.log("[Tickets] Fetching events from API...");
+		console.debug("[Tickets] Fetching events from API...");
 		const headers = new Headers({
 			Authorization: `Basic ${btoa(`${apiUsername}:${apiPassword}`)}`,
 		});
@@ -38,9 +38,9 @@ try {
 			headers: headers,
 		});
 
-		console.log("[Tickets] API Response Status:", fetchedEvents.status);
+		console.debug("[Tickets] API Response Status:", fetchedEvents.status);
 		const responseData = await fetchedEvents.json();
-		console.log("[Tickets] Response data:", responseData);
+		console.debug("[Tickets] Response data:", responseData);
 
 		if (responseData.events && Array.isArray(responseData.events)) {
 			events = responseData.events
@@ -52,14 +52,14 @@ try {
 					a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0,
 				)
 				.slice(0, 3);
-			console.log("[Tickets] Filtered events:", events.length);
+			console.debug("[Tickets] Filtered events:", events.length);
 		}
 	} else {
-		console.log("[Tickets] Conditions not met for API fetch");
-		console.log("[Tickets] loadEvents === 'true':", loadEvents === "true");
-		console.log("[Tickets] apiUrl available:", !!apiUrl);
-		console.log("[Tickets] apiUsername available:", !!apiUsername);
-		console.log("[Tickets] apiPassword available:", !!apiPassword);
+		console.debug("[Tickets] Conditions not met for API fetch");
+		console.debug("[Tickets] loadEvents === 'true':", loadEvents === "true");
+		console.debug("[Tickets] apiUrl available:", !!apiUrl);
+		console.debug("[Tickets] apiUsername available:", !!apiUsername);
+		console.debug("[Tickets] apiPassword available:", !!apiPassword);
 	}
 } catch (error) {
 	console.error("[Tickets] Error loading events from api.eventitech.it");
