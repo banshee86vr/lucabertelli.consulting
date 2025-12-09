@@ -3,6 +3,7 @@ const title = "lucabertelli.consulting";
 
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import CookieBanner from "../components/CookieBanner.astro";
 
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 const lang = getLangFromUrl(Astro.url);
@@ -194,6 +195,9 @@ import { SEO } from "astro-seo";
     </div>
     <!-- Offcanves end -->
     </div>
+
+    <!-- Cookie Banner - Fixed floating box at bottom of viewport -->
+    <CookieBanner />
 
     <!-- Critical scripts (defer loading) -->
     <script is:inline defer src="https://code.jquery.com/jquery-3.7.0.min.js"></script>

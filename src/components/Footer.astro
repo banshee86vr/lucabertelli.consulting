@@ -1,4 +1,10 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const privacyUrl = `/${lang}/privacy`;
+const cookiesUrl = `/${lang}/cookies`;
 ---
 
 <footer class="footer__area pb-0">
@@ -7,7 +13,7 @@
       <div class="row">
         <div class="col-xxl-3 col-xl-3 col-lg-3">
           <div class="footer__logo">
-            <a href="index.html"
+            <a href={`/${lang}`}
               ><img
                 src="/logo.png"
                 class="show-dark"
@@ -21,7 +27,7 @@
           <div class="footer__info">
             <div class="footer__email">
               <h3 class="footer__title">Email</h3>
-              <a href="mailto:hello@joyamen.com" class="footer__link"
+              <a href="mailto:info@lucabertelli.consulting" class="footer__link"
                 >info@lucabertelli.consulting</a
               >
             </div>
@@ -53,12 +59,13 @@
         <div class="col-xxl-12">
           <div class="copyright">
             <p>
-              © 2024 | All rights reserved by <a
+              © 2025 | All rights reserved by <a
                 href="https://lucabertelli.consulting">lucabertelli.consulting</a> | CF/P.IVA: 05028510237
             </p>
-            <p>
-              <a href="https://www.iubenda.com/privacy-policy/32718900" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Privacy Policy ">Privacy Policy</a><script type="text/javascript" is:inline>(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
-              <a href="https://www.iubenda.com/privacy-policy/32718900/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Cookie Policy ">Cookie Policy</a><script type="text/javascript" is:inline>(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
+            <p class="footer__legal">
+              <a href={privacyUrl} class="footer__legal-link" title={t('footer.privacy')}>{t('footer.privacy')}</a>
+              <span class="footer__legal-separator">|</span>
+              <a href={cookiesUrl} class="footer__legal-link" title={t('footer.cookies')}>{t('footer.cookies')}</a>
             </p>
           </div>
         </div>
@@ -66,3 +73,38 @@
     </div>
   </div>
 </footer>
+
+<style>
+  .footer__legal {
+    margin-top: 10px;
+  }
+
+  .footer__legal-link {
+    color: var(--white-3);
+    font-size: 14px;
+    transition: color 0.3s ease;
+    text-decoration: none;
+  }
+
+  .footer__legal-link:hover {
+    color: var(--white);
+  }
+
+  .light .footer__legal-link {
+    color: var(--black-2);
+  }
+
+  .light .footer__legal-link:hover {
+    color: var(--black);
+  }
+
+  .footer__legal-separator {
+    color: var(--white-3);
+    margin: 0 10px;
+    opacity: 0.5;
+  }
+
+  .light .footer__legal-separator {
+    color: var(--black-2);
+  }
+</style>

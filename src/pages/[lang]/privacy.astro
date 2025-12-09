@@ -1,0 +1,416 @@
+---
+import BaseLayout from "../../layouts/Common.astro";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Get current date at build time
+const buildDate = new Date();
+const formattedDate = buildDate.toLocaleDateString(lang === 'it' ? 'it-IT' : 'en-US', {
+  year: 'numeric',
+  month: 'long'
+});
+const lastUpdatedText = lang === 'it' 
+  ? `Ultimo aggiornamento: ${formattedDate}` 
+  : `Last updated: ${formattedDate}`;
+---
+
+<BaseLayout>
+  <section class="privacy__area plr-50 pt-120 pb-120">
+    <div class="container">
+      <div class="row">
+        <div class="col-xxl-12">
+          <div class="privacy__header mb-60">
+            <h1 class="privacy__title has_char_anim" data-on-scroll="0">
+              {t('privacy.title')}
+            </h1>
+            <p class="privacy__update">{lastUpdatedText}</p>
+          </div>
+
+          <div class="privacy__content">
+            <!-- Introduction -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.intro.title')}</h2>
+              <p class="privacy__text">{t('privacy.intro.text')}</p>
+            </div>
+
+            <!-- Data Controller -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.controller.title')}</h2>
+              <p class="privacy__text">{t('privacy.controller.text')}</p>
+              <div class="privacy__info-box">
+                <p><strong>{t('privacy.controller.name')}</strong></p>
+                <p>{t('privacy.controller.vat')}</p>
+                <p>{t('privacy.controller.email')}</p>
+                <p>{t('privacy.controller.website')}</p>
+              </div>
+            </div>
+
+            <!-- Personal Data Collected -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.collected.title')}</h2>
+              <p class="privacy__text">{t('privacy.collected.intro')}</p>
+              
+              <div class="privacy__subsection">
+                <h3 class="privacy__subsection-title">{t('privacy.collected.1.title')}</h3>
+                <p class="privacy__text">{t('privacy.collected.1.text')}</p>
+              </div>
+              
+              <div class="privacy__subsection">
+                <h3 class="privacy__subsection-title">{t('privacy.collected.2.title')}</h3>
+                <p class="privacy__text">{t('privacy.collected.2.text')}</p>
+              </div>
+              
+              <div class="privacy__subsection">
+                <h3 class="privacy__subsection-title">{t('privacy.collected.3.title')}</h3>
+                <p class="privacy__text">{t('privacy.collected.3.text')}</p>
+              </div>
+            </div>
+
+            <!-- Purpose of Processing -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.purpose.title')}</h2>
+              <p class="privacy__text">{t('privacy.purpose.intro')}</p>
+              <ul class="privacy__list">
+                <li>{t('privacy.purpose.1')}</li>
+                <li>{t('privacy.purpose.2')}</li>
+                <li>{t('privacy.purpose.3')}</li>
+                <li>{t('privacy.purpose.4')}</li>
+              </ul>
+            </div>
+
+            <!-- Legal Basis -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.legal.title')}</h2>
+              <p class="privacy__text">{t('privacy.legal.intro')}</p>
+              <ul class="privacy__list">
+                <li>{t('privacy.legal.1')}</li>
+                <li>{t('privacy.legal.2')}</li>
+                <li>{t('privacy.legal.3')}</li>
+              </ul>
+            </div>
+
+            <!-- Data Retention -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.retention.title')}</h2>
+              <p class="privacy__text">{t('privacy.retention.text')}</p>
+            </div>
+
+            <!-- Your Rights -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.rights.title')}</h2>
+              <p class="privacy__text">{t('privacy.rights.intro')}</p>
+              <ul class="privacy__list">
+                <li>{t('privacy.rights.1')}</li>
+                <li>{t('privacy.rights.2')}</li>
+                <li>{t('privacy.rights.3')}</li>
+                <li>{t('privacy.rights.4')}</li>
+                <li>{t('privacy.rights.5')}</li>
+                <li>{t('privacy.rights.6')}</li>
+                <li>{t('privacy.rights.7')}</li>
+              </ul>
+              <p class="privacy__text mt-30">{t('privacy.rights.contact')}</p>
+              <p class="privacy__text">{t('privacy.rights.authority')}</p>
+            </div>
+
+            <!-- Data Security -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.security.title')}</h2>
+              <p class="privacy__text">{t('privacy.security.text')}</p>
+            </div>
+
+            <!-- International Transfers -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.transfer.title')}</h2>
+              <p class="privacy__text">{t('privacy.transfer.text')}</p>
+            </div>
+
+            <!-- Third-Party Services -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.thirdparty.title')}</h2>
+              <p class="privacy__text">{t('privacy.thirdparty.intro')}</p>
+              <ul class="privacy__list">
+                <li>{t('privacy.thirdparty.1')}</li>
+                <li>{t('privacy.thirdparty.2')}</li>
+              </ul>
+              <p class="privacy__text mt-20">{t('privacy.thirdparty.note')}</p>
+            </div>
+
+            <!-- Minors -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.minors.title')}</h2>
+              <p class="privacy__text">{t('privacy.minors.text')}</p>
+            </div>
+
+            <!-- Changes to Policy -->
+            <div class="privacy__section mb-50">
+              <h2 class="privacy__section-title">{t('privacy.changes.title')}</h2>
+              <p class="privacy__text">{t('privacy.changes.text')}</p>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="privacy__section">
+              <h2 class="privacy__section-title">{t('privacy.contact.title')}</h2>
+              <p class="privacy__text">{t('privacy.contact.text')}</p>
+              <div class="privacy__contact-box">
+                <a href="mailto:info@lucabertelli.consulting" class="privacy__contact-link">
+                  <i class="fa-solid fa-envelope"></i>
+                  info@lucabertelli.consulting
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .privacy__area {
+    background: var(--black);
+  }
+
+  .light .privacy__area {
+    background: var(--white);
+  }
+
+  .privacy__header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 40px;
+  }
+
+  .light .privacy__header {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .privacy__title {
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 1.1;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 15px;
+  }
+
+  .light .privacy__title {
+    color: var(--black);
+  }
+
+  @media only screen and (max-width: 991px) {
+    .privacy__title {
+      font-size: 40px;
+    }
+
+    .privacy__area {
+      padding-top: 150px;
+    }
+  }
+
+  @media only screen and (max-width: 575px) {
+    .privacy__title {
+      font-size: 32px;
+    }
+
+    .privacy__area {
+      padding-top: 120px;
+    }
+  }
+
+  .privacy__update {
+    font-size: 16px;
+    color: var(--white-3);
+    font-style: italic;
+  }
+
+  .light .privacy__update {
+    color: var(--black-2);
+  }
+
+  .privacy__section {
+    padding: 30px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .light .privacy__section {
+    border-bottom-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .privacy__section:last-child {
+    border-bottom: none;
+  }
+
+  .privacy__section-title {
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.3;
+    color: var(--white);
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .light .privacy__section-title {
+    color: var(--black);
+  }
+
+  .privacy__section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
+    border-radius: 2px;
+  }
+
+  @media only screen and (max-width: 991px) {
+    .privacy__section-title {
+      font-size: 22px;
+    }
+  }
+
+  .privacy__subsection {
+    margin-top: 25px;
+    padding-left: 20px;
+    border-left: 2px solid rgba(99, 102, 241, 0.3);
+  }
+
+  .privacy__subsection-title {
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .light .privacy__subsection-title {
+    color: var(--black);
+  }
+
+  .privacy__text {
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--white-3);
+  }
+
+  .light .privacy__text {
+    color: var(--black-2);
+  }
+
+  .privacy__info-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 25px 30px;
+    margin-top: 20px;
+  }
+
+  .light .privacy__info-box {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .privacy__info-box p {
+    font-size: 16px;
+    color: var(--white-3);
+    margin-bottom: 8px;
+  }
+
+  .light .privacy__info-box p {
+    color: var(--black-2);
+  }
+
+  .privacy__info-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .privacy__info-box strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .light .privacy__info-box strong {
+    color: var(--black);
+  }
+
+  .privacy__list {
+    list-style: disc;
+    padding: 0 0 0 20px;
+    margin: 20px 0 0 0;
+  }
+
+  .privacy__list li {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--white-3);
+    padding: 8px 0;
+  }
+
+  .light .privacy__list li {
+    color: var(--black-2);
+  }
+
+  .privacy__list li::marker {
+    color: #6366f1;
+  }
+
+  .privacy__list a {
+    color: #6366f1;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .privacy__list a:hover {
+    color: #8b5cf6;
+    text-decoration: underline;
+  }
+
+  .privacy__contact-box {
+    margin-top: 25px;
+    display: inline-block;
+  }
+
+  .privacy__contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: var(--white);
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .privacy__contact-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+    color: var(--white);
+  }
+
+  .privacy__contact-link i {
+    font-size: 18px;
+  }
+
+  .mt-20 {
+    margin-top: 20px;
+  }
+
+  .mt-30 {
+    margin-top: 30px;
+  }
+
+  .mb-50 {
+    margin-bottom: 50px;
+  }
+
+  .mb-60 {
+    margin-bottom: 60px;
+  }
+</style>
+
