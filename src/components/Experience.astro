@@ -197,3 +197,46 @@ const contactSlug = `/${lang || ""}/contact`;
   </div>
 </section>
 <!-- Notification area end -->
+
+<style>
+  .about__experience-area .row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  @media only screen and (max-width: 991px) {
+    .about__experience-area .row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media only screen and (max-width: 575px) {
+    .about__experience-area .row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .about__experience-area .row > div {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .about__experience-grid {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 40px;
+    height: 100%;
+  }
+
+  .about__experience {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about__experience .title {
+    min-height: 52px;
+    display: flex;
+    align-items: flex-start;
+  }
+</style>
