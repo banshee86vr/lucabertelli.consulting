@@ -64,3 +64,91 @@ const t = useTranslations(lang);
 
   <Tickets />
 </BaseLayout>
+
+<style>
+  .about__hero .row {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .about__hero .col-lg-4 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about__hero .col-lg-8 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about__experience-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .about__experience-img picture {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex: 1;
+  }
+
+  .about__experience-img img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .about__hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 40px;
+    flex: 1;
+  }
+
+  .lb__hero-title {
+    font-size: 50px;
+  }
+
+  @media only screen and (max-width: 991px) {
+    .about__hero .row {
+      flex-direction: column;
+    }
+
+    .about__experience-img {
+      height: auto;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .about__experience-img picture {
+      height: auto;
+    }
+
+    .about__experience-img img {
+      height: auto !important;
+      object-fit: contain;
+    }
+
+    .about__hero-right {
+      padding-left: 0;
+      padding-top: 40px;
+    }
+
+    .lb__hero-title {
+      font-size: 38px;
+    }
+  }
+
+  @media only screen and (max-width: 575px) {
+    .lb__hero-title {
+      font-size: 32px;
+    }
+  }
+</style>
