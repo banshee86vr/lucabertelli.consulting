@@ -262,7 +262,7 @@ const lastUpdatedText = lang === 'it'
     top: 5px;
     width: 4px;
     height: 24px;
-    background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
+    background: linear-gradient(180deg, #ffe24c 0%, #ffc700 100%);
     border-radius: 2px;
   }
 
@@ -275,7 +275,7 @@ const lastUpdatedText = lang === 'it'
   .privacy__subsection {
     margin-top: 25px;
     padding-left: 20px;
-    border-left: 2px solid rgba(99, 102, 241, 0.3);
+    border-left: 2px solid rgba(255, 226, 76, 0.4);
   }
 
   .privacy__subsection-title {
@@ -354,18 +354,27 @@ const lastUpdatedText = lang === 'it'
   }
 
   .privacy__list li::marker {
-    color: #6366f1;
+    color: #ffe24c;
   }
 
   .privacy__list a {
-    color: #6366f1;
+    color: #ffe24c;
     text-decoration: none;
     transition: color 0.3s ease;
+    font-weight: 500;
   }
 
   .privacy__list a:hover {
-    color: #8b5cf6;
+    color: #ffc700;
     text-decoration: underline;
+  }
+
+  .light .privacy__list a {
+    color: #c79500;
+  }
+
+  .light .privacy__list a:hover {
+    color: #a77700;
   }
 
   .privacy__contact-box {
@@ -377,20 +386,20 @@ const lastUpdatedText = lang === 'it'
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    color: var(--white);
+    background: linear-gradient(135deg, #ffe24c 0%, #ffc700 100%);
+    color: #1c1d20;
     padding: 15px 30px;
     border-radius: 8px;
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 700;
     transition: all 0.3s ease;
     text-decoration: none;
   }
 
   .privacy__contact-link:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-    color: var(--white);
+    box-shadow: 0 10px 30px rgba(255, 226, 76, 0.4);
+    color: #000;
   }
 
   .privacy__contact-link i {
