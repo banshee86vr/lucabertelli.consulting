@@ -12,24 +12,55 @@ try {
 	let apiPassword: string | null = null;
 
 	// Try environment variables first (works for both dev and production)
-	loadEvents = String(import.meta.env.SECRET_LOAD_EVENTS || process.env.SECRET_LOAD_EVENTS || "");
-	apiUrl = String(import.meta.env.SECRET_EVENTS_API_URL || process.env.SECRET_EVENTS_API_URL || "");
-	apiUsername = String(import.meta.env.SECRET_EVENTS_API_USERNAME || process.env.SECRET_EVENTS_API_USERNAME || "");
-	apiPassword = String(import.meta.env.SECRET_EVENTS_API_PASSWORD || process.env.SECRET_EVENTS_API_PASSWORD || "");
+	loadEvents = String(import.meta.env.SECRET_LOAD_EVENTS || "");
+	apiUrl = String(import.meta.env.SECRET_EVENTS_API_URL || "");
+	apiUsername = String(import.meta.env.SECRET_EVENTS_API_USERNAME || "");
+	apiPassword = String(import.meta.env.SECRET_EVENTS_API_PASSWORD || "");
 
 	// If env vars are not set, try Cloudflare KV
-	if (!loadEvents || loadEvents === "" || !apiUrl || apiUrl === "" || !apiUsername || apiUsername === "" || !apiPassword || apiPassword === "") {
+	if (
+		!loadEvents ||
+		loadEvents === "" ||
+		!apiUrl ||
+		apiUrl === "" ||
+		!apiUsername ||
+		apiUsername === "" ||
+		!apiPassword ||
+		apiPassword === ""
+	) {
 		const lbKV = Astro.locals?.runtime?.env?.lb_consulting;
 		if (lbKV) {
-			console.debug("[Tickets] Env vars not found or empty, trying Cloudflare KV");
-			loadEvents = loadEvents && loadEvents !== "" ? loadEvents : (await lbKV.get("SECRET_LOAD_EVENTS")) || "";
-			apiUrl = apiUrl && apiUrl !== "" ? apiUrl : (await lbKV.get("SECRET_EVENTS_API_URL")) || "";
-			apiUsername = apiUsername && apiUsername !== "" ? apiUsername : (await lbKV.get("SECRET_EVENTS_API_USERNAME")) || "";
-			apiPassword = apiPassword && apiPassword !== "" ? apiPassword : (await lbKV.get("SECRET_EVENTS_API_PASSWORD")) || "";
+			console.debug(
+				"[Tickets] Env vars not found or empty, trying Cloudflare KV",
+			);
+			loadEvents =
+				loadEvents && loadEvents !== ""
+					? loadEvents
+					: (await lbKV.get("SECRET_LOAD_EVENTS")) || "";
+			apiUrl =
+				apiUrl && apiUrl !== ""
+					? apiUrl
+					: (await lbKV.get("SECRET_EVENTS_API_URL")) || "";
+			apiUsername =
+				apiUsername && apiUsername !== ""
+					? apiUsername
+					: (await lbKV.get("SECRET_EVENTS_API_USERNAME")) || "";
+			apiPassword =
+				apiPassword && apiPassword !== ""
+					? apiPassword
+					: (await lbKV.get("SECRET_EVENTS_API_PASSWORD")) || "";
 		}
 	}
 
-	if (loadEvents === "true" && apiUrl && apiUrl !== "" && apiUsername && apiUsername !== "" && apiPassword && apiPassword !== "") {
+	if (
+		loadEvents === "true" &&
+		apiUrl &&
+		apiUrl !== "" &&
+		apiUsername &&
+		apiUsername !== "" &&
+		apiPassword &&
+		apiPassword !== ""
+	) {
 		console.debug("[Tickets] Fetching events from API...");
 		const headers = new Headers({
 			Authorization: `Basic ${btoa(`${apiUsername}:${apiPassword}`)}`,
