@@ -3,6 +3,11 @@
   "type": "module",
   "version": "0.0.1",
   "private": true,
+  "pnpm": {
+    "overrides": {
+      "wrangler": "^4.59.3"
+    }
+  },
   "release": {
     "branches": [
       "main"
