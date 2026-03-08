@@ -10,7 +10,7 @@ image: "/blog/snorlx/snorlx.jpg"
 
 ## Why do we need it?
 
-GitHub Actions has become the de facto standard for CI/CD automation in the cloud-native ecosystem. From simple lint checks to multi-environment deployments, most modern repositories rely on workflows to build, test, and release software. GitHub clearly shows how workflows run within a single repository: you click the Actions tab, scroll through runs, and check their status. Easy enough when you're dealing with a couple of repositories.
+GitHub Actions has become the de facto standard for CI/CD automation in the cloud-native ecosystem. From simple lint checks to multi-environment deployments, most modern repositories rely (or they would to 😅) on workflows to build, test, and release software. GitHub clearly shows how workflows run within a single repository: you click the Actions tab, scroll through runs, and check their status. Easy enough when you're dealing with a couple of repositories.
 
 But what happens when your organization grows to 50, 100, or even more repositories, each packed with numerous workflows? Suddenly, you're managing hundreds of active pipelines. When a production deployment fails, the first question is likely: *where?* Which repository? Which workflow? What went wrong? The native GitHub interface doesn't provide cross-repository aggregation, forcing you to switch between repositories one by one, hoping to spot the red icon.
 
