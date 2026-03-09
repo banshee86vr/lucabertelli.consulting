@@ -7674,6 +7674,12 @@ section {
   transform: translateY(15px);
   transition: all 200ms linear;
 }
+/* When mobile offcanvas menu is open, hide scroll-to-top so it doesn't overlap */
+body.modal-open .progress-wrap {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none;
+}
 
 .progress-wrap.active-progress {
   opacity: 1;
@@ -15503,6 +15509,9 @@ section {
   display: none;
 }
 
+.offcanvas__area {
+  z-index: 1050;
+}
 .offcanvas__area .offcanvas {
   text-align: center;
   padding: 75px 50px;
@@ -19326,7 +19335,9 @@ body .btn4 {
 .blog__tag {
   gap: 5px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 100%;
 }
 .blog__tag-title {
   font-size: 18px;
@@ -19334,13 +19345,30 @@ body .btn4 {
   line-height: 1.5;
   color: var(--black-9);
   font-family: "Estedad";
+  flex-shrink: 0;
 }
+.blog__tag ul.blog__tag-list,
 .blog__tag ul {
   gap: 3px;
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 .blog__tag ul li {
   list-style: none;
+  display: inline-flex;
+  align-items: center;
+}
+.blog__tag-sep {
+  white-space: pre;
+  user-select: none;
+  color: var(--black-9);
+}
+.light .blog__tag-sep {
+  color: var(--black-2);
 }
 .blog__tag ul li a {
   font-size: 18px;
@@ -19348,6 +19376,7 @@ body .btn4 {
   line-height: 1.5;
   color: var(--white);
   font-family: "Estedad";
+  white-space: nowrap;
 }
 .blog__tag ul li a:hover {
   font-size: 18px;
@@ -19358,6 +19387,18 @@ body .btn4 {
 }
 .light .blog__tag ul li a {
   color: var(--black-2);
+}
+@media only screen and (max-width: 767px) {
+  .blog__tag {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .blog__tag ul.blog__tag-list,
+  .blog__tag ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
 }
 .blog__pagination.pt-120 {
   padding-top: 60px;

@@ -77,11 +77,12 @@ const blogEntries = (await getBlogPosts())
 
             <div class="blog__tag">
               <p class="blog__tag-title">Tags /</p>
-              <ul>
+              <ul class="blog__tag-list">
                 {
-                  tags.map((tag) => (
+                  tags.map((tag, i) => (
                     <li>
-                      <a href={`/${lang}/blog?tag=${tag}`}>{tag} </a> /{" "}
+                      <a href={`/${lang}/blog?tag=${tag}`}>{tag}</a>
+                      {i < tags.length - 1 ? <span class="blog__tag-sep" aria-hidden="true"> / </span> : null}
                     </li>
                   ))
                 }
