@@ -1,50 +1,49 @@
 ---
 title: "Una dashboard self-hosted per le GitHub Actions"
-subtitle: "Come usare Snorlx per ottenere visibilità centralizzata, metriche DORA e aggiornamenti in tempo reale su tutti i repository"
+subtitle: "Come usare Snorlx per ottenere visibilità centralizzata e aggiornamenti in tempo reale su tutti i repository"
 category: "DevOps"
 lang: "it"
 date: "2025-03-08"
-tags: ["github-actions", "cicd", "devsecops", "kubernetes", "devops-metrics", "observability"]
-image: "/blog/snorlx/snorlx.jpg"
+tags: ["github-actions", "cicd", "devsecops", "kubernetes", "observability"]
+image: "/blog/snorlx/dashboard.png"
 ---
 
 ## Perché mai dovremmo averne bisogno?
 
-Le GitHub Actions sono diventate lo standard de facto per l'automazione CI/CD nell'ecosistema cloud-native. Dai semplici check di linting ai deploy multi-ambiente, la maggior parte dei repository moderni si affida (o dovrebbe farlo 😅) a dei workflow per compilare, testare e rilasciare software. GitHub mostra in maniera efficace le esecuzioni dei workflow all'interno di un singolo repository: si clicca sulla tab Actions, si scorre l'elenco delle run e si verifica il loro stato. Abbastanza semplice e lineare quando si lavora con poche manciate di repository.
+Le GitHub Actions sono lo standard per l'automazione CI/CD. GitHub mostra bene le run *dentro* un singolo repository, ma quando un'organizzazione ha 50, 100 o più repo con decine di workflow, non c'è alcuna vista aggregata: per capire cosa è fallito bisogna aprire repo per repo. Di conseguenza i team spessono devono arrangiarsi con script custom o prodotti SaaS costosi.
 
-Ma cosa succede quando un organizzazione scala raggiungendo 50, 100 o più repository, ognuno contenente più workflow? Improvvisamente ci si ritrova a gestire centinaia di pipeline attive. Quando un deployment in produzione fallisce la prima domanda che ci si pone sarà probabilmente: Quale repository? Quale workflow? Cosa è andato storto? L'interfaccia nativa di GitHub non offre alcuna aggregazione cross-repository, costringendo a navigare tra i repository uno per uno, nella speranza di individuare l'icona rossa.
-
-Oltre al problema operativo, esiste un gap strategico. Il [programma di ricerca DORA](https://dora.dev) ha definito quattro metriche chiave che predicono le performance di delivery del software: Deployment Frequency, Lead Time for Changes, Change Failure Rate e Mean Time to Recovery (MTTR). Queste metriche rappresentano lo standard per poter valutare velocità e affidabilità. Eppure le GitHub Actions non forniscono alcun modo nativo per calcolarle. I team finiscono per scrivere script ad-hoc, esportare dati su spreadsheet o acquistare costose piattaforme SaaS solo per rispondere alla domanda: *stiamo migliorando o peggiorando nella nostra capacità di rilasciare software?*
-
-## Quindi? Qual è il problema?
-
-Analizziamo nel dettaglio i principali punti critici che i team di platform engineering affrontano quotidianamente.
-
-**Nessun pannello di controllo centrale.** GitHub mostra le esecuzioni dei workflow per singolo repository. Non esiste una dashboard unificata a livello di organizzazione. Se si vuole vedere quali workflow sono falliti nell'ultima ora su tutti i repository, bisogna controllare ciascuno individualmente.
-
-**Le metriche DORA non sono visibili.** Deployment Frequency, Lead Time, Change Failure Rate e MTTR devono essere calcolate esternamente. GitHub fornisce i dati grezzi (workflow run con timestamp e risultati), ma nessuno strumento per aggregarli e confrontarli con i benchmark di settore.
-
-**Trasparenza nei costi** GitHub Actions fattura al minuto, ma la dashboard di billing fornisce solo i totali mensili aggregati. Non esiste una ripartizione dei costi per workflow o per repository, rendendo impossibile identificare quali pipeline consumano la maggior parte del budget. Questo problema è diventato ancora più urgente alla luce della vicenda dei prezzi che si è sviluppata tra dicembre 2025 e marzo 2026. A metà dicembre 2025, GitHub ha [annunciato una ristrutturazione dei prezzi delle Actions](https://github.blog/changelog/2025-12-16-coming-soon-simpler-pricing-and-a-better-experience-for-github-actions/): i prezzi dei runner hosted sono stati ridotti fino al 39% a partire dal 1° gennaio 2026 (ora in vigore), ma è stata anche annunciata una nuova "cloud platform charge" di $0,002 al minuto, vale a dire una tariffa che avrebbe dovuto applicarsi anche ai runner self-hosted a partire dal 1° marzo 2026. La reazione è stata immediata e violenta. Nell'arco di 24 ore, sviluppatori su Reddit, GitHub Discussions e social media si sono [rivoltati contro l'idea](https://github.com/orgs/community/discussions/182186) di pagare tariffe al minuto per un'orchestrazione eseguita sul proprio hardware. Un utente ha calcolato $3.500 in più al mese sulla propria fattura; laboratori di ricerca hanno avvertito che i progetti finanziati con fondi pubblici sarebbero diventati insostenibili; il consenso della community era che il modello di pricing fosse fondamentalmente inadeguato per i casi d'uso self-hosted. GitHub ha [ritirato la decisione](https://github.com/orgs/community/discussions/182186) il giorno dopo, ammettendo di "aver mancato il bersaglio" e posticipando la tariffa per i self-hosted runner a tempo indeterminato. Ad oggi, superata la scadenza originale del 1° marzo 2026, la tariffa non è mai stata implementata, i runner self-hosted rimangono gratuiti e nessuna nuova data è stata comunicata. Ma GitHub ha chiarito che l'economia di fondo non è cambiata: il control plane delle Actions ha costi reali, e una qualche forma di monetizzazione arriverà. La conclusione? Il panorama dei costi delle GitHub Actions è in uno stato di incertezza attiva. I team che non dispongono di una visibilità per-workflow su dove vengono consumati i minuti si troveranno impreparati quando arriverà il prossimo cambiamento di pricing (e purtroppo prima o poi *arriverà*). Una dashboard che visualizzi in modo chiaro l'utilizzo dei runner per workflow e per repository non è più un optional, ma una necessità anche finanziaria.
-
-Soluzioni commerciali come Datadog CI Visibility, Harness o Buildkite risolvono alcuni di questi problemi, ma comportano costi non trascurabili, vendor lock-in e in alcuni casi anche problematiche di data sovereignty. Per i team che vogliono mantenere la telemetria CI/CD in-house, il panorama è sorprendentemente scarso.
+**In sintesi:** nessuna vista centralizzata e nessuna ripartizione dei costi per workflow/repository (GitHub fattura al minuto ma mostra solo totali mensili). Le soluzioni commerciali esistono ma con costi non trascurabili e portano inveitabilmenet vendor lock-in. 
 
 ## Una possibile soluzione: Snorlx
 
-[Snorlx](https://github.com/banshee86vr/snorlx) è una dashboard CI/CD open-source e self-hosted progettata specificamente per le GitHub Actions. Aggrega tutte le esecuzioni dei workflow di tutti i repository e le organizzazioni in un'unica interfaccia, calcola automaticamente le metriche DORA, fornisce aggiornamenti in tempo reale via WebSocket e offre il tracking dei costi per workflow e per repository.
+[Snorlx](https://github.com/banshee86vr/snorlx) è una dashboard CI/CD open-source e self-hosted per le GitHub Actions: aggrega tutte le run in un'unica interfaccia, fornisce aggiornamenti in tempo reale via WebSocket, tracking costi per workflow e repository, e il **repository scoring** (punteggio per repo su Security, Testing, CI/CD, Documentation, Code Quality, Maintenance, Community con tier gold/silver/bronze).
 
-![Dashboard](/blog/snorlx/dashboard.png)
+![Vista principale della dashboard Snorlx: card riepilogative, trend e pipeline attive](/blog/snorlx/dashboard.png)
+*Vista principale della dashboard: card riepilogative, trend successo/fallimento e pipeline in esecuzione.*
 
-L'architettura segue un design pulito a tre livelli:
+## Cosa ci offre la dashboard?
 
-**Frontend**: React 18 con TypeScript, TanStack Query per il data fetching e il caching, Recharts per le visualizzazioni delle metriche, e Tailwind CSS v4 con supporto completo a tema dark/light.
+La pagina **Dashboard** mostra card per repository, workflow e statistiche run (tasso di successo, run in corso, confronti con il periodo precedente), grafici per i trend degli ultimi 30 giorni, distribuzione risultati, una sezione live con pipeline in esecuzione e in coda, e la media del punteggio dei repository e il numero di repo “graded”.
 
-**Backend**: Go con il router Chi, che fornisce un'API REST, autenticazione GitHub OAuth, elaborazione degli eventi webhook per gli aggiornamenti in tempo reale, e un hub WebSocket che trasmette istantaneamente i cambiamenti di stato delle pipeline a tutti i client connessi.
+![Sonrlx dashboard](/blog/snorlx/dashboard.png)
+![Scanning dei reposity all'interno della GitHub Organization](/blog/snorlx/scanning.png)
 
-**Database**: PostgreSQL potenziato con TimescaleDB per l'ottimizzazione delle serie temporali. I workflow run e i job sono salvati in hypertable partizionate per timestamp, con aggregati continui che pre-calcolano automaticamente le metriche giornaliere (tassi di successo, durate, percentili) ogni ora. Una policy di retention impedisce al database di crescere senza limiti eliminando i dati più vecchi di un anno.
+La pagina **Repositories** elenca i repository sincronizzati; per ognuno puoi vedere il **repository score** (se calcolato): un punteggio complessivo in percentuale e un tier (gold, silver, bronze) basato su sette categorie: Security, Testing, CI/CD, Documentation, Code Quality, Maintenance e Community ricavate dai dati GitHub (branch protection, Dependabot, code scanning, README, file di config, community profile, ecc.). Lo score viene calcolato durante la sync o on-demand con “Refresh grade” dalla pagina di dettaglio del repository; nel dettaglio trovi il grafico a radar per le sette dimensioni e l’elenco dei check pass/fail.
 
-Il progetto è utilizzabile in due modalità di storage diverse. Impostando `STORAGE_MODE=memory`, si ottiene una dashboard completamente funzionale, senza dipendenze esterne né database. Questa modalità è pensata lo sviluppo in locale. Quando si è pronti per la produzione, basta passare a `STORAGE_MODE=database` e puntare a PostgreSQL per lo storage persistente.
+![Sonrlx dashboard](/blog/snorlx/repositories.png)
 
-![Snorlx architecture](/blog/snorlx/architecture.jpg)
+![Scoring dei repository](/blog/snorlx/scoring.png)
+
+La pagina **Runs** è un elenco filtrabile e paginato di tutti i workflow run; la **Run Detail** mostra la gerarchia dei job, stato degli step, timeline, annotazioni errori, YAML del workflow e link ai log su GitHub. I dati si possono aggiornare da GitHub con `?refresh=true`.
+
+![Ricerca tra tutti i workflow della organization](/blog/snorlx/workflows.png)
+
+![Elenco delle run con filtri per stato, branch, evento](/blog/snorlx/runs.png)
+*Elenco run con filtri e paginazione; da qui si accede al dettaglio di ogni run.*
+
+![Dettagli e log della run specifica](/blog/snorlx/run_details.png)
+
+Il **tracking dei costi** per workflow e per repository permette di identificare le pipeline più costose e modellare l'impatto di eventuali cambi di pricing. Con `STORAGE_MODE=memory` si può provare tutto senza database; per la produzione si passa a `STORAGE_MODE=database` e PostgreSQL con TimescaleDB.
 
 ## Requisiti
 
@@ -131,37 +130,20 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5432/snorlx?sslmode=disabl
 
 Riavviare l'applicazione: le migrazioni vengono eseguite automaticamente all'avvio.
 
-## Cosa ci offre la dashboard?
+## Architettura (in breve)
 
-Una volta in esecuzione, la dashboard di Snorlx mette a disposizione diverse viste.
+Frontend React 18 + TypeScript con TanStack Query e Recharts; backend Go (Chi router) con OAuth GitHub, webhook e WebSocket per gli aggiornamenti in tempo reale; PostgreSQL con TimescaleDB per le serie temporali, hypertable e aggregati continui. Due modalità: `STORAGE_MODE=memory` per sviluppo/quick start, `STORAGE_MODE=database` per produzione.
 
-La pagina **Dashboard** mostra le card riepilogative per repository totali, workflow e statistiche dei run (tasso di successo, run in corso, confronti con il periodo precedente), grafici ad area per i trend di successo/fallimento degli ultimi 30 giorni, un grafico a torta per la distribuzione dei risultati e una sezione live che mostra le pipeline in esecuzione e in coda. La sezione delle pipeline attive contatta il backend recuperando gli ultimi workflow run direttamente da GitHub per tutti i repository noti prima di restituire i risultati, in modo che le pipeline appena avviate appaiano immediatamente senza attendere una sincronizzazione completa.
-
-La pagina **Metrics** offre un approfondimento sulle metriche DORA con periodi configurabili (7 giorni, 30 giorni, 90 giorni). Ognuna delle quattro metriche (Deployment Frequency, Lead Time, Change Failure Rate, MTTR) viene visualizzata con il proprio valore calcolato e un badge colorato di rating (elite, high, medium, low) basato sui benchmark di settore. Un grafico ad area visualizza i trend dei deployment nel periodo selezionato. Il calcolo delle metriche si basa sui workflow marcati come workflow di deployment tramite un toggle (`is_deployment_workflow`), e un endpoint di backfill marca retroattivamente i run storici affinché le metriche DORA vengano calcolate sul dataset corretto. Anche il calcolo del Lead Time è stato migliorato con un nuovo campo `commit_timestamp` che traccia il timestamp effettivo del commit per misurazioni commit-to-production più accurate.
-
-![Metrics](/blog/snorlx/metrics.png)
-
-La pagina **Runs** offre un elenco filtrabile e paginato di tutti i workflow run su tutti i repository, con filtri per stato, risultato, branch, tipo di evento e attore. La pagina **Run Detail** entra nel dettaglio con la gerarchia completa dei job, lo stato a livello di singolo step, le timeline delle durate, le annotazioni degli errori, un visualizzatore YAML della definizione del workflow e link diretti ai log su GitHub. I dati dei job possono essere aggiornati forzatamente da GitHub tramite `?refresh=true` per evitare risultati cached obsoleti.
-
-![Workflows runs](/blog/snorlx/runs.png)
-
-Il **tracking dei costi** diventa particolarmente rilevante dato l'attuale stato di incertezza del modello di pricing di GitHub. La riduzione dei prezzi dei runner hosted è già in vigore, ma la questione del billing per i self-hosted rimane irrisolta — GitHub ha esplicitamente dichiarato che l'economia di fondo non è scomparsa, solo la timeline. Snorlx fornisce un'analisi dei costi per-workflow e per-repository basata sull'utilizzo dei runner, permettendo di identificare le pipeline più costose, prendere decisioni informate sull'allocazione dei runner (self-hosted vs. GitHub-hosted, ora che i prezzi hosted sono calati significativamente), e — aspetto cruciale — modellare l'impatto di futuri cambiamenti di pricing prima che si riflettano sulla fattura. Quando GitHub annuncerà un modello di pricing rivisto per i self-hosted, i team che utilizzano Snorlx potranno calcolare immediatamente l'esposizione anziché trovarsi a rincorrere i numeri.
+![Schema dell'architettura a tre livelli: frontend, backend, database](/blog/snorlx/architecture.jpg)
+*Architettura a tre livelli: frontend, backend, database.*
 
 ## Deploy su Kubernetes
 
-Snorlx include un Helm chart in `helm/snorlx/` che effettua il provisioning di deployment separati per backend e frontend, un StatefulSet TimescaleDB interno opzionale, i Kubernetes secrets, una risorsa Ingress, e security context che impongono l'esecuzione non-root con capabilities eliminate.
+Snorlx include un Helm chart in `helm/snorlx/` che effettua il provisioning di deployment separati per backend e frontend, StatefulSet TimescaleDB opzionale, secrets, Ingress e security context non-root.
 
-L'applicazione segue la [metodologia 12-Factor](https://12factor.net/) end-to-end: configurazione tramite variabili d'ambiente, processi stateless, graceful shutdown su SIGTERM, logging strutturato in JSON, e migrazioni automatiche all'avvio.
+## In sintesi
 
-## Quindi cosa ci portiamo a casa?
-
-Snorlx colma un vuoto reale nell'ecosistema delle GitHub Actions fornendo il layer di visibilità organizzativa che l'interfaccia nativa di GitHub non offre. Con un singolo comando `pnpm run dev` si ottiene una dashboard completamente funzionale che aggrega tutti i workflow run, calcola le metriche DORA, traccia i costi e fornisce aggiornamenti in tempo reale. Tutto in uno scenario self-hosted, tutto open-source, tutto sotto il proprio controllo.
-
-La vicenda dei prezzi delle GitHub Actions di fine 2025 dove una riduzione del 39% sui runner hosted ora in vigore, accompagnata da una platform charge per i self-hosted annunciata, contestata e ritirata nell'arco di 24 ore ha dimostrato che il costo della CI/CD non è più qualcosa su cui le organizzazioni possono permettersi di essere reattive. La scadenza originale del 1° marzo 2026 è passata senza che la tariffa venisse implementata, ma GitHub ha chiarito che si tratta di una questione di *quando*, non di *se*, una qualche forma di monetizzazione dei runner self-hosted arriverà. I team che dispongono già di una visibilità granulare sull'utilizzo dei runner per workflow e per repository potranno assorbire qualsiasi novità senza ritrovarsi in affanno. Snorlx fornisce esattamente questa visibilità.
-
-La modalità di storage duale rende la valutazione priva di frizioni: si parte con la modalità memory per vedere il valore in cinque minuti, per poi passare a PostgreSQL con TimescaleDB quando si è pronti per la persistenza in produzione. L'Helm chart, la configurazione Docker Compose e la conformità 12-Factor garantiscono un comportamento prevedibile dell'applicazione indipendentemente da dove venga deployata: un laptop, una VM o un cluster Kubernetes.
-
-Per qualsiasi team che utilizzi le GitHub Actions su più di una manciata di repository, Snorlx trasforma l'osservabilità CI/CD da un'attività per singolo repository a una capability organizzativa con risultati DORA misurabili e stimando risultati di costo misurabili.
+Con `pnpm run dev` hai una dashboard che aggrega le run di tutti i repo, traccia i costi, assegna uno score a ogni repository (gold/silver/bronze) e aggiorna in tempo reale: self-hosted, open-source, sotto il tuo controllo. Parti in modalità memory per provarla in pochi minuti, poi passi a PostgreSQL quando serve persistenza. Per chi usa GitHub Actions su molti repository, Snorlx è la vista centrale che GitHub non fornisce.
 
 Tags /
 
@@ -169,5 +151,4 @@ Tags /
 - [cicd](/it/blog?tag=cicd)
 - [devsecops](/it/blog?tag=devsecops)
 - [kubernetes](/it/blog?tag=kubernetes)
-- [devops-metrics](/it/blog?tag=devops-metrics)
 - [observability](/it/blog?tag=observability)
