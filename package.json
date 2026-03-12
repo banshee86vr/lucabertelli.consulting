@@ -32,5 +32,8 @@
   "devDependencies": {
     "semantic-release": "^25.0.0"
   },
-  "repository": "https://github.com/banshee86vr/lucabertelli.consulting.git"
+  "repository": "https://github.com/banshee86vr/lucabertelli.consulting.git",
+  "engines": {
+    "node": ">=22.12.0"
+  }
 }
