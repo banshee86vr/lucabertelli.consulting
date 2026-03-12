@@ -5,5 +5,9 @@ compatibility_date = "2024-09-23"
 binding = "lb_consulting"
 id = "01ee33bd3673427c975a9804434376d6"
 
+[[kv_namespaces]]
+binding = "SESSION"
+id = "1b5008e8ee4249bf87131391a7045703"
+
 [env.preview]
 name = "lucabertelli-consulting-preview"
