@@ -4,19 +4,25 @@ import PostLayout from "../../../layouts/Post.astro";
 import { getBlogPosts } from "../../../content/config";
 import type { BlogPost } from "../../../content/config";
 
-const { lang, slug } = Astro.params;
+export const prerender = true;
 
-const posts = await getBlogPosts();
-const page = posts.find(
-  (p) => p.blog_slug === slug && (p.data.lang === lang || (!p.data.lang && lang === "en")),
-) as BlogPost | undefined;
+export async function getStaticPaths() {
+  const pages: BlogPost[] = await getBlogPosts();
 
-if (!page) {
-  return Astro.redirect(`/${lang || "en"}/blog/`);
+  const paths = pages.map((page) => {
+    return {
+      params: { lang: page.data.lang || "en", slug: page.blog_slug },
+      props: page,
+    };
+  });
+
+  return paths;
 }
 
+const page: BlogPost = Astro.props as BlogPost;
+
 const { title, image, subtitle, date, category, tags } = page.data;
-const resolvedLang =
+const lang =
 	page.data.lang === "en" || page.data.lang === "it" ? page.data.lang : "en";
 
 const { Content } = await render(
@@ -31,7 +37,7 @@ const { Content } = await render(
   date={new Date(date)}
   category={category}
   tags={tags}
-  lang={resolvedLang}
+  lang={lang}
 >
   <Content />
 </PostLayout>

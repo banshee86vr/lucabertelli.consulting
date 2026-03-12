@@ -1,28 +1,9 @@
 name = "lucabertelli-consulting"
 compatibility_date = "2024-09-23"
-pages_build_output_dir = "dist"
 
-[vars]
-NODE_VERSION = "22"
-
-# KV namespace for storing environment variables
 [[kv_namespaces]]
-binding = "lb_consulting"
-id = "01ee33bd3673427c975a9804434376d6"
-preview_id = "01ee33bd3673427c975a9804434376d6"
-
-[env.production]
-[env.production.vars]
-NODE_VERSION = "22"
-
-[[env.production.kv_namespaces]]
 binding = "lb_consulting"
 id = "01ee33bd3673427c975a9804434376d6"
 
 [env.preview]
-[env.preview.vars]
-NODE_VERSION = "22"
-
-[[env.preview.kv_namespaces]]
-binding = "lb_consulting"
-id = "01ee33bd3673427c975a9804434376d6"
+name = "lucabertelli-consulting-preview"
