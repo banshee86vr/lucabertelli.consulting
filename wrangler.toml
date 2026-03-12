@@ -1,7 +1,9 @@
 name = "lucabertelli-consulting"
 compatibility_date = "2024-09-23"
-# For Pages deployment, set build output in the Pages dashboard (e.g. dist) instead of here
-# to avoid ASSETS binding name conflict during build.
+pages_build_output_dir = "dist"
+
+[vars]
+NODE_VERSION = "22"
 
 # KV namespace for storing environment variables
 [[kv_namespaces]]
