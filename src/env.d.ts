@@ -20,3 +20,7 @@ type Runtime = import("@astrojs/cloudflare").Runtime<ENV>;
 declare namespace App {
   interface Locals extends Runtime {}
 }
+
+declare module "cloudflare:workers" {
+  export const env: ENV;
+}

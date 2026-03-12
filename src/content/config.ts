@@ -1,5 +1,6 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
 import { getCollection } from "astro:content";
+import { z } from "astro/zod";
 
 const certifications = defineCollection({
   type: "content",
@@ -46,7 +47,8 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   const posts = await getCollection("blog");
 
   return posts.map((post) => {
-    const blog_slug = post.slug.split("/")[0];
+    const entryId = "slug" in post ? (post as { slug: string }).slug : post.id;
+    const blog_slug = entryId.split("/")[0];
     return {
       ...post,
       blog_slug,

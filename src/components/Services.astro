@@ -3,9 +3,39 @@ import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const services = [
+  {
+    title: t("index.services.1.title"),
+    text: t("index.services.1.text"),
+    icon: "/expertise/assessment.png",
+    icon2x: "/expertise/assessment@2x.png",
+    speed: "1.15",
+  },
+  {
+    title: t("index.services.2.title"),
+    text: t("index.services.2.text"),
+    icon: "/expertise/cloud-upload.png",
+    icon2x: "/expertise/cloud-upload@2x.png",
+    speed: "0.95",
+  },
+  {
+    title: t("index.services.3.title"),
+    text: t("index.services.3.text"),
+    icon: "/expertise/fingerprint.png",
+    icon2x: "/expertise/fingerprint@2x.png",
+    speed: "1.15",
+  },
+  {
+    title: t("index.services.4.title"),
+    text: t("index.services.4.text"),
+    icon: "/expertise/users-class.png",
+    icon2x: "/expertise/users-class@2x.png",
+    speed: "0.95",
+  },
+];
 ---
 
-<!-- Services section start  -->
 <section class="lb-ins__area pb-100">
   <div class="container">
     <div class="lb-inp__project-sec-title-wrap">
@@ -13,86 +43,142 @@ const t = useTranslations(lang);
         {t("index.services.title")}
       </h1>
     </div>
-    <div class="lb-ins__area-service-items">
-      <div class="lb__expertise-grid">
-        <div
-          class="lb__expertise-item cf_service_card has_fade_anim"
+
+    <div class="services-grid" style="margin-top: 60px;">
+      {services.map((service) => (
+        <article
+          class="service-card has_fade_anim"
           data-fade-from="left"
-          data-speed="1.15"
+          data-speed={service.speed}
         >
-          <div class="lb__expertise-content">
-            <div class="lb__expertise-heading">
-              <h4 class="lb__expertise-title">{t("index.services.1.title")}</h4>
-            </div>
-            <div class="lb__expertise-body">
-              <div class="lb__expertise-bthumb">
-                <img src="/expertise/assessment.png" alt="expert" loading="lazy" width="128" height="128" />
-              </div>
-            </div>
-            <div class="lb__expertise-footer">
-              <p>{t("index.services.1.text")}</p>
-            </div>
+          <div class="service-card__icon">
+            <img
+              src={service.icon}
+              srcset={`${service.icon2x} 2x`}
+              alt=""
+              loading="lazy"
+              width="72"
+              height="72"
+              decoding="async"
+            />
           </div>
-        </div>
-        <div
-          class="lb__expertise-item cf_service_card has_fade_anim"
-          data-fade-from="left"
-          data-speed="0.95"
-        >
-          <div class="lb__expertise-content">
-            <div class="lb__expertise-heading">
-              <h4 class="lb__expertise-title">{t("index.services.2.title")}</h4>
-            </div>
-            <div class="lb__expertise-body">
-              <div class="lb__expertise-bthumb">
-                <img src="/expertise/cloud-upload.png" alt="expert" loading="lazy" width="128" height="128" />
-              </div>
-            </div>
-            <div class="lb__expertise-footer">
-              <p>{t("index.services.2.text")}</p>
-            </div>
-          </div>
-        </div>
-        <div
-          class="lb__expertise-item cf_service_card has_fade_anim"
-          data-fade-from="left"
-          data-speed="1.15"
-        >
-          <div class="lb__expertise-content">
-            <div class="lb__expertise-heading">
-              <h4 class="lb__expertise-title">{t("index.services.3.title")}</h4>
-            </div>
-            <div class="lb__expertise-body">
-              <div class="lb__expertise-bthumb">
-                <img src="/expertise/fingerprint.png" alt="expert" loading="lazy" width="128" height="128" />
-              </div>
-            </div>
-            <div class="lb__expertise-footer">
-              <p>{t("index.services.3.text")}</p>
-            </div>
-          </div>
-        </div>
-        <div
-          class="lb__expertise-item cf_service_card has_fade_anim"
-          data-fade-from="left"
-          data-speed=".95"
-        >
-          <div class="lb__expertise-content">
-            <div class="lb__expertise-heading">
-              <h4 class="lb__expertise-title">{t("index.services.4.title")}</h4>
-            </div>
-            <div class="lb__expertise-body">
-              <div class="lb__expertise-bthumb">
-                <img src="/expertise/users-class.png" alt="expert" loading="lazy" width="128" height="128" />
-              </div>
-            </div>
-            <div class="lb__expertise-footer">
-              <p>{t("index.services.4.text")}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+          <h4 class="service-card__title">{service.title}</h4>
+          <p class="service-card__text">{service.text}</p>
+        </article>
+      ))}
     </div>
   </div>
 </section>
-<!-- /Services section end  -->
+
+<style>
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 28px;
+    border-radius: 12px;
+    background: linear-gradient(
+      168deg,
+      var(--black-4) 0%,
+      var(--black-3) 100%
+    );
+    border: 1px solid var(--black-6);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .service-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+  }
+
+  .service-card__icon {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 24px;
+    flex-shrink: 0;
+  }
+
+  .service-card__icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .service-card__title {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--white);
+    margin-bottom: 16px;
+    min-height: 3.9em;
+  }
+
+  .service-card__text {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--gray-4);
+    margin: 0;
+    padding: 0;
+  }
+
+  :global(.light) .service-card {
+    background: linear-gradient(
+      168deg,
+      var(--white-3) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    border-color: var(--gray-13);
+  }
+
+  :global(.light) .service-card:hover {
+    background-color: var(--white-3);
+    border-color: var(--secondary);
+  }
+
+  :global(.light) .service-card__title {
+    color: var(--black-2);
+  }
+
+  :global(.light) .service-card__text {
+    color: var(--gray);
+  }
+
+  @media (max-width: 1199px) {
+    .service-card {
+      padding: 28px 24px;
+    }
+
+    .service-card__title {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .service-card__title {
+      min-height: unset;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .service-card {
+      padding: 24px 20px;
+    }
+  }
+</style>

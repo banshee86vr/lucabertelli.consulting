@@ -9,6 +9,9 @@ if (process.env.NODE_ENV !== "production") {
 // https://astro.build/config
 export default defineConfig({
   output: "server",
+  legacy: {
+    collectionsBackwardsCompat: true,
+  },
   adapter: cloudflare({
     imageService: "cloudflare",
   }),
@@ -24,12 +27,14 @@ export default defineConfig({
         },
       },
       cssCodeSplit: true,
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            'gsap': ['gsap'],
-            'vendor': ['jquery', 'bootstrap'],
-          },
+      rollupOptions: {},
+    },
+    server: {
+      proxy: {
+        "/__eventitech_proxy": {
+          target: "https://api.eventitech.it",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/__eventitech_proxy/, ""),
         },
       },
     },

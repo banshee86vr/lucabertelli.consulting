@@ -1,4 +1,5 @@
 ---
+import { env } from "cloudflare:workers";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
@@ -28,7 +29,7 @@ try {
 		!apiPassword ||
 		apiPassword === ""
 	) {
-		const lbKV = Astro.locals?.runtime?.env?.lb_consulting;
+		const lbKV = env.lb_consulting;
 		if (lbKV) {
 			console.debug(
 				"[Tickets] Env vars not found or empty, trying Cloudflare KV",
@@ -62,11 +63,15 @@ try {
 		apiPassword !== ""
 	) {
 		console.debug("[Tickets] Fetching events from API...");
-		const headers = new Headers({
-			Authorization: `Basic ${btoa(`${apiUsername}:${apiPassword}`)}`,
-		});
-		const fetchedEvents = await fetch(apiUrl, {
-			headers: headers,
+		const authHeaderValue = `Basic ${btoa(`${apiUsername}:${apiPassword}`)}`;
+
+		let fetchUrl = apiUrl;
+		if (import.meta.env.DEV) {
+			const apiPath = new URL(apiUrl).pathname;
+			fetchUrl = `http://localhost:4321/__eventitech_proxy${apiPath}`;
+		}
+		const fetchedEvents = await fetch(fetchUrl, {
+			headers: new Headers({ Authorization: authHeaderValue }),
 		});
 
 		console.debug("[Tickets] API Response Status:", fetchedEvents.status);
