@@ -9688,10 +9688,17 @@ body.modal-open .progress-wrap {
 }
 .offcanvas__menu-wrapper.mean-container .mean-nav ul li a.mean-expand {
   width: 54px;
-  height: 54px;
+  height: auto;
+  top: 0;
+  bottom: 0;
+  margin-top: 0;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
   justify-content: center;
   font-weight: 300;
   border: none !important;
+  box-sizing: border-box;
 }
 .light .offcanvas__menu-wrapper.mean-container .mean-nav ul li a.mean-expand {
   background-color: var(--white-4);
@@ -9701,7 +9708,7 @@ body.modal-open .progress-wrap {
 }
 @media only screen and (max-width: 767px) {
   .offcanvas__menu-wrapper.mean-container .mean-nav ul li a.mean-expand {
-    height: 50px;
+    height: auto;
   }
 }
 .offcanvas__menu-wrapper.mean-container .mean-nav ul li a.mean-expand:hover {
