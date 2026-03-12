@@ -2,31 +2,23 @@
 import { render } from "astro:content";
 import PostLayout from "../../../layouts/Post.astro";
 import { getBlogPosts } from "../../../content/config";
-import type { BlogPost } from "../../../content/config"; // Assicurati di importare il tipo corretto
+import type { BlogPost } from "../../../content/config";
 
-export const prerender = true;
+const { lang, slug } = Astro.params;
 
-export async function getStaticPaths() {
-  const pages: BlogPost[] = await getBlogPosts();
+const posts = await getBlogPosts();
+const page = posts.find(
+  (p) => p.blog_slug === slug && (p.data.lang === lang || (!p.data.lang && lang === "en")),
+) as BlogPost | undefined;
 
-  const paths = pages.map((page) => {
-    return {
-      params: { lang: page.data.lang || "en", slug: page.blog_slug },
-      props: page,
-    };
-  });
-
-  return paths; // Restituisci direttamente l'array paths
+if (!page) {
+  return Astro.redirect(`/${lang || "en"}/blog/`);
 }
 
-const page: BlogPost = Astro.props as BlogPost; // Cast esplicito a BlogPost
-
-// Destruttura le proprietà necessarie da page.data
 const { title, image, subtitle, date, category, tags } = page.data;
-const lang =
+const resolvedLang =
 	page.data.lang === "en" || page.data.lang === "it" ? page.data.lang : "en";
 
-// page is a full blog entry (getBlogPosts spreads ...post); render() expects that shape
 const { Content } = await render(
 	page as unknown as import("astro:content").CollectionEntry<"blog">,
 );
@@ -39,7 +31,7 @@ const { Content } = await render(
   date={new Date(date)}
   category={category}
   tags={tags}
-  lang={lang}
+  lang={resolvedLang}
 >
   <Content />
 </PostLayout>
