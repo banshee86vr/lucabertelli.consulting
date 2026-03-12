@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && rm -f .wrangler/deploy/config.json",
     "preview": "astro preview",
     "astro": "astro"
   },
