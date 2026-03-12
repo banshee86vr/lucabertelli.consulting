@@ -13,7 +13,7 @@ export default defineConfig({
     collectionsBackwardsCompat: true,
   },
   adapter: cloudflare({
-    imageService: "cloudflare",
+    imageService: "cloudflare-binding",
   }),
   platformProxy: {
     enabled: true,
