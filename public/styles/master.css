@@ -9710,6 +9710,13 @@ body.modal-open .progress-wrap {
   .offcanvas__menu-wrapper.mean-container .mean-nav ul li a.mean-expand {
     height: auto;
   }
+  /* Align plus icon with language flag row: consistent row height and image alignment */
+  .offcanvas__menu-wrapper.mean-container .mean-nav > ul > li {
+    min-height: 52px;
+  }
+  .offcanvas__menu-wrapper.mean-container .mean-nav ul li a:not(.mean-expand) img {
+    display: block;
+  }
 }
 .offcanvas__menu-wrapper.mean-container .mean-nav ul li a.mean-expand:hover {
   background: var(--secondary);
