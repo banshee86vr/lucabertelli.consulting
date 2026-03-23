@@ -30,7 +30,7 @@
     "astro": "^6.0.0",
     "astro-seo": "^1.0.0",
     "dotenv": "^17.2.1",
-    "typescript": "^5.9.2"
+    "typescript": "^6.0.0"
   },
   "devDependencies": {
     "semantic-release": "^25.0.0",
