@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
+import sitemap from "@astrojs/sitemap";
 import * as dotenv from "dotenv";
 
 if (process.env.NODE_ENV !== "production") {
@@ -8,7 +9,9 @@ if (process.env.NODE_ENV !== "production") {
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://lucabertelli.consulting",
   output: "server",
+  integrations: [sitemap()],
   legacy: {
     collectionsBackwardsCompat: true,
   },

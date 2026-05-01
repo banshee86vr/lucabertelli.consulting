@@ -3,6 +3,8 @@
 
 declare namespace NodeJS {
   interface ProcessEnv {
+    /** Optional override for canonical URLs (default: https://lucabertelli.consulting) */
+    PUBLIC_SITE_URL?: string;
     SECRET_EVENTS_API_PASSWORD: string;
     SECRET_EVENTS_API_URL: string;
     SECRET_EVENTS_API_USERNAME: string;

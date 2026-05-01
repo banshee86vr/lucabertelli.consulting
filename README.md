@@ -99,6 +99,10 @@ To run this project locally, follow these steps:
 
    Open your browser and visit [http://localhost:4321](http://localhost:4321) to view the site locally. 🌐
 
+## SEO & discoverability
+
+After changes to metadata, sitemaps, or structured data, use the post-deploy checklist and KPIs in [docs/SEO-KPI.md](docs/SEO-KPI.md). The site ships with `sitemap-index.xml` (from `@astrojs/sitemap`), [public/robots.txt](public/robots.txt), [public/llms.txt](public/llms.txt) for agent-oriented discovery, and per-route metadata in [src/layouts/Common.astro](src/layouts/Common.astro). Optional: set `PUBLIC_SITE_URL` if the canonical origin differs from `https://lucabertelli.consulting`.
+
 ## Contributions
 
 If you have suggestions, improvements, or would like to report issues, feel free to open an [issue](https://github.com/banshee86vr/lucabertelli.consulting/issues) or submit a [pull request](https://github.com/banshee86vr/lucabertelli.consulting/pulls). 🙌

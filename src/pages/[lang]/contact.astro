@@ -4,6 +4,12 @@ import Tickets from "../../components/Tickets.astro";
 
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
+export const prerender = true;
+
+export async function getStaticPaths() {
+	return [{ params: { lang: "en" } }, { params: { lang: "it" } }];
+}
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
@@ -42,7 +48,7 @@ const t = useTranslations(lang);
 // }
 ---
 
-<BaseLayout>
+<BaseLayout title={t("seo.contact.title")} description={t("seo.contact.description")}>
   <!-- Contact area start  -->
   <section class="lb__innercontact plr-50 pt-120 pb-120">
     <div class="lb__innercontact-top">
@@ -53,8 +59,9 @@ const t = useTranslations(lang);
           </h1>
           <div class="cf_text lb__innercontact-dis">
             <p style="padding-right: 75px">{t('contact.invite')}<a
-                href="www.linkedin.com/in/luca-bertelli-a1413b77"
-                target="_blank">LinkedIn</a
+                href="https://www.linkedin.com/in/luca-bertelli-a1413b77"
+                target="_blank"
+                rel="noopener noreferrer">LinkedIn</a
               >.
             </p>
           </div>

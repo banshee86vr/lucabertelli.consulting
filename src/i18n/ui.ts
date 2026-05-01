@@ -6,9 +6,29 @@ export const ui = {
     'nav.lang': '/lang/en.png',
     'index.hi': "Hi 🖐 I'm Luca",
     'index.bio': 'As a Cloud Native consultant and engineer, I assist customers who desire to adopt the latest cloud technologies in a sustainable and scalable way. Based on a long hands-on experience gained with customers operating in the Fintech, Insurtech, and Industrial sectors. My primary focus is on listening to understand needs and solve tangible problems. Specializing in Platform Engineering, I propose solutions that provide a solid foundation for a smooth user experience, optimizing the processes and making them more efficient and safe.',
+    'seo.site.title': 'Luca Bertelli | Cloud Native Consulting',
+    'seo.site.description':
+      'Cloud Native consultant and engineer: Platform Engineering, Kubernetes, SecDevOps, CI/CD, and training for teams adopting sustainable cloud practices.',
+    'seo.home.title': 'Luca Bertelli | Cloud Native Consultant & Engineer',
+    'seo.home.description':
+      'Cloud Native consulting and engineering (also known as LB Consulting / lb.consulting) for Platform Engineering, Kubernetes, and SecDevOps — assessment, migration, toolchain design, and training.',
+    'seo.blog.title': 'Blog | Luca Bertelli — Cloud Native',
+    'seo.blog.description':
+      'Articles on Kubernetes, platform engineering, DevOps, and cloud-native practices.',
+    'seo.contact.title': 'Contact | Luca Bertelli Consulting',
+    'seo.contact.description':
+      'Get in touch for Cloud Native consulting, Platform Engineering, and collaboration opportunities.',
+    'seo.privacy.title': 'Privacy Policy | Luca Bertelli Consulting',
+    'seo.privacy.description':
+      'Privacy policy for lucabertelli.consulting: how personal data is processed under GDPR.',
+    'seo.cookies.title': 'Cookie Policy | Luca Bertelli Consulting',
+    'seo.cookies.description':
+      'Cookie policy for lucabertelli.consulting: essential cookies and third-party embeds.',
     'index.certification.title': "Learning Paths: Earned badges",
     'index.certification.subtitle': "Certifications",
     'index.certification.list': "Achievement",
+    'index.certification.searchHint':
+      "Looking for a certified professional? This section lists my active certifications and official credential pages.",
     'index.experience.skills': 'Skills',
     'index.experience.experiences': 'Experiences',
     'index.experience.services': 'Services',
@@ -163,9 +183,29 @@ export const ui = {
     'nav.lang': '/lang/it.png',
     'index.hi': "Ciao 🖐 sono Luca",
     'index.bio': "Come consulente ed ingegnere Cloud Native, supporto le realtà che cercano di adottare in modo sostenibile e scalabile le ultime tecnologie cloud disponibili. Basandomi su una prolungata esperienza diretta maturata con clienti operanti nei settori Fintech, Insurtech e Industrial mi pongo l'obiettivo di ascoltare per comprendere le esigenze e risolvere i problemi concreti. Specializzato nel Platform Engineering, propongo soluzioni che forniscono una base solida per poter ottenere un'esperienza utente efficace ed ottimizzare allo stesso tempo i processi rendendoli più efficenti e sicuri.",
+    'seo.site.title': 'Luca Bertelli | Consulenza Cloud Native',
+    'seo.site.description':
+      'Consulente e ingegnere Cloud Native: Platform Engineering, Kubernetes, SecDevOps, CI/CD e formazione per team che adottano il cloud in modo sostenibile.',
+    'seo.home.title': 'Luca Bertelli | Consulente & Ingegnere Cloud Native',
+    'seo.home.description':
+      'Consulenza e ingegneria Cloud Native (anche come LB Consulting / lb.consulting): Platform Engineering, Kubernetes e SecDevOps — assessment, migrazione, toolchain e formazione.',
+    'seo.blog.title': 'Blog | Luca Bertelli — Cloud Native',
+    'seo.blog.description':
+      'Articoli su Kubernetes, platform engineering, DevOps e pratiche cloud-native.',
+    'seo.contact.title': 'Contatti | Luca Bertelli Consulting',
+    'seo.contact.description':
+      'Contatti per consulenza Cloud Native, Platform Engineering e collaborazioni.',
+    'seo.privacy.title': 'Privacy Policy | Luca Bertelli Consulting',
+    'seo.privacy.description':
+      'Informativa privacy di lucabertelli.consulting: trattamento dei dati personali e GDPR.',
+    'seo.cookies.title': 'Cookie Policy | Luca Bertelli Consulting',
+    'seo.cookies.description':
+      'Cookie policy di lucabertelli.consulting: cookie tecnici e contenuti incorporati di terze parti.',
     'index.certification.title': "Percorsi formativi: Badge ottenuti",
     'index.certification.subtitle': "Certificazioni",
     'index.certification.list': "Conseguimenti",
+    'index.certification.searchHint':
+      "Cerchi un professionista certificato? In questa sezione trovi le mie certificazioni attive e i link ufficiali delle credenziali.",
     'index.experience.skills': 'Skills',
     'index.experience.experiences': 'Esperienze professionali',
     'index.experience.services': 'Servizi',

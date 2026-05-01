@@ -4,14 +4,55 @@ import Experience from "../../components/Experience.astro";
 import Certifications from "../../components/Certifications.astro";
 import Services from "../../components/Services.astro";
 import Tickets from "../../components/Tickets.astro";
+import { getCollection } from "astro:content";
 
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { buildCertificationCredentials, buildServiceOffers } from "../../utils/jsonLd";
+import type { UiLang } from "../../utils/seo";
 
-const lang = getLangFromUrl(Astro.url);
+export const prerender = true;
+
+export async function getStaticPaths() {
+	return [{ params: { lang: "en" } }, { params: { lang: "it" } }];
+}
+
+const lang = getLangFromUrl(Astro.url) as UiLang;
 const t = useTranslations(lang);
+
+const serviceOffers = [
+	{ name: t("index.services.1.title"), description: t("index.services.1.text") },
+	{ name: t("index.services.2.title"), description: t("index.services.2.text") },
+	{ name: t("index.services.3.title"), description: t("index.services.3.text") },
+	{ name: t("index.services.4.title"), description: t("index.services.4.text") },
+];
+const servicesJsonLd = buildServiceOffers(serviceOffers, lang);
+const certifications = await getCollection("certifications");
+const credentialsJsonLd = buildCertificationCredentials(
+	certifications.map((entry) => ({
+		title: entry.data.title,
+		url: entry.data.url,
+		issueDate: entry.data.issueDate,
+	})),
+);
 ---
 
-<BaseLayout>
+<BaseLayout
+	title={t("seo.home.title")}
+	description={t("seo.home.description")}
+	ogImage="/about/lucabertelli.jpeg"
+	keywords={[
+		"Luca Bertelli",
+		"LB Consulting",
+		"lb.consulting",
+		"Cloud Native consultant",
+		"Kubernetes certified",
+		"HashiCorp certified",
+		"Terraform certified",
+		"GitLab certified",
+		"Kong certified",
+	]}
+	jsonLdExtra={[...servicesJsonLd, ...credentialsJsonLd]}
+>
   <!-- Hero area start -->
   <section class="about__hero plr-50 pt-100 pb-120">
     <div class="container">
@@ -31,8 +72,8 @@ const t = useTranslations(lang);
         </div>
         <div class="col-lg-8">
           <div class="about__hero-right">
-            <h1 class="lb__hero-subtitle has_char_anim" data-on-scroll="0">{t('index.hi')}</h1>
-            <h2
+            <p class="lb__hero-subtitle has_char_anim" data-on-scroll="0">{t('index.hi')}</p>
+            <h1
               class="lb__hero-title has_fade_anim"
               data-on-scroll="0"
               data-delay=".6"
@@ -45,7 +86,7 @@ const t = useTranslations(lang);
                 <span>Developer</span>
               </span>
               <span id="typed"></span>
-            </h2>
+            </h1>
             <div class="cf_text has_fade_anim">
               <p style="max-width:100%">{t('index.bio')}</p>
             </div>

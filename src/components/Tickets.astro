@@ -111,27 +111,22 @@ try {
   <div class="container">
     <div class="lb__ticket-topwrap">
       <div class="lb__ticket-header-container">
-        <h1 class="lb__innerevent-title2 has_char_anim">
+        <h2 class="lb__innerevent-title2 has_char_anim">
           {t("index.tickets.title")}
-        </h1>
+        </h2>
         <div class="lb__ticket-logo-container">
           <span class="lb__ticket-powered-label">powered by</span>
           <a
             href="https://eventitech.it/"
-            target="_new"
+            target="_blank"
+            rel="noopener noreferrer"
             class="lb__ticket-logo-link"
+            aria-label="Powered by eventitech"
           >
-            <picture>
-              <source media="(max-width: 768px)" srcset="/tickets/eventitech.png?format=webp&w=280 1x, /tickets/eventitech.png?format=webp&w=560 2x" type="image/webp" />
-              <source media="(max-width: 768px)" srcset="/tickets/eventitech.png?w=280 1x, /tickets/eventitech.png?w=560 2x" />
-              <source srcset="/tickets/eventitech.png?format=webp&w=400 1x, /tickets/eventitech.png?format=webp&w=800 2x" type="image/webp" />
-              <img
-                class="has_fade_anim"
-                src="/tickets/eventitech.png?w=400"
-                alt="Eventitech"
-                decoding="async"
-              />
-            </picture>
+            <span class="lb__ticket-eventitech-mark has_fade_anim" aria-hidden="true">
+              ▸
+            </span>
+            <span class="lb__ticket-eventitech-name">eventitech</span>
           </a>
         </div>
       </div>
@@ -196,3 +191,62 @@ try {
 <!-- Ticket area end -->
   )
 }
+
+<style>
+  .lb__ticket-logo-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .lb__ticket-powered-label {
+    order: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    opacity: 0.9;
+  }
+
+  .lb__ticket-logo-link {
+    order: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+  }
+
+  .lb__ticket-eventitech-mark {
+    color: #17a34a;
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .lb__ticket-eventitech-name {
+    color: inherit;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 25px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+  }
+
+  @media (max-width: 768px) {
+    .lb__ticket-logo-container {
+      gap: 8px;
+    }
+
+    .lb__ticket-powered-label {
+      font-size: 0.85rem;
+    }
+
+    .lb__ticket-eventitech-mark {
+      font-size: 1.5rem;
+    }
+
+    .lb__ticket-eventitech-name {
+      font-size: 1.15rem;
+    }
+  }
+</style>
