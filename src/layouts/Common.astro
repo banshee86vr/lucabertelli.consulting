@@ -1,228 +1,337 @@
 ---
-const title = "lucabertelli.consulting";
-
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import CookieBanner from "../components/CookieBanner.astro";
 
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
-const lang = getLangFromUrl(Astro.url);
+import { SEO } from "astro-seo";
+import { absoluteUrl, alternatesForPathname } from "../utils/seo";
+import type { UiLang } from "../utils/seo";
+import { buildPersonAndProfessionalService } from "../utils/jsonLd";
+
+export interface Props {
+	title?: string;
+	description?: string;
+	ogImage?: string;
+	ogType?: "website" | "article";
+	noindex?: boolean;
+	keywords?: string[];
+	/** Full canonical URL; defaults to current path on SITE_URL */
+	canonical?: string;
+	articlePublishedTime?: string;
+	articleModifiedTime?: string;
+	articleSection?: string;
+	articleTags?: string[];
+	/** Extra schema.org nodes merged into @graph (e.g. BlogPosting, Service) */
+	jsonLdExtra?: Record<string, unknown>[];
+}
+
+const {
+	title: titleProp,
+	description: descriptionProp,
+	ogImage,
+	ogType = "website",
+	noindex = false,
+	keywords = [],
+	canonical: canonicalProp,
+	articlePublishedTime,
+	articleModifiedTime,
+	articleSection,
+	articleTags,
+	jsonLdExtra = [],
+} = Astro.props;
+
+const lang = getLangFromUrl(Astro.url) as UiLang;
 const t = useTranslations(lang);
 
 const homeSlug = `/${lang || ""}`;
 
-import { SEO } from "astro-seo";
+const pathname =
+	Astro.url.pathname.endsWith("/") && Astro.url.pathname !== "/"
+		? Astro.url.pathname.slice(0, -1)
+		: Astro.url.pathname;
+const canonical =
+	canonicalProp ?? absoluteUrl(pathname === "" ? "/en" : pathname);
+
+const pageTitle = titleProp ?? t("seo.site.title");
+const metaDescription = descriptionProp ?? t("seo.site.description");
+
+const defaultOg = "/about/lucabertelli.jpeg";
+const ogImageAbsolute = absoluteUrl(ogImage ?? defaultOg);
+
+const alternates = alternatesForPathname(pathname);
+const languageAlternates = alternates
+	? [
+			{ href: alternates.en, hrefLang: "en" },
+			{ href: alternates.it, hrefLang: "it" },
+			{ href: alternates.xDefault, hrefLang: "x-default" },
+		]
+	: undefined;
+
+const baseGraph = buildPersonAndProfessionalService(lang);
+const graph = [...baseGraph, ...jsonLdExtra];
+const jsonLdPayload = JSON.stringify({
+	"@context": "https://schema.org",
+	"@graph": graph,
+});
 ---
+
 <!-- @ts-nocheck - false positives on media HTML attribute -->
 <html lang={lang}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Luca Bertelli Consulting Services" />
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Critical CSS - Inline critical above-the-fold styles -->
-    <link rel="stylesheet" href="/styles/critical.css" />
-    <link rel="stylesheet" href="/styles/fonts.css" />
+		<!-- Critical CSS - Inline critical above-the-fold styles -->
+		<link rel="stylesheet" href="/styles/critical.css" />
+		<link rel="stylesheet" href="/styles/fonts.css" />
 
-    <!-- Preload key resources for early discovery -->
-    <link rel="preload" href="/styles/bootstrap.min.css" as="style" />
-    <link rel="preload" href="/styles/all.min.css" as="style" />
+		<!-- Preload key resources for early discovery -->
+		<link rel="preload" href="/styles/bootstrap.min.css" as="style" />
+		<link rel="preload" href="/styles/all.min.css" as="style" />
 
-    <!-- Preconnect and DNS prefetch for external CDN resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://code.jquery.com" />
-    <link rel="preconnect" href="https://code.jquery.com" />
+		<!-- Preconnect and DNS prefetch for external CDN resources -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="dns-prefetch" href="https://code.jquery.com" />
+		<link rel="preconnect" href="https://code.jquery.com" />
 
-    <!-- Core CSS - Load critical stylesheets -->
-    <link rel="stylesheet" href="/styles/bootstrap.min.css" />
-    <link rel="stylesheet" href="/styles/all.min.css" />
+		<!-- Core CSS - Load critical stylesheets -->
+		<link rel="stylesheet" href="/styles/bootstrap.min.css" />
+		<link rel="stylesheet" href="/styles/all.min.css" />
 
-    <!-- Non-critical CSS - Defer loading until after page interactive -->
-    <link rel="stylesheet" href="/styles/swiper-bundle.min.css" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="/styles/progressbar.css" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="/styles/meanmenu.min.css" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="/styles/master.css" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="/styles/style.css" media="print" onload="this.media='all'" />
+		<!-- Non-critical CSS - Defer loading until after page interactive -->
+		<link rel="stylesheet" href="/styles/swiper-bundle.min.css" media="print" onload="this.media='all'" />
+		<link rel="stylesheet" href="/styles/progressbar.css" media="print" onload="this.media='all'" />
+		<link rel="stylesheet" href="/styles/meanmenu.min.css" media="print" onload="this.media='all'" />
+		<link rel="stylesheet" href="/styles/master.css" media="print" onload="this.media='all'" />
+		<link rel="stylesheet" href="/styles/style.css" media="print" onload="this.media='all'" />
 
-    <SEO
-      title={title}
-      description={t('index.hi')}
-      openGraph={{
-        basic: {
-          title: "lucabertelli.consulting",
-          type: "website",
-          image: "/about/lucabertelli.jpg",
-        }
-      }}
-    />
+		<SEO
+			title={pageTitle}
+			titleDefault={t("seo.site.title")}
+			description={metaDescription}
+			canonical={canonical}
+			noindex={noindex}
+			languageAlternates={languageAlternates}
+			openGraph={{
+				basic: {
+					title: pageTitle,
+					type: ogType,
+					image: ogImageAbsolute,
+					url: canonical,
+				},
+				optional: {
+					description: metaDescription,
+					locale: lang === "it" ? "it_IT" : "en_US",
+					siteName: "Luca Bertelli Consulting",
+				},
+				image: {
+					alt: "Luca Bertelli",
+				},
+				article:
+					ogType === "article" && articlePublishedTime
+						? {
+								publishedTime: articlePublishedTime,
+								modifiedTime: articleModifiedTime ?? articlePublishedTime,
+								section: articleSection,
+								tags: articleTags,
+							}
+						: undefined,
+			}}
+			twitter={{
+				card: "summary_large_image",
+				title: pageTitle,
+				description: metaDescription,
+				image: ogImageAbsolute,
+				imageAlt: pageTitle,
+			}}
+			extend={{
+				meta:
+					keywords.length > 0
+						? [{ name: "keywords", content: keywords.join(", ") }]
+						: [],
+			}}
+		/>
 
-    <title>{title}</title>
+		<!-- Fav Icon -->
+		<link rel="icon" type="image/x-icon" href="/favicon.svg" />
 
-    <!-- Fav Icon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.svg" />
+		<script type="application/ld+json" set:html={jsonLdPayload} />
 
-    <!-- Loading Overlay Critical Styles -->
-    <style is:inline>
-      html {
-        overflow-y: scroll;
-      }
+		<!-- Loading Overlay Critical Styles -->
+		<style is:inline>
+			html {
+				overflow-y: scroll;
+			}
 
-      .loading-overlay {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        background-color: #1c1d20 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        z-index: 99999 !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        transition: opacity 0.6s ease, visibility 0.6s ease !important;
-      }
+			.loading-overlay {
+				position: fixed !important;
+				top: 0 !important;
+				left: 0 !important;
+				width: 100% !important;
+				height: 100% !important;
+				background-color: #1c1d20 !important;
+				display: flex !important;
+				align-items: center !important;
+				justify-content: center !important;
+				z-index: 99999 !important;
+				opacity: 1 !important;
+				visibility: visible !important;
+				transition:
+					opacity 0.6s ease,
+					visibility 0.6s ease !important;
+			}
 
-      .loading-overlay.fade-out {
-        opacity: 0 !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-      }
+			.loading-overlay.fade-out {
+				opacity: 0 !important;
+				visibility: hidden !important;
+				pointer-events: none !important;
+			}
 
-      .loading-overlay__content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+			.loading-overlay__content {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
 
-      .loading-overlay__logo {
-        max-width: 130px;
-        max-height: 45px;
-        width: auto;
-        height: auto;
-      }
-    </style>
+			.loading-overlay__logo {
+				max-width: 130px;
+				max-height: 45px;
+				width: auto;
+				height: auto;
+			}
+		</style>
 
-    <!-- Loading Overlay Fade Out Script -->
-    <script is:inline>
-      // Fade out loading overlay 1 second after page is ready
-      window.addEventListener('load', function() {
-        setTimeout(() => {
-          const loadingOverlay = document.getElementById('loadingOverlay');
-          if (loadingOverlay) {
-            loadingOverlay.classList.add('fade-out');
-          }
-        }, 500);
-      });
-    </script>
-  </head>
+		<!-- Loading Overlay Fade Out Script -->
+		<script is:inline>
+			// Fade out loading overlay after page is ready
+			window.addEventListener("load", function () {
+				setTimeout(() => {
+					const loadingOverlay = document.getElementById("loadingOverlay");
+					if (loadingOverlay) {
+						loadingOverlay.classList.add("fade-out");
+					}
+				}, 500);
+			});
+		</script>
+	</head>
 
-  <body class="font-heading-estedad">
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-      <div class="loading-overlay__content">
-        <img src="/logo.png" alt="Loading" class="loading-overlay__logo" />
-      </div>
-    </div>
+	<body class="font-heading-estedad">
+		<!-- Loading Overlay -->
+		<div class="loading-overlay" id="loadingOverlay">
+			<div class="loading-overlay__content">
+				<img src="/logo.png" alt="" class="loading-overlay__logo" width="130" height="45" />
+			</div>
+		</div>
 
-    <div class="body-overlay"></div>
+		<div class="body-overlay"></div>
 
-    <!-- Sroll to top -->
-    <div class="progress-wrap">
-      <svg
-        class="progress-circle svg-content"
-        width="100%"
-        height="100%"
-        viewBox="-1 -1 102 102"
-      >
-        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"></path>
-      </svg>
-    </div>
+		<!-- Sroll to top -->
+		<div class="progress-wrap">
+			<svg
+				class="progress-circle svg-content"
+				width="100%"
+				height="100%"
+				viewBox="-1 -1 102 102"
+			>
+				<path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"></path>
+			</svg>
+		</div>
 
-    <div class="has-smooth" id="has_smooth"></div>
-    <div id="smooth-wrapper">
-      <div id="smooth-content">
-        <div class="body-wrapper">
-          <!-- Header area start -->
-          <Header />
-          <!-- Header area end -->
-          <main>
-            <slot />
-          </main>
+		<div class="has-smooth" id="has_smooth"></div>
+		<div id="smooth-wrapper">
+			<div id="smooth-content">
+				<div class="body-wrapper">
+					<!-- Header area start -->
+					<Header />
+					<!-- Header area end -->
+					<main>
+						<slot />
+					</main>
 
-          <!-- Footer section start -->
-          <Footer />
-          <!-- Footer section end -->
-        </div>
-      </div>
+					<!-- Footer section start -->
+					<Footer />
+					<!-- Footer section end -->
+				</div>
+			</div>
 
-      <!-- Offcanves start -->
-    <div class="offcanvas__area">
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasOne">
-        <button class="offcanvas__close" data-bs-dismiss="offcanvas"><i class="fa-solid fa-xmark"></i></button>
-        <div class="offcanvas__body">
-          <div class="offcanvas__logo">
-            <a href={homeSlug}>
-              <img src="/logo.png">
-            </a>
-          </div>
+			<!-- Offcanves start -->
+			<div class="offcanvas__area">
+				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasOne">
+					<button class="offcanvas__close" data-bs-dismiss="offcanvas"
+						><i class="fa-solid fa-xmark"></i></button
+					>
+					<div class="offcanvas__body">
+						<div class="offcanvas__logo">
+							<a href={homeSlug}>
+								<img src="/logo.png" alt="" />
+							</a>
+						</div>
 
-          <div class="offcanvas__menu-area">
-            <div class="offcanvas__menu-wrapper">
-            </div>
-          </div>
-          <div class="offcanvas__media">
-            <h2 class="offcanvas__title">Follow</h2>
-            <ul>
-              <li>
-                <a href="https://github.com/banshee86vr" target="_blank"><i class="fa-brands fa-github"></i></a>
-              </li>
-              <li>
-                <a href="https://www.linkedin.com/in/luca-bertelli-a1413b77" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-              </li>
-              <li>
-                <a href="https://medium.com/@bertelli.luca" target="_blank"><i class="fa-brands fa-medium"></i></a>
-              </li>
-              <li>
-                <a href="https://www.credly.com/users/luca-bertelli" target="_blank"><i class="fa-solid fa-c"></i></a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Offcanves end -->
-    </div>
+						<div class="offcanvas__menu-area">
+							<div class="offcanvas__menu-wrapper"></div>
+						</div>
+						<div class="offcanvas__media">
+							<h2 class="offcanvas__title">Follow</h2>
+							<ul>
+								<li>
+									<a href="https://github.com/banshee86vr" target="_blank"
+										><i class="fa-brands fa-github"></i></a
+									>
+								</li>
+								<li>
+									<a
+										href="https://www.linkedin.com/in/luca-bertelli-a1413b77"
+										target="_blank"><i class="fa-brands fa-linkedin"></i></a
+									>
+								</li>
+								<li>
+									<a href="https://medium.com/@bertelli.luca" target="_blank"
+										><i class="fa-brands fa-medium"></i></a
+									>
+								</li>
+								<li>
+									<a href="https://www.credly.com/users/luca-bertelli" target="_blank"
+										><i class="fa-solid fa-c"></i></a
+									>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Offcanves end -->
+		</div>
 
-    <!-- Cookie Banner - Fixed floating box at bottom of viewport -->
-    <CookieBanner />
+		<!-- Cookie Banner - Fixed floating box at bottom of viewport -->
+		<CookieBanner />
 
-    <!-- Critical scripts (defer loading) -->
-    <script is:inline defer src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script is:inline defer src="/scripts/bootstrap.bundle.min.js"></script>
+		<!-- Critical scripts (defer loading) -->
+		<script is:inline defer src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+		<script is:inline defer src="/scripts/bootstrap.bundle.min.js"></script>
 
-    <!-- Non-critical scripts (async or defer) -->
-    <script is:inline defer src="/scripts/jquery.magnific-popup.min.js"></script>
-    <script is:inline defer src="/scripts/swiper-bundle.min.js"></script>
-    <script is:inline defer src="/scripts/counter.js"></script>
-    <script is:inline defer src="/scripts/typed.js"></script>
-    <script is:inline defer src="/scripts/mixitup.min.js"></script>
-    <script is:inline defer src="/scripts/progressbar.js"></script>
-    <script is:inline defer src="/scripts/gsap.min.js"></script>
-    <script is:inline defer src="/scripts/ScrollSmoother.min.js"></script>
-    <script is:inline defer src="/scripts/ScrollToPlugin.min.js"></script>
-    <script is:inline defer src="/scripts/ScrollTrigger.min.js"></script>
-    <script is:inline defer src="/scripts/SplitText.min.js"></script>
-    <script is:inline defer src="/scripts/TweenMax.min.js"></script>
-    <script is:inline defer src="/scripts/jquery.meanmenu.min.js"></script>
-    <script is:inline defer src="/scripts/tilt.jquery.min.js"></script>
-    <script is:inline defer src="/scripts/beforeafter.jquery-1.0.0.min.js"></script>
-    <script is:inline defer src="/scripts/basictable.min.js"></script>
-    <script is:inline defer src="/scripts/backToTop.js"></script>
-    <script is:inline defer src="/scripts/main.js"></script>
-    <script is:inline defer src="/scripts/error-handling.js"></script>
-    <script is:inline defer src="/scripts/offcanvas.js"></script>
-  </body>
+		<!-- Non-critical scripts (async or defer) -->
+		<script is:inline defer src="/scripts/jquery.magnific-popup.min.js"></script>
+		<script is:inline defer src="/scripts/swiper-bundle.min.js"></script>
+		<script is:inline defer src="/scripts/counter.js"></script>
+		<script is:inline defer src="/scripts/typed.js"></script>
+		<script is:inline defer src="/scripts/mixitup.min.js"></script>
+		<script is:inline defer src="/scripts/progressbar.js"></script>
+		<script is:inline defer src="/scripts/gsap.min.js"></script>
+		<script is:inline defer src="/scripts/ScrollSmoother.min.js"></script>
+		<script is:inline defer src="/scripts/ScrollToPlugin.min.js"></script>
+		<script is:inline defer src="/scripts/ScrollTrigger.min.js"></script>
+		<script is:inline defer src="/scripts/SplitText.min.js"></script>
+		<script is:inline defer src="/scripts/TweenMax.min.js"></script>
+		<script is:inline defer src="/scripts/jquery.meanmenu.min.js"></script>
+		<script is:inline defer src="/scripts/tilt.jquery.min.js"></script>
+		<script is:inline defer src="/scripts/beforeafter.jquery-1.0.0.min.js"></script>
+		<script is:inline defer src="/scripts/basictable.min.js"></script>
+		<script is:inline defer src="/scripts/backToTop.js"></script>
+		<script is:inline defer src="/scripts/main.js"></script>
+		<script is:inline defer src="/scripts/error-handling.js"></script>
+		<script is:inline defer src="/scripts/offcanvas.js"></script>
+	</body>
 </html>

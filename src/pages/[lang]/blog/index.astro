@@ -1,12 +1,13 @@
 ---
 import BaseLayout from "../../../layouts/Common.astro";
-import { getLangFromUrl } from "../../../i18n/utils";
+import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 import { getBlogPosts } from "../../../content/config";
 import Tickets from "../../../components/Tickets.astro";
 
 export const prerender = true;
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const tag = Astro.url.searchParams.get("tag") || "";
 
 var posts = (await getBlogPosts())
@@ -28,7 +29,7 @@ export async function getStaticPaths() {
 }
 ---
 
-<BaseLayout>
+<BaseLayout title={t("seo.blog.title")} description={t("seo.blog.description")}>
   <div class="main-blog__area pt-130 pt-120 pb-120">
     <div class="container ptf-0">
       <div class="row">

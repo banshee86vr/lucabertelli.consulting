@@ -2,6 +2,12 @@
 import BaseLayout from "../../layouts/Common.astro";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
+export const prerender = true;
+
+export async function getStaticPaths() {
+	return [{ params: { lang: "en" } }, { params: { lang: "it" } }];
+}
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
@@ -16,7 +22,7 @@ const lastUpdatedText = lang === 'it'
   : `Last updated: ${formattedDate}`;
 ---
 
-<BaseLayout>
+<BaseLayout title={t("seo.cookies.title")} description={t("seo.cookies.description")}>
   <section class="cookies__area plr-50 pt-120 pb-120">
     <div class="container">
       <div class="row">

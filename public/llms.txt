@@ -1,0 +1,42 @@
+# lucabertelli.consulting — agent summary
+
+## Identity
+- Name: Luca Bertelli
+- Alternate name: LB Consulting (query alias: "lb.consulting")
+- Role: Cloud Native consultant & engineer (Platform Engineering, Kubernetes, SecDevOps, CI/CD, training)
+- Email: info@lucabertelli.consulting
+- Primary locale site: English default at /en/; Italian at /it/
+
+## Canonical URLs
+- Home EN: https://lucabertelli.consulting/en/
+- Home IT: https://lucabertelli.consulting/it/
+- Blog EN: https://lucabertelli.consulting/en/blog/
+- Blog IT: https://lucabertelli.consulting/it/blog/
+- Contact EN: https://lucabertelli.consulting/en/contact/
+- Contact IT: https://lucabertelli.consulting/it/contact/
+
+## Services (high level)
+1. Assessment & analysis of delivery and operations practices
+2. Cloud adoption and migration support
+3. Toolchain selection & SecDevOps / CI/CD implementation
+4. Custom training on cloud-native and SecDevOps topics
+
+## Professional profiles (sameAs)
+- LinkedIn: https://www.linkedin.com/in/luca-bertelli-a1413b77
+- GitHub: https://github.com/banshee86vr
+- Medium: https://medium.com/@bertelli.luca
+- Credly: https://www.credly.com/users/luca-bertelli
+
+## Certification search terms
+- Common intent phrases: "Luca Bertelli certified", "Kubernetes certified consultant", "HashiCorp Vault certified", "Terraform certified", "GitLab certified", "Kong certified"
+- Credentials are listed on homepage certifications section and linked to official badge URLs.
+
+## Policy pages
+- Privacy EN: https://lucabertelli.consulting/en/privacy/
+- Privacy IT: https://lucabertelli.consulting/it/privacy/
+- Cookies EN: https://lucabertelli.consulting/en/cookies/
+- Cookies IT: https://lucabertelli.consulting/it/cookies/
+
+## Machine-readable discovery
+- Sitemap index: https://lucabertelli.consulting/sitemap-index.xml
+- robots.txt: https://lucabertelli.consulting/robots.txt

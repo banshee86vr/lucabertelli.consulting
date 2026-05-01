@@ -24,6 +24,7 @@ const t = useTranslations(lang);
             <div class="cols-2">
               <div class="line-left">
                 <p>{t('index.certification.list')}</p>
+                <p class="lb-award__search-hint">{t("index.certification.searchHint")}</p>
               </div>
               <img src="/about/shape-5.png" alt="shape" class="shape arrow" loading="lazy" width="128" height="128" />
             </div>
@@ -38,16 +39,16 @@ const t = useTranslations(lang);
                 <div class="lb-award__item has_fade_anim">
                   <p class="lb-award__number">{index + 1}</p>
                   <p class="lb-award__title">
-                    <a href={certification.data.url} target="_blank">
+                    <a href={certification.data.url} target="_blank" rel="noopener noreferrer">
                       {certification.data.title}
                     </a>
                   </p>
-                  <a href={certification.data.url} target="_blank">
+                  <a href={certification.data.url} target="_blank" rel="noopener noreferrer">
                     <img
                       src={`${certification.data.badgeImage}`}
                       style="max-height: 100px;max-height: 100px;"
                       class="show-dark"
-                      alt="Award Image"
+                      alt={certification.data.title}
                       loading="lazy"
                       width="100"
                       height="100"
@@ -68,3 +69,11 @@ const t = useTranslations(lang);
     </div>
   </section>
   <!-- Award section end -->
+
+<style>
+  .lb-award__search-hint {
+    margin-top: 8px;
+    opacity: 0.9;
+    max-width: 620px;
+  }
+</style>

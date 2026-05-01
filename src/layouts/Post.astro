@@ -3,28 +3,60 @@ import BaseLayout from "./Common.astro";
 import Tickets from "../components/Tickets.astro";
 
 import { getBlogPosts } from "../content/config";
-import { type CollectionEntry } from "astro:content";
-
-type Props = CollectionEntry<"blog">["data"];
-const { title, subtitle, date, category, image, tags, lang } = Astro.props;
+import type { CollectionEntry } from "astro:content";
 
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { absoluteUrl } from "../utils/seo";
+import { buildBlogPosting } from "../utils/jsonLd";
+import type { UiLang } from "../utils/seo";
+
+type BlogData = CollectionEntry<"blog">["data"];
+type Props = BlogData & { blogSlug: string };
+
+const { title, subtitle, date, category, image, tags, lang, blogSlug } =
+	Astro.props as Props;
 
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
 
+const canonicalUrl = absoluteUrl(`/${lang}/blog/${blogSlug}`);
+const blogPosting = buildBlogPosting({
+	headline: title,
+	description: subtitle,
+	datePublished: date,
+	image,
+	url: canonicalUrl,
+	inLanguage: lang as UiLang,
+	keywords: tags,
+});
+
 const blogEntries = (await getBlogPosts())
-  .filter(function (blogEntry) {
-    return blogEntry.data.tags.some((element: any) => {
-      return tags.indexOf(element) !== -1;
-    });
-  })
-  .filter((blogEntry) => blogEntry.data.lang == currentLang)
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 4);
+	.filter((blogEntry) => blogEntry.blog_slug !== blogSlug)
+	.filter(function (blogEntry) {
+		return blogEntry.data.tags.some((element: string) => {
+			return tags.indexOf(element) !== -1;
+		});
+	})
+	.filter((blogEntry) => blogEntry.data.lang == currentLang)
+	.sort(
+		(a, b) =>
+			b.data.date.valueOf() - a.data.date.valueOf(),
+	)
+	.slice(0, 4);
 ---
 
-<BaseLayout>
+<BaseLayout
+	title={`${title} | Luca Bertelli`}
+	description={subtitle}
+	ogImage={image}
+	ogType="article"
+	canonical={canonicalUrl}
+	articlePublishedTime={date.toISOString()}
+	articleModifiedTime={date.toISOString()}
+	articleSection={category}
+	articleTags={tags}
+	jsonLdExtra={[blogPosting]}
+>
   <!-- Blog Details section end -->
   <section class="blog__details__area pt-80 pb-30">
     <div class="container">
@@ -46,22 +78,22 @@ const blogEntries = (await getBlogPosts())
               <ul>
                 <li>
                   <span>{t('post.header.category')}</span>
-                  <a href="#">{category}</a>
+                  <span class="blog__meta-value">{category}</span>
                 </li>
                 <li>
                   <span>{t('post.header.language')}</span>
-                  <a href="#">{lang}</a>
+                  <span class="blog__meta-value">{lang}</span>
                 </li>
                 <li>
                   <span>{t('post.header.date')}</span>
-                  <a href="javascript:void(0)"
+                  <time class="blog__meta-value" datetime={date.toISOString()}
                     >{
                       date.toLocaleDateString(lang, {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
                       })
-                    }</a
+                    }</time
                   >
                 </li>
               </ul>
@@ -81,7 +113,7 @@ const blogEntries = (await getBlogPosts())
                 {
                   tags.map((tag, i) => (
                     <li>
-                      <a href={`/${lang}/blog?tag=${tag}`}>{tag}</a>
+                      <a href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}>{tag}</a>
                       {i < tags.length - 1 ? <span class="blog__tag-sep" aria-hidden="true"> / </span> : null}
                     </li>
                   ))
@@ -115,13 +147,13 @@ const blogEntries = (await getBlogPosts())
                 <article class="lb-blog__item blog-img-zoom">
                   <div class="thumb">
                     <a href={`/${lang}/blog/${post.blog_slug}`}>
-                      <img src={post.data.image} />
+                      <img src={post.data.image} alt="" />
                     </a>
                   </div>
                   <ul class="lb-blog__meta">
                     <li>
                       <span>
-                        {post.data.date.toLocaleString("en-US", {
+                        {post.data.date.toLocaleString(lang === "it" ? "it-IT" : "en-US", {
                           year: "numeric",
                           month: "short",
                           day: "numeric",
@@ -144,3 +176,10 @@ const blogEntries = (await getBlogPosts())
 
   <Tickets />
 </BaseLayout>
+
+<style>
+  .blog__meta-value {
+    font-weight: inherit;
+    color: inherit;
+  }
+</style>
