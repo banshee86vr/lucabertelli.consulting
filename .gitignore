@@ -196,3 +196,4 @@ dist
 .ionide
 
 .wrangler
+.vscode/settings.json

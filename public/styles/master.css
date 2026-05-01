@@ -19498,6 +19498,22 @@ body .btn4 {
     grid-template-columns: 1fr;
   }
 }
+.blog__related-grid .lb-blog__item .thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.blog__related-grid .lb-blog__item .thumb a {
+  position: absolute;
+  inset: 0;
+}
+.blog__related-grid .lb-blog__item .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin-bottom: 0;
+}
 .blog__related-grid .freelancer-blog__meta li a,
 .blog__related-grid .freelancer-blog__meta li span {
   font-size: 16px;
