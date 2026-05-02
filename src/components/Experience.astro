@@ -5,10 +5,22 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const contactSlug = `/${lang || ""}/contact`;
+const experienceMarqueeText = [
+  t("index.experience.skills"),
+  t("index.experience.experiences"),
+  t("index.experience.services"),
+  t("index.experience.educations"),
+].join(" / ");
 ---
 
 <!-- Experience area start -->
 <section class="about__experience-area pb-130">
+  <div class="about__experience-marquee" aria-hidden="true">
+    <div class="about__experience-marquee-track">
+      <h1>{experienceMarqueeText}</h1>
+      <h1>{experienceMarqueeText}</h1>
+    </div>
+  </div>
   <div class="container">
     <div class="row">
       <div class="col-md-4 col-sm-6">
@@ -155,6 +167,42 @@ const contactSlug = `/${lang || ""}/contact`;
 <!-- Notification area end -->
 
 <style>
+  .about__experience-marquee {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-bottom: 56px;
+    overflow: hidden;
+    border-block: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .about__experience-marquee-track {
+    width: max-content;
+    display: flex;
+    gap: 5rem;
+    padding: 16px 0;
+    will-change: transform;
+    animation: about-experience-marquee 28s linear infinite !important;
+  }
+
+  .about__experience-marquee h1 {
+    margin: 0;
+    font-size: clamp(2rem, 6vw, 6rem);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @keyframes about-experience-marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(calc(-50% - 2.5rem));
+    }
+  }
+
   .about__experience-area .row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
