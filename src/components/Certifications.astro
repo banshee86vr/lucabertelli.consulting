@@ -17,9 +17,9 @@ const t = useTranslations(lang);
       <div class="row">
         <div class="col-lg-9">
           <div class="sec-title-wrapper">
-            <h2 class="sec-sub-title has_text_reveal_anim">{t('index.certification.subtitle')}</h2>
+            <h2 class="sec-sub-title">{t('index.certification.subtitle')}</h2>
             <div class="about__award-title-pd">
-              <h3 class="about__award-title has_text_reveal_anim">{t('index.certification.title')}</h3>
+              <h3 class="about__award-title">{t('index.certification.title')}</h3>
             </div>
             <div class="cols-2">
               <div class="line-left">
@@ -36,7 +36,7 @@ const t = useTranslations(lang);
           <div class="lb-award__list">
             {
               certifications.map((certification, index) => (
-                <div class="lb-award__item has_fade_anim">
+                <div class="lb-award__item">
                   <p class="lb-award__number">{index + 1}</p>
                   <p class="lb-award__title">
                     <a href={certification.data.url} target="_blank" rel="noopener noreferrer">

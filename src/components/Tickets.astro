@@ -111,19 +111,19 @@ try {
   <div class="container">
     <div class="lb__ticket-topwrap">
       <div class="lb__ticket-header-container">
-        <h2 class="lb__innerevent-title2 has_char_anim">
+        <h2 class="lb__innerevent-title2">
           {t("index.tickets.title")}
         </h2>
         <div class="lb__ticket-logo-container">
-          <span class="lb__ticket-powered-label">powered by</span>
+          <span class="lb__ticket-powered-label">{t("tickets.poweredBy")}</span>
           <a
             href="https://eventitech.it/"
             target="_blank"
             rel="noopener noreferrer"
             class="lb__ticket-logo-link"
-            aria-label="Powered by eventitech"
+            aria-label={t("a11y.tickets.poweredBy")}
           >
-            <span class="lb__ticket-eventitech-mark has_fade_anim" aria-hidden="true">
+            <span class="lb__ticket-eventitech-mark" aria-hidden="true">
               ▸
             </span>
             <span class="lb__ticket-eventitech-name">eventitech</span>
@@ -136,9 +136,7 @@ try {
     {
       events.map((event: any) => (
         <div
-          class="lb__ticket-item bg-white has_fade_anim"
-          data-fade-from="left"
-          data-delay=".5"
+          class="lb__ticket-item bg-white"
         >
           <span class="circle-1" />
           <span class="circle-2" />
@@ -146,7 +144,7 @@ try {
             <div class="lb__ticket-upleft">
               <span class="categ">{event.groups[0]?.name}</span>
               <h2 class="title">
-                <a href={event.url} target="_new">
+                <a href={event.url} target="_blank" rel="noopener noreferrer">
                   {event.name}
                 </a>
               </h2>
@@ -166,7 +164,8 @@ try {
               <img
                 class="lb__ticket-line1"
                 src="/tickets/line-1.png"
-                alt="img-1"
+                alt=""
+                role="presentation"
               />
             </div>
             <div class="lb__ticket-upright">
@@ -178,8 +177,8 @@ try {
               <p>{event.location}</p>
             </div>
             <div class="lb__ticket-link">
-              <a href={event.url} target="_new">
-                Ticket <img src="/tickets/arrow-up.png" alt="arrow" />
+              <a href={event.url} target="_blank" rel="noopener noreferrer">
+                {t("tickets.cta")} <img src="/tickets/arrow-up.png" alt="" role="presentation" />
               </a>
             </div>
           </div>

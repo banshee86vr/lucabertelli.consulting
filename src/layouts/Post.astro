@@ -64,12 +64,12 @@ const blogEntries = (await getBlogPosts())
         <div class="col-xxl-12">
           <div class="blog__details-top cf_parallax_image">
             <img
+              class="blog__details-hero-img"
               src={image}
               alt={title}
+              fetchpriority="high"
+              decoding="async"
               data-speed="0.9"
-              style="    max-height: 400px;
-              width: 100%;
-              object-fit:cover;"
             />
           </div>
 
@@ -100,7 +100,7 @@ const blogEntries = (await getBlogPosts())
               <h1 class="blog__details_title">
                 {title}
               </h1>
-              <h5>{subtitle}</h5>
+              <p class="blog__details_subtitle">{subtitle}</p>
             </div>
 
             <div class="blog__details">
@@ -108,7 +108,7 @@ const blogEntries = (await getBlogPosts())
             </div>
 
             <div class="blog__tag">
-              <p class="blog__tag-title">Tags /</p>
+              <p class="blog__tag-title">{t('post.tagsLabel')} /</p>
               <ul class="blog__tag-list">
                 {
                   tags.map((tag, i) => (
@@ -133,7 +133,7 @@ const blogEntries = (await getBlogPosts())
       <div class="row">
         <div class="col-xxl-12">
           <div class="sec-title-wrapper pt-120">
-            <h2 class="sec-sub-title mb-20">Blog</h2>
+            <h2 class="sec-sub-title mb-20">{t('post.sectionLabel')}</h2>
             <h3 class="sec-title">{t('post.related.title')}</h3>
           </div>
         </div>
@@ -147,7 +147,14 @@ const blogEntries = (await getBlogPosts())
                 <article class="lb-blog__item blog-img-zoom">
                   <div class="thumb">
                     <a href={`/${lang}/blog/${post.blog_slug}`}>
-                      <img src={post.data.image} alt="" />
+                      <img
+                        src={post.data.image}
+                        alt={post.data.title}
+                        width={800}
+                        height={450}
+                        loading="lazy"
+                        decoding="async"
+                      />
                     </a>
                   </div>
                   <ul class="lb-blog__meta">
@@ -181,5 +188,21 @@ const blogEntries = (await getBlogPosts())
   .blog__meta-value {
     font-weight: inherit;
     color: inherit;
+  }
+  .blog__details_subtitle {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+    font-weight: 600;
+    opacity: 0.92;
+  }
+  .blog__details-hero-img {
+    display: block;
+    width: 100%;
+    max-height: 400px;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    object-fit: cover;
   }
 </style>

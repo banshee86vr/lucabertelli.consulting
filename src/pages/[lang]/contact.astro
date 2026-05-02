@@ -12,40 +12,6 @@ export async function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-// import sendGrid from "@sendgrid/mail";
-// sendGrid.setApiKey(import.meta.env.SENDGRID_API_KEY);
-
-// if (Astro.request.method === "POST") {
-//   try {
-//     // Getting posted data from our contact form
-//     const data = await Astro.request.formData();
-//     const name = data.get("Name");
-//     const email = data.get("Email");
-//     const message = data.get("Messages");
-
-//     // TODO: Do not forget to do validation and error handling over received data from your contact form.
-
-//     // Sending email
-//     const msg = {
-//       to: "info@lucabertelli.consulting", // Change to your recipient
-//       from: `${email}`, // Change to your verified sender
-//       replyTo: { email: email, name: name },
-//       subject: `Contact form submission from ${name}`,
-//       text: message,
-//     };
-//     await sendGrid
-//       .send(msg)
-//       .then(() => {
-//         console.log("Email sent");
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       });
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
 ---
 
 <BaseLayout title={t("seo.contact.title")} description={t("seo.contact.description")}>
@@ -55,7 +21,7 @@ const t = useTranslations(lang);
       <div class="lb__innercontact-wrapper">
         <div class="lb__innercontact-titlewrap">
           <h1 class="lb__innercontact-title pb-35">
-            Let's <br /> Get in Touch
+            {t("contact.hero.line1")}<br /> {t("contact.hero.line2")}
           </h1>
           <div class="cf_text lb__innercontact-dis">
             <p style="padding-right: 75px">{t('contact.invite')}<a
@@ -67,50 +33,61 @@ const t = useTranslations(lang);
           </div>
           <div class="lb__innercontact-contactItem pb-15">
             <span>{t('contact.email')}:</span>
-            <a href="mailTo:info@lucabertelli.consulting"
+            <a href="mailto:info@lucabertelli.consulting"
               >info@lucabertelli.consulting</a
             >
           </div>
         </div>
         <div class="lb__innercontact-form">
-          <!-- https://medium.com/@rezahedi/how-to-build-a-contact-form-in-astro-vercel-and-sendgrid-b924a76fd739 -->
-          <form method="post">
+          <form method="post" id="contact-form" novalidate>
+            <p id="contact-form-status" class="contact-form__status" role="status" aria-live="polite" hidden></p>
             <div class="lb__contact-wrap">
               <div class="lb__contact-formwrapper">
                 <div class="lb__contact-formfield">
+                  <label class="lb__contact-label" for="Name">{t('contact.form.name')}</label>
                   <input
                     type="text"
                     name="Name"
                     id="Name"
+                    required
+                    autocomplete="name"
                     placeholder={t('contact.form.name')}
                   />
                 </div>
                 <div class="lb__contact-formfield">
+                  <label class="lb__contact-label" for="Email">{t('contact.form.email')}</label>
                   <input
-                    type="text"
+                    type="email"
                     name="Email"
                     id="Email"
+                    required
+                    autocomplete="email"
                     placeholder={t('contact.form.email')}
                   />
                 </div>
               </div>
               <div class="lb__contact-formwrapper">
                 <div class="lb__contact-formfield">
+                  <label class="lb__contact-label" for="Subject">{t('contact.form.subject')}</label>
                   <input
                     type="text"
                     name="Subject"
                     id="Subject"
+                    required
                     placeholder={t('contact.form.subject')}
                   />
                 </div>
               </div>
               <div class="lb__contact-msg mt-0">
-                <input
-                  type="text"
+                <label class="lb__contact-label" for="Messages">{t('contact.form.message')}</label>
+                <textarea
                   name="Messages"
                   id="Messages"
-                  placeholder={t('contact.form.message')}
-                />
+                  required
+                    rows="6"
+                    class="lb__contact-textarea"
+                    placeholder={t('contact.form.message')}
+                ></textarea>
               </div>
               <div class="lb-submit__btn mt-40">
                 <button
@@ -130,10 +107,51 @@ const t = useTranslations(lang);
   <!-- map  -->
   <div class="lb-contact__map mbm-1">
     <iframe
+      title={t('contact.map.iframeTitle')}
       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d44802.58617703316!2d10.951331914333318!3d45.4262429445608!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477f5f68699be0e3%3A0x53f85a636882595b!2sVerona%2C%20VR!5e0!3m2!1sen!2sit!4v1701554941842!5m2!1sen!2sit"
-      class="w-100"></iframe>
+      class="w-100"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
   <!-- /map  -->
 
   <Tickets />
 </BaseLayout>
+
+<script define:vars={{ unavailableMsg: t("contact.form.unavailable") }}>
+	document.getElementById("contact-form")?.addEventListener("submit", (e) => {
+		e.preventDefault();
+		const status = document.getElementById("contact-form-status");
+		if (status) {
+			status.textContent = unavailableMsg;
+			status.hidden = false;
+		}
+	});
+</script>
+
+<style>
+	.contact-form__status {
+		margin-bottom: 1rem;
+		padding: 0.75rem 1rem;
+		border-radius: 8px;
+		background: rgba(255, 226, 76, 0.12);
+		border: 1px solid rgba(255, 226, 76, 0.35);
+		color: inherit;
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+	.lb__contact-label {
+		display: block;
+		margin-bottom: 0.35rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+	}
+	.lb__contact-textarea {
+		width: 100%;
+		min-height: 140px;
+		resize: vertical;
+		padding: 12px 16px;
+		border-radius: 8px;
+		font: inherit;
+	}
+</style>

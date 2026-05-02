@@ -1,12 +1,6 @@
-/* Font optimization strategy - Load only essential fonts with display=swap */
+/* Font optimization: Manrope + Plus Jakarta load from critical.css; add body text only here */
 
-/* Primary headings font - Manrope (optimized with fewer weights) */
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&display=swap");
-
-/* Secondary headings font - Plus Jakarta Sans (optimized with fewer weights) */
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap");
-
-/* Body text - Use system fonts, fall back to inter for consistency */
+/* Body text - Inter (critical.css already loads Manrope + Plus Jakarta for headings) */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 
 /* System fonts as fallback */

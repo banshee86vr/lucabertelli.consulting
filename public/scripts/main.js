@@ -515,10 +515,13 @@
   /////////////////////////////////////////////////////
 
   /////////////////////////////////////////////////////
-  // 04. Type JS
+  // 04. Type JS (skip when user prefers reduced motion)
+  var reduceMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var type_list = document.querySelector("#typed_list");
 
-  if (type_list) {
+  if (type_list && !reduceMotion) {
     var aboutsocial = new Typed("#typed", {
       stringsElement: "#typed_list",
       typeSpeed: 30,
@@ -528,10 +531,10 @@
     });
   }
   // for social influencer about page
-  var type_list = document.querySelector("#social_slide");
+  var social_slide = document.querySelector("#social_slide");
 
-  if (type_list) {
-    var aboutsocial = new Typed("#typed-2", {
+  if (social_slide && !reduceMotion) {
+    var aboutsocial2 = new Typed("#typed-2", {
       stringsElement: "#social_slide",
       typeSpeed: 150,
       backSpeed: 150,

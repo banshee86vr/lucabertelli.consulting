@@ -45,6 +45,8 @@ const lang = getLangFromUrl(Astro.url) as UiLang;
 const t = useTranslations(lang);
 
 const homeSlug = `/${lang || ""}`;
+const blogSlug = `/${lang || ""}/blog`;
+const contactSlug = `/${lang || ""}/contact`;
 
 const pathname =
 	Astro.url.pathname.endsWith("/") && Astro.url.pathname !== "/"
@@ -94,20 +96,14 @@ const jsonLdPayload = JSON.stringify({
 		<!-- Preconnect and DNS prefetch for external CDN resources -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="dns-prefetch" href="https://code.jquery.com" />
-		<link rel="preconnect" href="https://code.jquery.com" />
 
 		<!-- Core CSS - Load critical stylesheets -->
 		<link rel="stylesheet" href="/styles/bootstrap.min.css" />
 		<link rel="stylesheet" href="/styles/all.min.css" />
 
-		<!-- Non-critical CSS - Defer loading until after page interactive -->
-		<link rel="stylesheet" href="/styles/swiper-bundle.min.css" media="print" onload="this.media='all'" />
-		<link rel="stylesheet" href="/styles/progressbar.css" media="print" onload="this.media='all'" />
-		<link rel="stylesheet" href="/styles/meanmenu.min.css" media="print" onload="this.media='all'" />
-		<link rel="stylesheet" href="/styles/master.css" media="print" onload="this.media='all'" />
-		<link rel="stylesheet" href="/styles/style.css" media="print" onload="this.media='all'" />
-
+		<!-- Core site CSS - load eagerly to avoid FOUC/CLS flash -->
+		<link rel="stylesheet" href="/styles/master.css" />
+		<link rel="stylesheet" href="/styles/style.css" />
 		<SEO
 			title={pageTitle}
 			titleDefault={t("seo.site.title")}
@@ -160,94 +156,56 @@ const jsonLdPayload = JSON.stringify({
 
 		<script type="application/ld+json" set:html={jsonLdPayload} />
 
-		<!-- Loading Overlay Critical Styles -->
 		<style is:inline>
-			html {
-				overflow-y: scroll;
+			.skip-to-content {
+				position: absolute;
+				left: -9999px;
+				top: 0;
+				z-index: 100000;
+				padding: 0.65rem 1rem;
+				font-weight: 700;
+				font-size: 0.95rem;
+				text-decoration: none;
+				background: #ffe24c;
+				color: #1c1d20;
+				border-radius: 6px;
+				box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 			}
-
-			.loading-overlay {
-				position: fixed !important;
-				top: 0 !important;
-				left: 0 !important;
-				width: 100% !important;
-				height: 100% !important;
-				background-color: #1c1d20 !important;
-				display: flex !important;
-				align-items: center !important;
-				justify-content: center !important;
-				z-index: 99999 !important;
-				opacity: 1 !important;
-				visibility: visible !important;
-				transition:
-					opacity 0.6s ease,
-					visibility 0.6s ease !important;
+			.skip-to-content:focus {
+				left: 1rem;
+				top: 1rem;
+				position: fixed;
+				outline: 2px solid #1c1d20;
+				outline-offset: 2px;
 			}
-
-			.loading-overlay.fade-out {
-				opacity: 0 !important;
-				visibility: hidden !important;
-				pointer-events: none !important;
+			.offcanvas__menu-list ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
 			}
-
-			.loading-overlay__content {
-				display: flex;
-				align-items: center;
-				justify-content: center;
+			.offcanvas__menu-list li + li {
+				margin-top: 0.75rem;
 			}
-
-			.loading-overlay__logo {
-				max-width: 130px;
-				max-height: 45px;
-				width: auto;
-				height: auto;
+			.offcanvas__menu-list a {
+				display: inline-block;
+				font-size: 1.125rem;
+				font-weight: 600;
 			}
 		</style>
-
-		<!-- Loading Overlay Fade Out Script -->
-		<script is:inline>
-			// Fade out loading overlay after page is ready
-			window.addEventListener("load", function () {
-				setTimeout(() => {
-					const loadingOverlay = document.getElementById("loadingOverlay");
-					if (loadingOverlay) {
-						loadingOverlay.classList.add("fade-out");
-					}
-				}, 500);
-			});
-		</script>
 	</head>
 
 	<body class="font-heading-estedad">
-		<!-- Loading Overlay -->
-		<div class="loading-overlay" id="loadingOverlay">
-			<div class="loading-overlay__content">
-				<img src="/logo.png" alt="" class="loading-overlay__logo" width="130" height="45" />
-			</div>
-		</div>
+		<a class="skip-to-content" href="#main-content">{t("a11y.skipToContent")}</a>
 
 		<div class="body-overlay"></div>
 
-		<!-- Sroll to top -->
-		<div class="progress-wrap">
-			<svg
-				class="progress-circle svg-content"
-				width="100%"
-				height="100%"
-				viewBox="-1 -1 102 102"
-			>
-				<path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"></path>
-			</svg>
-		</div>
-
-		<div class="has-smooth" id="has_smooth"></div>
 		<div id="smooth-wrapper">
 			<div id="smooth-content">
 				<div class="body-wrapper">
 					<!-- Header area start -->
 					<Header />
 					<!-- Header area end -->
-					<main>
+					<main id="main-content" tabindex="-1">
 						<slot />
 					</main>
 
@@ -271,10 +229,16 @@ const jsonLdPayload = JSON.stringify({
 						</div>
 
 						<div class="offcanvas__menu-area">
-							<div class="offcanvas__menu-wrapper"></div>
+							<nav class="offcanvas__menu-list" aria-label="Mobile menu">
+								<ul>
+									<li><a href={homeSlug}>{t("nav.home")}</a></li>
+									<li><a href={blogSlug}>{t("nav.blog")}</a></li>
+									<li><a href={contactSlug}>{t("nav.contact")}</a></li>
+								</ul>
+							</nav>
 						</div>
 						<div class="offcanvas__media">
-							<h2 class="offcanvas__title">Follow</h2>
+							<h2 class="offcanvas__title">{t("footer.follow")}</h2>
 							<ul>
 								<li>
 									<a
@@ -324,29 +288,6 @@ const jsonLdPayload = JSON.stringify({
 		<CookieBanner />
 
 		<!-- Critical scripts (defer loading) -->
-		<script is:inline defer src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 		<script is:inline defer src="/scripts/bootstrap.bundle.min.js"></script>
-
-		<!-- Non-critical scripts (async or defer) -->
-		<script is:inline defer src="/scripts/jquery.magnific-popup.min.js"></script>
-		<script is:inline defer src="/scripts/swiper-bundle.min.js"></script>
-		<script is:inline defer src="/scripts/counter.js"></script>
-		<script is:inline defer src="/scripts/typed.js"></script>
-		<script is:inline defer src="/scripts/mixitup.min.js"></script>
-		<script is:inline defer src="/scripts/progressbar.js"></script>
-		<script is:inline defer src="/scripts/gsap.min.js"></script>
-		<script is:inline defer src="/scripts/ScrollSmoother.min.js"></script>
-		<script is:inline defer src="/scripts/ScrollToPlugin.min.js"></script>
-		<script is:inline defer src="/scripts/ScrollTrigger.min.js"></script>
-		<script is:inline defer src="/scripts/SplitText.min.js"></script>
-		<script is:inline defer src="/scripts/TweenMax.min.js"></script>
-		<script is:inline defer src="/scripts/jquery.meanmenu.min.js"></script>
-		<script is:inline defer src="/scripts/tilt.jquery.min.js"></script>
-		<script is:inline defer src="/scripts/beforeafter.jquery-1.0.0.min.js"></script>
-		<script is:inline defer src="/scripts/basictable.min.js"></script>
-		<script is:inline defer src="/scripts/backToTop.js"></script>
-		<script is:inline defer src="/scripts/main.js"></script>
-		<script is:inline defer src="/scripts/error-handling.js"></script>
-		<script is:inline defer src="/scripts/offcanvas.js"></script>
 	</body>
 </html>

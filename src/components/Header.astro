@@ -27,12 +27,20 @@ const { pathname } = Astro.url;
           <li><a href={contactSlug}>{t("nav.contact")}</a></li>
           <li><a href="https://github.com/banshee86vr/lucabertelli.consulting" target="_blank" rel="noopener noreferrer" aria-label={t("a11y.nav.githubRepo")}><i class="fa-brands fa-github" aria-hidden="true"></i></a></li>
           <li class="menu-item-has-children">
-            <a href="#"><img src={t("nav.lang") + "?w=20"} style="max-height:20px" alt="Language selector" decoding="async" /></a>
-            <ul class="dp-menu">
-              <li><a href={getLocalizedPathname(pathname, "it")}
+            <button
+              type="button"
+              class="header__lang-trigger"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-label={t("a11y.langMenu")}
+            >
+              <img src={t("nav.lang") + "?w=20"} style="max-height:20px" alt="" width="20" height="20" decoding="async" />
+            </button>
+            <ul class="dp-menu" id="lang-submenu" role="menu">
+              <li role="none"><a href={getLocalizedPathname(pathname, "it")} role="menuitem"
                 ><img src="/lang/it.png?w=20" style="max-height:20px;margin-right: 15px;" alt="" role="presentation" decoding="async" /> Italiano</a
               ></li>
-              <li><a href={getLocalizedPathname(pathname, "en")}
+              <li role="none"><a href={getLocalizedPathname(pathname, "en")} role="menuitem"
                 ><img src="/lang/en.png?w=20" style="max-height:20px;margin-right: 15px;" alt="" role="presentation" decoding="async" /> English</a
               ></li>
             </ul>
@@ -47,3 +55,38 @@ const { pathname } = Astro.url;
     </div>
   </div>
 </header>
+
+<style>
+  .header__lang-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--white);
+    padding: 30px 25px;
+    text-transform: capitalize;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .light .header__lang-trigger {
+    color: var(--black-2);
+  }
+  .main-menu > ul > li:hover > .header__lang-trigger {
+    color: var(--primary);
+  }
+  .main-menu li.menu-item-has-children > .header__lang-trigger::after {
+    content: "\f107";
+    font-family: var(--font_awesome);
+    margin-inline-start: 5px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .header__lang-trigger:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+</style>

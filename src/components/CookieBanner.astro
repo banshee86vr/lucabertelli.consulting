@@ -6,7 +6,8 @@ const t = useTranslations(lang);
 const cookiesUrl = `/${lang}/cookies`;
 ---
 
-<div class="cookie-banner" id="cookieBanner" role="dialog" aria-labelledby="cookieBannerTitle" aria-describedby="cookieBannerDesc">
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-modal="true" aria-labelledby="cookieBannerTitle" aria-describedby="cookieBannerDesc">
+  <h2 id="cookieBannerTitle" class="visually-hidden">{t('cookie.banner.title')}</h2>
   <div class="cookie-banner__content">
     <div class="cookie-banner__icon">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -68,8 +69,9 @@ const cookiesUrl = `/${lang}/cookies`;
       const consent = getCookie(COOKIE_NAME);
       
       if (!consent) {
-        // Show banner with a small delay for better UX
-        setTimeout(showBanner, 800);
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        // Small delay helps avoid layout shift on first paint; skip when user prefers reduced motion
+        setTimeout(showBanner, reduceMotion ? 0 : 800);
       }
 
       const acceptButton = document.getElementById('acceptCookies');
@@ -91,6 +93,24 @@ const cookiesUrl = `/${lang}/cookies`;
 </script>
 
 <style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cookie-banner {
+      transition: none;
+    }
+  }
+
   .cookie-banner {
     position: fixed;
     bottom: 20px;

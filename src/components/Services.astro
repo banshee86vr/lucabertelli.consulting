@@ -42,7 +42,7 @@ const services: {
 <section class="lb-ins__area pb-100">
   <div class="container">
     <div class="lb-inp__project-sec-title-wrap">
-      <h2 class="lb-inp__project-title has_text_move_anim">
+      <h2 class="lb-inp__project-title">
         {t("index.services.title")}
       </h2>
     </div>
@@ -101,12 +101,12 @@ const services: {
       var(--black-3) 100%
     );
     border: 1px solid var(--black-6);
-    transition: border-color 0.3s ease, transform 0.3s ease;
+    transition: none;
   }
 
   .service-card:hover {
     border-color: var(--primary);
-    transform: translateY(-4px);
+    transform: none;
   }
 
   .service-card__icon {

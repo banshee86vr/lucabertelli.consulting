@@ -7,47 +7,12 @@ const t = useTranslations(lang);
 const contactSlug = `/${lang || ""}/contact`;
 ---
 
-<!-- Text Slider start -->
-<section class="about__textslider-area pb-100">
-  <div class="about__textslider">
-    <div
-      class="swiper text__slider"
-      data-autoPlay="true"
-      data-sliderSpeed="40000"
-    >
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <div class="text-slide-content">
-            <h2 class="title">{t('index.experience.skills')}</h2>
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="text-slide-content">
-            <h2 class="title">{t('index.experience.experiences')}</h2>
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="text-slide-content">
-            <h2 class="title">{t('index.experience.services')}</h2>
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="text-slide-content">
-            <h2 class="title">{t('index.experience.educations')}</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Text Slider end -->
-
 <!-- Experience area start -->
 <section class="about__experience-area pb-130">
   <div class="container">
     <div class="row">
       <div class="col-md-4 col-sm-6">
-        <div class="about__experience-list has_fade_anim" data-fade-from="left">
+        <div class="about__experience-list">
           <div class="about__experience-grid">
             <div class="about__experience">
               <p>
@@ -79,11 +44,7 @@ const contactSlug = `/${lang || ""}/contact`;
         </div>
       </div>
       <div class="col-md-4 col-sm-6">
-        <div
-          class="about__experience-list has_fade_anim"
-          data-fade-from="left"
-          data-delay="0.7"
-        >
+        <div class="about__experience-list">
           <div class="about__experience-grid">
             <div class="about__experience">
               <p>
@@ -119,11 +80,7 @@ const contactSlug = `/${lang || ""}/contact`;
         </div>
       </div>
       <div class="col-md-4 col-sm-6">
-        <div
-          class="about__experience-list has_fade_anim"
-          data-fade-from="left"
-          data-delay="0.7"
-        >
+        <div class="about__experience-list">
           <div class="about__experience-grid">
             <div class="about__experience">
               <p>
@@ -165,8 +122,7 @@ const contactSlug = `/${lang || ""}/contact`;
   <div class="container">
     <div class="row">
       <div class="col-xxl-12">
-        <div class="lb__notification-wrapper has_fade_anim" data-fade-from="top" data-duration="3"
-          data-fade-offset="150" data-ease="bounce">
+        <div class="lb__notification-wrapper">
           <div class="lb__notification-grid">
             <div class="lb__notification-left">
               <div class="lb__notification-thumb cf_image">

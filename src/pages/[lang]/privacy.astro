@@ -28,7 +28,7 @@ const lastUpdatedText = lang === 'it'
       <div class="row">
         <div class="col-xxl-12">
           <div class="privacy__header mb-60">
-            <h1 class="privacy__title has_char_anim" data-on-scroll="0">
+            <h1 class="privacy__title">
               {t('privacy.title')}
             </h1>
             <p class="privacy__update">{lastUpdatedText}</p>
@@ -366,7 +366,7 @@ const lastUpdatedText = lang === 'it'
   .privacy__list a {
     color: #ffe24c;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: none;
     font-weight: 500;
   }
 
@@ -403,8 +403,8 @@ const lastUpdatedText = lang === 'it'
   }
 
   .privacy__contact-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(255, 226, 76, 0.4);
+    transform: none;
+    box-shadow: none;
     color: #000;
   }
 

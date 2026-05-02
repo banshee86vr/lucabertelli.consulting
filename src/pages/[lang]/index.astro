@@ -60,7 +60,7 @@ const credentialsJsonLd = buildCertificationCredentials(
       <div class="row">
         <div class="col-lg-4">
           <div
-            class="about__experience-img cf_img img_anim_reveal"
+            class="about__experience-img cf_img"
             style="align-items:unset"
           >
             <picture>
@@ -73,22 +73,14 @@ const credentialsJsonLd = buildCertificationCredentials(
         </div>
         <div class="col-lg-8">
           <div class="about__hero-right">
-            <p class="lb__hero-subtitle has_char_anim" data-on-scroll="0">{t('index.hi')}</p>
+            <p class="lb__hero-subtitle">{t('index.hi')}</p>
             <h1
-              class="lb__hero-title has_fade_anim"
-              data-on-scroll="0"
-              data-delay=".6"
+              class="lb__hero-title"
             >
-              Cloud Native <br />
-              <span id="typed_list">
-                <span>Engineer</span>
-                <span>Advisor</span>
-                <span>Consultant</span>
-                <span>Developer</span>
-              </span>
-              <span id="typed"></span>
+              {t('index.hero.cloudNative')} <br />
+              <span>{t('index.hero.role.engineer')}</span>
             </h1>
-            <div class="cf_text has_fade_anim">
+            <div class="cf_text">
               <p style="max-width:100%">{t('index.bio')}</p>
             </div>
           </div>
@@ -193,4 +185,5 @@ const credentialsJsonLd = buildCertificationCredentials(
       font-size: 32px;
     }
   }
+
 </style>

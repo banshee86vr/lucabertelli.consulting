@@ -9,6 +9,7 @@ export const prerender = true;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const tag = Astro.url.searchParams.get("tag") || "";
+const dateLocale = lang === "it" ? "it-IT" : "en-US";
 
 var posts = (await getBlogPosts())
   ?.filter((blog) => {
@@ -34,6 +35,7 @@ export async function getStaticPaths() {
     <div class="container ptf-0">
       <div class="row">
         <div class="col-xxl-12">
+          <h1 class="sec-title blog-index__h1 mb-50">{t("blog.index.heading")}</h1>
           <div class="main-blog__grid">
             {
               posts.map((post) => (
@@ -44,12 +46,17 @@ export async function getStaticPaths() {
                         style=""
                         src={post.data.image}
                         alt={post.data.title}
+                        width={800}
+                        height={450}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        loading="lazy"
+                        decoding="async"
                       />
                     </a>
                   </div>
                   <ul class="lb-blog__meta">
                     <li>
-                      {post.data.date.toLocaleString("en-US", {
+                      {post.data.date.toLocaleString(dateLocale, {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
