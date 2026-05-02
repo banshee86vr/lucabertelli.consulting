@@ -23,8 +23,8 @@ export const ui = {
       'Cloud Native consultant and engineer: Platform Engineering, Kubernetes, SecDevOps, CI/CD, and training for teams adopting sustainable cloud practices.',
     'seo.home.title': 'Luca Bertelli | Cloud Native Consultant & Engineer',
     'seo.home.description':
-      'Cloud Native consulting and engineering (also known as LB Consulting / lb.consulting) for Platform Engineering, Kubernetes, and SecDevOps — assessment, migration, toolchain design, and training.',
-    'seo.blog.title': 'Blog | Luca Bertelli — Cloud Native',
+      'Cloud Native consulting and engineering (also known as LB Consulting / lb.consulting) for Platform Engineering, Kubernetes, and SecDevOps - assessment, migration, toolchain design, and training.',
+    'seo.blog.title': 'Blog | Luca Bertelli - Cloud Native',
     'seo.blog.description':
       'Articles on Kubernetes, platform engineering, DevOps, and cloud-native practices.',
     'seo.contact.title': 'Contact | Luca Bertelli Consulting',
@@ -58,7 +58,7 @@ export const ui = {
     'index.services.4.text': "Creation of specialized training courses covering SecDevOps and cloud-native technologies. Each program is customized to match your team's experience level and align with your existing tools and practices.",
     'index.services.5.title': 'AI Engineering',
     'index.services.5.text':
-      'Consulting across the full lifecycle of AI agents: adoption and rollout, governance and policy, security hardening, and cost budgeting—so you can introduce agents with clear guardrails, controlled risk, and predictable spend.',
+      'Consulting across the full lifecycle of AI agents: adoption and rollout, governance and policy, security hardening, and cost budgeting. Together we can introduce agents with clear guardrails, controlled risk, and predictable spend.',
     'index.tickets.title': 'Upcoming Events',
     'contact.invite': "Please reach out if you have questions about DevOps practices, Cloud Native Solutions, or Platform Engineering. We will discuss together how we can collaborate together to adopt the latest technologies available on the market. You can contact me at these addresses or via ",
     'contact.email': 'Email',
@@ -229,8 +229,8 @@ export const ui = {
       'Consulente e ingegnere Cloud Native: Platform Engineering, Kubernetes, SecDevOps, CI/CD e formazione per team che adottano il cloud in modo sostenibile.',
     'seo.home.title': 'Luca Bertelli | Consulente & Ingegnere Cloud Native',
     'seo.home.description':
-      'Consulenza e ingegneria Cloud Native (anche come LB Consulting / lb.consulting): Platform Engineering, Kubernetes e SecDevOps — assessment, migrazione, toolchain e formazione.',
-    'seo.blog.title': 'Blog | Luca Bertelli — Cloud Native',
+      'Consulenza e ingegneria Cloud Native (anche come LB Consulting / lb.consulting): Platform Engineering, Kubernetes e SecDevOps - assessment, migrazione, toolchain e formazione.',
+    'seo.blog.title': 'Blog | Luca Bertelli - Cloud Native',
     'seo.blog.description':
       'Articoli su Kubernetes, platform engineering, DevOps e pratiche cloud-native.',
     'seo.contact.title': 'Contatti | Luca Bertelli Consulting',
@@ -264,7 +264,7 @@ export const ui = {
     'index.services.4.text': "Creazione di corsi di formazione specifici su tematiche legate al SecDevOps e ai tool appartenenti alla cloud-native landscape. Tutti i corsi sono definiti su misura in base alle esigenze del cliente, considerando il livello di esperienza acquisito dai partecipanti e all'ecosistema di tool e pratiche già adottate.",
     'index.services.5.title': 'AI Engineering',
     'index.services.5.text':
-      "Consulenza su tutte le leve degli agenti AI: adozione e messa in produzione, governance e policy, hardening della sicurezza e budgeting dei costi—per introdurre agenti con regole chiare, rischio controllato e spesa prevedibile.",
+      "Consulenza su tutte le leve degli agenti AI: adozione e messa in produzione, governance e policy, hardening della sicurezza e budgeting dei costi. Insieme possiamo introdurre agenti con regole chiare, rischio controllato e spesa prevedibile.",
     'index.tickets.title': 'Prossimi eventi',
     'contact.invite': "Non esitate a contattarmi per condividere domande su pratiche DevOps, soluzioni Cloud Native, o sul Platform Engineering. Eploreremo insieme come poter collaborare ed adottare in modo efficace le ultime tecnologie disponibili sul mercato. Potete contattarmi a questi recapiti o tramite ",
     'contact.email': 'Email',
@@ -409,6 +409,6 @@ export const ui = {
     'cookie.banner.accept': 'Accetta',
     'cookie.banner.moreInfo': 'Maggiori Info',
     'footer.follow': 'Seguimi',
-    'footer.copyrightReserved': 'Tutti i diritti riservati —',
+    'footer.copyrightReserved': 'Tutti i diritti riservati -',
   },
 } as const;

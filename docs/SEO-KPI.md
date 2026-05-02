@@ -1,15 +1,15 @@
-# SEO & AI discoverability — validation checklist and KPIs
+# SEO & AI discoverability - validation checklist and KPIs
 
 Use this after deploy to verify the implementation and track reachability over time.
 
 ## Post-deploy validation (manual)
 
-1. **Redirect**: Open `https://lucabertelli.consulting/` — expect **308** (or browser redirect) to `/en/`.
-2. **Robots**: `https://lucabertelli.consulting/robots.txt` — must list `Sitemap: https://lucabertelli.consulting/sitemap-index.xml`.
-3. **Sitemap**: `https://lucabertelli.consulting/sitemap-index.xml` and linked `sitemap-0.xml` — must include `/en/`, `/it/`, blog, contact, privacy, cookies.
-4. **Alternate languages**: View HTML source on `/en/contact/` — expect `<link rel="alternate" hreflang="it" …>` pointing to `/it/contact/` (and reverse on IT pages).
-5. **Structured data**: Use Google [Rich Results Test](https://search.google.com/test/rich-results) on home and one blog article — JSON-LD should parse without errors (`Person`, `ProfessionalService`, `Service` on home; `BlogPosting` on articles).
-6. **Social previews**: Share Debugger / manual check — OG image must load (`/about/lucabertelli.jpeg`), title and description match the page.
+1. **Redirect**: Open `https://lucabertelli.consulting/` - expect **308** (or browser redirect) to `/en/`.
+2. **Robots**: `https://lucabertelli.consulting/robots.txt` - must list `Sitemap: https://lucabertelli.consulting/sitemap-index.xml`.
+3. **Sitemap**: `https://lucabertelli.consulting/sitemap-index.xml` and linked `sitemap-0.xml` - must include `/en/`, `/it/`, blog, contact, privacy, cookies.
+4. **Alternate languages**: View HTML source on `/en/contact/` - expect `<link rel="alternate" hreflang="it" …>` pointing to `/it/contact/` (and reverse on IT pages).
+5. **Structured data**: Use Google [Rich Results Test](https://search.google.com/test/rich-results) on home and one blog article - JSON-LD should parse without errors (`Person`, `ProfessionalService`, `Service` on home; `BlogPosting` on articles).
+6. **Social previews**: Share Debugger / manual check - OG image must load (`/about/lucabertelli.jpeg`), title and description match the page.
 7. **llms.txt**: `https://lucabertelli.consulting/llms.txt` returns this file with key URLs and services.
 
 ## Search Console (recommended)

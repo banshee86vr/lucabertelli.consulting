@@ -1,4 +1,4 @@
-# Robots — lucabertelli.consulting
+# Robots - lucabertelli.consulting
 User-agent: *
 Allow: /
 
