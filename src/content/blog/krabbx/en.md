@@ -5,7 +5,7 @@ category: "DevOps"
 lang: "en"
 date: "2025-05-01"
 tags: ["renovate", "dependency-management", "devsecops", "kubernetes", "observability"]
-image: "/blog/krabbx/krabbx.png"
+image: "/blog/krabbx/krabbx.webp"
 ---
 
 ## Why do we need it?
@@ -20,7 +20,7 @@ GitHub provides no aggregated view of PRs activity. You have to open each reposi
 
 [Krabbx](https://github.com/banshee86vr/krabbx) is an open-source, self-hosted dashboard that monitors Renovate Bot adoption and dependency update activity across GitHub organizations. It scans your repositories via the GitHub API, detects whether Renovate is configured (config files, workflow YAML, or PR evidence), parses open Renovate PRs to extract dependency data, and presents everything in a single interface with real-time updates.
 
-![Main Krabbx dashboard: summary cards, health leaderboard, and achievement badges](/blog/krabbx/dashboard.png)
+![Main Krabbx dashboard: summary cards, health leaderboard, and achievement badges](/blog/krabbx/dashboard.webp)
 *Main dashboard: total repositories, adoption rate, outdated dependencies, health leaderboard, and badges.*
 
 ## What does the dashboard give you?
@@ -29,29 +29,29 @@ The **Dashboard** page shows three summary cards at the top: total repositories,
 
 The **Health leaderboard** ranks repositories by a 0-100 health score based on three axes: freshness (ratio of outdated dependencies), major discipline (penalty for major-version drift), and PR remediation (bonus for having active Renovate PRs). **Badges** highlight milestones like "Zero Major Drift" for repos with no major-version outdated packages.
 
-![Top outdated repositories and top outdated dependencies](/blog/krabbx/dashboard_cards.png)
+![Top outdated repositories and top outdated dependencies](/blog/krabbx/dashboard_cards.webp)
 *Bottom cards: top outdated repos and top outdated dependencies with cross-repo usage*
 
 Three additional cards show the **top outdated repositories** and the **top outdated dependencies** (with links to the Renovate PRs in every repo that uses them), and **recent activity**.
 
 The **Repositories** page lists all synced repositories with their adoption status ("Adopted" or "Not adopted"), health score, open PRs count, dependency count, last scan time, and contributors.
 
-![Repository list with adoption status, health score, and open PRs](/blog/krabbx/repositories.png)
+![Repository list with adoption status, health score, and open PRs](/blog/krabbx/repositories.webp)
 *Repository list: filter by adoption status, sort by health score, and jump into any repo's detail page.*
 
 From here you can deep dive into a **Repository Detail** page. This view shows the dependency health score with a radar chart for the three scoring axes, a breakdown of how the score is calculated, the org rank, and a table of all open Renovate PRs with package name, current version, latest version, and update type (patch, minor, major).
 
-![Repository detail: health score radar, scoring breakdown, and open Renovate PRs](/blog/krabbx/repository_details.png)
+![Repository detail: health score radar, scoring breakdown, and open Renovate PRs](/blog/krabbx/repository_details.webp)
 *Repository detail: health score with transparent calculation, radar chart, and the list of open Renovate PRs.*
 
 The **Dependencies** page is a global, filterable view of all tracked dependencies across the organization. You can filter by outdated-only, search by package name, and filter by update type. Each row shows the repository, package manager type, current and latest versions, and a direct link to the Renovate PR on GitHub.
 
-![Global dependency view with search, filters, and PR links](/blog/krabbx/dependencies.png)
+![Global dependency view with search, filters, and PR links](/blog/krabbx/dependencies.webp)
 *Dependencies page: search across all organization dependencies, filter by outdated status and update type.*
 
 **Live scanning** runs in the background with real-time progress. A modal overlay shows the current scan status (e.g., "4 of 7 repositories") with a progress bar, so you always know where the scan stands.
 
-![Live scanning modal with progress bar](/blog/krabbx/scanning.png)
+![Live scanning modal with progress bar](/blog/krabbx/scanning.webp)
 
 ## Requirements
 

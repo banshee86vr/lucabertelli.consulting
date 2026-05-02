@@ -5,7 +5,7 @@ category: "DevOps"
 lang: "it"
 date: "2025-03-08"
 tags: ["github-actions", "cicd", "devsecops", "kubernetes", "observability"]
-image: "/blog/snorlx/snorlx.jpg"
+image: "/blog/snorlx/snorlx.webp"
 ---
 
 ## Perché mai dovremmo averne bisogno?
@@ -18,29 +18,29 @@ Le GitHub Actions sono lo standard per l'automazione CI/CD. GitHub mostra bene l
 
 [Snorlx](https://github.com/banshee86vr/snorlx) è una dashboard CI/CD open-source e self-hosted per le GitHub Actions: aggrega tutte le run in un'unica interfaccia, fornisce aggiornamenti in tempo reale via WebSocket, tracking costi per workflow e repository, e il **repository scoring** (punteggio per repo su Security, Testing, CI/CD, Documentation, Code Quality, Maintenance, Community con tier gold/silver/bronze).
 
-![Vista principale della dashboard Snorlx: card riepilogative, trend e pipeline attive](/blog/snorlx/dashboard.png)
+![Vista principale della dashboard Snorlx: card riepilogative, trend e pipeline attive](/blog/snorlx/dashboard.webp)
 *Vista principale della dashboard: card riepilogative, trend successo/fallimento e pipeline in esecuzione.*
 
 ## Cosa ci offre la dashboard?
 
 La pagina **Dashboard** mostra card per repository, workflow e statistiche run (tasso di successo, run in corso, confronti con il periodo precedente), grafici per i trend degli ultimi 30 giorni, distribuzione risultati, una sezione live con pipeline in esecuzione e in coda, e la media del punteggio dei repository e il numero di repo “graded”.
 
-![Scanning dei reposity all'interno della GitHub Organization](/blog/snorlx/scanning.png)
+![Scanning dei reposity all'interno della GitHub Organization](/blog/snorlx/scanning.webp)
 
 La pagina **Repositories** elenca i repository sincronizzati; per ognuno puoi vedere il **repository score** (se calcolato): un punteggio complessivo in percentuale e un tier (gold, silver, bronze) basato su sette categorie: Security, Testing, CI/CD, Documentation, Code Quality, Maintenance e Community ricavate dai dati GitHub (branch protection, Dependabot, code scanning, README, file di config, community profile, ecc.). Lo score viene calcolato durante la sync o on-demand con “Refresh grade” dalla pagina di dettaglio del repository; nel dettaglio trovi il grafico a radar per le sette dimensioni e l’elenco dei check pass/fail.
 
-![Sonrlx dashboard](/blog/snorlx/repositories.png)
+![Sonrlx dashboard](/blog/snorlx/repositories.webp)
 
-![Scoring dei repository](/blog/snorlx/scoring.png)
+![Scoring dei repository](/blog/snorlx/scoring.webp)
 
 La pagina **Runs** è un elenco filtrabile e paginato di tutti i workflow run; la **Run Detail** mostra la gerarchia dei job, stato degli step, timeline, annotazioni errori, YAML del workflow e link ai log su GitHub. I dati si possono aggiornare da GitHub con `?refresh=true`.
 
-![Ricerca tra tutti i workflow della organization](/blog/snorlx/workflows.png)
+![Ricerca tra tutti i workflow della organization](/blog/snorlx/workflows.webp)
 
-![Elenco delle run con filtri per stato, branch, evento](/blog/snorlx/runs.png)
+![Elenco delle run con filtri per stato, branch, evento](/blog/snorlx/runs.webp)
 *Elenco run con filtri e paginazione; da qui si accede al dettaglio di ogni run.*
 
-![Dettagli e log della run specifica](/blog/snorlx/run_details.png)
+![Dettagli e log della run specifica](/blog/snorlx/run_details.webp)
 
 Il **tracking dei costi** per workflow e per repository permette di identificare le pipeline più costose e modellare l'impatto di eventuali cambi di pricing. Con `STORAGE_MODE=memory` si può provare tutto senza database; per la produzione si passa a `STORAGE_MODE=database` e PostgreSQL con TimescaleDB.
 
@@ -133,7 +133,7 @@ Riavviare l'applicazione: le migrazioni vengono eseguite automaticamente all'avv
 
 Frontend React 18 + TypeScript con TanStack Query e Recharts; backend Go (Chi router) con OAuth GitHub, webhook e WebSocket per gli aggiornamenti in tempo reale; PostgreSQL con TimescaleDB per le serie temporali, hypertable e aggregati continui. Due modalità: `STORAGE_MODE=memory` per sviluppo/quick start, `STORAGE_MODE=database` per produzione.
 
-![Schema dell'architettura a tre livelli: frontend, backend, database](/blog/snorlx/architecture.jpg)
+![Schema dell'architettura a tre livelli: frontend, backend, database](/blog/snorlx/architecture.webp)
 *Architettura a tre livelli: frontend, backend, database.*
 
 ## Deploy su Kubernetes

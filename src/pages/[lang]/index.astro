@@ -64,10 +64,25 @@ const credentialsJsonLd = buildCertificationCredentials(
             style="align-items:unset"
           >
             <picture>
-              <source media="(max-width: 768px)" srcset="/about/lucabertelli.jpeg?format=webp&w=627 1x, /about/lucabertelli.jpeg?format=webp&w=1254 2x" type="image/webp" />
-              <source media="(max-width: 768px)" srcset="/about/lucabertelli.jpeg?w=627 1x, /about/lucabertelli.jpeg?w=1254 2x" />
-              <source srcset="/about/lucabertelli.jpeg?format=webp&w=473 1x, /about/lucabertelli.jpeg?format=webp&w=946 2x" type="image/webp" />
-              <img src="/about/lucabertelli.jpeg?w=473" alt="Luca Bertelli" width="1000" height="1333" fetchpriority="high" decoding="async" />
+              <source
+                type="image/webp"
+                srcset="/about/lucabertelli.jpeg?format=webp&w=360 360w, /about/lucabertelli.jpeg?format=webp&w=540 540w, /about/lucabertelli.jpeg?format=webp&w=720 720w, /about/lucabertelli.jpeg?format=webp&w=960 960w"
+                sizes="(max-width: 575px) 90vw, (max-width: 991px) 400px, 33vw"
+              />
+              <source
+                srcset="/about/lucabertelli.jpeg?w=360 360w, /about/lucabertelli.jpeg?w=540 540w, /about/lucabertelli.jpeg?w=720 720w, /about/lucabertelli.jpeg?w=960 960w"
+                sizes="(max-width: 575px) 90vw, (max-width: 991px) 400px, 33vw"
+              />
+              <img
+                src="/about/lucabertelli.jpeg?w=540"
+                srcset="/about/lucabertelli.jpeg?w=360 360w, /about/lucabertelli.jpeg?w=540 540w, /about/lucabertelli.jpeg?w=720 720w, /about/lucabertelli.jpeg?w=960 960w"
+                sizes="(max-width: 575px) 90vw, (max-width: 991px) 400px, 33vw"
+                alt="Luca Bertelli"
+                width="1000"
+                height="1333"
+                fetchpriority="high"
+                decoding="async"
+              />
             </picture>
           </div>
         </div>

@@ -85,25 +85,44 @@ const jsonLdPayload = JSON.stringify({
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<!-- Critical CSS - Inline critical above-the-fold styles -->
+		<!-- Critical CSS - render-blocking on purpose -->
 		<link rel="stylesheet" href="/styles/critical.css" />
 		<link rel="stylesheet" href="/styles/fonts.css" />
 
-		<!-- Preload key resources for early discovery -->
-		<link rel="preload" href="/styles/bootstrap.min.css" as="style" />
-		<link rel="preload" href="/styles/all.min.css" as="style" />
-
-		<!-- Preconnect and DNS prefetch for external CDN resources -->
+		<!-- Preconnect for external font provider -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-		<!-- Core CSS - Load critical stylesheets -->
-		<link rel="stylesheet" href="/styles/bootstrap.min.css" />
-		<link rel="stylesheet" href="/styles/all.min.css" />
+		<!-- Non-blocking Google Fonts CSS (swap avoids text invisibility) -->
+		<link
+			rel="preload"
+			href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+			as="style"
+			onload="this.onload=null;this.rel='stylesheet'"
+		/>
+		<noscript>
+			<link
+				rel="stylesheet"
+				href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+			/>
+		</noscript>
 
-		<!-- Core site CSS - load eagerly to avoid FOUC/CLS flash -->
-		<link rel="stylesheet" href="/styles/master.css" />
-		<link rel="stylesheet" href="/styles/style.css" />
+		<!-- Preload local CSS resources for early discovery -->
+		<link rel="preload" href="/styles/bootstrap.min.css" as="style" />
+		<link rel="preload" href="/styles/all.min.css" as="style" />
+		<link rel="preload" href="/styles/master.css" as="style" />
+		<link rel="preload" href="/styles/style.css" as="style" />
+
+		<!-- Core framework CSS remains blocking -->
+		<link rel="stylesheet" href="/styles/bootstrap.min.css" />
+		<link rel="stylesheet" href="/styles/all.min.css" media="print" onload="this.media='all'" />
+		<link rel="stylesheet" href="/styles/master.css" media="print" onload="this.media='all'" />
+		<link rel="stylesheet" href="/styles/style.css" media="print" onload="this.media='all'" />
+		<noscript>
+			<link rel="stylesheet" href="/styles/all.min.css" />
+			<link rel="stylesheet" href="/styles/master.css" />
+			<link rel="stylesheet" href="/styles/style.css" />
+		</noscript>
 		<SEO
 			title={pageTitle}
 			titleDefault={t("seo.site.title")}
@@ -191,6 +210,22 @@ const jsonLdPayload = JSON.stringify({
 				font-size: 1.125rem;
 				font-weight: 600;
 			}
+			.body-overlay {
+				position: fixed;
+				inset: 0;
+				background: rgba(0, 0, 0, 0.45);
+				opacity: 0;
+				visibility: hidden;
+				transition: opacity 0.2s ease;
+				z-index: 1040;
+			}
+			.body-overlay.show {
+				opacity: 1;
+				visibility: visible;
+			}
+			body.offcanvas-open {
+				overflow: hidden;
+			}
 		</style>
 	</head>
 
@@ -218,7 +253,7 @@ const jsonLdPayload = JSON.stringify({
 			<!-- Offcanves start -->
 			<div class="offcanvas__area">
 				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasOne">
-					<button class="offcanvas__close" data-bs-dismiss="offcanvas"
+					<button class="offcanvas__close" type="button" data-offcanvas-close
 						><i class="fa-solid fa-xmark"></i></button
 					>
 					<div class="offcanvas__body">
@@ -287,7 +322,37 @@ const jsonLdPayload = JSON.stringify({
 		<!-- Cookie Banner - Fixed floating box at bottom of viewport -->
 		<CookieBanner />
 
-		<!-- Critical scripts (defer loading) -->
-		<script is:inline defer src="/scripts/bootstrap.bundle.min.js"></script>
+		<!-- Lightweight offcanvas controller replaces full Bootstrap JS bundle -->
+		<script is:inline>
+			(() => {
+				const openBtn = document.getElementById("open_offcanvas");
+				const panel = document.getElementById("offcanvasOne");
+				const closeBtn = panel?.querySelector("[data-offcanvas-close]");
+				const overlay = document.querySelector(".body-overlay");
+
+				if (!openBtn || !panel || !closeBtn || !overlay) return;
+
+				const closeOffcanvas = () => {
+					panel.classList.remove("show");
+					overlay.classList.remove("show");
+					document.body.classList.remove("offcanvas-open");
+					openBtn.setAttribute("aria-expanded", "false");
+				};
+
+				const openOffcanvas = () => {
+					panel.classList.add("show");
+					overlay.classList.add("show");
+					document.body.classList.add("offcanvas-open");
+					openBtn.setAttribute("aria-expanded", "true");
+				};
+
+				openBtn.addEventListener("click", openOffcanvas);
+				closeBtn.addEventListener("click", closeOffcanvas);
+				overlay.addEventListener("click", closeOffcanvas);
+				document.addEventListener("keydown", (event) => {
+					if (event.key === "Escape") closeOffcanvas();
+				});
+			})();
+		</script>
 	</body>
 </html>

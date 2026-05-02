@@ -5,7 +5,7 @@ category: "DevOps"
 lang: "it"
 date: "2025-05-01"
 tags: ["renovate", "dependency-management", "devsecops", "kubernetes", "observability"]
-image: "/blog/krabbx/krabbx.png"
+image: "/blog/krabbx/krabbx.webp"
 ---
 
 ## Perché mai dovremmo averne bisogno?
@@ -20,7 +20,7 @@ GitHub non offre alcuna vista aggregata dell'attività sulle PR. Bisogna aprire 
 
 [Krabbx](https://github.com/banshee86vr/krabbx) è una dashboard open-source e self-hosted che monitora l'adozione di Renovate Bot e l'attività di aggiornamento delle dipendenze nelle organizzazioni GitHub. Scansiona i repository tramite le API GitHub, rileva se Renovate è configurato (file di configurazione, workflow YAML o evidenze nelle PR), analizza le PR aperte di Renovate per estrarre i dati sulle dipendenze e presenta tutto in un'unica interfaccia con aggiornamenti in tempo reale.
 
-![Vista principale della dashboard Krabbx: card riepilogative, classifica di salute e badge](/blog/krabbx/dashboard.png)
+![Vista principale della dashboard Krabbx: card riepilogative, classifica di salute e badge](/blog/krabbx/dashboard.webp)
 *Vista principale della dashboard: repository totali, tasso di adozione, dipendenze obsolete, classifica di salute e badge.*
 
 ## Cosa ci offre la dashboard?
@@ -29,29 +29,29 @@ La pagina **Dashboard** mostra tre card riepilogative in alto: repository totali
 
 La **Health leaderboard** classifica i repository con un punteggio di salute da 0 a 100 basato su tre assi: freshness (rapporto di dipendenze obsolete), major discipline (penalità per drift su versioni major) e PR remediation (bonus per PR Renovate attive). I **Badge** evidenziano traguardi come "Zero Major Drift" per i repo senza pacchetti obsoleti su versioni major.
 
-![Repository più obsoleti e le dipendenze più obsolete](/blog/krabbx/dashboard_cards.png)
+![Repository più obsoleti e le dipendenze più obsolete](/blog/krabbx/dashboard_cards.webp)
 *Card inferiori: repository più obsoleti e le dipendenze più obsolete con utilizzo cross-repo.*
 
 Tre card aggiuntive mostrano i **repository più obsoleti** e le **dipendenze più obsolete** (con link alle PR di Renovate in ogni repo che le utilizza).
 
 La pagina **Repositories** elenca tutti i repository sincronizzati con lo stato di adozione ("Adopted" o "Not adopted"), il punteggio di salute, il conteggio delle PR aperte, il numero di dipendenze, l'ultima scansione e i contributori.
 
-![Lista repository con stato di adozione, punteggio di salute e PR aperte](/blog/krabbx/repositories.png)
+![Lista repository con stato di adozione, punteggio di salute e PR aperte](/blog/krabbx/repositories.webp)
 *Lista repository: filtra per stato di adozione, ordina per punteggio di salute e accedi al dettaglio di ogni repo.*
 
 Da qui si può accedere alla pagina **Repository Detail**. Questa vista mostra il punteggio di salute delle dipendenze con un grafico radar per i tre assi di scoring, il dettaglio di come viene calcolato il punteggio, il ranking nell'organizzazione e una tabella di tutte le PR Renovate aperte con nome del pacchetto, versione corrente, ultima versione e tipo di aggiornamento (patch, minor, major).
 
-![Dettaglio repository: radar del punteggio di salute, calcolo dello score e PR Renovate aperte](/blog/krabbx/repository_details.png)
+![Dettaglio repository: radar del punteggio di salute, calcolo dello score e PR Renovate aperte](/blog/krabbx/repository_details.webp)
 *Dettaglio repository: punteggio di salute con calcolo trasparente, grafico radar e lista delle PR Renovate aperte.*
 
 La pagina **Dependencies** è una vista globale e filtrabile di tutte le dipendenze tracciate nell'organizzazione. Si può filtrare per sole dipendenze obsolete, cercare per nome del pacchetto e filtrare per tipo di aggiornamento. Ogni riga mostra il repository, il tipo di package manager, la versione corrente e l'ultima disponibile, e un link diretto alla PR Renovate su GitHub.
 
-![Vista globale delle dipendenze con ricerca, filtri e link alle PR](/blog/krabbx/dependencies.png)
+![Vista globale delle dipendenze con ricerca, filtri e link alle PR](/blog/krabbx/dependencies.webp)
 *Pagina Dependencies: ricerca tra tutte le dipendenze dell'organizzazione, filtri per stato di obsolescenza e tipo di aggiornamento.*
 
 La **scansione live** avviene in background con avanzamento in tempo reale. Un overlay modale mostra lo stato della scansione in corso (es. "4 of 7 repositories") con una barra di avanzamento, così si sa sempre a che punto è la scansione.
 
-![Modale di scansione live con barra di avanzamento](/blog/krabbx/scanning.png)
+![Modale di scansione live con barra di avanzamento](/blog/krabbx/scanning.webp)
 
 ## Requisiti
 

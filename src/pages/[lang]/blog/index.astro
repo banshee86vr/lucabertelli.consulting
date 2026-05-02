@@ -10,6 +10,16 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const tag = Astro.url.searchParams.get("tag") || "";
 const dateLocale = lang === "it" ? "it-IT" : "en-US";
+const cardWidths = [320, 480, 640];
+const appendImageParams = (url: string, params: string) =>
+  `${url}${url.includes("?") ? "&" : "?"}${params}`;
+const buildSrcSet = (url: string, widths: number[], format?: "webp") =>
+  widths
+    .map((width) => {
+      const query = format ? `format=${format}&w=${width}` : `w=${width}`;
+      return `${appendImageParams(url, query)} ${width}w`;
+    })
+    .join(", ");
 
 var posts = (await getBlogPosts())
   ?.filter((blog) => {
@@ -42,16 +52,27 @@ export async function getStaticPaths() {
                 <article class="lb-blog__item blog-img-zoom">
                   <div class="thumb">
                     <a href={`/${lang}/blog/${post.blog_slug}`}>
-                      <img
-                        style=""
-                        src={post.data.image}
-                        alt={post.data.title}
-                        width={800}
-                        height={450}
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <picture>
+                        <source
+                          type="image/webp"
+                          srcset={buildSrcSet(post.data.image, cardWidths, "webp")}
+                          sizes="(max-width: 767px) 100vw, 50vw"
+                        />
+                        <source
+                          srcset={buildSrcSet(post.data.image, cardWidths)}
+                          sizes="(max-width: 767px) 100vw, 50vw"
+                        />
+                        <img
+                          src={appendImageParams(post.data.image, "w=480")}
+                          srcset={buildSrcSet(post.data.image, cardWidths)}
+                          alt={post.data.title}
+                          width={800}
+                          height={450}
+                          sizes="(max-width: 767px) 100vw, 50vw"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </picture>
                     </a>
                   </div>
                   <ul class="lb-blog__meta">

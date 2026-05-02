@@ -3,7 +3,7 @@ title: Ephemeral test environments for CI workflows
 subtitle: How to use vCluster and Argo Workflow to manage ephemeral test environments
 date: 1 April 2024
 category: DevOps
-image: "/blog/vcluster/vcluster.jpeg"
+image: "/blog/vcluster/vcluster.webp"
 tags: ["vcluster", "argo", "cicd", "devsecops", "kubernetes", "multi-tenancy"]
 lang: 'en'
 ---
@@ -156,7 +156,7 @@ The CI pipeline performs these steps inside the [ci.yaml](https://github.com/ban
 2. **Building Application**: Utilizes the GoLang template [go.yaml](https://github.com/banshee86vr/ephemeral-test-environment/blob/main/argo-workflow/lang/go.yaml) to compile the Go application.
 3. **Building and Pushing Docker Image**: Packages the application into a Docker image and pushes it to the registry.
 
-![CI Argo Workflow Flowchart](/blog/vcluster/ci_flowchart.jpg)
+![CI Argo Workflow Flowchart](/blog/vcluster/ci_flowchart.webp)
 
 To submit the CI pipeline, you can use the [official APIs](https://argo-workflows.readthedocs.io/en/latest/rest-api/):
 
@@ -166,11 +166,11 @@ To submit the CI pipeline, you can use the [official APIs](https://argo-workflow
 
 Alternatively, you can submit the workflow using the UI:
 
-![Submit CI workflow via UI](/blog/vcluster/ci_submit.png)
+![Submit CI workflow via UI](/blog/vcluster/ci_submit.webp)
 
 After the completion of all steps, you can check the correct status of every step and locate the updated Docker image in your registry:
 
-![CI workflow graph](/blog/vcluster/ci_graph.png)
+![CI workflow graph](/blog/vcluster/ci_graph.webp)
 
 ### 9. Submit the CD pipeline
 
@@ -179,7 +179,7 @@ The CD pipeline performs these steps inside the [cd.yaml](https://github.com/ban
 1. **Preparing an ephemeral environment**: Prepares a temporary environment using vCluster where the user can test the application inside an isolated Kubernetes cluster.
 2. **Deploy the application**: Deploy the application Helm chart on the vCluster just created.
 
-![CD Argo Workflow Flowchart](/blog/vcluster/cd_flowchart.jpg)
+![CD Argo Workflow Flowchart](/blog/vcluster/cd_flowchart.webp)
 
 To submit the CD pipeline, you can use the [official APIs](https://argo-workflows.readthedocs.io/en/latest/rest-api/):
 
@@ -189,11 +189,11 @@ To submit the CD pipeline, you can use the [official APIs](https://argo-workflow
 
 Alternatively, you can submit the workflow using the UI:
 
-![Submit CD workflow via UI](/blog/vcluster/cd_submit.png)
+![Submit CD workflow via UI](/blog/vcluster/cd_submit.webp)
 
 After the completion of all steps, you can check the correct status of every step:
 
-![CD workflow graph](/blog/vcluster/cd_graph.png)
+![CD workflow graph](/blog/vcluster/cd_graph.webp)
 
 ### 10. Access to the application
 

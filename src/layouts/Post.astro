@@ -30,6 +30,18 @@ const blogPosting = buildBlogPosting({
 	keywords: tags,
 });
 
+const heroWidths = [480, 768, 1200];
+const cardWidths = [320, 480, 640];
+const appendImageParams = (url: string, params: string) =>
+	`${url}${url.includes("?") ? "&" : "?"}${params}`;
+const buildSrcSet = (url: string, widths: number[], format?: "webp") =>
+	widths
+		.map((width) => {
+			const query = format ? `format=${format}&w=${width}` : `w=${width}`;
+			return `${appendImageParams(url, query)} ${width}w`;
+		})
+		.join(", ");
+
 const blogEntries = (await getBlogPosts())
 	.filter((blogEntry) => blogEntry.blog_slug !== blogSlug)
 	.filter(function (blogEntry) {
@@ -63,14 +75,29 @@ const blogEntries = (await getBlogPosts())
       <div class="row">
         <div class="col-xxl-12">
           <div class="blog__details-top cf_parallax_image">
-            <img
-              class="blog__details-hero-img"
-              src={image}
-              alt={title}
-              fetchpriority="high"
-              decoding="async"
-              data-speed="0.9"
-            />
+            <picture>
+              <source
+                type="image/webp"
+                srcset={buildSrcSet(image, heroWidths, "webp")}
+                sizes="(max-width: 991px) 100vw, 1200px"
+              />
+              <source
+                srcset={buildSrcSet(image, heroWidths)}
+                sizes="(max-width: 991px) 100vw, 1200px"
+              />
+              <img
+                class="blog__details-hero-img"
+                src={appendImageParams(image, "w=768")}
+                srcset={buildSrcSet(image, heroWidths)}
+                sizes="(max-width: 991px) 100vw, 1200px"
+                alt={title}
+                width="1200"
+                height="675"
+                fetchpriority="high"
+                decoding="async"
+                data-speed="0.9"
+              />
+            </picture>
           </div>
 
           <div class="blog__details-wrap">
@@ -147,14 +174,27 @@ const blogEntries = (await getBlogPosts())
                 <article class="lb-blog__item blog-img-zoom">
                   <div class="thumb">
                     <a href={`/${lang}/blog/${post.blog_slug}`}>
-                      <img
-                        src={post.data.image}
-                        alt={post.data.title}
-                        width={800}
-                        height={450}
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <picture>
+                        <source
+                          type="image/webp"
+                          srcset={buildSrcSet(post.data.image, cardWidths, "webp")}
+                          sizes="(max-width: 767px) 100vw, 25vw"
+                        />
+                        <source
+                          srcset={buildSrcSet(post.data.image, cardWidths)}
+                          sizes="(max-width: 767px) 100vw, 25vw"
+                        />
+                        <img
+                          src={appendImageParams(post.data.image, "w=480")}
+                          srcset={buildSrcSet(post.data.image, cardWidths)}
+                          sizes="(max-width: 767px) 100vw, 25vw"
+                          alt={post.data.title}
+                          width={800}
+                          height={450}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </picture>
                     </a>
                   </div>
                   <ul class="lb-blog__meta">

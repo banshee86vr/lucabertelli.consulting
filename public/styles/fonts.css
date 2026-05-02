@@ -1,7 +1,4 @@
-/* Font optimization: Manrope + Plus Jakarta load from critical.css; add body text only here */
-
-/* Body text - Inter (critical.css already loads Manrope + Plus Jakarta for headings) */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+/* Font optimization: keep local fallback variables; web fonts load from <head> */
 
 /* System fonts as fallback */
 html {
@@ -22,7 +19,6 @@ h1, h2, h3, h4, h5, h6 {
 .font-heading-estedad {
   font-family: "Plus Jakarta Sans", var(--font-sans);
 }
-
 
 /* Prevent font flash - Use optimized font loading */
 @supports (font-variation-settings: normal) {

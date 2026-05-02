@@ -5,7 +5,7 @@ category: "DevOps"
 lang: "en"
 date: "2025-03-08"
 tags: ["github-actions", "cicd", "devsecops", "kubernetes", "observability"]
-image: "/blog/snorlx/snorlx.jpg"
+image: "/blog/snorlx/snorlx.webp"
 ---
 
 ## Why do we need it?
@@ -18,27 +18,27 @@ GitHub Actions is the standard for CI/CD. GitHub shows runs clearly *inside* a s
 
 [Snorlx](https://github.com/banshee86vr/snorlx) is an open-source, self-hosted CI/CD dashboard for GitHub Actions: it aggregates all runs in one interface, delivers real-time updates via WebSocket, tracks costs per workflow and per repository, and provides **repository scoring** (a per-repo grade on Security, Testing, CI/CD, Documentation, Code Quality, Maintenance, and Community, with gold/silver/bronze tiers).
 
-![Main Snorlx dashboard view: summary cards, trends, and active pipelines](/blog/snorlx/dashboard.png)
+![Main Snorlx dashboard view: summary cards, trends, and active pipelines](/blog/snorlx/dashboard.webp)
 *Main dashboard: summary cards, success/failure trends, and running pipelines.*
 
 ## What does the dashboard give you?
 
 The **Dashboard** page shows cards for repositories, workflows, and run stats (success rate, in-progress count, comparison to previous period), charts for the last 30 days, outcome distribution, a live section with running and queued pipelines, and the average repository score and how many repos have been graded.
 
-![Scanning repositories in the GitHub Organization](/blog/snorlx/scanning.png)
+![Scanning repositories in the GitHub Organization](/blog/snorlx/scanning.webp)
 
 The **Repositories** page lists synced repositories; for each you can see the **repository score** (when computed): an overall percentage and a tier (gold, silver, bronze) based on seven categories: Security, Testing, CI/CD, Documentation, Code Quality, Maintenance and Community derived from GitHub data (branch protection, Dependabot, code scanning, README, config files, community profile, etc.). The score is computed during sync or on demand via “Refresh grade” from the repository detail page; in the detail view you get a radar chart for the seven dimensions and the list of checks (pass/fail).
 
-![Snorlx repositories list](/blog/snorlx/repositories.png)
-![Repository scoring](/blog/snorlx/scoring.png)
+![Snorlx repositories list](/blog/snorlx/repositories.webp)
+![Repository scoring](/blog/snorlx/scoring.webp)
 
 The **Runs** page is a filterable, paginated list of all workflow runs; **Run Detail** shows the full job hierarchy, step status, timelines, error annotations, workflow YAML viewer, and links to logs on GitHub. Data can be force-refreshed from GitHub with `?refresh=true`. Re-run and cancel actions call the GitHub API with proper error handling.
 
-![Search across all organization workflows](/blog/snorlx/workflows.png)
-![List of runs with filters for status, branch, event](/blog/snorlx/runs.png)
+![Search across all organization workflows](/blog/snorlx/workflows.webp)
+![List of runs with filters for status, branch, event](/blog/snorlx/runs.webp)
 *Run list with filters and pagination; from here you drill into each run.*
 
-![Details and logs for a specific run](/blog/snorlx/run_details.png)
+![Details and logs for a specific run](/blog/snorlx/run_details.webp)
 
 **Cost tracking** per workflow and per repository lets you spot the most expensive pipelines and model the impact of future pricing changes. Use `STORAGE_MODE=memory` to try everything with no database; switch to `STORAGE_MODE=database` and PostgreSQL with TimescaleDB for production.
 
@@ -140,7 +140,7 @@ For instant updates without polling, configure a webhook in your GitHub reposito
 
 Frontend: React 18 + TypeScript with TanStack Query and Recharts. Backend: Go (Chi router) with GitHub OAuth, webhooks, and WebSocket for real-time updates. PostgreSQL with TimescaleDB for time-series, hypertables, and continuous aggregates. Two modes: `STORAGE_MODE=memory` for development or quick start, `STORAGE_MODE=database` for production.
 
-![Three-tier architecture: frontend, backend, database](/blog/snorlx/architecture.jpg)
+![Three-tier architecture: frontend, backend, database](/blog/snorlx/architecture.webp)
 *Three-tier architecture: frontend, backend, database.*
 
 ## Deploying to Kubernetes

@@ -49,7 +49,13 @@ const { pathname } = Astro.url;
       </nav>
     </div>
     <div class="header__navicon">
-      <button id="open_offcanvas" data-bs-toggle="offcanvas" data-bs-target="#offcanvasOne">
+      <button
+        id="open_offcanvas"
+        type="button"
+        aria-controls="offcanvasOne"
+        aria-expanded="false"
+        aria-label="Open menu"
+      >
         <img src="/shape/menu-bar.png" alt="menu">
       </button>
     </div>

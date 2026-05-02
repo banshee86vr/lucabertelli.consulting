@@ -3,7 +3,7 @@ title: Ambienti di test effimeri per flussi di CI
 subtitle: Come usare i vCluster e Argo Workflow per gestire ambienti di test effimeri
 date: 1 Aprile 2024
 category: DevOps
-image: "/blog/vcluster/vcluster.jpeg"
+image: "/blog/vcluster/vcluster.webp"
 tags: ["vcluster", "argo", "cicd", "devsecops", "kubernetes","multi-tenancy"]
 lang: 'it'
 ---
@@ -160,7 +160,7 @@ La pipeline di Continuous Integration esegue gli step previsti all'interno del m
 2. **Esegue il build dell'applicazione**: Compila l'applicazione Hello World in Go utilizzando il template GoLang [go.yaml](https://github.com/banshee86vr/ephemeral-test-environment/blob/main/argo-workflow/lang/go.yaml).
 3. **Build e Push dell'immagine Docker**: Produce l'immagine Docker ed esegue la push sul registry.
 
-![CI Argo Workflow Flowchart](/blog/vcluster/ci_flowchart.jpg)
+![CI Argo Workflow Flowchart](/blog/vcluster/ci_flowchart.webp)
 
 Per eseguire la pipeline di CI è possibile usare l'API ufficiale [official APIs](https://argo-workflows.readthedocs.io/en/latest/rest-api/):
 
@@ -170,11 +170,11 @@ Per eseguire la pipeline di CI è possibile usare l'API ufficiale [official APIs
 
 In alternativa è possibile utilizzare l'interfaccia utente:
 
-![Submit CI workflow via UI](/blog/vcluster/ci_submit.png)
+![Submit CI workflow via UI](/blog/vcluster/ci_submit.webp)
 
 Dopo il completamento di tutti gli step, controllare il corretto stato di ogni task e verificare la presenza dell'immagine Docker nel registry:
 
-![CI workflow graph](/blog/vcluster/ci_graph.png)
+![CI workflow graph](/blog/vcluster/ci_graph.webp)
 
 ### 9. Submit della pipeline di Continuous Delivery
 
@@ -183,7 +183,7 @@ La pipeline di Continuous Delivery esegue gli step previsti nel manifest [cd.yam
 1. **Preparazione dell'ambiente effimero**: Preparazione dell'ambiente temporaneo usando vCluster dove l'utente potrà testare la sua applicazione in un ambiente isolato.
 2. **Deploy dell'applicazione**: Deploy dell'applicazione tramite Helm chart sul vCluster appena creato.
 
-![CD Argo Workflow Flowchart](/blog/vcluster/cd_flowchart.jpg)
+![CD Argo Workflow Flowchart](/blog/vcluster/cd_flowchart.webp)
 
 Per eseguire la pipeline di CI è possibile usare l'API ufficiale [official APIs](https://argo-workflows.readthedocs.io/en/latest/rest-api/):
 
@@ -193,11 +193,11 @@ Per eseguire la pipeline di CI è possibile usare l'API ufficiale [official APIs
 
 In alternativa è possibile utilizzare l'interfaccia utente:
 
-![Submit CD workflow via UI](/blog/vcluster/cd_submit.png)
+![Submit CD workflow via UI](/blog/vcluster/cd_submit.webp)
 
 Dopo il completamento di tutti gli step, controllare il corretto stato di ogni task:
 
-![CD workflow graph](/blog/vcluster/cd_graph.png)
+![CD workflow graph](/blog/vcluster/cd_graph.webp)
 
 ### 10. Accesso all'applicazione
 
