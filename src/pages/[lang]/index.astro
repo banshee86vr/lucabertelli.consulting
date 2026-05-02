@@ -35,6 +35,12 @@ const credentialsJsonLd = buildCertificationCredentials(
 		issueDate: entry.data.issueDate,
 	})),
 );
+const heroRoles = [
+	t("index.hero.role.engineer"),
+	t("index.hero.role.advisor"),
+	t("index.hero.role.consultant"),
+	t("index.hero.role.developer"),
+];
 ---
 
 <BaseLayout
@@ -93,7 +99,13 @@ const credentialsJsonLd = buildCertificationCredentials(
               class="lb__hero-title"
             >
               {t('index.hero.cloudNative')} <br />
-              <span>{t('index.hero.role.engineer')}</span>
+              <span
+                class="lb__hero-role-viewport"
+                data-lb-hero-role
+                data-lb-hero-roles={heroRoles.join("|")}
+              >
+                <span class="lb__hero-role-text">{heroRoles[0]}</span>
+              </span>
             </h1>
             <div class="cf_text">
               <p style="max-width:100%">{t('index.bio')}</p>
@@ -113,6 +125,67 @@ const credentialsJsonLd = buildCertificationCredentials(
 
   <Tickets />
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const roleViewport = document.querySelector("[data-lb-hero-role]");
+    if (!roleViewport) return;
+    if (roleViewport.getAttribute("data-lb-hero-init") === "true") return;
+    roleViewport.setAttribute("data-lb-hero-init", "true");
+
+    const roleText = roleViewport.querySelector(".lb__hero-role-text");
+    if (!roleText) return;
+
+    const rawRoles = roleViewport.getAttribute("data-lb-hero-roles");
+    if (!rawRoles) return;
+
+    const roles = rawRoles.split("|").map((item) => item.trim()).filter(Boolean);
+    if (roles.length < 2) return;
+
+    const TYPING_SPEED_MS = 95;
+    const DELETING_SPEED_MS = 55;
+    const HOLD_TYPED_MS = 1200;
+    const HOLD_EMPTY_MS = 250;
+
+    let roleIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    roleText.textContent = "";
+
+    const tick = () => {
+      const currentRole = roles[roleIndex];
+
+      if (!isDeleting) {
+        charIndex += 1;
+        roleText.textContent = currentRole.slice(0, charIndex);
+
+        if (charIndex >= currentRole.length) {
+          isDeleting = true;
+          window.setTimeout(tick, HOLD_TYPED_MS);
+          return;
+        }
+
+        window.setTimeout(tick, TYPING_SPEED_MS);
+        return;
+      }
+
+      charIndex -= 1;
+      roleText.textContent = currentRole.slice(0, Math.max(0, charIndex));
+
+      if (charIndex <= 0) {
+        isDeleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+        window.setTimeout(tick, HOLD_EMPTY_MS);
+        return;
+      }
+
+      window.setTimeout(tick, DELETING_SPEED_MS);
+    };
+
+    tick();
+  })();
+</script>
 
 <style>
   .about__hero .row {
@@ -163,6 +236,19 @@ const credentialsJsonLd = buildCertificationCredentials(
 
   .lb__hero-title {
     font-size: 50px;
+  }
+
+  .lb__hero-role-viewport {
+    display: inline-block;
+    min-width: 11ch;
+    vertical-align: bottom;
+  }
+
+  .lb__hero-role-text {
+    display: inline-block;
+    white-space: nowrap;
+    font-variant-ligatures: none;
+    will-change: contents;
   }
 
   @media only screen and (max-width: 991px) {

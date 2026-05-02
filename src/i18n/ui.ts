@@ -219,10 +219,10 @@ export const ui = {
     'a11y.social.credly': 'Credenziali digitali su Credly',
     'index.hi': "Ciao 🖐 sono Luca",
     'index.hero.cloudNative': 'Cloud Native',
-    'index.hero.role.engineer': 'Ingegnere',
+    'index.hero.role.engineer': 'Engineer',
     'index.hero.role.advisor': 'Advisor',
-    'index.hero.role.consultant': 'Consulente',
-    'index.hero.role.developer': 'Sviluppatore',
+    'index.hero.role.consultant': 'Consultant',
+    'index.hero.role.developer': 'Developer',
     'index.bio': "Come consulente ed ingegnere Cloud Native, supporto le realtà che cercano di adottare in modo sostenibile e scalabile le ultime tecnologie cloud disponibili. Basandomi su una prolungata esperienza diretta maturata con clienti operanti nei settori Fintech, Insurtech e Industrial mi pongo l'obiettivo di ascoltare per comprendere le esigenze e risolvere i problemi concreti. Specializzato nel Platform Engineering, propongo soluzioni che forniscono una base solida per poter ottenere un'esperienza utente efficace ed ottimizzare allo stesso tempo i processi rendendoli più efficenti e sicuri.",
     'seo.site.title': 'Luca Bertelli | Consulenza Cloud Native',
     'seo.site.description':
