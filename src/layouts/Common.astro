@@ -3,7 +3,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import CookieBanner from "../components/CookieBanner.astro";
 
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { getLangFromUrl, getLocalizedPathname, useTranslations } from "../i18n/utils";
 import { SEO } from "astro-seo";
 import { absoluteUrl, alternatesForPathname } from "../utils/seo";
 import type { UiLang } from "../utils/seo";
@@ -210,6 +210,33 @@ const jsonLdPayload = JSON.stringify({
 				font-size: 1.125rem;
 				font-weight: 600;
 			}
+			.offcanvas__lang-switcher {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.75rem;
+				margin-top: 1rem;
+			}
+			.offcanvas__lang-switcher a {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 2.25rem;
+				height: 2.25rem;
+				border: 1px solid rgba(255, 255, 255, 0.25);
+				border-radius: 9999px;
+			}
+			.light .offcanvas__lang-switcher a {
+				border-color: rgba(28, 29, 32, 0.25);
+			}
+			.offcanvas__lang-switcher a[aria-current] {
+				border-color: var(--primary);
+			}
+			.offcanvas__lang-switcher img {
+				width: 1.25rem;
+				height: 1.25rem;
+				display: block;
+			}
 			.body-overlay {
 				position: fixed;
 				inset: 0;
@@ -271,6 +298,14 @@ const jsonLdPayload = JSON.stringify({
 									<li><a href={contactSlug}>{t("nav.contact")}</a></li>
 								</ul>
 							</nav>
+							<div class="offcanvas__lang-switcher" aria-label={t("a11y.langMenu")}>
+								<a href={getLocalizedPathname(pathname, "it")} aria-current={lang === "it" ? "page" : undefined}>
+									<img src="/lang/it.png?w=20" alt="Italiano" width="20" height="20" decoding="async" />
+								</a>
+								<a href={getLocalizedPathname(pathname, "en")} aria-current={lang === "en" ? "page" : undefined}>
+									<img src="/lang/en.png?w=20" alt="English" width="20" height="20" decoding="async" />
+								</a>
+							</div>
 						</div>
 						<div class="offcanvas__media">
 							<h2 class="offcanvas__title">{t("footer.follow")}</h2>
