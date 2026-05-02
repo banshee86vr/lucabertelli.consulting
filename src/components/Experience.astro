@@ -5,22 +5,78 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const contactSlug = `/${lang || ""}/contact`;
-const experienceMarqueeText = [
+const experienceSliderLabels = [
   t("index.experience.skills"),
   t("index.experience.experiences"),
   t("index.experience.services"),
   t("index.experience.educations"),
-].join(" / ");
+];
+const experienceSliderLine = experienceSliderLabels.join(" / ");
 ---
+
+<!-- Text Slider start -->
+<section class="about__textslider-area pb-100">
+  <div class="about__textslider">
+    <div class="text__slider" data-about-experience-marquee>
+      <div class="about__textslider-track" data-about-experience-marquee-track>
+        <div class="about__textslider-item">
+          <div class="text-slide-content">
+            <h2 class="title">{experienceSliderLine}</h2>
+          </div>
+        </div>
+        <div class="about__textslider-item" aria-hidden="true">
+          <div class="text-slide-content">
+            <h2 class="title">{experienceSliderLine}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Text Slider end -->
+
+<script is:inline>
+  (() => {
+    const marquees = document.querySelectorAll("[data-about-experience-marquee]");
+
+    marquees.forEach((marquee) => {
+      const track = marquee.querySelector("[data-about-experience-marquee-track]");
+
+      if (!track) return;
+
+      let frameId = 0;
+      let lastTs = 0;
+      let translateX = 0;
+      const speed = 90; // pixels per second
+
+      const animate = (ts) => {
+        if (!lastTs) lastTs = ts;
+
+        const deltaSeconds = (ts - lastTs) / 1000;
+        lastTs = ts;
+
+        const loopWidth = track.scrollWidth / 2;
+        translateX -= speed * deltaSeconds;
+
+        if (-translateX >= loopWidth) {
+          translateX += loopWidth;
+        }
+
+        track.style.transform = `translate3d(${translateX}px, 0, 0)`;
+        frameId = window.requestAnimationFrame(animate);
+      };
+
+      frameId = window.requestAnimationFrame(animate);
+
+      window.addEventListener("beforeunload", () => {
+        window.cancelAnimationFrame(frameId);
+      });
+    });
+  })();
+</script>
 
 <!-- Experience area start -->
 <section class="about__experience-area pb-130">
-  <div class="about__experience-marquee" aria-hidden="true">
-    <div class="about__experience-marquee-track">
-      <h1>{experienceMarqueeText}</h1>
-      <h1>{experienceMarqueeText}</h1>
-    </div>
-  </div>
   <div class="container">
     <div class="row">
       <div class="col-md-4 col-sm-6">
@@ -167,40 +223,40 @@ const experienceMarqueeText = [
 <!-- Notification area end -->
 
 <style>
-  .about__experience-marquee {
+  .about__textslider-area {
     width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-bottom: 56px;
+    margin-inline: calc(50% - 50vw);
     overflow: hidden;
-    border-block: 1px solid rgba(255, 255, 255, 0.18);
   }
 
-  .about__experience-marquee-track {
-    width: max-content;
+  .about__textslider .text__slider {
+    overflow: hidden;
+  }
+
+  .about__textslider .about__textslider-track {
     display: flex;
-    gap: 5rem;
-    padding: 16px 0;
+    width: max-content;
     will-change: transform;
-    animation: about-experience-marquee 28s linear infinite !important;
   }
 
-  .about__experience-marquee h1 {
-    margin: 0;
-    font-size: clamp(2rem, 6vw, 6rem);
-    letter-spacing: 0.06em;
-    line-height: 1;
-    text-transform: uppercase;
+  .about__textslider .about__textslider-item {
+    width: auto !important;
+    flex: 0 0 auto;
+  }
+
+  .about__textslider .text-slide-content {
+    display: flex;
+    align-items: center;
     white-space: nowrap;
   }
 
-  @keyframes about-experience-marquee {
-    from {
-      transform: translateX(0);
-    }
-
-    to {
-      transform: translateX(calc(-50% - 2.5rem));
-    }
+  .about__textslider .text__slider .title {
+    margin: 0;
+    font-size: clamp(2rem, 6vw, 6rem);
+    line-height: 1;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    text-transform: uppercase;
   }
 
   .about__experience-area .row {
