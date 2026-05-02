@@ -25,15 +25,15 @@ const { pathname } = Astro.url;
           <li><a href={homeSlug}>{t("nav.home")}</a></li>
           <li><a href={blogSlug}>{t("nav.blog")}</a></li>
           <li><a href={contactSlug}>{t("nav.contact")}</a></li>
-          <li><a href="https://github.com/banshee86vr/lucabertelli.consulting" target="_blank"><i class="fa-brands fa-github"></i></a></li>
+          <li><a href="https://github.com/banshee86vr/lucabertelli.consulting" target="_blank" rel="noopener noreferrer" aria-label={t("a11y.nav.githubRepo")}><i class="fa-brands fa-github" aria-hidden="true"></i></a></li>
           <li class="menu-item-has-children">
             <a href="#"><img src={t("nav.lang") + "?w=20"} style="max-height:20px" alt="Language selector" decoding="async" /></a>
             <ul class="dp-menu">
               <li><a href={getLocalizedPathname(pathname, "it")}
-                ><img src="/lang/it.png?w=20" style="max-height:20px;margin-right: 15px;" alt="Italiano" decoding="async" /> Italiano</a
+                ><img src="/lang/it.png?w=20" style="max-height:20px;margin-right: 15px;" alt="" role="presentation" decoding="async" /> Italiano</a
               ></li>
               <li><a href={getLocalizedPathname(pathname, "en")}
-                ><img src="/lang/en.png?w=20" style="max-height:20px;margin-right: 15px;" alt="English" decoding="async" /> English</a
+                ><img src="/lang/en.png?w=20" style="max-height:20px;margin-right: 15px;" alt="" role="presentation" decoding="async" /> English</a
               ></li>
             </ul>
           </li>
