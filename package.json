@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "semantic-release": "^25.0.0",
+    "terser": "^5.48.0",
     "wrangler": "^4.59.3"
   },
   "repository": "https://github.com/banshee86vr/lucabertelli.consulting.git",
