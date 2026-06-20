@@ -33,7 +33,7 @@
     "@astrojs/cloudflare": "^13.0.0",
     "@astrojs/sitemap": "^3.7.2",
     "@sendgrid/mail": "^8.1.5",
-    "astro": "^6.0.0",
+    "astro": "^6.4.6",
     "astro-seo": "^1.0.0",
     "dotenv": "^17.2.1",
     "typescript": "^6.0.0"
