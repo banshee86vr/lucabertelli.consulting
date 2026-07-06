@@ -95,4 +95,39 @@ const { pathname } = Astro.url;
     outline: 2px solid var(--primary);
     outline-offset: 2px;
   }
+  .header__area {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .header__area.is-sticky {
+    position: fixed !important;
+    top: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: var(--black-2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+  .light .header__area.is-sticky {
+    background-color: var(--white);
+  }
 </style>
+
+<script>
+  const header = document.querySelector(".header__area");
+
+  if (header) {
+    const STICKY_THRESHOLD = 80;
+    let isSticky = false;
+
+    const updateStickyState = () => {
+      const shouldBeSticky = window.scrollY > STICKY_THRESHOLD;
+      if (shouldBeSticky !== isSticky) {
+        isSticky = shouldBeSticky;
+        header.classList.toggle("is-sticky", isSticky);
+      }
+    };
+
+    updateStickyState();
+    window.addEventListener("scroll", updateStickyState, { passive: true });
+  }
+</script>
