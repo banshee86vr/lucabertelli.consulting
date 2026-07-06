@@ -15416,6 +15416,11 @@ body.modal-open .progress-wrap {
   position: relative;
   z-index: 1;
 }
+@media only screen and (min-width: 1200px) {
+  .header__navicon {
+    display: none;
+  }
+}
 .header__navicon-2 {
   display: none;
 }
