@@ -10,7 +10,15 @@ This website is designed to provide a comprehensive view of Luca Bertelli's prof
 
 ## Technologies Used
 
-The site is built with [Astro](https://astro.build/), a modern front-end framework that blends the best of traditional server-rendered static sites with modern client-side rendering (CSR). Astro allows for a fast and optimized user experience while maintaining the simplicity and performance of static sites. 🛠️
+The site is built with [Astro](https://astro.build/) v7 in server-rendered (SSR) mode and deployed to [Cloudflare Workers](https://workers.cloudflare.com/) through the [`@astrojs/cloudflare`](https://docs.astro.build/en/guides/integrations-guide/cloudflare/) adapter. 🛠️
+
+Key pieces of the stack:
+
+- **Astro 7 (SSR):** Pages are rendered on the edge, with `astro check` type-checking as part of the build.
+- **Cloudflare Workers + KV:** Hosting and key-value storage, configured in [wrangler.toml](wrangler.toml).
+- **@astrojs/sitemap & astro-seo:** Sitemap generation and per-page SEO metadata.
+- **SendGrid:** Powers the contact form email delivery.
+- **semantic-release:** Automated versioning and releases from the `main` branch, following Conventional Commits.
 
 ## Features
 
@@ -24,80 +32,75 @@ The site is built with [Astro](https://astro.build/), a modern front-end framewo
 
 ## Project structure
 
-Below is a standard project structure for an Astro project site:
-
 ```plaintext
 lucabertelli.consulting/
-├── public
-│   ├── about
-│   │   └── certifications
-│   ├── blog
-│   │   └── ...
-│   ├── contact
-│   ├── expertise
-│   ├── fonts
-│   ├── lang
-│   ├── notification
-│   ├── scripts
-│   ├── shape
-│   ├── social-influence
-│   ├── styles
-│   ├── tickets
-│   └── webfonts
-└── src
-    ├── components
-    ├── content
-    │   ├── blog
-    │   │   └── ...
-    │   └── certifications
-    ├── i18n
-    ├── layouts
-    └── pages
-        └── [lang]
-            └── blog
+├── docs
+│   ├── perf                  # Lighthouse baselines and post-change reports
+│   └── SEO-KPI.md            # SEO checklist and KPIs
+├── public                    # Static assets (images, fonts, styles, scripts, robots.txt, llms.txt)
+├── scripts                   # Maintenance scripts for Cloudflare Pages deployments
+├── src
+│   ├── components            # Reusable Astro components
+│   ├── constants             # Site-wide constants (canonical URL, etc.)
+│   ├── content
+│   │   ├── blog              # Blog articles (per language)
+│   │   └── certifications    # Certification badges
+│   ├── i18n                  # Translations and i18n utilities
+│   ├── layouts               # Page layouts
+│   ├── middleware.ts         # Astro middleware
+│   ├── pages
+│   │   └── [lang]            # Localized routes: index, blog, contact, cookies, privacy
+│   ├── types                 # Shared TypeScript types
+│   └── utils                 # Utility functions
+├── astro.config.mjs          # Astro config (Cloudflare adapter, sitemap, Vite settings)
+├── setupEnv.js               # Injects secrets into the environment at build time
+└── wrangler.toml             # Cloudflare Workers and KV configuration
 ```
-
-Explanation of key directories and files:
-
-- **src/:** The source directory where you write your site's components, layouts, pages, and styles.
-  - **components/:** Reusable components used across the site.
-  - **content/:** Blog articles and certifications badges.
-  - **i18n/:** Translation files.
-  - **layouts/:** Layouts define the structure of pages.
-  - **pages/:** Contains pages of the site. Each `.astro` file corresponds to a page.
-- **public/:** Static assets that you want to be publicly accessible on your website. These assets can include files like images, fonts, CSS files, JavaScript files, and other resources that don't need to be processed by a build step.
-
-Feel free to adapt this structure based on your specific needs and preferences.
 
 ## Getting Started
 
-To run this project locally, follow these steps:
+Prerequisites: Node.js >= 22.12.0 and [pnpm](https://pnpm.io/).
 
-1. Clone the repository:
+1. Clone the repository and enter the project directory:
 
    ```bash
    git clone https://github.com/banshee86vr/lucabertelli.consulting.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
    cd lucabertelli.consulting
    ```
 
-3. Install dependencies:
+2. Install dependencies:
 
    ```bash
-   npm install
+   pnpm install
+   ```
+
+3. (Optional) Create a `.env` file for the events/tickets integration (in production these values are read from Cloudflare KV; without them the tickets section is simply hidden):
+
+   ```bash
+   SECRET_LOAD_EVENTS=true
+   SECRET_EVENTS_API_URL=...
+   SECRET_EVENTS_API_USERNAME=...
+   SECRET_EVENTS_API_PASSWORD=...
    ```
 
 4. Run the development server:
 
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
    Open your browser and visit [http://localhost:4321](http://localhost:4321) to view the site locally. 🌐
+
+Other useful commands:
+
+```bash
+pnpm build     # astro check + production build
+pnpm preview   # preview the production build locally
+```
+
+## Deployment
+
+The site runs on Cloudflare Workers. [wrangler.toml](wrangler.toml) defines the Worker name, the KV namespaces (`lb_consulting` for runtime secrets, `SESSION` for sessions), and a `preview` environment. Releases are versioned automatically by semantic-release on pushes to `main`.
 
 ## SEO & discoverability
 
