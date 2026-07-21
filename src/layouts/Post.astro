@@ -102,26 +102,29 @@ const blogEntries = (await getBlogPosts())
 
           <div class="blog__details-wrap">
             <div class="blog__details-info">
-              <ul>
+              <ul class="blog__meta">
                 <li>
-                  <span>{t('post.header.category')}</span>
+                  <span class="blog__meta-label">{t("post.header.category")}</span>
                   <span class="blog__meta-value">{category}</span>
                 </li>
                 <li>
-                  <span>{t('post.header.language')}</span>
-                  <span class="blog__meta-value">{lang}</span>
+                  <span class="blog__meta-label">{t("post.header.language")}</span>
+                  <span class="blog__meta-value">{lang.toUpperCase()}</span>
                 </li>
                 <li>
-                  <span>{t('post.header.date')}</span>
-                  <time class="blog__meta-value" datetime={date.toISOString()}
-                    >{
+                  <span class="blog__meta-label">{t("post.header.date")}</span>
+                  <time
+                    class="blog__meta-value"
+                    datetime={date.toISOString()}
+                  >
+                    {
                       date.toLocaleDateString(lang, {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
                       })
-                    }</time
-                  >
+                    }
+                  </time>
                 </li>
               </ul>
               <h1 class="blog__details_title">
@@ -225,17 +228,53 @@ const blogEntries = (await getBlogPosts())
 </BaseLayout>
 
 <style>
-  .blog__meta-value {
-    font-weight: inherit;
-    color: inherit;
+  .blog__details-info :global(ul.blog__meta) {
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .blog__details-info :global(ul.blog__meta li) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+  .blog__details-info :global(ul.blog__meta li::after) {
+    inset-inline-end: -1rem;
+  }
+  .blog__details-info :global(.blog__meta-label) {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--black-9);
+  }
+  .blog__details-info :global(.blog__meta-value),
+  .blog__details-info :global(time.blog__meta-value) {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--white);
+  }
+  :global(.light) .blog__details-info :global(.blog__meta-value),
+  :global(.light) .blog__details-info :global(time.blog__meta-value) {
+    color: var(--black-2);
+  }
+  .blog__details-info :global(.blog__details_title) {
+    padding-bottom: 0.75rem;
   }
   .blog__details_subtitle {
     font-size: 1.125rem;
     line-height: 1.6;
-    margin-top: 0.75rem;
+    margin-top: 0;
     margin-bottom: 0;
-    font-weight: 600;
-    opacity: 0.92;
+    font-weight: 500;
+    opacity: 0.85;
+    color: var(--black-9);
   }
   .blog__details-hero-img {
     display: block;
@@ -244,5 +283,10 @@ const blogEntries = (await getBlogPosts())
     aspect-ratio: 16 / 9;
     height: auto;
     object-fit: cover;
+  }
+  @media only screen and (max-width: 767px) {
+    .blog__details-info :global(ul.blog__meta) {
+      gap: 1.25rem 1.75rem;
+    }
   }
 </style>
