@@ -171,8 +171,8 @@ Per esplorare la UI senza una fleet reale, il repository include un percorso di 
 
 ## Architettura (in breve)
 
-![Architettura Omastx: frontend React, backend Go, PostgreSQL, cluster Kubernetes in sola lettura e sorgenti upstream](/blog/omastx/architecture.webp)
-*Frontend React, backend Go con provider/resolver pluggable, PostgreSQL, discovery read-only sui cluster e resolve delle versioni da registry OCI, repo Helm e Artifact Hub.*
+![Architettura Omastx: SPA React e client MCP/Bearer, API Go, PostgreSQL, cluster Kubernetes in sola lettura e sorgenti upstream](/blog/omastx/architecture.webp)
+*SPA React (sessione + CSRF) e agent AI/MCP (Bearer read/scan), backend Go con OpenAPI, orchestratore di scan e provider/resolver pluggable, PostgreSQL (inclusi API token), discovery read-only sui cluster e resolve delle versioni da registry OCI, repo Helm e Artifact Hub.*
 
 ## Docker Compose
 
