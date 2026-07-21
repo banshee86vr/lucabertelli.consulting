@@ -235,7 +235,10 @@ const heroRoles = [
   }
 
   .lb__hero-title {
-    font-size: 50px;
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: clamp(2rem, 4vw, 3.125rem);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
   }
 
   .lb__hero-role-viewport {
@@ -276,15 +279,6 @@ const heroRoles = [
       padding-top: 40px;
     }
 
-    .lb__hero-title {
-      font-size: 38px;
-    }
-  }
-
-  @media only screen and (max-width: 575px) {
-    .lb__hero-title {
-      font-size: 32px;
-    }
   }
 
 </style>

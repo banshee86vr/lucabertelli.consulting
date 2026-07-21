@@ -7,6 +7,9 @@
   --black: #000;
   --white: #fff;
   --gray: #666666;
+  --font-heading: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: var(--font-body);
 }
 
 * {
@@ -25,7 +28,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+  font-family: var(--font-body);
   line-height: 1.6;
   color: var(--secondary);
   background-color: #1c1d20;
@@ -33,8 +36,9 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Manrope", var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+  font-family: var(--font-heading);
   font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 main {
@@ -99,15 +103,19 @@ a {
 }
 
 .hero-title {
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 5vw, 4rem);
-  font-weight: 800;
-  line-height: 1.2;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
   margin-bottom: 1.5rem;
   color: var(--black);
 }
 
 .hero-subtitle {
+  font-family: var(--font-body);
   font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 500;
   color: var(--gray);
   margin-bottom: 2rem;
   max-width: 600px;

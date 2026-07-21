@@ -67,8 +67,9 @@ const { pathname } = Astro.url;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 400;
-    font-size: 18px;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-weight: 500;
+    font-size: 0.95rem;
     line-height: 1;
     color: var(--white);
     padding: 30px 25px;
@@ -76,7 +77,6 @@ const { pathname } = Astro.url;
     background: transparent;
     border: none;
     cursor: pointer;
-    font-family: inherit;
   }
   .light .header__lang-trigger {
     color: var(--black-2);

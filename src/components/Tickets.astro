@@ -131,58 +131,102 @@ try {
       </div>
     </div>
   </div>
+  {/* Shared paper-grain filter for all tickets */}
+  <svg class="lb__ticket-noise-svg" aria-hidden="true" focusable="false">
+    <filter id="lb-ticket-paper-noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.75"
+        numOctaves="3"
+        stitchTiles="stitch"
+        result="noise"
+      />
+      <feColorMatrix
+        type="matrix"
+        values="0 0 0 0 0.18
+                0 0 0 0 0.14
+                0 0 0 0 0.09
+                0 0 0 0.55 0"
+      />
+    </filter>
+  </svg>
+
   <div class="lb__ticket-items">
     {
-      events.map((event: any) => (
-        <div
-          class="lb__ticket-item bg-white"
-        >
-          <span class="circle-1" />
-          <span class="circle-2" />
-          <div class="lb__ticket-up">
-            <div class="lb__ticket-upleft">
-              <span class="categ">{event.groups[0]?.name}</span>
-              <h2 class="title">
+      events.map((event: any, index: number) => {
+        const start = new Date(event.startDate);
+        const end = new Date(event.endDate);
+        const dateOpts: Intl.DateTimeFormatOptions = {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        };
+        const sameLocalDay =
+          start.getFullYear() === end.getFullYear() &&
+          start.getMonth() === end.getMonth() &&
+          start.getDate() === end.getDate();
+        const startLabel = start.toLocaleDateString(lang, dateOpts);
+        const dateLabel = sameLocalDay
+          ? startLabel
+          : `${startLabel} – ${end.toLocaleDateString(lang, dateOpts)}`;
+        const category = event.groups?.[0]?.name?.trim() || "—";
+        const topics =
+          Array.isArray(event.topics) && event.topics.length > 0
+            ? event.topics.join(", ")
+            : "—";
+        const location = event.location?.trim() || "—";
+        const paperTone = `lb__ticket-item--paper-${(index % 3) + 1}`;
+        const serial = String(event.id ?? index + 1)
+          .replace(/\D/g, "")
+          .padStart(6, "0")
+          .slice(-6);
+        const barcodeShift = ((index * 3) % 7) + 1;
+
+        return (
+        <div class="lb__ticket-shell">
+          <div class={`lb__ticket-item ${paperTone}`}>
+            <span class="lb__ticket-grain" aria-hidden="true" />
+            <span class="circle-1" aria-hidden="true" />
+            <span class="circle-2" aria-hidden="true" />
+            <span class="corner corner-tl" aria-hidden="true" />
+            <span class="corner corner-tr" aria-hidden="true" />
+            <span class="corner corner-bl" aria-hidden="true" />
+            <span class="corner corner-br" aria-hidden="true" />
+            <div class="lb__ticket-up">
+              <div class="lb__ticket-upleft">
+                <span class="categ">{category}</span>
+                <h2 class="title">
+                  <a href={event.url} target="_blank" rel="noopener noreferrer">
+                    {event.name}
+                  </a>
+                </h2>
+                <p class="lb__ticket-date">{dateLabel}</p>
+                <span class="lb__ticket-serial">PNR · {serial}</span>
+                <span class="lb__ticket-divider" aria-hidden="true" />
+              </div>
+              <div class="lb__ticket-upright">
+                <span class="availble">{topics}</span>
+                <span
+                  class="lb__ticket-barcode"
+                  aria-hidden="true"
+                  style={`--barcode-shift: ${barcodeShift}px`}
+                />
+              </div>
+            </div>
+            <div class="lb__ticket-bottom">
+              <div class="lb__ticket-address">
+                <p>{location}</p>
+              </div>
+              <div class="lb__ticket-link">
                 <a href={event.url} target="_blank" rel="noopener noreferrer">
-                  {event.name}
+                  {t("tickets.cta")} <img src="/tickets/arrow-up.png" alt="" role="presentation" />
                 </a>
-              </h2>
-              <p>
-                {new Date(event.startDate).toLocaleDateString(lang, {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-                {new Date(event.endDate) > new Date(event.startDate) &&
-                  " - " + new Date(event.endDate).toLocaleDateString(lang, {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-              </p>
-              <img
-                class="lb__ticket-line1"
-                src="/tickets/line-1.png"
-                alt=""
-                role="presentation"
-              />
-            </div>
-            <div class="lb__ticket-upright">
-              <span class="availble">{event.topics.join(", ")}</span>
-            </div>
-          </div>
-          <div class="lb__ticket-bottom">
-            <div class="lb__ticket-address">
-              <p>{event.location}</p>
-            </div>
-            <div class="lb__ticket-link">
-              <a href={event.url} target="_blank" rel="noopener noreferrer">
-                {t("tickets.cta")} <img src="/tickets/arrow-up.png" alt="" role="presentation" />
-              </a>
+              </div>
             </div>
           </div>
         </div>
-      ))
+        );
+      })
     }
   </div>
 </section>
@@ -200,9 +244,12 @@ try {
 
   .lb__ticket-powered-label {
     order: 1;
-    font-size: 0.95rem;
-    font-weight: 600;
-    opacity: 0.9;
+    font-family: var(--font-ticket, "Share Tech Mono", monospace);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.85;
   }
 
   .lb__ticket-logo-link {
@@ -215,18 +262,419 @@ try {
 
   .lb__ticket-eventitech-mark {
     color: #17a34a;
-    font-size: 1.8rem;
-    font-weight: 800;
+    font-size: 1.5rem;
+    font-weight: 400;
     line-height: 1;
   }
 
   .lb__ticket-eventitech-name {
     color: inherit;
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 25px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
+    font-family: var(--font-ticket, "Share Tech Mono", monospace);
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
     text-transform: lowercase;
+  }
+
+  /*
+   * Uniform boarding-pass grid + paper effects:
+   * grain, CSS perforation, curl shadow, stub barcode.
+   */
+  .lb__ticket-noise-svg {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
+  :global(.lb__ticket-items) {
+    align-items: stretch;
+  }
+
+  :global(.lb__ticket-shell) {
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Lifted / curled corner shadow outside the clipped ticket */
+  :global(.lb__ticket-shell::after) {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset-inline-start: 10%;
+    inset-inline-end: 8%;
+    bottom: 2px;
+    height: 18px;
+    background: rgba(0, 0, 0, 0.38);
+    filter: blur(10px);
+    transform: skewX(-10deg) rotate(0.8deg);
+    pointer-events: none;
+  }
+
+  :global(.lb__ticket-item) {
+    --ticket-ink: #2c2a26;
+    --ticket-ink-soft: #5c574e;
+    --ticket-pad-inline: 22px;
+    --ticket-stub: 88px;
+    --ticket-gutter: 28px;
+    /* Trim line centered in the gutter between main + stub */
+    --ticket-trim: calc(
+      var(--ticket-pad-inline) + var(--ticket-stub) + (var(--ticket-gutter) / 2)
+    );
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+    padding: 18px var(--ticket-pad-inline);
+    font-family: var(--font-ticket, "Share Tech Mono", monospace);
+    color: var(--ticket-ink);
+    background-color: #f3eee4;
+    background-image:
+      linear-gradient(165deg, rgba(255, 255, 255, 0.5) 0%, transparent 40%),
+      linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.18) 46%,
+        transparent 58%
+      ),
+      radial-gradient(
+        ellipse 120% 80% at 50% 120%,
+        rgba(80, 55, 25, 0.08),
+        transparent 55%
+      );
+    border: none;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7) inset,
+      0 -1px 0 rgba(80, 60, 30, 0.07) inset,
+      0 12px 26px rgba(0, 0, 0, 0.26),
+      0 2px 5px rgba(0, 0, 0, 0.16);
+  }
+
+  /* Subtle stock variations — like different print runs */
+  :global(.lb__ticket-item--paper-1) {
+    background-color: #f4efe6;
+  }
+
+  :global(.lb__ticket-item--paper-2) {
+    background-color: #f1f0e8;
+  }
+
+  :global(.lb__ticket-item--paper-3) {
+    background-color: #f6f0e2;
+  }
+
+  /* SVG turbulence grain over paper stock */
+  :global(.lb__ticket-grain) {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.14;
+    mix-blend-mode: multiply;
+    background: #b8aa90;
+    filter: url(#lb-ticket-paper-noise);
+  }
+
+  :global(.lb__ticket-item .categ),
+  :global(.lb__ticket-item .availble),
+  :global(.lb__ticket-date),
+  :global(.lb__ticket-serial),
+  :global(.lb__ticket-address p) {
+    color: var(--ticket-ink-soft);
+  }
+
+  :global(.lb__ticket-item .title),
+  :global(.lb__ticket-item .title a),
+  :global(.lb__ticket-link a) {
+    color: var(--ticket-ink);
+  }
+
+  :global(.lb__ticket-up),
+  :global(.lb__ticket-bottom) {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* CSS dashed perforation (replaces theme line-2.png) */
+  :global(.lb__ticket-item::before) {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    inset-inline-end: var(--ticket-trim);
+    top: 14px;
+    bottom: 14px;
+    width: 2px;
+    height: auto;
+    background-color: transparent !important;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(44, 42, 38, 0.55) 0 3px,
+      transparent 3px 7px
+    ) !important;
+    background-repeat: repeat-y !important;
+    background-size: 2px 7px !important;
+    opacity: 0.85;
+  }
+
+  /* Hide theme stub decoration that draws over the trim */
+  :global(.lb__ticket-upright::before) {
+    display: none;
+  }
+
+  /* Stub perforation + corner punches — match page bg to cut the paper */
+  :global(.lb__ticket-item .circle-1),
+  :global(.lb__ticket-item .circle-2),
+  :global(.lb__ticket-item .corner) {
+    position: absolute;
+    z-index: 4;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--black-2, #1c1d20);
+    pointer-events: none;
+  }
+
+  :global(.lb__ticket-item .circle-1),
+  :global(.lb__ticket-item .circle-2) {
+    inset-inline-end: calc(var(--ticket-trim) - 11px);
+    top: auto;
+    bottom: auto;
+  }
+
+  :global(.lb__ticket-item .circle-1) {
+    top: -11px;
+  }
+
+  :global(.lb__ticket-item .circle-2) {
+    bottom: -11px;
+    top: auto;
+  }
+
+  :global(.lb__ticket-item .corner-tl) {
+    top: -11px;
+    inset-inline-start: -11px;
+  }
+
+  :global(.lb__ticket-item .corner-tr) {
+    top: -11px;
+    inset-inline-end: -11px;
+  }
+
+  :global(.lb__ticket-item .corner-bl) {
+    bottom: -11px;
+    inset-inline-start: -11px;
+  }
+
+  :global(.lb__ticket-item .corner-br) {
+    bottom: -11px;
+    inset-inline-end: -11px;
+  }
+
+  :global(.lb__ticket-up) {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--ticket-stub);
+    column-gap: var(--ticket-gutter);
+    align-items: stretch;
+    min-height: 0;
+  }
+
+  :global(.lb__ticket-upleft) {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding-inline-end: 0;
+  }
+
+  :global(.lb__ticket-upright) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: var(--ticket-stub);
+    max-width: var(--ticket-stub);
+    margin-inline-end: 0;
+    min-width: 0;
+    min-height: 0;
+    padding-top: 0.1rem;
+    padding-inline-start: 0;
+    overflow: hidden;
+  }
+
+  :global(.lb__ticket-item .categ) {
+    display: block;
+    flex: 0 0 auto;
+    height: 1.15rem;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-ticket, "Share Tech Mono", monospace);
+    font-size: 0.65rem;
+    font-weight: 400;
+    line-height: 1.15rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  :global(.lb__ticket-item .title) {
+    flex: 0 0 auto;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    height: calc(1.15em * 2);
+    margin: 0.2rem 0 0;
+    font-family: var(--font-ticket, "Share Tech Mono", monospace);
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  :global(.lb__ticket-item .title a) {
+    display: inline;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: inherit;
+  }
+
+  :global(.lb__ticket-date) {
+    flex: 0 0 auto;
+    margin: 0;
+    padding-top: 0.45rem !important;
+    font-family: var(--font-ticket, "Share Tech Mono", monospace);
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :global(.lb__ticket-serial) {
+    display: block;
+    flex: 0 0 auto;
+    margin-top: 0.2rem;
+    font-family: var(--font-ticket, "Share Tech Mono", monospace);
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  :global(.lb__ticket-divider) {
+    flex: 0 0 auto;
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-top: 0.4rem;
+    background-image: repeating-linear-gradient(
+      to right,
+      rgba(44, 42, 38, 0.45) 0 5px,
+      transparent 5px 9px
+    );
+    opacity: 0.7;
+  }
+
+  :global(.lb__ticket-item .availble) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    width: 100%;
+    margin: 0;
+    font-family: var(--font-ticket, "Share Tech Mono", monospace);
+    font-size: 0.65rem;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    word-break: break-word;
+  }
+
+  /* Stub barcode — boarding-pass classic */
+  :global(.lb__ticket-barcode) {
+    display: block;
+    flex: 0 0 auto;
+    width: 100%;
+    height: 26px;
+    margin-top: 0.55rem;
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--ticket-ink) 0 1px,
+      transparent 1px 2px,
+      var(--ticket-ink) 2px 3px,
+      transparent 3px 5px,
+      var(--ticket-ink) 5px 8px,
+      transparent 8px 9px,
+      var(--ticket-ink) 9px 10px,
+      transparent 10px 13px
+    );
+    background-size: calc(100% + 16px) 100%;
+    background-position: calc(var(--barcode-shift, 0px) * -1) 0;
+    opacity: 0.72;
+  }
+
+  :global(.lb__ticket-bottom) {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--ticket-stub);
+    column-gap: var(--ticket-gutter);
+    align-items: center;
+    margin-top: 0.55rem;
+    min-height: 1.25rem;
+  }
+
+  :global(.lb__ticket-address) {
+    min-width: 0;
+    padding-inline-end: 12px;
+  }
+
+  :global(.lb__ticket-address p) {
+    margin: 0;
+    padding: 0 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-ticket, "Share Tech Mono", monospace);
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  :global(.lb__ticket-link) {
+    width: var(--ticket-stub);
+    max-width: var(--ticket-stub);
+    display: flex;
+    justify-content: flex-start;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  :global(.lb__ticket-link a) {
+    font-family: var(--font-ticket, "Share Tech Mono", monospace);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    gap: 10px;
+  }
+
+  @media (max-width: 1199px) {
+    :global(.lb__ticket-items) {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
   }
 
   @media (max-width: 768px) {
@@ -235,15 +683,22 @@ try {
     }
 
     .lb__ticket-powered-label {
-      font-size: 0.85rem;
+      font-size: 0.7rem;
     }
 
     .lb__ticket-eventitech-mark {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
     }
 
     .lb__ticket-eventitech-name {
-      font-size: 1.15rem;
+      font-size: 1rem;
+    }
+
+    :global(.lb__ticket-item) {
+      --ticket-pad-inline: 18px;
+      --ticket-stub: 80px;
+      --ticket-gutter: 24px;
+      padding: 16px 18px;
     }
   }
 </style>

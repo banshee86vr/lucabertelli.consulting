@@ -87,23 +87,22 @@ const jsonLdPayload = JSON.stringify({
 
 		<!-- Critical CSS - render-blocking on purpose -->
 		<link rel="stylesheet" href="/styles/critical.css" />
-		<link rel="stylesheet" href="/styles/fonts.css" />
 
 		<!-- Preconnect for external font provider -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-		<!-- Non-blocking Google Fonts CSS (swap avoids text invisibility) -->
+		<!-- Brand fonts + Share Tech Mono for boarding-pass ticket cards -->
 		<link
 			rel="preload"
-			href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Share+Tech+Mono&family=Space+Grotesk:wght@400;500;600;700&display=swap"
 			as="style"
 			onload="this.onload=null;this.rel='stylesheet'"
 		/>
 		<noscript>
 			<link
 				rel="stylesheet"
-				href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+				href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Share+Tech+Mono&family=Space+Grotesk:wght@400;500;600;700&display=swap"
 			/>
 		</noscript>
 
@@ -111,16 +110,19 @@ const jsonLdPayload = JSON.stringify({
 		<link rel="preload" href="/styles/bootstrap.min.css" as="style" />
 		<link rel="preload" href="/styles/all.min.css" as="style" />
 		<link rel="preload" href="/styles/master.css" as="style" />
+		<link rel="preload" href="/styles/fonts.css" as="style" />
 		<link rel="preload" href="/styles/style.css" as="style" />
 
-		<!-- Core framework CSS remains blocking -->
+		<!-- Core framework CSS remains blocking; brand typography loads after theme -->
 		<link rel="stylesheet" href="/styles/bootstrap.min.css" />
 		<link rel="stylesheet" href="/styles/all.min.css" media="print" onload="this.media='all'" />
 		<link rel="stylesheet" href="/styles/master.css" media="print" onload="this.media='all'" />
+		<link rel="stylesheet" href="/styles/fonts.css" media="print" onload="this.media='all'" />
 		<link rel="stylesheet" href="/styles/style.css" media="print" onload="this.media='all'" />
 		<noscript>
 			<link rel="stylesheet" href="/styles/all.min.css" />
 			<link rel="stylesheet" href="/styles/master.css" />
+			<link rel="stylesheet" href="/styles/fonts.css" />
 			<link rel="stylesheet" href="/styles/style.css" />
 		</noscript>
 		<SEO
@@ -207,6 +209,7 @@ const jsonLdPayload = JSON.stringify({
 			}
 			.offcanvas__menu-list a {
 				display: inline-block;
+				font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
 				font-size: 1.125rem;
 				font-weight: 600;
 			}
@@ -256,7 +259,7 @@ const jsonLdPayload = JSON.stringify({
 		</style>
 	</head>
 
-	<body class="font-heading-estedad">
+	<body class="font-brand">
 		<a class="skip-to-content" href="#main-content">{t("a11y.skipToContent")}</a>
 
 		<div class="body-overlay"></div>
