@@ -322,22 +322,28 @@ const lastUpdatedText = lang === 'it'
   }
 
   .cookies__text a {
-    color: #ffe24c;
+    color: var(--primary);
     text-decoration: underline;
-    transition: none;
+    transition: color 0.2s ease;
     font-weight: 500;
   }
 
-  .cookies__text a:hover {
-    color: #ffc700;
+  .cookies__text a:hover,
+  .cookies__text a:focus-visible {
+    color: var(--yellow-3, #ffc700);
+  }
+
+  .cookies__text a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
   }
 
   .light .cookies__text a {
-    color: #c79500;
+    color: var(--primary);
   }
 
   .light .cookies__text a:hover {
-    color: #a77700;
+    color: var(--yellow-3, #ffc700);
   }
 
   .cookies__list {
@@ -358,27 +364,33 @@ const lastUpdatedText = lang === 'it'
   }
 
   .cookies__list li::marker {
-    color: #ffe24c;
+    color: var(--primary);
   }
 
   .cookies__list a {
-    color: #ffe24c;
+    color: var(--primary);
     text-decoration: none;
-    transition: none;
+    transition: color 0.2s ease;
     font-weight: 500;
   }
 
-  .cookies__list a:hover {
-    color: #ffc700;
+  .cookies__list a:hover,
+  .cookies__list a:focus-visible {
+    color: var(--yellow-3, #ffc700);
     text-decoration: underline;
   }
 
+  .cookies__list a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
   .light .cookies__list a {
-    color: #c79500;
+    color: var(--primary);
   }
 
   .light .cookies__list a:hover {
-    color: #a77700;
+    color: var(--yellow-3, #ffc700);
   }
 
   .cookies__note {
@@ -449,20 +461,20 @@ const lastUpdatedText = lang === 'it'
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 13px;
-    color: #ffc700;
+    color: var(--yellow-3, #ffc700);
     font-weight: 600;
   }
 
   .light .cookies__table code {
     background: rgba(255, 226, 76, 0.25);
-    color: #a77700;
+    color: var(--yellow-3, #ffc700);
     font-weight: 600;
   }
 
   .cookies__badge {
     display: inline-block;
-    background: linear-gradient(135deg, #ffe24c 0%, #ffc700 100%);
-    color: #1c1d20;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--yellow-3, #ffc700) 100%);
+    color: var(--black-2, #1c1d20);
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 12px;
@@ -478,20 +490,25 @@ const lastUpdatedText = lang === 'it'
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    background: linear-gradient(135deg, #ffe24c 0%, #ffc700 100%);
-    color: #1c1d20;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--yellow-3, #ffc700) 100%);
+    color: var(--black-2, #1c1d20);
     padding: 15px 30px;
     border-radius: 8px;
     font-size: 17px;
     font-weight: 700;
-    transition: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
     text-decoration: none;
   }
 
   .cookies__contact-link:hover {
-    transform: none;
-    box-shadow: none;
-    color: #000;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 226, 76, 0.35);
+    color: var(--black);
+  }
+
+  .cookies__contact-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
   }
 
   .cookies__contact-link i {

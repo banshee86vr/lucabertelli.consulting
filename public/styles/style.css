@@ -1,11 +1,51 @@
-
 .dir-rtl .swiper-slide {
   direction: rtl;
 }
 
+/* Brand polish: focus, motion, muted text */
+:root {
+  --gray-4: #b0b0b0;
+  --black-9: #b0b0b0;
+}
 
-/* Test Purpose */
-.offcanvas-area {
-  opacity: 0;
-  visibility: hidden;
+a:focus-visible,
+button:focus-visible,
+.wc-btn-primary:focus-visible,
+.btn-rollover-top:focus-visible,
+.main-menu a:focus-visible,
+.offcanvas__menu-list a:focus-visible,
+.offcanvas__close:focus-visible,
+.offcanvas__media a:focus-visible,
+.footer__link:focus-visible,
+.footer__social a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.wc-btn-primary,
+.btn-rollover-top,
+.header__area,
+.main-menu a,
+.cookie-banner,
+.cookie-banner__accept,
+.cookie-banner__link,
+.service-card,
+.footer__legal-link {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.wc-btn-primary:hover {
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-btn-primary:hover {
+    transform: none;
+  }
 }

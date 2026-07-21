@@ -110,6 +110,12 @@ const heroRoles = [
             <div class="cf_text">
               <p style="max-width:100%">{t('index.bio')}</p>
             </div>
+            <div class="lb__hero-actions">
+              <a href="mailto:info@lucabertelli.consulting" class="wc-btn-primary btn-rollover-top">
+                {t("index.hero.cta.email")}
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -142,16 +148,21 @@ const heroRoles = [
     const roles = rawRoles.split("|").map((item) => item.trim()).filter(Boolean);
     if (roles.length < 2) return;
 
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      roleText.textContent = roles[0];
+      return;
+    }
+
     const TYPING_SPEED_MS = 95;
     const DELETING_SPEED_MS = 55;
     const HOLD_TYPED_MS = 1200;
     const HOLD_EMPTY_MS = 250;
 
     let roleIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
+    let charIndex = roles[0].length;
+    let isDeleting = true;
 
-    roleText.textContent = "";
+    roleText.textContent = roles[0];
 
     const tick = () => {
       const currentRole = roles[roleIndex];
@@ -183,7 +194,7 @@ const heroRoles = [
       window.setTimeout(tick, DELETING_SPEED_MS);
     };
 
-    tick();
+    window.setTimeout(tick, HOLD_TYPED_MS);
   })();
 </script>
 
@@ -252,6 +263,14 @@ const heroRoles = [
     white-space: nowrap;
     font-variant-ligatures: none;
     will-change: contents;
+  }
+
+  .lb__hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 1.75rem;
   }
 
   @media only screen and (max-width: 991px) {

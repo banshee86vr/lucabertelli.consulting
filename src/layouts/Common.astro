@@ -46,12 +46,12 @@ const t = useTranslations(lang);
 
 const homeSlug = `/${lang || ""}`;
 const blogSlug = `/${lang || ""}/blog`;
-const contactSlug = `/${lang || ""}/contact`;
 
 const pathname =
 	Astro.url.pathname.endsWith("/") && Astro.url.pathname !== "/"
 		? Astro.url.pathname.slice(0, -1)
 		: Astro.url.pathname;
+const normalizedPath = pathname;
 const canonical =
 	canonicalProp ?? absoluteUrl(pathname === "" ? "/en" : pathname);
 
@@ -256,6 +256,38 @@ const jsonLdPayload = JSON.stringify({
 			body.offcanvas-open {
 				overflow: hidden;
 			}
+			.header__menu-toggle {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 2.5rem;
+				height: 2.5rem;
+				padding: 0;
+				border: none;
+				border-radius: 8px;
+				background: transparent;
+				color: var(--white, #fff);
+				cursor: pointer;
+				transition: color 0.2s ease;
+			}
+			.header__menu-toggle:hover,
+			.header__menu-toggle:focus-visible {
+				color: var(--primary, #ffe24c);
+			}
+			.header__menu-icon {
+				display: block;
+			}
+			.offcanvas__close.header__menu-toggle {
+				position: absolute;
+				top: 18px;
+				right: 18px;
+				font-size: inherit;
+				z-index: 99;
+			}
+			.light .header__menu-toggle,
+			.light .offcanvas__close.header__menu-toggle {
+				color: var(--black-2, #1c1d20);
+			}
 		</style>
 	</head>
 
@@ -282,23 +314,24 @@ const jsonLdPayload = JSON.stringify({
 
 			<!-- Offcanves start -->
 			<div class="offcanvas__area">
-				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasOne">
-					<button class="offcanvas__close" type="button" data-offcanvas-close
-						><i class="fa-solid fa-xmark"></i></button
-					>
+				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasOne" role="dialog" aria-modal="true" aria-label={t("a11y.openMenu")}>
+					<button class="offcanvas__close header__menu-toggle" type="button" data-offcanvas-close aria-label={t("a11y.closeMenu")}>
+						<svg class="header__menu-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+							<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+						</svg>
+					</button>
 					<div class="offcanvas__body">
 						<div class="offcanvas__logo">
 							<a href={homeSlug}>
-								<img src="/logo.png" alt="" />
+								<img src="/logo.png" alt={t("a11y.logo")} />
 							</a>
 						</div>
 
 						<div class="offcanvas__menu-area">
-							<nav class="offcanvas__menu-list" aria-label="Mobile menu">
+							<nav class="offcanvas__menu-list" aria-label={t("a11y.openMenu")}>
 								<ul>
-									<li><a href={homeSlug}>{t("nav.home")}</a></li>
-									<li><a href={blogSlug}>{t("nav.blog")}</a></li>
-									<li><a href={contactSlug}>{t("nav.contact")}</a></li>
+									<li><a href={homeSlug} aria-current={normalizedPath === homeSlug || normalizedPath === `/${lang}` ? "page" : undefined}>{t("nav.home")}</a></li>
+									<li><a href={blogSlug} aria-current={normalizedPath === blogSlug || normalizedPath.startsWith(`${blogSlug}/`) ? "page" : undefined}>{t("nav.blog")}</a></li>
 								</ul>
 							</nav>
 							<div class="offcanvas__lang-switcher" aria-label={t("a11y.langMenu")}>
@@ -370,25 +403,56 @@ const jsonLdPayload = JSON.stringify({
 
 				if (!openBtn || !panel || !closeBtn || !overlay) return;
 
+				let lastFocus = null;
+
+				const getFocusable = () =>
+					panel.querySelectorAll(
+						'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+					);
+
 				const closeOffcanvas = () => {
 					panel.classList.remove("show");
 					overlay.classList.remove("show");
 					document.body.classList.remove("offcanvas-open");
 					openBtn.setAttribute("aria-expanded", "false");
+					if (lastFocus && typeof lastFocus.focus === "function") {
+						lastFocus.focus();
+					} else {
+						openBtn.focus();
+					}
+					lastFocus = null;
 				};
 
 				const openOffcanvas = () => {
+					lastFocus = document.activeElement;
 					panel.classList.add("show");
 					overlay.classList.add("show");
 					document.body.classList.add("offcanvas-open");
 					openBtn.setAttribute("aria-expanded", "true");
+					closeBtn.focus();
 				};
 
 				openBtn.addEventListener("click", openOffcanvas);
 				closeBtn.addEventListener("click", closeOffcanvas);
 				overlay.addEventListener("click", closeOffcanvas);
 				document.addEventListener("keydown", (event) => {
-					if (event.key === "Escape") closeOffcanvas();
+					if (!panel.classList.contains("show")) return;
+					if (event.key === "Escape") {
+						closeOffcanvas();
+						return;
+					}
+					if (event.key !== "Tab") return;
+					const focusable = [...getFocusable()];
+					if (focusable.length === 0) return;
+					const first = focusable[0];
+					const last = focusable[focusable.length - 1];
+					if (event.shiftKey && document.activeElement === first) {
+						event.preventDefault();
+						last.focus();
+					} else if (!event.shiftKey && document.activeElement === last) {
+						event.preventDefault();
+						first.focus();
+					}
 				});
 			})();
 		</script>

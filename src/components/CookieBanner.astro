@@ -54,6 +54,12 @@ const cookiesUrl = `/${lang}/cookies`;
       const banner = document.getElementById('cookieBanner');
       if (banner) {
         banner.classList.add('cookie-banner--visible');
+        const acceptButton = document.getElementById('acceptCookies');
+        if (acceptButton) {
+          window.setTimeout(function() {
+            acceptButton.focus();
+          }, 50);
+        }
       }
     }
 
@@ -177,12 +183,12 @@ const cookiesUrl = `/${lang}/cookies`;
     flex-shrink: 0;
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #ffe24c 0%, #ffc700 100%);
+    background: linear-gradient(135deg, var(--primary, #ffe24c) 0%, var(--yellow-3, #ffc700) 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1c1d20;
   }
 
   .cookie-banner__icon svg {
@@ -258,7 +264,7 @@ const cookiesUrl = `/${lang}/cookies`;
   }
 
   .cookie-banner__accept {
-    background: linear-gradient(135deg, #ffe24c 0%, #ffc700 100%);
+    background: linear-gradient(135deg, var(--primary, #ffe24c) 0%, var(--yellow-3, #ffc700) 100%);
     color: #1c1d20;
     border: none;
     padding: 12px 28px;
@@ -273,6 +279,16 @@ const cookiesUrl = `/${lang}/cookies`;
   .cookie-banner__accept:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(255, 226, 76, 0.5);
+  }
+
+  .cookie-banner__accept:focus-visible {
+    outline: 2px solid var(--primary, #ffe24c);
+    outline-offset: 3px;
+  }
+
+  .cookie-banner__link:focus-visible {
+    outline: 2px solid var(--primary, #ffe24c);
+    outline-offset: 2px;
   }
 
   .cookie-banner__accept:active {

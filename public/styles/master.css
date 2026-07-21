@@ -60,7 +60,7 @@
   --black-6: #333337;
   --black-7: #27292d;
   --black-8: #222227;
-  --black-9: #999999;
+  --black-9: #b0b0b0;
   --black-10: #272422;
   --black-11: #1d1917;
   --black-12: #343231;
@@ -90,7 +90,7 @@
   --gray: #666666;
   --gray-2: #d9d9d9;
   --gray-3: #636376;
-  --gray-4: #999999;
+  --gray-4: #b0b0b0;
   --gray-5: #232327;
   --gray-6: #44454a;
   --gray-7: #63637b;
@@ -155,13 +155,16 @@
   --red: #f02e27;
 }
 
-/* Disable all animations and transitions site-wide */
-*,
-*::before,
-*::after {
-  animation: none !important;
-  transition: none !important;
-  scroll-behavior: auto !important;
+/* Respect reduced motion; keep intentional transitions elsewhere */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /*----------------------------------------*/

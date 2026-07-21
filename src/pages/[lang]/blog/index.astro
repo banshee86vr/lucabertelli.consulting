@@ -41,7 +41,7 @@ export async function getStaticPaths() {
 ---
 
 <BaseLayout title={t("seo.blog.title")} description={t("seo.blog.description")}>
-  <div class="main-blog__area pt-130 pt-120 pb-120">
+  <div class="main-blog__area pt-120 pb-120">
     <div class="container ptf-0">
       <div class="row">
         <div class="col-xxl-12">
@@ -99,3 +99,14 @@ export async function getStaticPaths() {
 
   <Tickets />
 </BaseLayout>
+
+<style>
+  .lb-blog__item a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+
+  .lb-blog__item a:hover .lb-blog__title {
+    color: var(--primary);
+  }
+</style>

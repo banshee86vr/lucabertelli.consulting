@@ -4,7 +4,6 @@ import { getLangFromUrl, useTranslations } from "../i18n/utils";
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const contactSlug = `/${lang || ""}/contact`;
 const experienceSliderLabels = [
   t("index.experience.skills"),
   t("index.experience.experiences"),
@@ -12,21 +11,79 @@ const experienceSliderLabels = [
   t("index.experience.educations"),
 ];
 const experienceSliderLine = experienceSliderLabels.join(" / ");
+
+const jobs = [
+  {
+    title: t("index.experience.job.1.title"),
+    company: t("index.experience.job.1.company"),
+    dates: t("index.experience.job.1.dates"),
+  },
+  {
+    title: t("index.experience.job.2.title"),
+    company: t("index.experience.job.2.company"),
+    dates: t("index.experience.job.2.dates"),
+    href: "https://www.krateo.io",
+  },
+  {
+    title: t("index.experience.job.3.title"),
+    company: t("index.experience.job.3.company"),
+    dates: t("index.experience.job.3.dates"),
+    href: "https://www.kiratech.it",
+  },
+  {
+    title: t("index.experience.job.4.title"),
+    company: t("index.experience.job.4.company"),
+    dates: t("index.experience.job.4.dates"),
+    href: "https://www.kiratech.it",
+  },
+  {
+    title: t("index.experience.job.5.title"),
+    company: t("index.experience.job.5.company"),
+    dates: t("index.experience.job.5.dates"),
+    href: "https://www.asem.it",
+  },
+  {
+    title: t("index.experience.job.6.title"),
+    company: t("index.experience.job.6.company"),
+    dates: t("index.experience.job.6.dates"),
+    href: "https://www.linkedin.com/company/value-transformation-services/",
+  },
+  {
+    title: t("index.experience.job.7.title"),
+    company: t("index.experience.job.7.company"),
+    dates: t("index.experience.job.7.dates"),
+    href: "https://www.accenture.it",
+  },
+  {
+    title: t("index.experience.job.8.title"),
+    company: t("index.experience.job.8.company"),
+    dates: t("index.experience.job.8.dates"),
+    href: "https://www.accenture.it",
+  },
+  {
+    title: t("index.experience.job.9.title"),
+    company: t("index.experience.job.9.company"),
+    dates: t("index.experience.job.9.dates"),
+    href: "https://www.adawen.it/",
+  },
+] as const;
+
+const jobColumns = [jobs.slice(0, 3), jobs.slice(3, 6), jobs.slice(6, 9)];
 ---
 
 <!-- Text Slider start -->
-<section class="about__textslider-area pb-100">
+<section class="about__textslider-area pb-100" aria-label={experienceSliderLine}>
   <div class="about__textslider">
     <div class="text__slider" data-about-experience-marquee>
       <div class="about__textslider-track" data-about-experience-marquee-track>
         <div class="about__textslider-item">
           <div class="text-slide-content">
-            <h2 class="title">{experienceSliderLine}</h2>
+            <p class="title">{experienceSliderLine}</p>
           </div>
         </div>
         <div class="about__textslider-item" aria-hidden="true">
           <div class="text-slide-content">
-            <h2 class="title">{experienceSliderLine}</h2>
+            <p class="title">{experienceSliderLine}</p>
           </div>
         </div>
       </div>
@@ -37,41 +94,55 @@ const experienceSliderLine = experienceSliderLabels.join(" / ");
 
 <script is:inline>
   (() => {
-    const marquees = document.querySelectorAll("[data-about-experience-marquee]");
+    const startMarquee = () => {
+      const marquees = document.querySelectorAll("[data-about-experience-marquee]");
+      const speed = 90; // pixels per second — intentional brand motion
 
-    marquees.forEach((marquee) => {
-      const track = marquee.querySelector("[data-about-experience-marquee-track]");
+      marquees.forEach((marquee) => {
+        const track = marquee.querySelector("[data-about-experience-marquee-track]");
 
-      if (!track) return;
+        if (!track || track.dataset.lbMarqueeInit === "true") return;
+        track.dataset.lbMarqueeInit = "true";
 
-      let frameId = 0;
-      let lastTs = 0;
-      let translateX = 0;
-      const speed = 90; // pixels per second
+        let frameId = 0;
+        let lastTs = 0;
+        let translateX = 0;
 
-      const animate = (ts) => {
-        if (!lastTs) lastTs = ts;
+        const animate = (ts) => {
+          if (!lastTs) lastTs = ts;
 
-        const deltaSeconds = (ts - lastTs) / 1000;
-        lastTs = ts;
+          const deltaSeconds = (ts - lastTs) / 1000;
+          lastTs = ts;
 
-        const loopWidth = track.scrollWidth / 2;
-        translateX -= speed * deltaSeconds;
+          const loopWidth = track.scrollWidth / 2;
+          if (loopWidth <= 0) {
+            frameId = window.requestAnimationFrame(animate);
+            return;
+          }
 
-        if (-translateX >= loopWidth) {
-          translateX += loopWidth;
-        }
+          translateX -= speed * deltaSeconds;
 
-        track.style.transform = `translate3d(${translateX}px, 0, 0)`;
+          if (-translateX >= loopWidth) {
+            translateX += loopWidth;
+          }
+
+          track.style.transform = `translate3d(${translateX}px, 0, 0)`;
+          frameId = window.requestAnimationFrame(animate);
+        };
+
         frameId = window.requestAnimationFrame(animate);
-      };
 
-      frameId = window.requestAnimationFrame(animate);
-
-      window.addEventListener("beforeunload", () => {
-        window.cancelAnimationFrame(frameId);
+        window.addEventListener("beforeunload", () => {
+          window.cancelAnimationFrame(frameId);
+        });
       });
-    });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", startMarquee);
+    } else {
+      startMarquee();
+    }
   })();
 </script>
 
@@ -79,107 +150,34 @@ const experienceSliderLine = experienceSliderLabels.join(" / ");
 <section class="about__experience-area pb-130">
   <div class="container">
     <div class="row">
-      <div class="col-md-4 col-sm-6">
-        <div class="about__experience-list">
-          <div class="about__experience-grid">
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2024 -
-              </p>
-              <p class="title">Cloud Native & DevOps Consultant</p>
-              <p class="company">Freelance</p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2023 - 2024
-              </p>
-              <p class="title">Client Success Manager & Co-Founder</p>
-              <p class="company">
-                <a href="https://www.krateo.io" target="_blank"
-                  >Krateo PlatformOps</a>
-              </p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2022 - 2024
-              </p>
-              <p class="title">Cloud Native Engineering Manager</p>
-              <p class="company">
-                <a href="https://www.kiratech.it" target="_blank">Kiratech</a>
-              </p>
+      {
+        jobColumns.map((column) => (
+          <div class="col-md-4 col-sm-6">
+            <div class="about__experience-list">
+              <div class="about__experience-grid">
+                {column.map((job) => (
+                  <div class="about__experience">
+                    <p>
+                      <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>{" "}
+                      {job.dates}
+                    </p>
+                    <p class="title">{job.title}</p>
+                    <p class="company">
+                      {"href" in job && job.href ? (
+                        <a href={job.href} target="_blank" rel="noopener noreferrer">
+                          {job.company}
+                        </a>
+                      ) : (
+                        job.company
+                      )}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <div class="about__experience-list">
-          <div class="about__experience-grid">
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2019 - 2022
-              </p>
-              <p class="title">Cloud Native Engineer</p>
-              <p class="company">
-                <a href="https://www.kiratech.it" target="_blank">Kiratech</a>
-              </p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2018 - 2019
-              </p>
-              <p class="title">DevOps Engineer</p>
-              <p class="company">
-                <a href="https://www.asem.it" target="_blank">ASEM</a>
-              </p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2014 - 2018
-              </p>
-              <p class="title">Oracle Tuxedo Engineering</p>
-              <p class="company">
-                <a
-                  href="https://www.linkedin.com/company/value-transformation-services/"
-                  target="_blank">Value Transformation Services</a
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <div class="about__experience-list">
-          <div class="about__experience-grid">
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2011 - 2014
-              </p>
-              <p class="title">Technology Architecture Sr. Analyst</p>
-              <p class="company">
-                <a href="https://www.accenture.it" target="_blank">Accenture</a>
-              </p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2009 - 2011
-              </p>
-              <p class="title">Software developer</p>
-              <p class="company">
-                <a href="https://www.accenture.it" target="_blank">Accenture</a>
-              </p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2008 - 2009
-              </p>
-              <p class="title">Software Developer</p>
-              <p class="company">
-                <a href="https://www.adawen.it/" target="_blank">Adawen</a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+        ))
+      }
     </div>
   </div>
 </section>
@@ -194,7 +192,7 @@ const experienceSliderLine = experienceSliderLabels.join(" / ");
           <div class="lb__notification-grid">
             <div class="lb__notification-left">
               <div class="lb__notification-thumb cf_image">
-                <img src="/notification/notification.png" alt="notification">
+                <img src="/notification/notification.png" alt="" role="presentation" width="120" height="120" decoding="async" />
               </div>
               <div class="lb__notification-content">
                 <h2 class="lb__notification-title">{t('index.experience.contact.title')}</h2>
@@ -205,16 +203,16 @@ const experienceSliderLine = experienceSliderLabels.join(" / ");
                 <p>{t('index.experience.contact.text')}</p>
               </div>
               <div class="cf_btn">
-                <a href={contactSlug} class="wc-btn-primary btn-rollover-top">{t("nav.contact")}
-                  <i class="fa-solid fa-arrow-right"></i>
+                <a href="mailto:info@lucabertelli.consulting" class="wc-btn-primary btn-rollover-top">{t("index.hero.cta.email")}
+                  <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                 </a>
               </div>
             </div>
           </div>
 
-          <img class="lb__notification-sh1" src="/notification/shape-01.png" alt="image">
-          <img class="lb__notification-sh2" src="/notification/shape-02.png" alt="image">
-          <img class="lb__notification-sh3" src="/notification/shape-03.png" alt="image">
+          <img class="lb__notification-sh1" src="/notification/shape-01.png" alt="" role="presentation" />
+          <img class="lb__notification-sh2" src="/notification/shape-02.png" alt="" role="presentation" />
+          <img class="lb__notification-sh3" src="/notification/shape-03.png" alt="" role="presentation" />
         </div>
       </div>
     </div>

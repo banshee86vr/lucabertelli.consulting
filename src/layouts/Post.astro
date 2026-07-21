@@ -70,7 +70,7 @@ const blogEntries = (await getBlogPosts())
 	jsonLdExtra={[blogPosting]}
 >
   <!-- Blog Details section end -->
-  <section class="blog__details__area pt-80 pb-30">
+  <section class="blog__details__area pt-120 pb-30">
     <div class="container">
       <div class="row">
         <div class="col-xxl-12">
@@ -291,5 +291,15 @@ const blogEntries = (await getBlogPosts())
     .blog__details-info :global(ul.blog__meta) {
       gap: 1.25rem 1.75rem;
     }
+  }
+  .blog__tag-list a:hover,
+  .blog__tag-list a:focus-visible,
+  .lb-blog__item a:hover .lb-blog__title {
+    color: var(--primary);
+  }
+  .blog__tag-list a:focus-visible,
+  .lb-blog__item a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
   }
 </style>

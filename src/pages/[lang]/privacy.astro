@@ -354,27 +354,33 @@ const lastUpdatedText = lang === 'it'
   }
 
   .privacy__list li::marker {
-    color: #ffe24c;
+    color: var(--primary);
   }
 
   .privacy__list a {
-    color: #ffe24c;
+    color: var(--primary);
     text-decoration: none;
-    transition: none;
+    transition: color 0.2s ease;
     font-weight: 500;
   }
 
-  .privacy__list a:hover {
-    color: #ffc700;
+  .privacy__list a:hover,
+  .privacy__list a:focus-visible {
+    color: var(--yellow-3, #ffc700);
     text-decoration: underline;
   }
 
+  .privacy__list a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
   .light .privacy__list a {
-    color: #c79500;
+    color: var(--primary);
   }
 
   .light .privacy__list a:hover {
-    color: #a77700;
+    color: var(--yellow-3, #ffc700);
   }
 
   .privacy__contact-box {
@@ -386,20 +392,25 @@ const lastUpdatedText = lang === 'it'
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    background: linear-gradient(135deg, #ffe24c 0%, #ffc700 100%);
-    color: #1c1d20;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--yellow-3, #ffc700) 100%);
+    color: var(--black-2, #1c1d20);
     padding: 15px 30px;
     border-radius: 8px;
     font-size: 17px;
     font-weight: 700;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
     text-decoration: none;
   }
 
   .privacy__contact-link:hover {
-    transform: none;
-    box-shadow: none;
-    color: #000;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 226, 76, 0.35);
+    color: var(--black);
+  }
+
+  .privacy__contact-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
   }
 
   .privacy__contact-link i {

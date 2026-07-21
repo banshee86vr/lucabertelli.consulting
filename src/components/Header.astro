@@ -1,48 +1,85 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { getLangFromUrl, useTranslations, getLocalizedPathname } from "../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const homeSlug = `/${lang || ""}`;
 const blogSlug = `/${lang || ""}/blog`;
-const contactSlug = `/${lang || ""}/contact`;
 
-import { getLocalizedPathname } from "../i18n/utils";
 const { pathname } = Astro.url;
+const normalizedPath =
+	pathname.endsWith("/") && pathname !== "/"
+		? pathname.slice(0, -1)
+		: pathname;
+
+const isHome =
+	normalizedPath === homeSlug ||
+	normalizedPath === `/${lang}` ||
+	normalizedPath === "";
+const isBlog =
+	normalizedPath === blogSlug || normalizedPath.startsWith(`${blogSlug}/`);
 ---
 
 <header class="header__area pos-abs plr-50">
   <div class="header__inner">
     <div class="header__logo-3">
       <a href={homeSlug}>
-        <img src="/logo.png" class="show-dark" alt="Site Logo" />
+        <img src="/logo.png" class="show-dark" alt={t("a11y.logo")} />
       </a>
     </div>
     <div class="header__nav">
-      <nav class="main-menu">
+      <nav class="main-menu header__menu" aria-label={t("nav.home")}>
         <ul>
-          <li><a href={homeSlug}>{t("nav.home")}</a></li>
-          <li><a href={blogSlug}>{t("nav.blog")}</a></li>
-          <li><a href={contactSlug}>{t("nav.contact")}</a></li>
-          <li><a href="https://github.com/banshee86vr/lucabertelli.consulting" target="_blank" rel="noopener noreferrer" aria-label={t("a11y.nav.githubRepo")}><i class="fa-brands fa-github" aria-hidden="true"></i></a></li>
-          <li class="menu-item-has-children">
+          <li>
+            <a href={homeSlug} aria-current={isHome ? "page" : undefined}>{t("nav.home")}</a>
+          </li>
+          <li>
+            <a href={blogSlug} aria-current={isBlog ? "page" : undefined}>{t("nav.blog")}</a>
+          </li>
+          <li>
+            <a
+              class="header__icon-link"
+              href="https://github.com/banshee86vr/lucabertelli.consulting"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t("a11y.nav.githubRepo")}
+              ><i class="fa-brands fa-github" aria-hidden="true"></i></a
+            >
+          </li>
+          <li class="header__lang">
             <button
               type="button"
               class="header__lang-trigger"
               aria-haspopup="true"
               aria-expanded="false"
+              aria-controls="lang-submenu"
               aria-label={t("a11y.langMenu")}
             >
-              <img src={t("nav.lang") + "?w=20"} style="max-height:20px" alt="" width="20" height="20" decoding="async" />
+              <img src={t("nav.lang") + "?w=20"} alt="" width="20" height="20" decoding="async" />
+              <span class="header__lang-caret" aria-hidden="true"></span>
             </button>
-            <ul class="dp-menu" id="lang-submenu" role="menu">
-              <li role="none"><a href={getLocalizedPathname(pathname, "it")} role="menuitem"
-                ><img src="/lang/it.png?w=20" style="max-height:20px;margin-right: 15px;" alt="" role="presentation" decoding="async" /> Italiano</a
-              ></li>
-              <li role="none"><a href={getLocalizedPathname(pathname, "en")} role="menuitem"
-                ><img src="/lang/en.png?w=20" style="max-height:20px;margin-right: 15px;" alt="" role="presentation" decoding="async" /> English</a
-              ></li>
+            <ul class="header__lang-menu" id="lang-submenu" role="menu">
+              <li role="none">
+                <a
+                  href={getLocalizedPathname(pathname, "it")}
+                  role="menuitem"
+                  aria-current={lang === "it" ? "true" : undefined}
+                >
+                  <img src="/lang/it.png?w=20" alt="" width="20" height="20" decoding="async" />
+                  Italiano
+                </a>
+              </li>
+              <li role="none">
+                <a
+                  href={getLocalizedPathname(pathname, "en")}
+                  role="menuitem"
+                  aria-current={lang === "en" ? "true" : undefined}
+                >
+                  <img src="/lang/en.png?w=20" alt="" width="20" height="20" decoding="async" />
+                  English
+                </a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -52,52 +89,239 @@ const { pathname } = Astro.url;
       <button
         id="open_offcanvas"
         type="button"
+        class="header__menu-toggle"
         aria-controls="offcanvasOne"
         aria-expanded="false"
-        aria-label="Open menu"
+        aria-label={t("a11y.openMenu")}
       >
-        <img src="/shape/menu-bar.png" alt="menu">
+        <svg class="header__menu-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+          <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
       </button>
     </div>
   </div>
 </header>
 
 <style>
-  .header__lang-trigger {
-    display: flex;
+  /* Soft accent box on hover / active */
+  .header__menu > ul {
     align-items: center;
-    justify-content: center;
+  }
+
+  .header__menu > ul > li > a,
+  .header__lang-trigger {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1;
     color: var(--white);
-    padding: 30px 25px;
-    text-transform: capitalize;
+    padding: 0.55rem 0.85rem;
+    margin: 0.9rem 0.1rem;
     background: transparent;
     border: none;
+    border-radius: 8px;
+    text-transform: none;
     cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
   }
+
+  .header__menu > ul > li > a:hover,
+  .header__menu > ul > li > a:focus-visible,
+  .header__menu > ul > li > a[aria-current="page"],
+  .header__lang:hover > .header__lang-trigger,
+  .header__lang:focus-within > .header__lang-trigger,
+  .header__lang.is-open > .header__lang-trigger,
+  .header__lang-trigger:hover,
+  .header__lang-trigger:focus-visible {
+    color: var(--primary);
+    background-color: rgba(255, 226, 76, 0.14);
+  }
+
+  .header__menu > ul > li > a.header__icon-link:hover,
+  .header__menu > ul > li > a.header__icon-link:focus-visible {
+    color: var(--primary);
+    background-color: transparent;
+  }
+
+  .light .header__menu > ul > li > a,
   .light .header__lang-trigger {
     color: var(--black-2);
   }
-  .main-menu > ul > li:hover > .header__lang-trigger {
+
+  .light .header__menu > ul > li > a:hover,
+  .light .header__menu > ul > li > a:focus-visible,
+  .light .header__menu > ul > li > a[aria-current="page"],
+  .light .header__lang:hover > .header__lang-trigger,
+  .light .header__lang:focus-within > .header__lang-trigger,
+  .light .header__lang.is-open > .header__lang-trigger,
+  .light .header__lang-trigger:hover,
+  .light .header__lang-trigger:focus-visible {
+    background-color: rgba(255, 226, 76, 0.22);
+  }
+
+  .light .header__menu > ul > li > a.header__icon-link:hover,
+  .light .header__menu > ul > li > a.header__icon-link:focus-visible {
+    background-color: transparent;
+  }
+
+  .header__lang-trigger img {
+    display: block;
+    max-height: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .header__lang-caret {
+    width: 0.35rem;
+    height: 0.35rem;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translateY(-1px);
+    transition: transform 0.2s ease;
+  }
+
+  .header__lang.is-open .header__lang-caret,
+  .header__lang:focus-within .header__lang-caret {
+    transform: rotate(225deg) translateY(-1px);
+  }
+
+  /* Compact language menu — no bulky theme panel */
+  .header__lang {
+    position: relative;
+  }
+
+  .header__menu > ul > li.header__lang > .header__lang-menu {
+    position: absolute;
+    top: calc(100% - 0.65rem);
+    right: 0;
+    left: auto !important;
+    z-index: 20;
+    min-width: 9.75rem;
+    width: max-content;
+    max-width: none;
+    margin: 0;
+    padding: 0.4rem;
+    list-style: none;
+    background-color: #212125 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(0.35rem);
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease,
+      visibility 0.18s ease;
+  }
+
+  .header__menu > ul > li.header__lang:hover > .header__lang-menu,
+  .header__menu > ul > li.header__lang:focus-within > .header__lang-menu,
+  .header__menu > ul > li.header__lang.is-open > .header__lang-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    left: auto !important;
+  }
+
+  .header__lang-menu li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Reset theme .main-menu li a rules that distort the dropdown items */
+  .header__menu .header__lang-menu a {
+    display: flex !important;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0.55rem 0.7rem !important;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.9rem !important;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0 !important;
+    color: var(--white-3, #f3f3f3);
+    text-transform: none;
+    background-color: transparent !important;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .header__menu .header__lang-menu a::before,
+  .header__menu .header__lang-menu a::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .header__lang-menu a img {
+    display: block;
+    width: 18px;
+    height: 18px;
+    max-height: none;
+    margin: 0 !important;
+    flex-shrink: 0;
+  }
+
+  .header__menu .header__lang-menu a[aria-current="true"] {
+    color: var(--primary);
+    background-color: transparent !important;
+  }
+
+  .header__menu .header__lang-menu a:hover,
+  .header__menu .header__lang-menu a:focus-visible {
+    color: var(--primary);
+    background-color: rgba(255, 226, 76, 0.14) !important;
+  }
+
+  .header__menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--white);
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .header__menu-toggle:hover,
+  .header__menu-toggle:focus-visible {
     color: var(--primary);
   }
-  .main-menu li.menu-item-has-children > .header__lang-trigger::after {
-    content: "\f107";
-    font-family: var(--font_awesome);
-    margin-inline-start: 5px;
-    font-weight: 600;
-    font-size: 14px;
+
+  .light .header__menu-toggle {
+    color: var(--black-2);
   }
-  .header__lang-trigger:focus-visible {
+
+  .header__menu-icon {
+    display: block;
+  }
+
+  .header__lang-trigger:focus-visible,
+  .header__menu a:focus-visible,
+  .header__menu-toggle:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
   }
+
   .header__area {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
   }
+
   .header__area.is-sticky {
     position: fixed !important;
     top: 0;
@@ -107,8 +331,34 @@ const { pathname } = Astro.url;
     background-color: var(--black-2);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   }
+
   .light .header__area.is-sticky {
     background-color: var(--white);
+  }
+
+  .light .header__lang-menu {
+    background-color: var(--white) !important;
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .light .header__menu .header__lang-menu a {
+    color: var(--black-2);
+  }
+
+  .light .header__menu .header__lang-menu a:hover,
+  .light .header__menu .header__lang-menu a:focus-visible {
+    background-color: rgba(255, 226, 76, 0.22) !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header__menu > ul > li > a,
+    .header__lang-trigger,
+    .header__lang-menu,
+    .header__lang-menu a,
+    .header__lang-caret {
+      transition: none;
+    }
   }
 </style>
 
@@ -129,5 +379,30 @@ const { pathname } = Astro.url;
 
     updateStickyState();
     window.addEventListener("scroll", updateStickyState, { passive: true });
+  }
+
+  const langItem = document.querySelector(".header__lang");
+  const langTrigger = document.querySelector(".header__lang-trigger");
+
+  if (langItem && langTrigger instanceof HTMLButtonElement) {
+    const setOpen = (open: boolean) => {
+      langItem.classList.toggle("is-open", open);
+      langTrigger.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+
+    langTrigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      setOpen(!langItem.classList.contains("is-open"));
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!(event.target instanceof Node) || !langItem.contains(event.target)) {
+        setOpen(false);
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false);
+    });
   }
 </script>

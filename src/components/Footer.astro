@@ -17,7 +17,7 @@ const cookiesUrl = `/${lang}/cookies`;
               ><img
                 src="/logo.png"
                 class="show-dark"
-                alt="Footer Logo"
+                alt={t("a11y.logo")}
                 style="max-height: 75px;"
               /></a
             >
@@ -85,20 +85,29 @@ const cookiesUrl = `/${lang}/cookies`;
     color: var(--white-3);
     font-size: 0.875rem;
     font-weight: 500;
-    transition: none;
+    transition: color 0.2s ease;
     text-decoration: none;
   }
 
-  .footer__legal-link:hover {
-    color: var(--white);
+  .footer__legal-link:hover,
+  .footer__legal-link:focus-visible {
+    color: var(--primary);
+  }
+
+  .footer__legal-link:focus-visible,
+  .footer__link:focus-visible,
+  .footer__social a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
   }
 
   .light .footer__legal-link {
     color: var(--black-2);
   }
 
-  .light .footer__legal-link:hover {
-    color: var(--black);
+  .light .footer__legal-link:hover,
+  .light .footer__legal-link:focus-visible {
+    color: var(--primary);
   }
 
   .footer__legal-separator {
