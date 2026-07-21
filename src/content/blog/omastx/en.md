@@ -1,10 +1,10 @@
 ---
 title: "Digging up fossils in your K8s cluster fleet"
-subtitle: "How to use Omastx to sniff out obsolete images and Helm charts"
+subtitle: "How to use Omastx to sniff out obsolete images and Helm charts, plus MCP for AI agents"
 category: "DevOps"
 lang: "en"
 date: "2026-07-26"
-tags: ["kubernetes", "helm", "drift", "observability", "devsecops", "fleet-management"]
+tags: ["kubernetes", "helm", "drift", "observability", "devsecops", "fleet-management", "mcp"]
 image: "/blog/omastx/omastx.webp"
 ---
 
@@ -20,7 +20,7 @@ Commercial fleet tools exist, but they often pull write access, push agents into
 
 ## Finding a solution: Omastx
 
-[Omastx](https://github.com/banshee86vr/omastx) is an open-source web portal that scans your Kubernetes clusters, discovers container images and Helm releases, resolves the latest upstream versions, and shows the gap as drift classes you can navigate: Current, Patch, Minor, Major, Deprecated, and Unknown. It is read-only by design: even if you connect an admin kubeconfig, Omastx only issues read calls against the Kubernetes API (`get`/`list` on workloads and, for Helm releases, on secrets): never create, update, delete, or any other invasive command.
+[Omastx](https://github.com/banshee86vr/omastx) is an open-source web portal that scans your Kubernetes clusters, discovers container images and Helm releases, resolves the latest upstream versions, and shows the gap as drift classes you can navigate: Current, Patch, Minor, Major, Deprecated, and Unknown. It is read-only by design: even if you connect an admin kubeconfig, Omastx only issues read calls against the Kubernetes API (`get`/`list` on workloads and, for Helm releases, on secrets): never create, update, delete, or any other invasive command. Beside the UI, a scoped Bearer API and a thin [MCP](https://modelcontextprotocol.io/) server let scripts and AI agents (Cursor, Claude, and similar) query the fleet and trigger scans without cluster write access.
 
 ![Fleet overview: 50% of updated workloads, per-cluster drift bars, and status rail](/blog/omastx/fleet.webp)
 *Fleet page: percentage of updated workloads in the headline, stacked drift bars per cluster, and a rail for failures, last scans, and connection status.*
@@ -60,6 +60,29 @@ Click a row to open the **artifact detail** sheet: identity, registry or chart r
 *Connect flow: drop or paste a read-only kubeconfig; Omastx checks permissions before saving.*
 
 Credentials for private registries can be attached, for example, when drift is classified as Unknown and the artifact points at a host that requires authentication.
+
+## Machine API and MCP (quick reference)
+
+Create a token in **Settings → API tokens** with scopes `read` (fleet, artifacts, scans) and/or `scan` (start scans). Admin actions stay session-only. Send the token as `Authorization: Bearer omx_…`; OpenAPI lives at `/api/openapi.yaml`.
+
+The repo ships a thin MCP wrapper under `mcp/`. Point it at your Omastx URL and token, then ask an agent for a fleet summary, artifact list, or a new scan:
+
+```json
+{
+  "mcpServers": {
+    "omastx": {
+      "command": "node",
+      "args": ["/absolute/path/to/omastx/mcp/dist/index.js"],
+      "env": {
+        "OMASTX_URL": "http://localhost:8080",
+        "OMASTX_API_TOKEN": "omx_…"
+      }
+    }
+  }
+}
+```
+
+Tools map 1:1 to the API (`fleet_summary`, `list_clusters`, `list_artifacts`, `start_scan`, and so on). No kubeconfigs or registry secrets go through MCP.
 
 ## Requirements
 
@@ -146,4 +169,4 @@ The chart runs non-root containers with hardened security contexts; the product 
 
 ## Bottom line
 
-With `make dev` you get a portal that answers one question for your whole fleet: how many fossils will we find on our clusters? Connect read-only kubeconfigs, scan on a schedule, check the drift classes on the chart, and drill into every image and Helm chart in the ledger. Open-source and no write path into your clusters. For anyone running more than one Kubernetes environment, Omastx is the drift view that `kubectl` and `helm list` never aggregate for you.
+With `make dev` you get a portal that answers one question for your whole fleet: how many fossils will we find on our clusters? Connect read-only kubeconfigs, scan on a schedule, check the drift classes on the chart, and drill into every image and Helm chart in the ledger, or ask an AI agent over MCP for the same read/scan surface. Open-source and no write path into your clusters. For anyone running more than one Kubernetes environment, Omastx is the drift view that `kubectl` and `helm list` never aggregate for you.
