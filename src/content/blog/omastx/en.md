@@ -1,6 +1,6 @@
 ---
-title: "A self-hosted portal for Kubernetes version drift"
-subtitle: "How to use Omastx to see how far your fleet has drifted from latest images and Helm charts"
+title: "Digging up fossils in your K8s cluster fleet"
+subtitle: "How to use Omastx to sniff out obsolete images and Helm charts"
 category: "DevOps"
 lang: "en"
 date: "2026-07-26"
@@ -10,20 +10,20 @@ image: "/blog/omastx/omastx.webp"
 
 ## Why do we need it?
 
-Running a single Kubernetes cluster already means juggling container images and Helm releases. Running a *fleet* multiplies the problem: every namespace ships its own workloads, charts pin their own versions, and "are we on latest?" becomes a question you answer by opening dashboards, registry UIs, and `helm list` one cluster at a time.
+Running a single Kubernetes cluster already means managing container images and Helm releases. Running a *fleet* multiplies the problem: every namespace brings its own workloads and charts with their versions, and the "are we up to date?" doubt becomes a question you answer by opening dashboards, registry UIs, and running `helm list` one cluster at a time.
 
-Platform teams feel this first. Security asks which clusters still run a deprecated Redis tag. Product asks whether prod-eu and prod-us are aligned. You know *something* is outdated, but there is no single place that answers: *How far has my fleet drifted?*
+Platform teams feel this weight first. Security asks which clusters still run a deprecated Redis tag. Product asks whether the `prod-eu` and `prod-us` clusters are aligned. You know *something* is outdated, but there is no single place that answers: *How up to date / obsolete is my fleet?*
 
 Commercial fleet tools exist, but they often pull write access, push agents into every cluster, or bury version gaps inside a broader ops product. Homegrown scripts scrape registries and dump CSVs that go stale by lunchtime.
 
-**Bottom line:** no read-only, self-hosted view that continuously compares what is *running* against what is *latest* upstream, across images and Helm charts, with a navigable chart instead of a spreadsheet.
+**Bottom line:** no read-only view that continuously compares what is *running* against what is *latest* upstream, across images and Helm charts, with a navigable chart instead of a spreadsheet.
 
 ## Finding a solution: Omastx
 
-[Omastx](https://github.com/banshee86vr/omastx) is an open-source, self-hosted web portal that scans your Kubernetes clusters, discovers container images and Helm releases, resolves the latest upstream versions, and shows the gap as drift classes you can navigate: Current, Patch, Minor, Major, Deprecated, and Unknown. It is read-only by design: you connect clusters with a kubeconfig that only needs get/list on workloads (and secrets if you want Helm release data). Omastx never mutates anything in your clusters.
+[Omastx](https://github.com/banshee86vr/omastx) is an open-source web portal that scans your Kubernetes clusters, discovers container images and Helm releases, resolves the latest upstream versions, and shows the gap as drift classes you can navigate: Current, Patch, Minor, Major, Deprecated, and Unknown. It is read-only by design: even if you connect an admin kubeconfig, Omastx only issues read calls against the Kubernetes API (`get`/`list` on workloads and, for Helm releases, on secrets): never create, update, delete, or any other invasive command.
 
-![Fleet overview: 50% of workloads on latest, per-cluster drift bars, and status rail](/blog/omastx/fleet.webp)
-*Fleet page: headline freshness percentage, stacked drift bars per cluster, and a rail for failures, last scans, and connection status.*
+![Fleet overview: 50% of updated workloads, per-cluster drift bars, and status rail](/blog/omastx/fleet.webp)
+*Fleet page: percentage of updated workloads in the headline, stacked drift bars per cluster, and a rail for failures, last scans, and connection status.*
 
 ## What does the dashboard give you?
 
@@ -41,8 +41,10 @@ Not every cluster grants the same RBAC. If secrets access is missing, Omastx sta
 
 The **Artifacts** ledger is the global, filterable list of every discovered image and chart, sorted by how far it has drifted. Filter by cluster, kind (image or chart), drift class, and namespace; search by name. Each row shows installed → latest and a drift badge.
 
+From the same table you can export the filtered result as CSV or PDF. Active filters apply to both formats: what you see in the table is what lands in the file.
+
 ![Artifact ledger across the fleet](/blog/omastx/artifacts.webp)
-*Artifacts page: every image and Helm chart, sorted by drift, with cluster / kind / class filters.*
+*Artifacts page: ledger with filters and Export CSV / Export PDF buttons.*
 
 Click a row to open the **artifact detail** sheet: identity, registry or chart repo URL, match confidence for Helm, releases behind, history sparkline, and candidate versions when the tag channel allows a comparison.
 
@@ -52,16 +54,16 @@ Click a row to open the **artifact detail** sheet: identity, registry or chart r
 ![Ledger filtered to prod-eu / platform / major](/blog/omastx/artifacts_filtered.webp)
 *Same ledger after narrowing to one cluster, one namespace, and major drift only.*
 
-**Connect a cluster** is a guided flow: drop or paste a kubeconfig, pick contexts, review the permission matrix, set a name and cron schedule. The copy on the page is the product promise: read-only access only; Omastx never writes to your clusters.
+**Connect a cluster** is a guided flow to drop or paste a kubeconfig, pick contexts, then set a name and cron schedule for the scans.
 
 ![Connect cluster onboarding with kubeconfig drop zone](/blog/omastx/connect.webp)
 *Connect flow: drop or paste a read-only kubeconfig; Omastx checks permissions before saving.*
 
-Scans run on a per-cluster schedule (or on demand with **Scan now**) with live progress over SSE. Credentials for private registries can be attached when Unknown drift points at auth-required hosts. Export the ledger as CSV or JSON when you need to take the data elsewhere.
+Credentials for private registries can be attached, for example, when drift is classified as Unknown and the artifact points at a host that requires authentication.
 
 ## Requirements
 
-- Docker with the Compose plugin (quickest path), **or** Go 1.26+ and Node 20+ for native development
+- Docker + Compose (quickest path), **or** Go 1.26+ and Node 20+ for native development
 - PostgreSQL (bundled in Compose; external for typical Helm installs)
 - A read-only kubeconfig per cluster (get/list on workloads; secrets for Helm release discovery)
 - For production: a [GitHub OAuth App](https://github.com/settings/developers) and membership in the configured GitHub org (or your username for a solo install)
@@ -103,7 +105,8 @@ To explore the UI without a real fleet, the repository includes a seed path used
 
 ## Architecture (in short)
 
-Frontend: React 18 + TypeScript with Vite, custom design tokens (no UI kit / Tailwind), and charts built for the drift lanes. Backend: Go service (chi, pgx, sqlc) that owns the API, session auth, scanner, and pluggable `ArtifactProvider` / `VersionResolver` interfaces so new package kinds can be added without rewriting the orchestrator. PostgreSQL stores clusters (kubeconfigs encrypted at rest), scan snapshots, observations, and cache. Discovery is read-only against the Kubernetes API; image tags resolve from OCI registries, Helm charts from repo indexes and Artifact Hub heuristics. Production auth is GitHub OAuth gated by organization membership; local Compose/dev mode uses passwordless sign-in.
+![Omastx architecture: React frontend, Go backend, PostgreSQL, read-only Kubernetes clusters, and upstream sources](/blog/omastx/architecture.webp)
+*React frontend, Go backend with pluggable providers/resolvers, PostgreSQL, read-only cluster discovery, and latest-version resolve from OCI registries, Helm repos, and Artifact Hub.*
 
 ## Docker Compose
 
@@ -143,4 +146,4 @@ The chart runs non-root containers with hardened security contexts; the product 
 
 ## Bottom line
 
-With `make dev` you get a portal that answers one question for your whole fleet: how far have we drifted from latest? Connect read-only kubeconfigs, scan on a schedule, navigate Current → Deprecated on the chart, and drill into every image and Helm chart in the ledger. Self-hosted, open-source, no write path into your clusters. For anyone running more than one Kubernetes environment, Omastx is the drift view that `kubectl` and `helm list` never aggregate for you.
+With `make dev` you get a portal that answers one question for your whole fleet: how many fossils will we find on our clusters? Connect read-only kubeconfigs, scan on a schedule, check the drift classes on the chart, and drill into every image and Helm chart in the ledger. Open-source and no write path into your clusters. For anyone running more than one Kubernetes environment, Omastx is the drift view that `kubectl` and `helm list` never aggregate for you.
