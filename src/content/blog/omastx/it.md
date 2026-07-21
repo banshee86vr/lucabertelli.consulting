@@ -61,11 +61,41 @@ Un click sulla singola riga apre il **foglio di dettaglio** dell'artifact: ident
 
 Le credenziali per i registry privati si possono associare, ad esempio, quando il drift viene classificato come Unknown e l'artefatto punta ad un host che richiede autenticazione.
 
-## API machine e MCP (riferimento rapido)
+## API machine e MCP
 
-Si crea un token in **Settings → API tokens** con scope `read` (fleet, artifact, scan) e/o `scan` (avvio scan). Le azioni admin restano solo in sessione browser. Il token si invia come `Authorization: Bearer omx_…`; l'OpenAPI è su `/api/openapi.yaml`.
+Oltre alla UI, Omastx espone un'API Bearer con scope per script e agent AI. Le azioni admin (connessione cluster, credenziali registry) restano solo in sessione browser. L'OpenAPI è su `/api/openapi.yaml` (anche in `docs/openapi.yaml` nel repository).
 
-Il repository include un thin wrapper MCP in `mcp/`. Si punta a URL e token Omastx, poi si chiede a un agent un riepilogo fleet, la lista artifact o una nuova scan:
+### 1. Creare un API token
+
+1. Accedere e aprire **Settings → API tokens**.
+2. Dare un nome al token e abilitare gli scope `read` (fleet, artifact, scan) e/o `scan` (avvio scan).
+3. Cliccare **Create token** e copiare subito il valore (`omx_…`): non viene più mostrato.
+
+Smoke-test del token con curl (URL Compose; in native dev usare `http://localhost:5173` o `:8484`):
+
+```bash
+export OMASTX_URL=http://localhost:8080
+export OMASTX_API_TOKEN=omx_…
+
+curl -sS -H "Authorization: Bearer $OMASTX_API_TOKEN" \
+  "$OMASTX_URL/api/fleet/summary" | jq .
+```
+
+### 2. Build del server MCP
+
+Il thin wrapper è in `mcp/` e chiama la stessa API REST (niente logica duplicata, niente kubeconfig o secret di registry):
+
+```bash
+cd mcp
+npm install
+npm run build
+```
+
+Si ottiene `mcp/dist/index.js`. Serve Node 20+ e due variabili d'ambiente: `OMASTX_URL` (root del sito, senza `/api`) e `OMASTX_API_TOKEN`.
+
+### 3. Configurare Cursor (o un altro host MCP)
+
+Per integrare l'host MCP aggiungere una voce alla config MCP (Cursor: `mcp.json` di progetto o utente). Usare il path **assoluto** di `dist/index.js`:
 
 ```json
 {
@@ -82,7 +112,20 @@ Il repository include un thin wrapper MCP in `mcp/`. Si punta a URL e token Omas
 }
 ```
 
-I tool mappano 1:1 l'API (`fleet_summary`, `list_clusters`, `list_artifacts`, `start_scan`, ecc.). Nessun kubeconfig o secret di registry passa da MCP.
+Ricaricare i server MCP nell'host. Tool disponibili: `fleet_summary`, `list_clusters`, `get_cluster`, `list_artifacts`, `get_artifact`, `artifact_history`, `start_scan`, `list_scans`, `export_artifacts`.
+
+### 4. Testare il layer MCP
+
+Con Omastx in esecuzione e almeno un cluster connesso, chiedere all'agent (o invocare i tool) in questo ordine:
+
+1. **`fleet_summary`** poi **`list_clusters`** - verificare che il cluster compaia con lo stato atteso.
+2. **`list_artifacts`** con l'id del cluster - attendersi una pagina di immagini/chart con classi di drift.
+3. **`start_scan`** sull'id del cluster, poi **`list_scans`** fino a `done` o `error` (gli agent fanno poll; la UI può anche seguire l'SSE).
+4. Opzionale: **`export_artifacts`** con `format=csv` per l'export testuale del ledger filtrato.
+
+Esempi di prompt: "Riassumi il drift della fleet", "Elenca gli artifact in major drift sul cluster X", "Avvia una scan sul cluster X e dimmi quando finisce".
+
+Se un tool risponde `401`, ricreare il token. `403` / `insufficient_scope` indica scope `read` o `scan` mancante. Le route admin non sono disponibili via MCP, di proposito.
 
 ## Requisiti
 
