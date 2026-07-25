@@ -110,6 +110,12 @@ const heroRoles = [
             <div class="cf_text">
               <p style="max-width:100%">{t('index.bio')}</p>
             </div>
+            <div class="lb__hero-actions">
+              <a href="mailto:info@lucabertelli.consulting" class="wc-btn-primary btn-rollover-top">
+                {t("index.hero.cta.email")}
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -124,68 +130,68 @@ const heroRoles = [
   <Certifications />
 
   <Tickets />
-</BaseLayout>
 
-<script is:inline>
-  (() => {
-    const roleViewport = document.querySelector("[data-lb-hero-role]");
-    if (!roleViewport) return;
-    if (roleViewport.getAttribute("data-lb-hero-init") === "true") return;
-    roleViewport.setAttribute("data-lb-hero-init", "true");
+  <script is:inline>
+    (() => {
+      const roleViewport = document.querySelector("[data-lb-hero-role]");
+      if (!roleViewport) return;
+      if (roleViewport.getAttribute("data-lb-hero-init") === "true") return;
+      roleViewport.setAttribute("data-lb-hero-init", "true");
 
-    const roleText = roleViewport.querySelector(".lb__hero-role-text");
-    if (!roleText) return;
+      const roleText = roleViewport.querySelector(".lb__hero-role-text");
+      if (!roleText) return;
 
-    const rawRoles = roleViewport.getAttribute("data-lb-hero-roles");
-    if (!rawRoles) return;
+      const rawRoles = roleViewport.getAttribute("data-lb-hero-roles");
+      if (!rawRoles) return;
 
-    const roles = rawRoles.split("|").map((item) => item.trim()).filter(Boolean);
-    if (roles.length < 2) return;
+      const roles = rawRoles.split("|").map((item) => item.trim()).filter(Boolean);
+      if (roles.length < 2) return;
 
-    const TYPING_SPEED_MS = 95;
-    const DELETING_SPEED_MS = 55;
-    const HOLD_TYPED_MS = 1200;
-    const HOLD_EMPTY_MS = 250;
+      const TYPING_SPEED_MS = 95;
+      const DELETING_SPEED_MS = 55;
+      const HOLD_TYPED_MS = 1200;
+      const HOLD_EMPTY_MS = 250;
 
-    let roleIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
+      let roleIndex = 0;
+      let charIndex = roles[0].length;
+      let isDeleting = true;
 
-    roleText.textContent = "";
+      roleText.textContent = roles[0];
 
-    const tick = () => {
-      const currentRole = roles[roleIndex];
+      const tick = () => {
+        const currentRole = roles[roleIndex];
 
-      if (!isDeleting) {
-        charIndex += 1;
-        roleText.textContent = currentRole.slice(0, charIndex);
+        if (!isDeleting) {
+          charIndex += 1;
+          roleText.textContent = currentRole.slice(0, charIndex);
 
-        if (charIndex >= currentRole.length) {
-          isDeleting = true;
-          window.setTimeout(tick, HOLD_TYPED_MS);
+          if (charIndex >= currentRole.length) {
+            isDeleting = true;
+            window.setTimeout(tick, HOLD_TYPED_MS);
+            return;
+          }
+
+          window.setTimeout(tick, TYPING_SPEED_MS);
           return;
         }
 
-        window.setTimeout(tick, TYPING_SPEED_MS);
-        return;
-      }
+        charIndex -= 1;
+        roleText.textContent = currentRole.slice(0, Math.max(0, charIndex));
 
-      charIndex -= 1;
-      roleText.textContent = currentRole.slice(0, Math.max(0, charIndex));
+        if (charIndex <= 0) {
+          isDeleting = false;
+          roleIndex = (roleIndex + 1) % roles.length;
+          window.setTimeout(tick, HOLD_EMPTY_MS);
+          return;
+        }
 
-      if (charIndex <= 0) {
-        isDeleting = false;
-        roleIndex = (roleIndex + 1) % roles.length;
-        window.setTimeout(tick, HOLD_EMPTY_MS);
-        return;
-      }
+        window.setTimeout(tick, DELETING_SPEED_MS);
+      };
 
-      window.setTimeout(tick, DELETING_SPEED_MS);
-    };
-
-    tick();
-  })();
-</script>
+      window.setTimeout(tick, HOLD_TYPED_MS);
+    })();
+  </script>
+</BaseLayout>
 
 <style>
   .about__hero .row {
@@ -235,7 +241,10 @@ const heroRoles = [
   }
 
   .lb__hero-title {
-    font-size: 50px;
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: clamp(2rem, 4vw, 3.125rem);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
   }
 
   .lb__hero-role-viewport {
@@ -249,6 +258,14 @@ const heroRoles = [
     white-space: nowrap;
     font-variant-ligatures: none;
     will-change: contents;
+  }
+
+  .lb__hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 1.75rem;
   }
 
   @media only screen and (max-width: 991px) {
@@ -276,15 +293,6 @@ const heroRoles = [
       padding-top: 40px;
     }
 
-    .lb__hero-title {
-      font-size: 38px;
-    }
-  }
-
-  @media only screen and (max-width: 575px) {
-    .lb__hero-title {
-      font-size: 32px;
-    }
   }
 
 </style>

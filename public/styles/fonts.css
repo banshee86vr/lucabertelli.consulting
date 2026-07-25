@@ -1,29 +1,188 @@
-/* Font optimization: keep local fallback variables; web fonts load from <head> */
+/**
+ * Brand typography — single source of truth.
+ * Headings: Space Grotesk · Body / UI: Plus Jakarta Sans
+ * Loaded after master.css so these rules win the cascade.
+ */
 
-/* System fonts as fallback */
-html {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+:root {
+  --font-heading: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: var(--font-body);
   --font-serif: Georgia, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* Compact boarding-pass / airport-board face for event tickets */
+  --font-ticket: "Share Tech Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Remap Axtra theme tokens to the brand pair */
+  --font_primary: var(--font-body);
+  --font_estedad: var(--font-heading);
+  --font_manrope: var(--font-heading);
+  --font_jakarta: var(--font-body);
+  --font_graphik: var(--font-body);
+
+  /* Type scale */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-md: 1.125rem; /* 18px */
+  --text-lg: 1.25rem; /* 20px */
+  --text-xl: 1.5rem; /* 24px */
+  --text-2xl: 1.75rem; /* 28px */
+  --text-3xl: 2rem; /* 32px */
+  --text-4xl: 2.5rem; /* 40px */
+  --text-5xl: 3rem; /* 48px */
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
 }
 
-/* Font assignments */
-body {
-  font-family: var(--font-sans);
+body,
+.font-brand {
+  font-family: var(--font-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Manrope", var(--font-sans);
-  font-weight: 700;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-brand h1,
+.font-brand h2,
+.font-brand h3,
+.font-brand h4,
+.font-brand h5,
+.font-brand h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.02em;
 }
 
-.font-heading-estedad {
-  font-family: "Plus Jakarta Sans", var(--font-sans);
+/* Nav + UI chrome inherit body font for consistency */
+.font-brand .nav-menu li a,
+.navbar .nav-link,
+.main-menu > ul > li > a,
+.btn,
+input,
+textarea,
+select,
+button {
+  font-family: var(--font-body);
 }
 
-/* Prevent font flash - Use optimized font loading */
-@supports (font-variation-settings: normal) {
-  /* Use variable fonts if available */
-  h1, h2, h3, h4, h5, h6 {
-    font-variation-settings: "wght" 700;
-  }
+.main-menu > ul > li > a,
+.navbar .nav-link {
+  font-size: 0.95rem;
+  font-weight: var(--weight-medium);
+}
+
+/* Legacy heading switcher still maps to the brand pair if referenced */
+.font-heading-estedad h1,
+.font-heading-estedad h2,
+.font-heading-estedad h3,
+.font-heading-estedad h4,
+.font-heading-estedad h5,
+.font-heading-estedad h6 {
+  font-family: var(--font-heading);
+}
+.font-heading-estedad .nav-menu li a {
+  font-family: var(--font-body);
+}
+
+/* Legacy theme hardcodes → brand heading face */
+.typed_title,
+.work_process-2 span,
+.say_hello,
+.brand__title-2,
+.video_frame .caller,
+.lb-hero__left,
+.lb-hero__experience,
+.lb-portfolio__title,
+.lb-blog__title,
+.blog__details_title,
+.sec-title,
+.sec-title-2,
+.sec-title-3,
+.sec-title-4,
+.sec-title-5,
+.about__award-title,
+.footer__title {
+  font-family: var(--font-heading);
+}
+
+/* Euclid was forced with !important on the hero subtitle */
+.lb__hero-subtitle {
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em;
+}
+
+.lb__hero-title {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.03em;
+  line-height: var(--leading-tight);
+}
+
+/* Section labels stay body font at medium weight */
+.sec-sub-title {
+  font-family: var(--font-body);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.06em;
+}
+
+/* Legal / long-form reading rhythm */
+.privacy__title,
+.cookies__title,
+.privacy__section-title,
+.cookies__section-title {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+.privacy__text,
+.cookies__text,
+.privacy__update,
+.cookies__update {
+  font-family: var(--font-body);
+}
+
+.privacy__text,
+.cookies__text {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+}
+
+/* Monospace accents */
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-mono);
+}
+
+/* Event tickets — compact airport / boarding-pass typography */
+.lb__ticket-item,
+.lb__ticket-item .title,
+.lb__ticket-item .title a,
+.lb__ticket-item .categ,
+.lb__ticket-item .availble,
+.lb__ticket-item p,
+.lb__ticket-address p,
+.lb__ticket-link a,
+.lb__ticket-powered-label,
+.lb__ticket-eventitech-name {
+  font-family: var(--font-ticket);
 }

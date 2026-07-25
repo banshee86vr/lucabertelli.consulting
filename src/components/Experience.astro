@@ -4,7 +4,6 @@ import { getLangFromUrl, useTranslations } from "../i18n/utils";
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const contactSlug = `/${lang || ""}/contact`;
 const experienceSliderLabels = [
   t("index.experience.skills"),
   t("index.experience.experiences"),
@@ -12,21 +11,109 @@ const experienceSliderLabels = [
   t("index.experience.educations"),
 ];
 const experienceSliderLine = experienceSliderLabels.join(" / ");
+
+/** Present as mid-2026 (site “today”) for open-ended roles */
+const PRESENT = 2026 + 7 / 12;
+
+const jobsNewestFirst = [
+  {
+    title: t("index.experience.job.1.title"),
+    company: t("index.experience.job.1.company"),
+    dates: t("index.experience.job.1.dates"),
+    start: 2024,
+    end: PRESENT,
+  },
+  {
+    title: t("index.experience.job.2.title"),
+    company: t("index.experience.job.2.company"),
+    dates: t("index.experience.job.2.dates"),
+    href: "https://www.krateo.io",
+    start: 2023,
+    end: 2024,
+  },
+  {
+    title: t("index.experience.job.3.title"),
+    company: t("index.experience.job.3.company"),
+    dates: t("index.experience.job.3.dates"),
+    href: "https://www.kiratech.it",
+    start: 2022,
+    end: 2024,
+  },
+  {
+    title: t("index.experience.job.4.title"),
+    company: t("index.experience.job.4.company"),
+    dates: t("index.experience.job.4.dates"),
+    href: "https://www.kiratech.it",
+    start: 2019,
+    end: 2022,
+  },
+  {
+    title: t("index.experience.job.5.title"),
+    company: t("index.experience.job.5.company"),
+    dates: t("index.experience.job.5.dates"),
+    href: "https://www.asem.it",
+    start: 2018,
+    end: 2019,
+  },
+  {
+    title: t("index.experience.job.6.title"),
+    company: t("index.experience.job.6.company"),
+    dates: t("index.experience.job.6.dates"),
+    href: "https://www.linkedin.com/company/value-transformation-services/",
+    start: 2014,
+    end: 2018,
+  },
+  {
+    title: t("index.experience.job.7.title"),
+    company: t("index.experience.job.7.company"),
+    dates: t("index.experience.job.7.dates"),
+    href: "https://www.accenture.it",
+    start: 2011,
+    end: 2014,
+  },
+  {
+    title: t("index.experience.job.8.title"),
+    company: t("index.experience.job.8.company"),
+    dates: t("index.experience.job.8.dates"),
+    href: "https://www.accenture.it",
+    start: 2009,
+    end: 2011,
+  },
+  {
+    title: t("index.experience.job.9.title"),
+    company: t("index.experience.job.9.company"),
+    dates: t("index.experience.job.9.dates"),
+    href: "https://www.adawen.it/",
+    start: 2008,
+    end: 2009,
+  },
+] as const;
+
+/** Oldest → newest; segment weight = years in role */
+const jobs = [...jobsNewestFirst].reverse().map((job, index) => {
+  const years = Math.max(job.end - job.start, 0.5);
+  return {
+    ...job,
+    years,
+    isCurrent: job.end === PRESENT,
+    side: index % 2 === 0 ? ("above" as const) : ("below" as const),
+  };
+});
 ---
 
 <!-- Text Slider start -->
-<section class="about__textslider-area pb-100">
+<section class="about__textslider-area pb-100" aria-label={experienceSliderLine}>
   <div class="about__textslider">
     <div class="text__slider" data-about-experience-marquee>
       <div class="about__textslider-track" data-about-experience-marquee-track>
         <div class="about__textslider-item">
           <div class="text-slide-content">
-            <h2 class="title">{experienceSliderLine}</h2>
+            <p class="title">{experienceSliderLine}</p>
           </div>
         </div>
         <div class="about__textslider-item" aria-hidden="true">
           <div class="text-slide-content">
-            <h2 class="title">{experienceSliderLine}</h2>
+            <p class="title">{experienceSliderLine}</p>
           </div>
         </div>
       </div>
@@ -37,153 +124,129 @@ const experienceSliderLine = experienceSliderLabels.join(" / ");
 
 <script is:inline>
   (() => {
-    const marquees = document.querySelectorAll("[data-about-experience-marquee]");
+    const startMarquee = () => {
+      const marquees = document.querySelectorAll("[data-about-experience-marquee]");
+      const speed = 90; // pixels per second — intentional brand motion
 
-    marquees.forEach((marquee) => {
-      const track = marquee.querySelector("[data-about-experience-marquee-track]");
+      marquees.forEach((marquee) => {
+        const track = marquee.querySelector("[data-about-experience-marquee-track]");
 
-      if (!track) return;
+        if (!track || track.dataset.lbMarqueeInit === "true") return;
+        track.dataset.lbMarqueeInit = "true";
 
-      let frameId = 0;
-      let lastTs = 0;
-      let translateX = 0;
-      const speed = 90; // pixels per second
+        let frameId = 0;
+        let lastTs = 0;
+        let translateX = 0;
 
-      const animate = (ts) => {
-        if (!lastTs) lastTs = ts;
+        const animate = (ts) => {
+          if (!lastTs) lastTs = ts;
 
-        const deltaSeconds = (ts - lastTs) / 1000;
-        lastTs = ts;
+          const deltaSeconds = (ts - lastTs) / 1000;
+          lastTs = ts;
 
-        const loopWidth = track.scrollWidth / 2;
-        translateX -= speed * deltaSeconds;
+          const loopWidth = track.scrollWidth / 2;
+          if (loopWidth <= 0) {
+            frameId = window.requestAnimationFrame(animate);
+            return;
+          }
 
-        if (-translateX >= loopWidth) {
-          translateX += loopWidth;
-        }
+          translateX -= speed * deltaSeconds;
 
-        track.style.transform = `translate3d(${translateX}px, 0, 0)`;
+          if (-translateX >= loopWidth) {
+            translateX += loopWidth;
+          }
+
+          track.style.transform = `translate3d(${translateX}px, 0, 0)`;
+          frameId = window.requestAnimationFrame(animate);
+        };
+
         frameId = window.requestAnimationFrame(animate);
-      };
 
-      frameId = window.requestAnimationFrame(animate);
-
-      window.addEventListener("beforeunload", () => {
-        window.cancelAnimationFrame(frameId);
+        window.addEventListener("beforeunload", () => {
+          window.cancelAnimationFrame(frameId);
+        });
       });
-    });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", startMarquee);
+    } else {
+      startMarquee();
+    }
   })();
 </script>
 
 <!-- Experience area start -->
-<section class="about__experience-area pb-130">
+<section class="about__experience-area pb-130" aria-label={t("index.experience.experiences")}>
   <div class="container">
-    <div class="row">
-      <div class="col-md-4 col-sm-6">
-        <div class="about__experience-list">
-          <div class="about__experience-grid">
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2024 -
-              </p>
-              <p class="title">Cloud Native & DevOps Consultant</p>
-              <p class="company">Freelance</p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2023 - 2024
-              </p>
-              <p class="title">Client Success Manager & Co-Founder</p>
-              <p class="company">
-                <a href="https://www.krateo.io" target="_blank"
-                  >Krateo PlatformOps</a>
-              </p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2022 - 2024
-              </p>
-              <p class="title">Cloud Native Engineering Manager</p>
-              <p class="company">
-                <a href="https://www.kiratech.it" target="_blank">Kiratech</a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <div class="about__experience-list">
-          <div class="about__experience-grid">
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2019 - 2022
-              </p>
-              <p class="title">Cloud Native Engineer</p>
-              <p class="company">
-                <a href="https://www.kiratech.it" target="_blank">Kiratech</a>
-              </p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2018 - 2019
-              </p>
-              <p class="title">DevOps Engineer</p>
-              <p class="company">
-                <a href="https://www.asem.it" target="_blank">ASEM</a>
-              </p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2014 - 2018
-              </p>
-              <p class="title">Oracle Tuxedo Engineering</p>
-              <p class="company">
-                <a
-                  href="https://www.linkedin.com/company/value-transformation-services/"
-                  target="_blank">Value Transformation Services</a
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <div class="about__experience-list">
-          <div class="about__experience-grid">
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2011 - 2014
-              </p>
-              <p class="title">Technology Architecture Sr. Analyst</p>
-              <p class="company">
-                <a href="https://www.accenture.it" target="_blank">Accenture</a>
-              </p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2009 - 2011
-              </p>
-              <p class="title">Software developer</p>
-              <p class="company">
-                <a href="https://www.accenture.it" target="_blank">Accenture</a>
-              </p>
-            </div>
-            <div class="about__experience">
-              <p>
-                <i class="fa-regular fa-calendar-days"></i> 2008 - 2009
-              </p>
-              <p class="title">Software Developer</p>
-              <p class="company">
-                <a href="https://www.adawen.it/" target="_blank">Adawen</a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="lb-timeline-scroll">
+      <ul class="lb-timeline" data-lb-timeline>
+        {
+          jobs.map((job, index) => (
+            <li
+              class:list={[
+                "lb-timeline__item",
+                `is-${job.side}`,
+                { "is-current": job.isCurrent },
+              ]}
+              data-lb-timeline-item
+              style={`--lb-weight: ${job.years}; --stagger: ${index}`}
+            >
+              <span class="lb-timeline__node" aria-hidden="true"></span>
+              <div class="lb-timeline__content">
+                <time class="lb-timeline__when">{job.dates}</time>
+                <p class="lb-timeline__title">{job.title}</p>
+                <p class="lb-timeline__company">
+                  {"href" in job && job.href ? (
+                    <a href={job.href} target="_blank" rel="noopener noreferrer">
+                      {job.company}
+                    </a>
+                  ) : (
+                    job.company
+                  )}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </div>
 </section>
 <!-- Experience area end -->
+
+<script is:inline>
+  (() => {
+    const initReveal = () => {
+      const items = document.querySelectorAll("[data-lb-timeline-item]");
+      if (!items.length) return;
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        items.forEach((item) => item.classList.add("is-visible"));
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        },
+        { rootMargin: "0px 0px -6% 0px", threshold: 0.15 },
+      );
+
+      items.forEach((item) => observer.observe(item));
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initReveal);
+    } else {
+      initReveal();
+    }
+  })();
+</script>
 
 <!-- Notification section start-->
 <section class="lb__notification pb-130">
@@ -194,7 +257,7 @@ const experienceSliderLine = experienceSliderLabels.join(" / ");
           <div class="lb__notification-grid">
             <div class="lb__notification-left">
               <div class="lb__notification-thumb cf_image">
-                <img src="/notification/notification.png" alt="notification">
+                <img src="/notification/notification.png" alt="" role="presentation" width="120" height="120" decoding="async" />
               </div>
               <div class="lb__notification-content">
                 <h2 class="lb__notification-title">{t('index.experience.contact.title')}</h2>
@@ -205,16 +268,16 @@ const experienceSliderLine = experienceSliderLabels.join(" / ");
                 <p>{t('index.experience.contact.text')}</p>
               </div>
               <div class="cf_btn">
-                <a href={contactSlug} class="wc-btn-primary btn-rollover-top">{t("nav.contact")}
-                  <i class="fa-solid fa-arrow-right"></i>
+                <a href="mailto:info@lucabertelli.consulting" class="wc-btn-primary btn-rollover-top">{t("index.hero.cta.email")}
+                  <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                 </a>
               </div>
             </div>
           </div>
 
-          <img class="lb__notification-sh1" src="/notification/shape-01.png" alt="image">
-          <img class="lb__notification-sh2" src="/notification/shape-02.png" alt="image">
-          <img class="lb__notification-sh3" src="/notification/shape-03.png" alt="image">
+          <img class="lb__notification-sh1" src="/notification/shape-01.png" alt="" role="presentation" />
+          <img class="lb__notification-sh2" src="/notification/shape-02.png" alt="" role="presentation" />
+          <img class="lb__notification-sh3" src="/notification/shape-03.png" alt="" role="presentation" />
         </div>
       </div>
     </div>
@@ -252,51 +315,236 @@ const experienceSliderLine = experienceSliderLabels.join(" / ");
 
   .about__textslider .text__slider .title {
     margin: 0;
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
     font-size: clamp(2rem, 6vw, 6rem);
+    font-weight: 700;
     line-height: 1;
-    letter-spacing: 0.05em;
+    letter-spacing: -0.02em;
     white-space: nowrap;
     text-transform: uppercase;
   }
 
-  .about__experience-area .row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-  }
-
-  @media only screen and (max-width: 991px) {
-    .about__experience-area .row {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media only screen and (max-width: 575px) {
-    .about__experience-area .row {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .about__experience-area .row > div {
+  /*
+   * Horizontal proportional timeline (oldest → newest)
+   * Segment flex = years in role; labels alternate above/below the spine
+   */
+  .lb-timeline-scroll {
     width: 100%;
-    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-block: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--primary) 45%, transparent) transparent;
   }
 
-  .about__experience-grid {
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    gap: 40px;
-    height: 100%;
-  }
-
-  .about__experience {
+  .lb-timeline {
+    --lb-node: 0.7rem;
+    --lb-spine: 50%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
-    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    min-width: max(100%, 72rem);
+    min-height: 22rem;
   }
 
-  .about__experience .title {
-    min-height: 52px;
-    display: flex;
-    align-items: flex-start;
+  .lb-timeline,
+  .lb-timeline__item {
+    list-style: none;
+  }
+
+  .lb-timeline__item::marker {
+    content: "";
+    display: none;
+  }
+
+  /* Continuous accent spine through the middle */
+  .lb-timeline::before {
+    content: "";
+    position: absolute;
+    top: var(--lb-spine);
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--primary);
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .lb-timeline__item {
+    position: relative;
+    flex: var(--lb-weight, 1) 1 0;
+    min-width: calc(var(--lb-weight, 1) * 3.1rem);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--stagger, 0) * 35ms);
+  }
+
+  .lb-timeline__item.is-visible {
+    opacity: 1;
+  }
+
+  .lb-timeline__node {
+    position: absolute;
+    top: var(--lb-spine);
+    left: 0;
+    width: var(--lb-node);
+    height: var(--lb-node);
+    border-radius: 50%;
+    background: var(--primary);
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .lb-timeline__item.is-current .lb-timeline__node {
+    width: calc(var(--lb-node) + 4px);
+    height: calc(var(--lb-node) + 4px);
+    left: -2px;
+  }
+
+  .lb-timeline__content {
+    position: absolute;
+    left: 0;
+    width: max(100%, 7.5rem);
+    max-width: 11rem;
+  }
+
+  .lb-timeline__item.is-above .lb-timeline__content {
+    bottom: calc(50% + 1.1rem);
+  }
+
+  .lb-timeline__item.is-below .lb-timeline__content {
+    top: calc(50% + 1.1rem);
+  }
+
+  .lb-timeline__when {
+    display: block;
+    margin: 0 0 0.35rem;
+    font-family: var(--font-ticket, var(--font-mono, ui-monospace, monospace));
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    color: var(--gray-4, #b0b0b0);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lb-timeline__item.is-current .lb-timeline__when {
+    color: var(--primary);
+  }
+
+  .lb-timeline__title {
+    margin: 0 0 0.25rem;
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--white, #fff);
+  }
+
+  .lb-timeline__company {
+    margin: 0;
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--gray-4, #b0b0b0);
+  }
+
+  .lb-timeline__company a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .lb-timeline__company a:hover,
+  .lb-timeline__company a:focus-visible {
+    color: var(--primary);
+    border-bottom-color: color-mix(in srgb, var(--primary) 55%, transparent);
+  }
+
+  @media only screen and (min-width: 1400px) {
+    .lb-timeline {
+      min-width: 100%;
+    }
+  }
+
+  /* Mobile: vertical spine, all entries on the right */
+  @media only screen and (max-width: 767px) {
+    .lb-timeline-scroll {
+      overflow-x: visible;
+      padding-block: 0;
+    }
+
+    .lb-timeline {
+      flex-direction: column;
+      min-width: 0;
+      width: 100%;
+      min-height: 0;
+    }
+
+    .lb-timeline::before {
+      top: 0.2rem;
+      bottom: 0.2rem;
+      left: calc(var(--lb-node) / 2);
+      right: auto;
+      width: 2px;
+      height: auto;
+      transform: translateX(-50%);
+    }
+
+    .lb-timeline__item {
+      flex: 0 0 auto;
+      min-width: 0;
+      min-height: 0;
+      padding: 0 0 1.75rem 1.65rem;
+    }
+
+    .lb-timeline__item:last-child {
+      padding-bottom: 0;
+    }
+
+    .lb-timeline__node {
+      top: 0.2rem;
+      left: 0;
+      transform: none;
+    }
+
+    .lb-timeline__item.is-current .lb-timeline__node {
+      top: 0.05rem;
+      left: -2px;
+    }
+
+    .lb-timeline__content {
+      position: static;
+      width: auto;
+      max-width: none;
+    }
+
+    .lb-timeline__item.is-above .lb-timeline__content,
+    .lb-timeline__item.is-below .lb-timeline__content {
+      top: auto;
+      bottom: auto;
+    }
+
+    .lb-timeline__title {
+      font-size: 1.05rem;
+    }
+
+    .lb-timeline__when {
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lb-timeline__item {
+      opacity: 1;
+      transition: none;
+    }
   }
 </style>
