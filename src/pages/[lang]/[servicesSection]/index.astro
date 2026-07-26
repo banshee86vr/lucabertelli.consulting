@@ -11,7 +11,6 @@ import {
   servicePath,
   servicesHubPath,
 } from "../../../constants/services";
-import type { ServiceKey } from "../../../constants/services";
 import { useTranslations } from "../../../i18n/utils";
 import { absoluteUrl } from "../../../utils/seo";
 import type { UiLang } from "../../../utils/seo";
@@ -37,11 +36,11 @@ const hubPath = servicesHubPath(lang);
 const hubUrl = absoluteUrl(hubPath);
 
 const cards = services.map((service) => {
-  const key = service.data.key as ServiceKey;
+  const key = service.data.key;
   return {
     key,
-    title: service.data.title as string,
-    tagline: service.data.tagline as string,
+    title: service.data.title,
+    tagline: service.data.tagline,
     href: servicePath(key, lang),
     icon: SERVICE_ICONS[key],
   };
@@ -65,9 +64,9 @@ const jsonLdExtra = [
   }),
   ...buildServiceOffers(
     services.map((service) => ({
-      name: service.data.title as string,
-      description: service.data.description as string,
-      url: absoluteUrl(servicePath(service.data.key as ServiceKey, lang)),
+      name: service.data.title,
+      description: service.data.description,
+      url: absoluteUrl(servicePath(service.data.key, lang)),
     })),
     lang,
   ),

@@ -13,7 +13,6 @@ import {
   servicePath,
   servicesHubPath,
 } from "../../../constants/services";
-import type { ServiceKey } from "../../../constants/services";
 import { useTranslations } from "../../../i18n/utils";
 import { absoluteUrl } from "../../../utils/seo";
 import type { UiLang } from "../../../utils/seo";
@@ -30,7 +29,7 @@ export async function getStaticPaths() {
 
   return services.map((service) => {
     const lang = service.data.lang as UiLang;
-    const key = service.data.key as ServiceKey;
+    const key = service.data.key;
     return {
       params: {
         lang,
@@ -43,8 +42,8 @@ export async function getStaticPaths() {
 }
 
 const entry = Astro.props as ServiceEntry;
-const lang = entry.data.lang as UiLang;
-const key = entry.data.key as ServiceKey;
+const lang = entry.data.lang;
+const key = entry.data.key;
 const t = useTranslations(lang);
 
 const {
@@ -58,18 +57,7 @@ const {
   faq,
   credentials,
   relatedTags,
-} = entry.data as {
-  title: string;
-  tagline: string;
-  seoTitle: string;
-  description: string;
-  keywords: string[];
-  outcomes: string[];
-  deliverables: string[];
-  faq: { question: string; answer: string }[];
-  credentials: string[];
-  relatedTags: string[];
-};
+} = entry.data;
 
 const canonicalPath = servicePath(key, lang);
 const canonicalUrl = absoluteUrl(canonicalPath);
@@ -98,9 +86,9 @@ const relatedPosts = (await getBlogPosts())
 const otherServices = (await getServices(lang))
   .filter((service) => service.data.key !== key)
   .map((service) => ({
-    key: service.data.key as ServiceKey,
-    title: service.data.title as string,
-    href: servicePath(service.data.key as ServiceKey, lang),
+    key: service.data.key,
+    title: service.data.title,
+    href: servicePath(service.data.key, lang),
   }));
 
 const jsonLdExtra = [

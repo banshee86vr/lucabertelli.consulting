@@ -1,42 +1,27 @@
 ---
 import ServiceIcon from "./ServiceIcon.astro";
+import { getServices } from "../content/config";
+import {
+  SERVICE_ICONS,
+  servicePath,
+  servicesHubPath,
+} from "../constants/services";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
-import type { ServiceIconName } from "../types/service-icons";
+import type { UiLang } from "../utils/seo";
 
-const lang = getLangFromUrl(Astro.url);
+const lang = getLangFromUrl(Astro.url) as UiLang;
 const t = useTranslations(lang);
 
-const services: {
-  title: string;
-  text: string;
-  icon: ServiceIconName;
-}[] = [
-  {
-    title: t("index.services.1.title"),
-    text: t("index.services.1.text"),
-    icon: "clipboard-list",
-  },
-  {
-    title: t("index.services.2.title"),
-    text: t("index.services.2.text"),
-    icon: "cloud-upload",
-  },
-  {
-    title: t("index.services.3.title"),
-    text: t("index.services.3.text"),
-    icon: "workflow",
-  },
-  {
-    title: t("index.services.4.title"),
-    text: t("index.services.4.text"),
-    icon: "graduation-cap",
-  },
-  {
-    title: t("index.services.5.title"),
-    text: t("index.services.5.text"),
-    icon: "bot",
-  },
-];
+const services = (await getServices(lang)).map((service) => {
+  const key = service.data.key;
+  return {
+    key,
+    title: service.data.title,
+    text: service.data.tagline,
+    href: servicePath(key, lang),
+    icon: SERVICE_ICONS[key],
+  };
+});
 ---
 
 <section class="lb-ins__area pb-100">
@@ -45,6 +30,7 @@ const services: {
       <h2 class="lb-inp__project-title">
         {t("index.services.title")}
       </h2>
+      <p class="services-subtitle">{t("index.services.subtitle")}</p>
     </div>
 
     <div class="services-grid" style="margin-top: 60px;">
@@ -53,44 +39,76 @@ const services: {
           <div class="service-card__icon">
             <ServiceIcon name={service.icon} />
           </div>
-          <h3 class="service-card__title">{service.title}</h3>
+          <h3 class="service-card__title">
+            <a href={service.href}>{service.title}</a>
+          </h3>
           <p class="service-card__text">{service.text}</p>
+          <span class="service-card__cta" aria-hidden="true">
+            {t("index.services.cardCta")}
+          </span>
         </article>
       ))}
     </div>
+
+    <p class="services-all">
+      <a href={servicesHubPath(lang)} class="services-all__link">
+        {t("index.services.cta")}
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </p>
   </div>
 </section>
 
 <style>
+  .services-subtitle {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    max-width: 62ch;
+    margin-top: 1.25rem;
+    color: var(--gray-4);
+  }
+
+  :global(.light) .services-subtitle {
+    color: var(--gray);
+  }
+
   .services-grid {
     display: grid;
     gap: 24px;
   }
 
-  /* Desktop: 3 + 2 - avoids a lone card on a second row */
+  /* Desktop: 4 + 3 - avoids a lone card on the second row */
   @media (min-width: 992px) {
     .services-grid {
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(12, 1fr);
     }
 
     .service-card:nth-child(1) {
-      grid-column: 1 / 3;
+      grid-column: 1 / 4;
     }
     .service-card:nth-child(2) {
-      grid-column: 3 / 5;
+      grid-column: 4 / 7;
     }
     .service-card:nth-child(3) {
-      grid-column: 5 / 7;
+      grid-column: 7 / 10;
     }
     .service-card:nth-child(4) {
-      grid-column: 2 / 4;
+      grid-column: 10 / 13;
     }
     .service-card:nth-child(5) {
-      grid-column: 4 / 6;
+      grid-column: 3 / 6;
+    }
+    .service-card:nth-child(6) {
+      grid-column: 6 / 9;
+    }
+    .service-card:nth-child(7) {
+      grid-column: 9 / 12;
     }
   }
 
   .service-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     padding: 32px 28px;
@@ -138,13 +156,35 @@ const services: {
 
   .service-card__title {
     font-family: var(--font-heading, "Space Grotesk", sans-serif);
-    font-size: 1.375rem;
+    font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.3;
     letter-spacing: -0.02em;
     color: var(--white);
     margin-bottom: 16px;
-    min-height: 3.9em;
+    min-height: 2.6em;
+  }
+
+  .service-card__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Stretched link keeps the whole card clickable without nesting anchors */
+  .service-card__title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .service-card__title a:hover,
+  .service-card__title a:focus-visible {
+    color: var(--primary);
+  }
+
+  .service-card__title a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
   }
 
   .service-card__text {
@@ -153,8 +193,46 @@ const services: {
     font-weight: 400;
     line-height: 1.6;
     color: var(--gray-4);
-    margin: 0;
+    margin: 0 0 18px;
     padding: 0;
+    flex: 1;
+  }
+
+  .service-card__cta {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  :global(.light) .service-card__cta {
+    color: var(--secondary);
+  }
+
+  .services-all {
+    margin-top: 48px;
+    text-align: center;
+  }
+
+  .services-all__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .services-all__link:hover,
+  .services-all__link:focus-visible {
+    color: var(--primary);
+  }
+
+  .services-all__link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
   }
 
   :global(.light) .service-card {

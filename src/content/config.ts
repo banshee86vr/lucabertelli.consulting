@@ -88,13 +88,24 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   });
 }
 
+export interface ServiceData {
+  key: ServiceKey;
+  lang: UiLang;
+  title: string;
+  tagline: string;
+  seoTitle: string;
+  description: string;
+  order: number;
+  keywords: string[];
+  relatedTags: string[];
+  credentials: string[];
+  outcomes: string[];
+  deliverables: string[];
+  faq: { question: string; answer: string }[];
+}
+
 export interface ServiceEntry {
-  data: {
-    key: ServiceKey;
-    lang: UiLang;
-    // biome-ignore lint/suspicious/noExplicitAny: mirrors the BlogPost helper
-    [key: string]: any;
-  };
+  data: ServiceData;
   // biome-ignore lint/suspicious/noExplicitAny: mirrors the BlogPost helper
   [key: string]: any;
 }

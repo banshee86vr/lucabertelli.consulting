@@ -2,7 +2,6 @@ import { getBlogPosts, getServices } from "../content/config";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../constants/site";
 import { servicePath, servicesHubPath } from "../constants/services";
-import type { ServiceKey } from "../constants/services";
 import { tagLabel, tagPath, tagSlug } from "../utils/tags";
 import type { UiLang } from "../utils/seo";
 
@@ -67,7 +66,7 @@ export async function GET() {
 		lines.push("");
 		lines.push(`### ${lang === "it" ? "Italian" : "English"}`);
 		for (const service of services.filter((s) => s.data.lang === lang)) {
-			const key = service.data.key as ServiceKey;
+			const key = service.data.key;
 			lines.push(`- [${service.data.title}](${url(servicePath(key, lang))}): ${service.data.description}`);
 		}
 	}

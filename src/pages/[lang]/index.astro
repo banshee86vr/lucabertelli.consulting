@@ -6,8 +6,11 @@ import Services from "../../components/Services.astro";
 import Tickets from "../../components/Tickets.astro";
 import { getCollection } from "astro:content";
 
+import { getServices } from "../../content/config";
+import { servicePath, servicesHubPath } from "../../constants/services";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 import { buildCertificationCredentials, buildServiceOffers } from "../../utils/jsonLd";
+import { absoluteUrl } from "../../utils/seo";
 import type { UiLang } from "../../utils/seo";
 
 export const prerender = true;
@@ -19,14 +22,15 @@ export async function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url) as UiLang;
 const t = useTranslations(lang);
 
-const serviceOffers = [
-	{ name: t("index.services.1.title"), description: t("index.services.1.text") },
-	{ name: t("index.services.2.title"), description: t("index.services.2.text") },
-	{ name: t("index.services.3.title"), description: t("index.services.3.text") },
-	{ name: t("index.services.4.title"), description: t("index.services.4.text") },
-	{ name: t("index.services.5.title"), description: t("index.services.5.text") },
-];
-const servicesJsonLd = buildServiceOffers(serviceOffers, lang);
+const services = await getServices(lang);
+const servicesJsonLd = buildServiceOffers(
+	services.map((service) => ({
+		name: service.data.title,
+		description: service.data.description,
+		url: absoluteUrl(servicePath(service.data.key, lang)),
+	})),
+	lang,
+);
 const certifications = await getCollection("certifications");
 const credentialsJsonLd = buildCertificationCredentials(
 	certifications.map((entry) => ({
@@ -36,28 +40,37 @@ const credentialsJsonLd = buildCertificationCredentials(
 	})),
 );
 const heroRoles = [
-	t("index.hero.role.engineer"),
-	t("index.hero.role.advisor"),
-	t("index.hero.role.consultant"),
-	t("index.hero.role.developer"),
+	t("index.hero.role.1"),
+	t("index.hero.role.2"),
+	t("index.hero.role.3"),
+	t("index.hero.role.4"),
 ];
+const servicesHref = servicesHubPath(lang);
+const serviceCatalog = services.map((service) => ({
+	name: service.data.title,
+	url: absoluteUrl(servicePath(service.data.key, lang)),
+}));
 ---
 
 <BaseLayout
 	title={t("seo.home.title")}
 	description={t("seo.home.description")}
 	ogImage="/about/lucabertelli.jpeg"
-	keywords={[
+  keywords={[
 		"Luca Bertelli",
 		"LB Consulting",
 		"lb.consulting",
+		lang === "it" ? "consulente DevOps" : "DevOps consultant",
+		lang === "it" ? "consulente Kubernetes" : "Kubernetes consultant",
+		"Platform Engineering",
+		lang === "it" ? "consulenza cloud" : "cloud consulting",
+		"SecDevOps",
 		"Cloud Native consultant",
 		"Kubernetes certified",
 		"HashiCorp certified",
 		"Terraform certified",
-		"GitLab certified",
-		"Kong certified",
 	]}
+	serviceCatalog={serviceCatalog}
 	jsonLdExtra={[...servicesJsonLd, ...credentialsJsonLd]}
 >
   <!-- Hero area start -->
@@ -95,10 +108,9 @@ const heroRoles = [
         <div class="col-lg-8">
           <div class="about__hero-right">
             <p class="lb__hero-subtitle">{t('index.hi')}</p>
-            <h1
-              class="lb__hero-title"
-            >
-              {t('index.hero.cloudNative')} <br />
+            <h1 class="lb__hero-title">
+              {t('index.hero.title')}
+              <span class="lb__hero-connector">{t('index.hero.connector')}</span>
               <span
                 class="lb__hero-role-viewport"
                 data-lb-hero-role
@@ -113,6 +125,10 @@ const heroRoles = [
             <div class="lb__hero-actions">
               <a href="mailto:info@lucabertelli.consulting" class="wc-btn-primary btn-rollover-top">
                 {t("index.hero.cta.email")}
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </a>
+              <a href={servicesHref} class="lb__hero-link">
+                {t("index.hero.cta.services")}
                 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
               </a>
             </div>
@@ -247,17 +263,53 @@ const heroRoles = [
     line-height: 1.15;
   }
 
+  .lb__hero-connector {
+    display: block;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.4em;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.4;
+    margin-top: 0.5rem;
+    opacity: 0.7;
+  }
+
+  /* Reserve the tallest role line so the typing effect cannot shift layout */
   .lb__hero-role-viewport {
-    display: inline-block;
-    min-width: 11ch;
-    vertical-align: bottom;
+    display: block;
+    min-height: 1.2em;
+    color: var(--primary);
+  }
+
+  :global(.light) .lb__hero-role-viewport {
+    color: var(--secondary);
   }
 
   .lb__hero-role-text {
     display: inline-block;
-    white-space: nowrap;
     font-variant-ligatures: none;
     will-change: contents;
+  }
+
+  .lb__hero-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .lb__hero-link:hover,
+  .lb__hero-link:focus-visible {
+    color: var(--primary);
+  }
+
+  .lb__hero-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
   }
 
   .lb__hero-actions {

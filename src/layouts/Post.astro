@@ -7,7 +7,6 @@ import { getBlogPosts, getServices } from "../content/config";
 import type { CollectionEntry } from "astro:content";
 
 import { servicePath } from "../constants/services";
-import type { ServiceKey } from "../constants/services";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { absoluteUrl } from "../utils/seo";
 import { tagLabel, tagPath } from "../utils/tags";
@@ -52,13 +51,13 @@ const blogPosting = buildBlogPosting({
 // commercial pages from the content that brought them in.
 const relatedServices = (await getServices(lang as UiLang))
 	.filter((service) =>
-		(service.data.relatedTags as string[]).some((tag) => tags.includes(tag)),
+		service.data.relatedTags.some((tag) => tags.includes(tag)),
 	)
 	.slice(0, 3)
 	.map((service) => ({
-		title: service.data.title as string,
-		tagline: service.data.tagline as string,
-		href: servicePath(service.data.key as ServiceKey, lang as UiLang),
+		title: service.data.title,
+		tagline: service.data.tagline,
+		href: servicePath(service.data.key, lang as UiLang),
 	}));
 
 const jsonLdExtra = [
