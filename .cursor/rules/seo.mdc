@@ -36,6 +36,9 @@ A service exists in four places, and all four must agree:
 3. New icon names go in `src/types/service-icons.ts` and `src/components/ServiceIcon.astro`.
 4. Removing a service means adding a 308 redirect in `src/middleware.ts` for both
    old URLs. Deleting the page alone throws away whatever ranking it accumulated.
+5. Renaming a service slug means updating `SERVICE_SLUGS` **and** adding the old
+   slug to `LEGACY_SERVICE_SLUGS` in `src/constants/services.ts` so middleware
+   keeps a 308. Do not invent thin keyword-permutation URLs for the same intent.
 
 The hub, the home cards, the footer list and `llms.txt` all read the collection,
 so none of them need editing.

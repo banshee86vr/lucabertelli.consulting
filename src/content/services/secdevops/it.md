@@ -1,18 +1,20 @@
 ---
 key: "secdevops"
 lang: "it"
-title: "SecDevOps e CI/CD"
+title: "Consulenza SecDevOps e CI/CD"
 tagline: "Toolchain e pipeline che integrano la sicurezza nel flusso di sviluppo, senza trasformarla in un collo di bottiglia."
-seoTitle: "Consulenza SecDevOps e pipeline CI/CD sicure | Luca Bertelli"
-description: "Consulenza SecDevOps: composizione della toolchain, pipeline CI/CD sicure, gestione dei segreti con HashiCorp Vault, supply chain del software e conformità NIS2."
+seoTitle: "Consulenza SecDevOps, DevSecOps e pipeline CI/CD | Luca Bertelli"
+description: "Consulenza SecDevOps e CI/CD in Italia: toolchain, pipeline sicure, gestione dei segreti con HashiCorp Vault, supply chain del software e conformità NIS2."
 order: 5
 keywords:
-  - "SecDevOps"
-  - "DevSecOps"
+  - "consulenza SecDevOps"
+  - "consulenza DevSecOps"
+  - "consulenza CI/CD"
   - "pipeline CI/CD sicure"
+  - "DevSecOps Italia"
   - "supply chain sicurezza software"
   - "HashiCorp Vault"
-  - "consulenza DevSecOps Italia"
+  - "SecDevOps"
 relatedTags: ["devsecops", "cicd", "github-actions", "dependency-management", "renovate"]
 credentials: ["vault-professional", "vault-associate", "vault-chip", "gitlab-sa"]
 outcomes:

@@ -1,18 +1,20 @@
 ---
 key: "platform-engineering"
 lang: "en"
-title: "Platform Engineering"
+title: "Platform Engineering Consulting"
 tagline: "Internal Developer Platforms designed to reduce developer cognitive load instead of moving it somewhere else."
 seoTitle: "Platform Engineering and Internal Developer Platform Consulting | Luca Bertelli"
-description: "Platform Engineering consulting: Internal Developer Platform design, golden paths, self-service on Kubernetes, and measuring real adoption by product teams."
+description: "Platform Engineering consulting across Italy and the EU: Internal Developer Platform design, golden paths, self-service on Kubernetes, and measuring real adoption by product teams."
 order: 3
 keywords:
-  - "platform engineering"
   - "platform engineering consulting"
+  - "platform engineering consultant"
+  - "platform engineering"
   - "internal developer platform"
   - "IDP"
   - "golden path"
   - "developer experience"
+  - "developer platform consulting"
 relatedTags: ["kubernetes", "multi-tenancy", "cicd", "vcluster"]
 credentials: ["cka", "capa", "terraform_associate", "kong-konnect"]
 outcomes:
