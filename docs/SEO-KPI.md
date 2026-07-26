@@ -8,7 +8,7 @@ Use this after deploy to verify the implementation and track reachability over t
 |---------|------|-------|
 | Home | `/en/`, `/it/` | H1 carries the primary query terms |
 | Services hub | `/en/services/`, `/it/servizi/` | Lists all seven services |
-| Service pages | 7 per language | Localized slugs, e.g. `/it/servizi/consulenza-devops/` vs `/en/services/devops-consulting/` |
+| Service pages | 7 per language | Localized slugs with commercial intent in the path, e.g. `/it/servizi/consulenza-agenti-ai/` vs `/en/services/ai-agent-governance/` |
 | Blog index | `/en/blog/`, `/it/blog/` | Links every tag page |
 | Blog articles | 4 per language | |
 | Blog tag pages | 14 per language | `/‹lang›/blog/tag/‹tag›/` |
@@ -42,7 +42,7 @@ That is **60 indexable HTML pages**, all present in the sitemap.
 | Metric | Where | Goal |
 |--------|--------|------|
 | Indexed core URLs | URL Inspection / Coverage | All service pages plus both blog indexes indexed |
-| Position for "consulente devops", "consulenza kubernetes", "platform engineering" | Search Console queries | Entering the first pages, then improving |
+| Position for "consulente devops", "consulenza kubernetes", "consulenza platform engineering", "governance agenti AI" | Search Console queries | Entering the first pages, then improving |
 | Impressions on service pages | Search Console, filtered by page | Upward trend; they start from zero |
 | Click-through rate on branded + service queries | Search Console | Slow upward trend |
 | Rich result errors | Rich Results Test / GSC | Zero critical errors |

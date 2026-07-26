@@ -11,8 +11,10 @@ keywords:
   - "consulenza DevOps"
   - "DevOps freelance"
   - "consulente DevOps Italia"
+  - "consulente DevOps freelance"
   - "automazione CI/CD"
   - "Infrastructure as Code"
+  - "consulenza CI/CD"
 relatedTags: ["cicd", "devsecops", "github-actions", "kubernetes"]
 credentials: ["cka", "terraform_associate", "capa", "gitlab-sa"]
 outcomes:
