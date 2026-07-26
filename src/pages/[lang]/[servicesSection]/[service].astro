@@ -378,9 +378,16 @@ const dateLocale = lang === "it" ? "it-IT" : "en-US";
   }
 
   .lb-service__list {
-    list-style: none;
     margin: 0;
     padding: 0;
+  }
+
+  /* master.css sets `li { list-style: decimal }` globally */
+  .lb-service__list li,
+  .lb-service__creds li,
+  .lb-service__siblings li,
+  .lb-service__related-list li {
+    list-style: none;
   }
 
   .lb-service__list li {

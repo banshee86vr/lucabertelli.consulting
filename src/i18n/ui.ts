@@ -279,10 +279,10 @@ export const ui = {
     'seo.blog.title': 'Blog DevOps e Kubernetes | Luca Bertelli',
     'seo.blog.description':
       'Articoli su Kubernetes, CI/CD, platform engineering e operatività cloud-native, scritti a partire da progetti di consulenza reali.',
-    'seo.privacy.title': 'Privacy Policy | Luca Bertelli Consulting',
+    'seo.privacy.title': 'Informativa Privacy | Luca Bertelli Consulting',
     'seo.privacy.description':
       'Informativa privacy di lucabertelli.consulting: trattamento dei dati personali e GDPR.',
-    'seo.cookies.title': 'Cookie Policy | Luca Bertelli Consulting',
+    'seo.cookies.title': 'Informativa Cookie | Luca Bertelli Consulting',
     'seo.cookies.description':
       'Cookie policy di lucabertelli.consulting: cookie tecnici e contenuti incorporati di terze parti.',
     'index.certification.title': "Percorsi formativi: Badge ottenuti",

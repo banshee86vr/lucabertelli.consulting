@@ -116,6 +116,11 @@ const services = (await getServices(lang)).map((service) => ({
     color: var(--primary);
   }
 
+  .footer__services-list li {
+    /* master.css sets `li { list-style: decimal }` globally */
+    list-style: none;
+  }
+
   .footer__services-list {
     display: flex;
     flex-wrap: wrap;
