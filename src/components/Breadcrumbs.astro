@@ -36,9 +36,20 @@ const t = useTranslations(lang);
 </nav>
 
 <style>
-  /* Owns the gap to whatever follows, so every page spaces it the same way */
+  /* Owns all the vertical spacing around the breadcrumb: equal above and
+     below, and the same at every breakpoint, so it never depends on what the
+     surrounding section happens to declare. */
   .lb-breadcrumbs {
-    margin-bottom: 2rem;
+    margin: 2rem 0;
+  }
+
+  /* The theme offsets the first .container by a different amount per area
+     (20px in the blog listing, 45px in an article, none anywhere else), which
+     would place the breadcrumb at three different heights. These rules only
+     ship on pages that actually render a breadcrumb. */
+  :global(.main-blog__area > .container:first-child),
+  :global(.blog__details__area > .container:first-child) {
+    margin-top: 0;
   }
 
   .lb-breadcrumbs ol {
