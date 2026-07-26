@@ -1,14 +1,24 @@
 ---
 import BaseLayout from "../../../layouts/Common.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 import { getBlogPosts } from "../../../content/config";
 import Tickets from "../../../components/Tickets.astro";
+import { absoluteUrl } from "../../../utils/seo";
+import type { UiLang } from "../../../utils/seo";
+import { tagLabel, tagPath, tagSlug } from "../../../utils/tags";
+import { buildBlog, buildBreadcrumbs } from "../../../utils/jsonLd";
 
 export const prerender = true;
 
-const lang = getLangFromUrl(Astro.url);
+export async function getStaticPaths() {
+  return ["en", "it"].map((lang) => {
+    return { params: { lang } };
+  });
+}
+
+const lang = getLangFromUrl(Astro.url) as UiLang;
 const t = useTranslations(lang);
-const tag = Astro.url.searchParams.get("tag") || "";
 const dateLocale = lang === "it" ? "it-IT" : "en-US";
 const cardWidths = [320, 480, 640];
 const appendImageParams = (url: string, params: string) =>
@@ -21,31 +31,70 @@ const buildSrcSet = (url: string, widths: number[], format?: "webp") =>
     })
     .join(", ");
 
-var posts = (await getBlogPosts())
-  ?.filter((blog) => {
-    return blog?.data?.lang === lang;
-  })
+const posts = (await getBlogPosts())
+  .filter((blog) => blog?.data?.lang === lang)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-if (tag.length > 0) {
-  posts = posts.filter(function (blogEntry) {
-    return blogEntry.data.tags.indexOf(tag) !== -1;
-    });
-}
+// Distinct tags of this language, so the listing links to real tag pages
+// rather than to query-string filters that a static build cannot honour.
+const tags = [
+  ...new Map(
+    posts
+      .flatMap((post) => post.data.tags as string[])
+      .map((tag) => [tagSlug(tag), tag]),
+  ).values(),
+].sort((a, b) => tagLabel(a).localeCompare(tagLabel(b), dateLocale));
 
-export async function getStaticPaths() {
-  return ["en", "it"].map((lang) => {
-    return { params: { lang } };
-  });
-}
+const blogPath = `/${lang}/blog`;
+const blogUrl = absoluteUrl(blogPath);
+
+const jsonLdExtra = [
+  buildBlog({
+    name: t("seo.blog.title"),
+    description: t("seo.blog.description"),
+    url: blogUrl,
+    lang,
+    posts: posts.map((post) => ({
+      name: post.data.title as string,
+      url: absoluteUrl(`/${lang}/blog/${post.blog_slug}`),
+    })),
+  }),
+  ...buildBreadcrumbs([
+    { name: t("nav.home"), url: absoluteUrl(`/${lang}`) },
+    { name: t("nav.blog"), url: blogUrl },
+  ]),
+];
 ---
 
-<BaseLayout title={t("seo.blog.title")} description={t("seo.blog.description")}>
+<BaseLayout
+  title={t("seo.blog.title")}
+  description={t("seo.blog.description")}
+  jsonLdExtra={jsonLdExtra}
+>
   <div class="main-blog__area pt-120 pb-120">
     <div class="container ptf-0">
       <div class="row">
         <div class="col-xxl-12">
-          <h1 class="sec-title blog-index__h1 mb-50">{t("blog.index.heading")}</h1>
+          <Breadcrumbs
+            items={[{ name: t("nav.home"), href: `/${lang}` }, { name: t("nav.blog") }]}
+          />
+
+          <h1 class="sec-title blog-index__h1 mt-30 mb-20">{t("blog.index.heading")}</h1>
+          <p class="lb-blog__intro">{t("blog.index.intro")}</p>
+
+          <nav class="lb-blog__tags" aria-label={t("blog.tags.title")}>
+            <h2 class="lb-blog__tags-title">{t("blog.tags.title")}</h2>
+            <ul>
+              {
+                tags.map((tag) => (
+                  <li>
+                    <a href={tagPath(tag, lang)}>{tagLabel(tag)}</a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+
           <div class="main-blog__grid">
             {
               posts.map((post) => (
@@ -85,7 +134,7 @@ export async function getStaticPaths() {
                     </li>
                   </ul>
                   <a href={`/${lang}/blog/${post.blog_slug}`}>
-                    <h3 class="lb-blog__title">{post.data.title}</h3>
+                    <h2 class="lb-blog__title">{post.data.title}</h2>
                     {post.data.subtitle}
                   </a>
                 </article>
@@ -101,6 +150,69 @@ export async function getStaticPaths() {
 </BaseLayout>
 
 <style>
+  .lb-blog__intro {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    max-width: 62ch;
+    color: var(--gray-4);
+    margin-bottom: 2.5rem;
+  }
+
+  :global(.light) .lb-blog__intro {
+    color: var(--gray);
+  }
+
+  .lb-blog__tags {
+    margin-bottom: 3.5rem;
+  }
+
+  .lb-blog__tags-title {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-4);
+    margin-bottom: 1rem;
+  }
+
+  .lb-blog__tags ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .lb-blog__tags a {
+    display: inline-block;
+    padding: 0.45rem 0.95rem;
+    border-radius: 9999px;
+    border: 1px solid var(--black-6);
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  :global(.light) .lb-blog__tags a {
+    border-color: var(--gray-13);
+  }
+
+  .lb-blog__tags a:hover,
+  .lb-blog__tags a:focus-visible {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .lb-blog__tags a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
   .lb-blog__item a:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 3px;

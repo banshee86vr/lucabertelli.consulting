@@ -21,9 +21,13 @@ export async function getStaticPaths() {
 
 const page: BlogPost = Astro.props as BlogPost;
 
-const { title, image, subtitle, date, category, tags } = page.data;
+const { title, image, subtitle, date, updated, category, tags } = page.data;
 const lang =
 	page.data.lang === "en" || page.data.lang === "it" ? page.data.lang : "en";
+
+const wordCount = String(page.body ?? "")
+	.split(/\s+/)
+	.filter(Boolean).length;
 
 const { Content } = await render(
 	page as unknown as import("astro:content").CollectionEntry<"blog">,
@@ -35,10 +39,12 @@ const { Content } = await render(
   image={image}
   subtitle={subtitle}
   date={new Date(date)}
+  updated={updated ? new Date(updated) : undefined}
   category={category}
   tags={tags}
   lang={lang}
   blogSlug={page.blog_slug}
+  wordCount={wordCount}
 >
   <Content />
 </PostLayout>

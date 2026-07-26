@@ -175,6 +175,13 @@ const jsonLdPayload = JSON.stringify({
 		<!-- Fav Icon -->
 		<link rel="icon" type="image/x-icon" href="/favicon.svg" />
 
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title={`${t("seo.site.title")} - ${t("nav.blog")}`}
+			href={`/${lang}/rss.xml`}
+		/>
+
 		<script type="application/ld+json" set:html={jsonLdPayload} />
 
 		<style is:inline>
