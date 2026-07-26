@@ -1,0 +1,695 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../../layouts/Common.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import ServiceIcon from "../../../components/ServiceIcon.astro";
+
+import { getBlogPosts, getServices } from "../../../content/config";
+import type { ServiceEntry } from "../../../content/config";
+import {
+  SERVICES_SECTION_SLUG,
+  SERVICE_ICONS,
+  SERVICE_SLUGS,
+  servicePath,
+  servicesHubPath,
+} from "../../../constants/services";
+import type { ServiceKey } from "../../../constants/services";
+import { useTranslations } from "../../../i18n/utils";
+import { absoluteUrl } from "../../../utils/seo";
+import type { UiLang } from "../../../utils/seo";
+import {
+  buildBreadcrumbs,
+  buildFaqPage,
+  buildServicePage,
+} from "../../../utils/jsonLd";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const services = await getServices();
+
+  return services.map((service) => {
+    const lang = service.data.lang as UiLang;
+    const key = service.data.key as ServiceKey;
+    return {
+      params: {
+        lang,
+        servicesSection: SERVICES_SECTION_SLUG[lang],
+        service: SERVICE_SLUGS[key][lang],
+      },
+      props: service,
+    };
+  });
+}
+
+const entry = Astro.props as ServiceEntry;
+const lang = entry.data.lang as UiLang;
+const key = entry.data.key as ServiceKey;
+const t = useTranslations(lang);
+
+const {
+  title,
+  tagline,
+  seoTitle,
+  description,
+  keywords,
+  outcomes,
+  deliverables,
+  faq,
+  credentials,
+  relatedTags,
+} = entry.data as {
+  title: string;
+  tagline: string;
+  seoTitle: string;
+  description: string;
+  keywords: string[];
+  outcomes: string[];
+  deliverables: string[];
+  faq: { question: string; answer: string }[];
+  credentials: string[];
+  relatedTags: string[];
+};
+
+const canonicalPath = servicePath(key, lang);
+const canonicalUrl = absoluteUrl(canonicalPath);
+const hubPath = servicesHubPath(lang);
+
+const { Content } = await render(
+  entry as unknown as import("astro:content").CollectionEntry<"services">,
+);
+
+const entryId = (item: { slug?: string; id: string }) =>
+  ("slug" in item && item.slug ? item.slug : item.id).replace(/\.md$/, "");
+
+const allCertifications = await getCollection("certifications");
+const relevantCertifications = credentials
+  .map((slug) => allCertifications.find((cert) => entryId(cert) === slug))
+  .filter((cert): cert is (typeof allCertifications)[number] => Boolean(cert));
+
+const relatedPosts = (await getBlogPosts())
+  .filter((post) => post.data.lang === lang)
+  .filter((post) =>
+    post.data.tags.some((tag: string) => relatedTags.includes(tag)),
+  )
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const otherServices = (await getServices(lang))
+  .filter((service) => service.data.key !== key)
+  .map((service) => ({
+    key: service.data.key as ServiceKey,
+    title: service.data.title as string,
+    href: servicePath(service.data.key as ServiceKey, lang),
+  }));
+
+const jsonLdExtra = [
+  buildServicePage({
+    name: title,
+    description,
+    url: canonicalUrl,
+    lang,
+    serviceType: keywords,
+    deliverables,
+  }),
+  ...buildFaqPage(faq, canonicalUrl),
+  ...buildBreadcrumbs([
+    { name: t("nav.home"), url: absoluteUrl(`/${lang}`) },
+    { name: t("nav.services"), url: absoluteUrl(hubPath) },
+    { name: title, url: canonicalUrl },
+  ]),
+];
+
+const dateLocale = lang === "it" ? "it-IT" : "en-US";
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={description}
+  keywords={keywords}
+  canonical={canonicalUrl}
+  jsonLdExtra={jsonLdExtra}
+>
+  <article class="lb-service pt-120 pb-100">
+    <div class="container">
+      <Breadcrumbs
+        items={[
+          { name: t("nav.home"), href: `/${lang}` },
+          { name: t("nav.services"), href: hubPath },
+          { name: title },
+        ]}
+      />
+
+      <header class="lb-service__header">
+        <div class="lb-service__icon">
+          <ServiceIcon name={SERVICE_ICONS[key]} />
+        </div>
+        <h1 class="lb-service__title">{title}</h1>
+        <p class="lb-service__tagline">{tagline}</p>
+      </header>
+
+      <div class="lb-service__layout">
+        <div class="lb-service__main">
+          <div class="lb-service__body">
+            <Content />
+          </div>
+
+          {
+            deliverables.length > 0 && (
+              <section class="lb-service__section">
+                <h2 class="lb-service__section-title">
+                  {t("services.deliverables.title")}
+                </h2>
+                <ul class="lb-service__list">
+                  {deliverables.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          {
+            faq.length > 0 && (
+              <section class="lb-service__section">
+                <h2 class="lb-service__section-title">
+                  {t("services.faq.title")}
+                </h2>
+                <div class="lb-service__faq">
+                  {faq.map((item) => (
+                    <details class="lb-faq__item">
+                      <summary class="lb-faq__question">
+                        <h3>{item.question}</h3>
+                      </summary>
+                      <p class="lb-faq__answer">{item.answer}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )
+          }
+        </div>
+
+        <aside class="lb-service__aside">
+          {
+            outcomes.length > 0 && (
+              <section class="lb-service__panel">
+                <h2 class="lb-service__panel-title">
+                  {t("services.outcomes.title")}
+                </h2>
+                <ul class="lb-service__list lb-service__list--check">
+                  {outcomes.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          {
+            relevantCertifications.length > 0 && (
+              <section class="lb-service__panel">
+                <h2 class="lb-service__panel-title">
+                  {t("services.credentials.title")}
+                </h2>
+                <p class="lb-service__panel-text">
+                  {t("services.credentials.intro")}
+                </p>
+                <ul class="lb-service__creds">
+                  {relevantCertifications.map((cert) => (
+                    <li>
+                      <a
+                        href={cert.data.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {cert.data.badgeImage && (
+                          <img
+                            src={`${cert.data.badgeImage}?w=48`}
+                            alt=""
+                            width="48"
+                            height="48"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        )}
+                        <span>
+                          <strong>{cert.data.title}</strong>
+                          <time datetime={cert.data.issueDate.toISOString()}>
+                            {cert.data.issueDate.toLocaleDateString(dateLocale, {
+                              year: "numeric",
+                              month: "short",
+                            })}
+                          </time>
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          <section class="lb-service__panel lb-service__panel--cta">
+            <h2 class="lb-service__panel-title">{t("services.cta.title")}</h2>
+            <p class="lb-service__panel-text">{t("services.cta.text")}</p>
+            <a
+              class="wc-btn-primary btn-rollover-top"
+              href="mailto:info@lucabertelli.consulting"
+            >
+              {t("services.cta.button")}
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
+          </section>
+        </aside>
+      </div>
+
+      {
+        relatedPosts.length > 0 && (
+          <section class="lb-service__section lb-service__related">
+            <h2 class="lb-service__section-title">
+              {t("services.related.articles")}
+            </h2>
+            <ul class="lb-service__related-list">
+              {relatedPosts.map((post) => (
+                <li>
+                  <a href={`/${lang}/blog/${post.blog_slug}`}>
+                    <strong>{post.data.title}</strong>
+                    <span>{post.data.subtitle}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      <section class="lb-service__section">
+        <h2 class="lb-service__section-title">
+          {t("services.related.services")}
+        </h2>
+        <ul class="lb-service__siblings">
+          {
+            otherServices.map((service) => (
+              <li>
+                <a href={service.href}>{service.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .lb-service__header {
+    margin-top: 1.75rem;
+    margin-bottom: 3rem;
+  }
+
+  .lb-service__icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.25rem;
+    color: var(--primary);
+  }
+
+  .lb-service__icon :global(.service-icon__svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  :global(.light) .lb-service__icon {
+    color: var(--secondary);
+  }
+
+  .lb-service__title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  .lb-service__tagline {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.25rem;
+    line-height: 1.65;
+    max-width: 60ch;
+    color: var(--gray-4);
+    margin: 0;
+  }
+
+  :global(.light) .lb-service__tagline {
+    color: var(--gray);
+  }
+
+  .lb-service__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .lb-service__body :global(h2) {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .lb-service__body :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .lb-service__body :global(p) {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+    color: var(--gray-4);
+  }
+
+  :global(.light) .lb-service__body :global(p) {
+    color: var(--gray);
+  }
+
+  .lb-service__section {
+    margin-top: 3rem;
+  }
+
+  .lb-service__section-title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+
+  .lb-service__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .lb-service__list li {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.85rem;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--gray-4);
+  }
+
+  .lb-service__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+  }
+
+  .lb-service__list--check li {
+    font-size: 0.9375rem;
+  }
+
+  :global(.light) .lb-service__list li {
+    color: var(--gray);
+  }
+
+  :global(.light) .lb-service__list li::before {
+    background: var(--secondary);
+  }
+
+  .lb-service__faq {
+    border-top: 1px solid var(--black-6);
+  }
+
+  :global(.light) .lb-service__faq {
+    border-color: var(--gray-13);
+  }
+
+  .lb-faq__item {
+    border-bottom: 1px solid var(--black-6);
+  }
+
+  :global(.light) .lb-faq__item {
+    border-color: var(--gray-13);
+  }
+
+  .lb-faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .lb-faq__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .lb-faq__question h3 {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .lb-faq__question::after {
+    content: "+";
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--primary);
+  }
+
+  .lb-faq__item[open] .lb-faq__question::after {
+    content: "\2212";
+  }
+
+  :global(.light) .lb-faq__question::after {
+    color: var(--secondary);
+  }
+
+  .lb-faq__answer {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--gray-4);
+    margin: 0;
+    padding: 0 0 1.35rem;
+    max-width: 68ch;
+  }
+
+  :global(.light) .lb-faq__answer {
+    color: var(--gray);
+  }
+
+  .lb-service__panel {
+    padding: 28px 24px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--black-6);
+    background: linear-gradient(168deg, var(--black-4) 0%, var(--black-3) 100%);
+  }
+
+  :global(.light) .lb-service__panel {
+    border-color: var(--gray-13);
+    background: linear-gradient(168deg, var(--white-3) 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  .lb-service__panel-title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+  }
+
+  .lb-service__panel-text {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--gray-4);
+    margin-bottom: 1.25rem;
+  }
+
+  :global(.light) .lb-service__panel-text {
+    color: var(--gray);
+  }
+
+  .lb-service__creds {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .lb-service__creds li + li {
+    margin-top: 0.85rem;
+  }
+
+  .lb-service__creds a {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+  }
+
+  .lb-service__creds img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .lb-service__creds strong {
+    display: block;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--white);
+  }
+
+  .lb-service__creds time {
+    font-size: 0.75rem;
+    color: var(--gray-4);
+  }
+
+  :global(.light) .lb-service__creds strong {
+    color: var(--black-2);
+  }
+
+  .lb-service__creds a:hover strong,
+  .lb-service__creds a:focus-visible strong {
+    color: var(--primary);
+  }
+
+  .lb-service__creds a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+
+  .lb-service__related-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .lb-service__related-list a {
+    display: block;
+    height: 100%;
+    padding: 24px 22px;
+    border-radius: 12px;
+    border: 1px solid var(--black-6);
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+
+  :global(.light) .lb-service__related-list a {
+    border-color: var(--gray-13);
+  }
+
+  .lb-service__related-list a:hover,
+  .lb-service__related-list a:focus-visible {
+    border-color: var(--primary);
+  }
+
+  .lb-service__related-list a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+
+  .lb-service__related-list strong {
+    display: block;
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.6rem;
+    color: var(--white);
+  }
+
+  .lb-service__related-list span {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--gray-4);
+  }
+
+  :global(.light) .lb-service__related-list strong {
+    color: var(--black-2);
+  }
+
+  :global(.light) .lb-service__related-list span {
+    color: var(--gray);
+  }
+
+  .lb-service__siblings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .lb-service__siblings a {
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    border-radius: 9999px;
+    border: 1px solid var(--black-6);
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  :global(.light) .lb-service__siblings a {
+    border-color: var(--gray-13);
+  }
+
+  .lb-service__siblings a:hover,
+  .lb-service__siblings a:focus-visible {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .lb-service__siblings a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 1199px) {
+    .lb-service__layout {
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 40px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .lb-service__layout {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .lb-service__related-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
