@@ -33,26 +33,44 @@ export const SERVICE_SLUGS: Record<ServiceKey, Record<UiLang, string>> = {
 		it: "consulenza-cloud-migrazione",
 	},
 	"platform-engineering": {
-		en: "platform-engineering",
-		it: "platform-engineering",
+		en: "platform-engineering-consulting",
+		it: "consulenza-platform-engineering",
 	},
 	kubernetes: {
 		en: "kubernetes-consulting",
 		it: "consulenza-kubernetes",
 	},
 	secdevops: {
-		en: "secdevops-cicd",
-		it: "secdevops-cicd",
+		en: "secdevops-cicd-consulting",
+		it: "consulenza-secdevops-cicd",
 	},
 	training: {
 		en: "devops-cloud-native-training",
 		it: "formazione-devops-cloud-native",
 	},
 	"ai-engineering": {
-		en: "ai-engineering",
-		it: "ai-engineering",
+		en: "ai-agent-governance",
+		it: "consulenza-agenti-ai",
 	},
 };
+
+/**
+ * Previous public slugs that must keep resolving. Map language → old slug →
+ * service key; middleware 308s to the current `SERVICE_SLUGS` entry.
+ */
+export const LEGACY_SERVICE_SLUGS: Record<UiLang, Record<string, ServiceKey>> =
+	{
+		en: {
+			"platform-engineering": "platform-engineering",
+			"secdevops-cicd": "secdevops",
+			"ai-engineering": "ai-engineering",
+		},
+		it: {
+			"platform-engineering": "platform-engineering",
+			"secdevops-cicd": "secdevops",
+			"ai-engineering": "ai-engineering",
+		},
+	};
 
 export const SERVICE_ICONS: Record<ServiceKey, ServiceIconName> = {
 	devops: "infinity",

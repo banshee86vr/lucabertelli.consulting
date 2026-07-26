@@ -31,7 +31,7 @@ export const ui = {
       'Freelance DevOps and Cloud Native consultant: Platform Engineering, Kubernetes, SecDevOps, CI/CD, cloud migration and training for engineering teams.',
     'seo.home.title': 'DevOps and Platform Engineering Consultant | Luca Bertelli',
     'seo.home.description':
-      'Freelance DevOps, Kubernetes and Platform Engineering consultant working across Italy and the EU. Cloud migration, CI/CD, SecDevOps and team training.',
+      'Freelance DevOps, Kubernetes and Platform Engineering consultant in Italy and the EU. Cloud migration, secure CI/CD, SecDevOps, training and AI agent governance.',
     'seo.blog.title': 'DevOps and Kubernetes Blog | Luca Bertelli',
     'seo.blog.description':
       'Articles on Kubernetes, CI/CD, platform engineering and cloud-native operations, written from real consulting engagements.',
@@ -55,15 +55,40 @@ export const ui = {
     'index.services.title': 'Services',
     'index.tickets.title': 'Upcoming Events',
     'index.services.subtitle':
-      'Consulting on DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps and AI engineering, for teams in Italy and across the EU.',
+      'Consulting on DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps, training and AI agent governance, for teams in Italy and across the EU.',
     'index.services.cta': 'All consulting services',
     'index.services.cardCta': 'Read more',
-    'services.hub.h1': 'DevOps, Cloud and Platform Engineering consulting services',
+    'services.hub.h1': 'DevOps, Cloud, Platform Engineering and AI agent consulting',
     'services.hub.intro':
       'I work with engineering teams that need to release faster without giving up control. Each engagement starts from an assessment of what already exists, and ends with the internal team able to maintain what we built together. Below are the areas I cover.',
-    'services.hub.seoTitle': 'Consulting services: DevOps, Cloud, Kubernetes | Luca Bertelli',
+    'services.hub.seoTitle':
+      'Consulting: DevOps, Kubernetes, Platform Engineering, AI agents | Luca Bertelli',
     'services.hub.seoDescription':
-      'Consulting services for DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps and AI engineering. Freelance consultant working across Italy and the EU.',
+      'Freelance consulting for DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps, CI/CD, training and AI agent governance across Italy and the EU.',
+    'services.hub.intents.title': 'When this kind of consulting helps',
+    'services.hub.intents.intro':
+      'The same problem shows up under different names. These are the situations I am usually called for — each one links to the service page that owns that work.',
+    'services.hub.intent.devops.title': 'Releases that scare the team',
+    'services.hub.intent.devops.text':
+      'Freelance DevOps consulting when deployments pile up, depend on one person, or break in ways nobody can explain.',
+    'services.hub.intent.cloud.title': 'Cloud adoption or migration without a clean plan',
+    'services.hub.intent.cloud.text':
+      'Cloud consulting for moving workloads to AWS, Azure or Google Cloud with cost and governance under control.',
+    'services.hub.intent.platform.title': 'Too many teams reinventing the same platform',
+    'services.hub.intent.platform.text':
+      'Platform Engineering consulting for Internal Developer Platforms, golden paths and self-service on Kubernetes.',
+    'services.hub.intent.kubernetes.title': 'Kubernetes that works until day two',
+    'services.hub.intent.kubernetes.text':
+      'CKA-certified Kubernetes consulting for cluster architecture, multi-tenancy, GitOps and production operations.',
+    'services.hub.intent.secdevops.title': 'Security bolted on at the end of delivery',
+    'services.hub.intent.secdevops.text':
+      'SecDevOps and CI/CD consulting for secure pipelines, Vault secrets management and supply-chain evidence.',
+    'services.hub.intent.training.title': 'Training that has to match your real toolchain',
+    'services.hub.intent.training.text':
+      'Corporate DevOps, Kubernetes and cloud-native training with labs based on the tools you already run.',
+    'services.hub.intent.ai.title': 'AI agents arriving without a perimeter',
+    'services.hub.intent.ai.text':
+      'AI agent governance and adoption consulting: policy, security, MCP integration and inference cost control.',
     'services.outcomes.title': 'What you get',
     'services.deliverables.title': "What's included",
     'services.faq.title': 'Frequently asked questions',
@@ -277,7 +302,7 @@ export const ui = {
       'Consulente DevOps e Cloud Native freelance: Platform Engineering, Kubernetes, SecDevOps, CI/CD, migrazione cloud e formazione per team tecnici.',
     'seo.home.title': 'Consulente DevOps e Platform Engineering | Luca Bertelli',
     'seo.home.description':
-      'Consulente DevOps, Kubernetes e Platform Engineering freelance in Italia. Migrazione cloud, CI/CD, SecDevOps e formazione per team tecnici.',
+      'Consulente DevOps, Kubernetes e Platform Engineering freelance in Italia e in UE. Migrazione cloud, CI/CD sicuro, SecDevOps, formazione e governance degli agenti AI.',
     'seo.blog.title': 'Blog DevOps e Kubernetes | Luca Bertelli',
     'seo.blog.description':
       'Articoli su Kubernetes, CI/CD, platform engineering e operatività cloud-native, scritti a partire da progetti di consulenza reali.',
@@ -301,15 +326,40 @@ export const ui = {
     'index.services.title': 'Servizi',
     'index.tickets.title': 'Prossimi eventi',
     'index.services.subtitle':
-      'Consulenza su DevOps, migrazione cloud, Platform Engineering, Kubernetes, SecDevOps e AI engineering, per team in Italia e in Unione Europea.',
+      'Consulenza su DevOps, migrazione cloud, Platform Engineering, Kubernetes, SecDevOps, formazione e governance degli agenti AI, per team in Italia e in Unione Europea.',
     'index.services.cta': 'Tutti i servizi di consulenza',
     'index.services.cardCta': 'Scopri di più',
-    'services.hub.h1': 'Servizi di consulenza DevOps, Cloud e Platform Engineering',
+    'services.hub.h1': 'Consulenza DevOps, Cloud, Platform Engineering e agenti AI',
     'services.hub.intro':
       "Lavoro con team tecnici che devono rilasciare più in fretta senza rinunciare al controllo. Ogni intervento parte da un assessment di ciò che esiste già e si chiude quando il team interno è in grado di mantenere ciò che abbiamo costruito insieme. Qui sotto le aree su cui intervengo.",
-    'services.hub.seoTitle': 'Servizi di consulenza: DevOps, Cloud, Kubernetes | Luca Bertelli',
+    'services.hub.seoTitle':
+      'Consulenza DevOps, Kubernetes, Platform Engineering, agenti AI | Luca Bertelli',
     'services.hub.seoDescription':
-      'Servizi di consulenza su DevOps, migrazione cloud, Platform Engineering, Kubernetes, SecDevOps e AI engineering. Consulente freelance attivo in Italia e in Unione Europea.',
+      'Consulenza freelance su DevOps, migrazione cloud, Platform Engineering, Kubernetes, SecDevOps, CI/CD, formazione e governance degli agenti AI in Italia e in Unione Europea.',
+    'services.hub.intents.title': 'Quando questo tipo di consulenza serve',
+    'services.hub.intents.intro':
+      'Lo stesso problema arriva con nomi diversi. Queste sono le situazioni per cui mi chiamano di solito: ciascuna rimanda alla pagina di servizio che ne è proprietaria.',
+    'services.hub.intent.devops.title': 'Rilasci che fanno paura al team',
+    'services.hub.intent.devops.text':
+      'Consulenza DevOps freelance quando i deploy si accumulano, dipendono da una sola persona o si rompono in modi che nessuno sa spiegare.',
+    'services.hub.intent.cloud.title': 'Adozione o migrazione cloud senza un piano pulito',
+    'services.hub.intent.cloud.text':
+      'Consulenza cloud per portare i workload su AWS, Azure o Google Cloud tenendo costi e governance sotto controllo.',
+    'services.hub.intent.platform.title': 'Troppi team che reinventano la stessa piattaforma',
+    'services.hub.intent.platform.text':
+      'Consulenza Platform Engineering per Internal Developer Platform, golden path e self-service su Kubernetes.',
+    'services.hub.intent.kubernetes.title': 'Kubernetes che regge fino al day-2',
+    'services.hub.intent.kubernetes.text':
+      'Consulenza Kubernetes da consulente certificato CKA: architettura dei cluster, multi-tenancy, GitOps e operatività in produzione.',
+    'services.hub.intent.secdevops.title': 'Sicurezza appiccicata in fondo alla delivery',
+    'services.hub.intent.secdevops.text':
+      'Consulenza SecDevOps e CI/CD per pipeline sicure, gestione dei segreti con Vault ed evidenze di supply chain.',
+    'services.hub.intent.training.title': 'Formazione che deve parlare della vostra toolchain',
+    'services.hub.intent.training.text':
+      'Formazione aziendale DevOps, Kubernetes e cloud-native con laboratori basati sugli strumenti che usate già.',
+    'services.hub.intent.ai.title': 'Agenti AI che arrivano senza un perimetro',
+    'services.hub.intent.ai.text':
+      'Consulenza su governance e adozione di agenti AI: policy, sicurezza, integrazione MCP e controllo dei costi di inferenza.',
     'services.outcomes.title': 'Risultati attesi',
     'services.deliverables.title': 'Cosa include',
     'services.faq.title': 'Domande frequenti',

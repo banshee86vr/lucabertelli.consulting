@@ -1,18 +1,20 @@
 ---
 key: "ai-engineering"
 lang: "it"
-title: "AI Engineering"
+title: "Governance e adozione di agenti AI"
 tagline: "Adozione di agenti AI in azienda con regole chiare, rischio controllato e spesa prevedibile."
-seoTitle: "Consulenza AI Engineering: agenti AI, governance e costi | Luca Bertelli"
-description: "Consulenza AI Engineering: adozione degli agenti AI, governance e policy, hardening della sicurezza, integrazione MCP e controllo dei costi di inferenza."
+seoTitle: "Consulenza governance e adozione di agenti AI | Luca Bertelli"
+description: "Consulenza su governance e adozione di agenti AI in Italia: policy di utilizzo, hardening della sicurezza, integrazione MCP e controllo dei costi di inferenza."
 order: 7
 keywords:
-  - "AI engineering"
+  - "governance agenti AI"
+  - "adozione agenti AI"
   - "consulenza agenti AI"
+  - "consulenza AI Italia"
   - "governance AI aziendale"
   - "sicurezza agenti AI"
+  - "AI engineering"
   - "Model Context Protocol"
-  - "costi inferenza AI"
 relatedTags: ["mcp", "devsecops", "observability", "kubernetes"]
 credentials: ["cka", "vault-professional", "terraform_associate"]
 outcomes:
@@ -37,6 +39,8 @@ faq:
     answer: "Attribuendoli prima che crescano. Ogni caso d'uso ha un budget, il consumo di token viene tracciato per team e funzionalità, e sono previsti limiti applicati automaticamente. La voce di spesa che sfugge più spesso non è il singolo prompt costoso, ma un agente in ciclo di ripetizione che nessuno ha limitato."
   - question: "Serve un modello proprietario o si può usare un servizio gestito?"
     answer: "Nella maggior parte dei casi un servizio gestito è adeguato. L'esecuzione in locale ha senso con vincoli reali di riservatezza dei dati o requisiti di sovranità, e va valutata considerando il costo operativo che comporta. La scelta si fa sui vincoli effettivi, non sull'impressione che eseguire in casa sia automaticamente più sicuro."
+  - question: "Quando ha senso una consulenza di governance sugli agenti AI?"
+    answer: "Quando gli agenti stanno già entrando in azienda senza un perimetro condiviso, oppure quando volete adottarli in modo deliberato prima che proliferino. I segnali tipici sono chiavi API condivise, nessun inventario dei casi d'uso, assenza di limiti di spesa e la domanda 'chi ha autorizzato questo agente a leggere quei dati?' senza una risposta chiara."
 ---
 
 ## Il problema che di solito trovo

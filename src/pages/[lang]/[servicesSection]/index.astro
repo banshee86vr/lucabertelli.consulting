@@ -8,8 +8,10 @@ import { getServices } from "../../../content/config";
 import {
   SERVICES_SECTION_SLUG,
   SERVICE_ICONS,
+  SERVICE_KEYS,
   servicePath,
   servicesHubPath,
+  type ServiceKey,
 } from "../../../constants/services";
 import { useTranslations } from "../../../i18n/utils";
 import { absoluteUrl } from "../../../utils/seo";
@@ -79,6 +81,52 @@ const jsonLdExtra = [
 const keywords = services.flatMap(
   (service) => service.data.keywords as string[],
 );
+
+const intentCopyByService: Record<
+  ServiceKey,
+  { title: Parameters<typeof t>[0]; text: Parameters<typeof t>[0] }
+> = {
+  devops: {
+    title: "services.hub.intent.devops.title",
+    text: "services.hub.intent.devops.text",
+  },
+  cloud: {
+    title: "services.hub.intent.cloud.title",
+    text: "services.hub.intent.cloud.text",
+  },
+  "platform-engineering": {
+    title: "services.hub.intent.platform.title",
+    text: "services.hub.intent.platform.text",
+  },
+  kubernetes: {
+    title: "services.hub.intent.kubernetes.title",
+    text: "services.hub.intent.kubernetes.text",
+  },
+  secdevops: {
+    title: "services.hub.intent.secdevops.title",
+    text: "services.hub.intent.secdevops.text",
+  },
+  training: {
+    title: "services.hub.intent.training.title",
+    text: "services.hub.intent.training.text",
+  },
+  "ai-engineering": {
+    title: "services.hub.intent.ai.title",
+    text: "services.hub.intent.ai.text",
+  },
+};
+
+const intents = SERVICE_KEYS.map((key) => {
+  const copy = intentCopyByService[key];
+  return {
+    key,
+    title: t(copy.title),
+    text: t(copy.text),
+    href: servicePath(key, lang),
+    serviceTitle:
+      services.find((service) => service.data.key === key)?.data.title ?? key,
+  };
+});
 ---
 
 <BaseLayout
@@ -112,6 +160,29 @@ const keywords = services.flatMap(
           ))
         }
       </div>
+
+      <section class="lb-services-intents" aria-labelledby="services-intents-title">
+        <h2 id="services-intents-title" class="lb-services-intents__title">
+          {t("services.hub.intents.title")}
+        </h2>
+        <p class="lb-services-intents__intro">{t("services.hub.intents.intro")}</p>
+        <ul class="lb-services-intents__list">
+          {
+            intents.map((intent) => (
+              <li>
+                <h3 class="lb-services-intents__item-title">
+                  <a href={intent.href}>{intent.title}</a>
+                </h3>
+                <p class="lb-services-intents__item-text">{intent.text}</p>
+                <a class="lb-services-intents__link" href={intent.href}>
+                  {intent.serviceTitle}
+                  <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
 
       <div class="lb-services-cta">
         <h2 class="lb-services-cta__title">{t("services.cta.title")}</h2>
@@ -255,6 +326,92 @@ const keywords = services.flatMap(
   }
 
   :global(.light) .lb-service-card__cta {
+    color: var(--secondary);
+  }
+
+  .lb-services-intents {
+    margin-top: 5rem;
+    max-width: 72ch;
+  }
+
+  .lb-services-intents__title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .lb-services-intents__intro {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--gray-4);
+    margin-bottom: 2.5rem;
+  }
+
+  :global(.light) .lb-services-intents__intro {
+    color: var(--gray);
+  }
+
+  .lb-services-intents__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2rem;
+  }
+
+  .lb-services-intents__item-title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
+  }
+
+  .lb-services-intents__item-title a {
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .lb-services-intents__item-title a:hover,
+  .lb-services-intents__item-title a:focus-visible {
+    color: var(--primary);
+  }
+
+  :global(.light) .lb-services-intents__item-title a {
+    color: var(--black-2);
+  }
+
+  .lb-services-intents__item-text {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.975rem;
+    line-height: 1.65;
+    color: var(--gray-4);
+    margin: 0 0 0.75rem;
+  }
+
+  :global(.light) .lb-services-intents__item-text {
+    color: var(--gray);
+  }
+
+  .lb-services-intents__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+  }
+
+  .lb-services-intents__link:hover,
+  .lb-services-intents__link:focus-visible {
+    text-decoration: underline;
+  }
+
+  :global(.light) .lb-services-intents__link {
     color: var(--secondary);
   }
 

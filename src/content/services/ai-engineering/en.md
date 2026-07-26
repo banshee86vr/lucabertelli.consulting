@@ -1,16 +1,18 @@
 ---
 key: "ai-engineering"
 lang: "en"
-title: "AI Engineering"
+title: "AI Agent Governance and Adoption"
 tagline: "Adopting AI agents in the enterprise with clear rules, controlled risk and predictable spend."
-seoTitle: "AI Engineering Consulting: agents, governance and cost | Luca Bertelli"
-description: "AI Engineering consulting: AI agent adoption, governance and policy, security hardening, Model Context Protocol integration and inference cost control."
+seoTitle: "AI Agent Governance and Adoption Consulting | Luca Bertelli"
+description: "Consulting on AI agent governance and adoption across Italy and the EU: usage policy, security hardening, Model Context Protocol integration and inference cost control."
 order: 7
 keywords:
-  - "AI engineering"
+  - "AI agent governance"
+  - "AI agent adoption"
   - "AI agent consulting"
   - "enterprise AI governance"
   - "AI agent security"
+  - "AI engineering"
   - "Model Context Protocol"
   - "AI inference cost"
 relatedTags: ["mcp", "devsecops", "observability", "kubernetes"]
@@ -37,6 +39,8 @@ faq:
     answer: "By attributing them before they grow. Every use case has a budget, token consumption is tracked per team and per feature, and limits are enforced automatically. The cost that most often escapes notice is not the occasional expensive prompt, it is an agent stuck in a retry loop that nobody capped."
   - question: "Do we need a self-hosted model or is a managed service enough?"
     answer: "In most cases a managed service is adequate. Self-hosting makes sense with genuine data confidentiality constraints or sovereignty requirements, and should be assessed including the operational cost it carries. The decision follows the actual constraints, not the impression that running things in-house is automatically safer."
+  - question: "When does AI agent governance consulting make sense?"
+    answer: "When agents are already entering the company without a shared perimeter, or when you want to adopt them deliberately before they proliferate. Typical signals are shared API keys, no inventory of use cases, no spend limits, and the question 'who authorised this agent to read that data?' with no clear answer."
 ---
 
 ## The problem I usually find
