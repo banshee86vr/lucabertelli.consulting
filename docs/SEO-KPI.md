@@ -57,11 +57,19 @@ On-page optimisation makes the site eligible to rank for these queries, where pr
 - Ask past clients for references that link to the relevant service page rather than the home page.
 - Keep publishing: four articles per language is thin for the competitiveness of these queries.
 
-## Local smoke test
+## Local checks
 
 ```bash
 pnpm run build
+pnpm run verify:seo
+```
+
+`verify:seo` ([scripts/verify-seo.mjs](../scripts/verify-seo.mjs)) inspects the build for broken internal links, JSON-LD that does not parse, non-reciprocal hreflang, missing canonicals, missing or duplicated `<h1>`, duplicate titles, and pages that drifted out of the sitemap. It exits non-zero on any finding.
+
+For a visual pass:
+
+```bash
 python3 -m http.server 4321 --directory dist/client
 ```
 
-Then spot-check `/it/`, `/it/servizi/`, one service page, `/it/blog/` and one tag page for titles, canonical, breadcrumbs and JSON-LD in "View Source".
+Then spot-check `/it/`, `/it/servizi/`, one service page, `/it/blog/` and one tag page.

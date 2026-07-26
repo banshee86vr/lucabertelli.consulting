@@ -1,0 +1,96 @@
+---
+description: Keep canonical URLs, hreflang, structured data and the sitemap consistent when adding, changing or deleting pages and content
+alwaysApply: true
+---
+
+# Keep the SEO surface consistent
+
+Every route on this site is a keyword surface, and the pieces that make it rankable
+are spread across several files. Changing content or routes without touching the
+others produces a build that succeeds while the search-facing output is wrong:
+hreflang pointing at a 404, a page missing from the sitemap, a service card that
+silently disappears in one language.
+
+Treat the steps below as part of the change, not as follow-up work.
+
+## Always finish with the checks
+
+```bash
+pnpm run build      # astro check + astro build
+pnpm run verify:seo # broken links, JSON-LD, hreflang, titles, sitemap drift
+```
+
+`verify:seo` reads `dist/client`, so it needs a fresh build. It exits non-zero on
+any finding. Do not consider a change done while it fails.
+
+## Adding or removing a service
+
+A service exists in four places, and all four must agree:
+
+1. `src/constants/services.ts` — the key in `SERVICE_KEYS`, a slug for **both**
+   languages in `SERVICE_SLUGS`, an icon in `SERVICE_ICONS`.
+2. `src/content/services/<key>/it.md` **and** `en.md`. Both are required: the
+   slug map makes every page advertise an hreflang alternate for the other
+   language, so a missing translation produces an alternate that points at a page
+   that was never generated.
+3. New icon names go in `src/types/service-icons.ts` and `src/components/ServiceIcon.astro`.
+4. Removing a service means adding a 308 redirect in `src/middleware.ts` for both
+   old URLs. Deleting the page alone throws away whatever ranking it accumulated.
+
+The hub, the home cards, the footer list and `llms.txt` all read the collection,
+so none of them need editing.
+
+## Changing or deleting a route
+
+No URL that has been live should ever start returning a 404. Renaming a slug,
+removing a page or restructuring a section all require a 308 in
+`src/middleware.ts` pointing at the closest surviving equivalent, for every
+language. If the new route
+uses a different path segment per language, teach `src/i18n/routes.ts` about it —
+`alternatesForPathname`, the language switcher and the sitemap all resolve
+counterparts through that map, and the sitemap's built-in i18n pairing only
+handles identical path suffixes.
+
+Give the route a priority band in the `serialize` function of `astro.config.mjs`.
+Anything unmatched falls back to the sitemap default of 0.7, which ranks a legal
+page level with a blog article.
+
+## Adding a page type
+
+Render it through `src/layouts/Common.astro` so it inherits canonical, hreflang,
+Open Graph and the base JSON-LD graph. Then add, in the page itself:
+
+- a single `<h1>` carrying the term the page should rank for;
+- `<Breadcrumbs>` plus a matching `buildBreadcrumbs()` node;
+- the schema.org node for what the page actually is — `buildServicePage`,
+  `buildCollectionPage`, `buildBlogPosting` and `buildFaqPage` already exist in
+  `src/utils/jsonLd.ts`; extend that file rather than inlining JSON-LD.
+
+## Blog content
+
+- A substantive edit to a published article should set or bump the `updated`
+  frontmatter field. It is what populates a real `dateModified`; without it the
+  article claims it was never revised.
+- A new tag automatically produces a tag page. Check how `tagLabel()` in
+  `src/utils/tags.ts` renders it and add a `DISPLAY_OVERRIDES` entry when the
+  automatic title-casing is wrong (`cicd` would otherwise render as "Cicd").
+
+## Copy changes
+
+Titles and descriptions live in `src/i18n/ui.ts` for static pages and in service
+frontmatter for services. Keep titles unique across the site and under roughly 60
+characters, and keep descriptions between 120 and 160. Whatever you write in
+Italian must carry the Italian query terms; a literal translation of the English
+title usually does not.
+
+## Things that are generated — do not hand-maintain
+
+`/llms.txt` comes from `src/pages/llms.txt.ts`, built from the content
+collections, and the sitemap comes from `@astrojs/sitemap`. `llms.txt` used to be
+a static file and went stale; do not reintroduce static copies of either.
+
+## Off-page
+
+`docs/SEO-KPI.md` holds the post-deploy checklist and the work that cannot be done
+from the repository (Search Console submission, external links). Update the page
+inventory there when the number or shape of routes changes.
