@@ -3,4 +3,8 @@ export type ServiceIconName =
 	| "cloud-upload"
 	| "workflow"
 	| "graduation-cap"
-	| "bot";
+	| "bot"
+	| "infinity"
+	| "layers"
+	| "boxes"
+	| "shield-check";

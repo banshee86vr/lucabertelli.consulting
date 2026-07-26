@@ -1,6 +1,14 @@
+import { translatePathname } from "../i18n/routes";
 import { SITE_URL } from "../constants/site";
 
 export type UiLang = "en" | "it";
+
+/** Strip a trailing slash so canonical and alternate URLs stay consistent. */
+export function normalizePathname(pathname: string): string {
+	return pathname.endsWith("/") && pathname.length > 1
+		? pathname.slice(0, -1)
+		: pathname;
+}
 
 /** Build absolute URL for paths or pass through absolute URLs. */
 export function absoluteUrl(pathOrUrl: string): string {
@@ -13,24 +21,18 @@ export function absoluteUrl(pathOrUrl: string): string {
 }
 
 /**
- * hreflang alternates for /en/* and /it/* routes (same path suffix).
+ * hreflang alternates for /en/* and /it/* routes. Slugs that differ between
+ * languages (the services tree) are resolved through the route translation map.
  */
 export function alternatesForPathname(pathname: string): {
 	en: string;
 	it: string;
 	xDefault: string;
 } | null {
-	const normalized = pathname.endsWith("/") && pathname.length > 1
-		? pathname.slice(0, -1)
-		: pathname;
-	const segments = normalized.split("/").filter(Boolean);
-	const first = segments[0];
+	const normalized = normalizePathname(pathname);
+	const first = normalized.split("/").filter(Boolean)[0];
 	if (first !== "en" && first !== "it") return null;
-	const rest = segments.slice(1).join("/");
-	const suffix = rest ? `/${rest}` : "";
-	return {
-		en: `${SITE_URL}/en${suffix}`,
-		it: `${SITE_URL}/it${suffix}`,
-		xDefault: `${SITE_URL}/en${suffix}`,
-	};
+	const en = absoluteUrl(translatePathname(normalized, "en"));
+	const it = absoluteUrl(translatePathname(normalized, "it"));
+	return { en, it, xDefault: en };
 }
