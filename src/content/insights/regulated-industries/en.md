@@ -4,7 +4,7 @@ lang: "en"
 title: "DevOps consulting for Fintech, Insurtech and industrial teams"
 subtitle: "What changes when releases, audits and change windows are business constraints rather than operational details"
 seoTitle: "DevOps consulting for Fintech, Insurtech and industrial teams | Luca Bertelli"
-date: "2026-07-27"
+date: "2025-10-26"
 image: "/insights/regulated-industries/regulated-industries.webp"
 relatedServices: ["devops", "secdevops", "kubernetes", "cloud", "platform-engineering"]
 ---
@@ -23,7 +23,7 @@ What works technically:
 
 - **CI/CD with explicit approvals** and retained logs, not screenshots rebuilt before the audit.
 - **SBOMs and artifact signing** as a normal pipeline by-product, not a side project.
-- **Dynamic secrets** (for example with Vault) instead of static keys in repositories.
+- **Dynamic secrets** managed through a secrets manager (open source or commercial) instead of static keys in repositories.
 - **Comparable environments**: if staging lies about production, every non-regression test is theatre.
 
 Here [SecDevOps and CI/CD consulting](/en/services/secdevops-cicd-consulting/) is not “adding a scanner”. It is making evidence emerge from the release process itself.

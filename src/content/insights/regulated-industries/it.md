@@ -4,7 +4,7 @@ lang: "it"
 title: "Consulenza DevOps in Fintech, Insurtech e industriale"
 subtitle: "Cosa cambia quando release, audit e finestre di cambio non sono un dettaglio operativo ma un vincolo di business"
 seoTitle: "Consulenza DevOps in Fintech, Insurtech e industriale | Luca Bertelli"
-date: "2026-07-27"
+date: "2025-10-26"
 image: "/insights/regulated-industries/regulated-industries.webp"
 relatedServices: ["devops", "secdevops", "kubernetes", "cloud", "platform-engineering"]
 ---
@@ -23,7 +23,7 @@ Quello che funziona sul piano tecnico:
 
 - **CI/CD con approvazioni esplicite** e log conservati, non screenshot ricostruiti prima dell’audit.
 - **SBOM e firma degli artefatti** come effetto normale della pipeline, non come progetto a parte.
-- **Segreti dinamici** (per esempio con Vault) al posto di chiavi statiche nei repository.
+- **Segreti dinamici** gestiti da un secrets manager (open source o commerciale) al posto di chiavi statiche nei repository.
 - **Ambienti confrontabili**: se staging mente sulla produzione, ogni test di non-regressione è teatro.
 
 Qui la [consulenza SecDevOps e CI/CD](/it/servizi/consulenza-secdevops-cicd/) non è “mettere uno scanner”: è far sì che le evidenze nascano dal processo di rilascio.

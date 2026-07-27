@@ -4,7 +4,7 @@ lang: "it"
 title: "Platform Engineering vs DevOps: la differenza che conta in pratica"
 subtitle: "Stessi obiettivi di delivery, modelli operativi diversi. Come scegliere senza comprare un portale per sviluppatori troppo presto"
 seoTitle: "Platform Engineering vs DevOps in pratica | Luca Bertelli"
-date: "2026-07-27"
+date: "2024-07-13"
 image: "/insights/platform-vs-devops/platform-vs-devops.webp"
 relatedServices: ["devops", "platform-engineering", "kubernetes", "training"]
 ---
@@ -21,7 +21,7 @@ La distinzione utile non sta nel vocabolario. Sta nel **modello operativo**: chi
 
 Funziona molto bene finché il numero di team resta piccolo e ognuno può ancora padroneggiare lo stack. Il costo cognitivo è alto, ma è sostenibile.
 
-Il collasso arriva quando ogni team ricrea leggermente diverso lo stesso pezzo: pipeline, moduli Terraform, policy di rete, osservabilità, gestione dei segreti. Nessuna scelta è sbagliata da sola. L’insieme è ingestibile.
+Il collasso arriva quando ogni team ricrea leggermente diverso lo stesso pezzo: pipeline, moduli di Infrastructure as Code, policy di rete, osservabilità, gestione dei segreti. Nessuna scelta è sbagliata da sola. L’insieme è ingestibile.
 
 ## Cosa risolve Platform Engineering
 
@@ -33,13 +33,13 @@ Non è “un portale”. Il portale è la vetrina. La sostanza è ciò che il po
 
 ## Una tabella onesta
 
-| Domanda | DevOps / consulenza delivery | Platform Engineering |
-| --- | --- | --- |
-| Problema tipico | Rilasci lenti, fragili, dipendenti da una persona | Troppi team che reinventano lo stesso stack |
-| Utente principale | Il team che consegna un prodotto | I molti team che consumano la piattaforma |
-| Artefatto chiave | Pipeline, IaC, pratiche operative | Golden path, self-service, prodotto interno |
-| Metrica utile | Lead time, failure rate, tempo di ripristino | Adozione volontaria dei percorsi standard |
-| Quando è troppo presto | Quasi mai, se dovete ancora rilasciare in modo ripetibile | Sotto ~3–4 team di sviluppo, di solito sì |
+| | DevOps / delivery | Platform Engineering |
+| :--- | :--- | :--- |
+| **Problema tipico** | Rilasci lenti, fragili, legati a una persona. | Troppi team che reinventano lo stesso stack. |
+| **Utente principale** | Il team che consegna un prodotto. | I molti team che consumano la piattaforma. |
+| **Artefatto chiave** | Pipeline, IaC, pratiche operative. | Golden path, self-service, prodotto interno. |
+| **Metrica utile** | Lead time, failure rate, tempo di ripristino. | Adozione volontaria dei percorsi standard. |
+| **Troppo presto quando…** | Quasi mai, se i rilasci non sono ancora ripetibili. | Sotto circa 3–4 team di sviluppo. |
 
 ## Errori ricorrenti che vedo
 
@@ -47,9 +47,9 @@ Non è “un portale”. Il portale è la vetrina. La sostanza è ciò che il po
 
 Se i rilasci fanno ancora paura a un solo team, una Internal Developer Platform aggiunge superficie senza togliere dolore. Sistemate prima CI, ambienti e ownership con una [consulenza DevOps](/it/servizi/consulenza-devops/).
 
-### Confondere Backstage con la piattaforma
+### Confondere il portale con la piattaforma
 
-Un catalogo senza percorsi dietro è un inventario. Utile, non sufficiente. La domanda da fare è: *quale azione ripetitiva oggi richiede un ticket e domani deve essere self-service?*
+Installare un portale o un catalogo servizi — open source o commerciale — senza percorsi dietro produce un inventario. Utile, non sufficiente. La domanda da fare è: *quale azione ripetitiva oggi richiede un ticket e domani deve essere self-service?*
 
 ### Imporre i golden path
 

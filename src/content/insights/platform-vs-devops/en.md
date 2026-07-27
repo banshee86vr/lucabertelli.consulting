@@ -4,7 +4,7 @@ lang: "en"
 title: "Platform Engineering vs DevOps: the difference that matters in practice"
 subtitle: "Same delivery goals, different operating models. How to choose without buying a developer portal too early"
 seoTitle: "Platform Engineering vs DevOps in practice | Luca Bertelli"
-date: "2026-07-27"
+date: "2024-07-13"
 image: "/insights/platform-vs-devops/platform-vs-devops.webp"
 relatedServices: ["devops", "platform-engineering", "kubernetes", "training"]
 ---
@@ -21,7 +21,7 @@ The useful distinction is not vocabulary. It is the **operating model**: who car
 
 It works very well while the number of teams stays small and each one can still master the stack. Cognitive load is high, but sustainable.
 
-Collapse arrives when every team recreates the same pieces slightly differently: pipelines, Terraform modules, network policy, observability, secrets management. No single choice is wrong. The aggregate is unmanageable.
+Collapse arrives when every team recreates the same pieces slightly differently: pipelines, Infrastructure as Code modules, network policy, observability, secrets management. No single choice is wrong. The aggregate is unmanageable.
 
 ## What Platform Engineering solves
 
@@ -33,13 +33,13 @@ It is not “a portal”. The portal is the shop window. The substance is what t
 
 ## An honest comparison
 
-| Question | DevOps / delivery consulting | Platform Engineering |
-| --- | --- | --- |
-| Typical problem | Slow, fragile releases that depend on one person | Too many teams reinventing the same stack |
-| Primary user | The team shipping a product | The many teams consuming the platform |
-| Key artefact | Pipelines, IaC, operational practice | Golden paths, self-service, internal product |
-| Useful metric | Lead time, failure rate, restore time | Voluntary adoption of standard paths |
-| When it is too early | Almost never, if you still cannot release repeatably | Below roughly 3–4 product teams, usually yes |
+| | DevOps / delivery | Platform Engineering |
+| :--- | :--- | :--- |
+| **Typical problem** | Slow, fragile releases tied to one person. | Too many teams reinventing the same stack. |
+| **Primary user** | The team shipping a product. | The many teams consuming the platform. |
+| **Key artefact** | Pipelines, IaC, operational practice. | Golden paths, self-service, internal product. |
+| **Useful metric** | Lead time, failure rate, restore time. | Voluntary adoption of standard paths. |
+| **Too early when…** | Almost never, if releases are not yet repeatable. | Below roughly 3–4 product teams. |
 
 ## Recurring mistakes I see
 
@@ -47,9 +47,9 @@ It is not “a portal”. The portal is the shop window. The substance is what t
 
 If releases still scare a single team, an Internal Developer Platform adds surface without removing pain. Fix CI, environments and ownership first with [DevOps consulting](/en/services/devops-consulting/).
 
-### Confusing Backstage with the platform
+### Confusing the portal with the platform
 
-A catalogue with no paths behind it is an inventory. Useful, not sufficient. The question to ask is: *which repetitive action needs a ticket today and should be self-service tomorrow?*
+Installing a developer portal or service catalogue — open source or commercial — with no paths behind it produces an inventory. Useful, not sufficient. The question to ask is: *which repetitive action needs a ticket today and should be self-service tomorrow?*
 
 ### Mandating golden paths
 
