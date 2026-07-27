@@ -165,6 +165,23 @@ button {
   line-height: var(--leading-relaxed);
 }
 
+/* Blog long-form: same reading rhythm as legal pages, slightly larger */
+.blog__details {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+}
+
+.blog__details h2,
+.blog__details h3,
+.blog__details h4,
+.blog__details h5,
+.blog__details h6,
+.blog__details_title,
+.lb-blog__title {
+  font-family: var(--font-heading);
+}
+
 /* Monospace accents */
 code,
 kbd,

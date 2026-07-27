@@ -11,6 +11,7 @@ import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { absoluteUrl } from "../utils/seo";
 import { tagLabel, tagPath } from "../utils/tags";
 import { buildBlogPosting, buildBreadcrumbs } from "../utils/jsonLd";
+import { readingMinutes, wordCountFromBody } from "../utils/readingTime";
 import type { UiLang } from "../utils/seo";
 
 type BlogData = CollectionEntry<"blog">["data"];
@@ -26,11 +27,14 @@ const {
 	tags,
 	lang,
 	blogSlug,
-	wordCount,
+	wordCount = 0,
 } = Astro.props as Props;
 
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
+const dateLocale = lang === "it" ? "it-IT" : "en-US";
+const minutes = readingMinutes(wordCount);
+const readingLabel = t("post.readingTime").replace("{n}", String(minutes));
 
 const canonicalUrl = absoluteUrl(`/${lang}/blog/${blogSlug}`);
 const blogPath = `/${lang}/blog`;
@@ -93,7 +97,21 @@ const blogEntries = (await getBlogPosts())
 		(a, b) =>
 			b.data.date.valueOf() - a.data.date.valueOf(),
 	)
-	.slice(0, 4);
+	.slice(0, 4)
+	.map((post) => ({
+		...post,
+		readingLabel: t("post.readingTime").replace(
+			"{n}",
+			String(readingMinutes(wordCountFromBody(post.body))),
+		),
+	}));
+
+const formatDate = (value: Date) =>
+	value.toLocaleDateString(dateLocale, {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+	});
 ---
 
 <BaseLayout
@@ -141,7 +159,7 @@ const blogEntries = (await getBlogPosts())
                 src={appendImageParams(image, "w=768")}
                 srcset={buildSrcSet(image, heroWidths)}
                 sizes="(max-width: 991px) 100vw, 1200px"
-                alt={title}
+                alt=""
                 width="1200"
                 height="675"
                 fetchpriority="high"
@@ -159,23 +177,30 @@ const blogEntries = (await getBlogPosts())
                   <span class="blog__meta-value">{category}</span>
                 </li>
                 <li>
-                  <span class="blog__meta-label">{t("post.header.language")}</span>
-                  <span class="blog__meta-value">{lang.toUpperCase()}</span>
-                </li>
-                <li>
                   <span class="blog__meta-label">{t("post.header.date")}</span>
                   <time
                     class="blog__meta-value"
                     datetime={date.toISOString()}
                   >
-                    {
-                      date.toLocaleDateString(lang, {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })
-                    }
+                    {formatDate(date)}
                   </time>
+                </li>
+                {
+                  updated && (
+                    <li>
+                      <span class="blog__meta-label">{t("post.header.updated")}</span>
+                      <time
+                        class="blog__meta-value"
+                        datetime={updated.toISOString()}
+                      >
+                        {formatDate(updated)}
+                      </time>
+                    </li>
+                  )
+                }
+                <li>
+                  <span class="blog__meta-label">{t("post.header.readingTime")}</span>
+                  <span class="blog__meta-value">{readingLabel}</span>
                 </li>
               </ul>
               <h1 class="blog__details_title">
@@ -189,13 +214,12 @@ const blogEntries = (await getBlogPosts())
             </div>
 
             <div class="blog__tag">
-              <p class="blog__tag-title">{t('post.tagsLabel')} /</p>
+              <p class="blog__tag-title">{t('post.tagsLabel')}</p>
               <ul class="blog__tag-list">
                 {
-                  tags.map((tag, i) => (
+                  tags.map((tag) => (
                     <li>
                       <a href={tagPath(tag, lang)}>{tagLabel(tag)}</a>
-                      {i < tags.length - 1 ? <span class="blog__tag-sep" aria-hidden="true"> / </span> : null}
                     </li>
                   ))
                 }
@@ -227,71 +251,78 @@ const blogEntries = (await getBlogPosts())
   </section>
   <!-- Blog Details section start -->
 
-  <!-- Recent Blog section start -->
-  <section class="blog__related pb-120">
-    <div class="container">
-      <div class="row">
-        <div class="col-xxl-12">
-          <div class="sec-title-wrapper pt-120">
-            <h2 class="sec-sub-title mb-20">{t('post.sectionLabel')}</h2>
-            <h3 class="sec-title">{t('post.related.title')}</h3>
+  {
+    blogEntries.length > 0 && (
+      <section class="blog__related pb-120">
+        <div class="container">
+          <div class="row">
+            <div class="col-xxl-12">
+              <div class="sec-title-wrapper pt-120">
+                <h2 class="sec-sub-title mb-20">{t("post.sectionLabel")}</h2>
+                <h3 class="sec-title">{t("post.related.title")}</h3>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col-xxl-12">
-          <div class="blog__related-grid">
-            {
-              blogEntries.map((post) => (
-                <article class="lb-blog__item blog-img-zoom">
-                  <div class="thumb">
-                    <a href={`/${lang}/blog/${post.blog_slug}`}>
-                      <picture>
-                        <source
-                          type="image/webp"
-                          srcset={buildSrcSet(post.data.image, cardWidths, "webp")}
-                          sizes="(max-width: 767px) 100vw, 25vw"
-                        />
-                        <source
-                          srcset={buildSrcSet(post.data.image, cardWidths)}
-                          sizes="(max-width: 767px) 100vw, 25vw"
-                        />
-                        <img
-                          src={appendImageParams(post.data.image, "w=480")}
-                          srcset={buildSrcSet(post.data.image, cardWidths)}
-                          sizes="(max-width: 767px) 100vw, 25vw"
-                          alt={post.data.title}
-                          width={800}
-                          height={450}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </picture>
+          <div class="row">
+            <div class="col-xxl-12">
+              <div class="blog__related-grid">
+                {blogEntries.map((post) => (
+                  <article class="lb-blog__item blog-img-zoom">
+                    <a
+                      class="lb-blog__card"
+                      href={`/${lang}/blog/${post.blog_slug}`}
+                    >
+                      <div class="thumb">
+                        <picture>
+                          <source
+                            type="image/webp"
+                            srcset={buildSrcSet(
+                              post.data.image,
+                              cardWidths,
+                              "webp",
+                            )}
+                            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw"
+                          />
+                          <source
+                            srcset={buildSrcSet(post.data.image, cardWidths)}
+                            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw"
+                          />
+                          <img
+                            src={appendImageParams(post.data.image, "w=480")}
+                            srcset={buildSrcSet(post.data.image, cardWidths)}
+                            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw"
+                            alt=""
+                            width={800}
+                            height={450}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </picture>
+                      </div>
+                      <ul class="lb-blog__meta">
+                        <li>
+                          <time datetime={post.data.date.toISOString()}>
+                            {post.data.date.toLocaleString(dateLocale, {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </time>
+                        </li>
+                        <li>{post.readingLabel}</li>
+                      </ul>
+                      <h3 class="lb-blog__title">{post.data.title}</h3>
                     </a>
-                  </div>
-                  <ul class="lb-blog__meta">
-                    <li>
-                      <span>
-                        {post.data.date.toLocaleString(lang === "it" ? "it-IT" : "en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </span>
-                    </li>
-                  </ul>
-                  <a href={`/${lang}/blog/${post.blog_slug}`}>
-                    <h3 class="lb-blog__title">{post.data.title}</h3>
-                  </a>
-                </article>
-              ))
-            }
+                  </article>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
+    )
+  }
   <!-- Recent Blog section end -->
 
   <Tickets />
@@ -299,8 +330,8 @@ const blogEntries = (await getBlogPosts())
 
 <style>
   .blog__details-info :global(ul.blog__meta) {
-    gap: 2rem;
-    padding-bottom: 2.5rem;
+    gap: 1.75rem 2rem;
+    padding-bottom: 2rem;
     flex-wrap: wrap;
   }
   .blog__details-info :global(ul.blog__meta li) {
@@ -344,10 +375,11 @@ const blogEntries = (await getBlogPosts())
     font-size: 1.125rem;
     line-height: 1.6;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 2rem;
     font-weight: 500;
-    opacity: 0.85;
+    opacity: 0.9;
     color: var(--black-9);
+    max-width: 48ch;
   }
   .blog__details-hero-img {
     display: block;
@@ -359,23 +391,23 @@ const blogEntries = (await getBlogPosts())
   }
   @media only screen and (max-width: 767px) {
     .blog__details-info :global(ul.blog__meta) {
-      gap: 1.25rem 1.75rem;
+      gap: 1.1rem 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+    .blog__details_subtitle {
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
     }
   }
-  .blog__tag-list a:hover,
   .blog__tag-list a:focus-visible,
-  .lb-blog__item a:hover .lb-blog__title {
-    color: var(--primary);
-  }
-  .blog__tag-list a:focus-visible,
-  .lb-blog__item a:focus-visible {
+  .lb-blog__card:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 3px;
   }
   .lb-post__services {
     margin-top: 3.5rem;
     padding: 32px 28px;
-    border-radius: 12px;
+    border-radius: 8px;
     border: 1px solid var(--black-6);
   }
   :global(.light) .lb-post__services {
@@ -411,7 +443,7 @@ const blogEntries = (await getBlogPosts())
     display: block;
     height: 100%;
     padding: 18px 18px;
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid var(--black-6);
     text-decoration: none;
     transition: border-color 0.2s ease;
