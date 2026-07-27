@@ -11,7 +11,7 @@ import type { ServiceKey } from "../constants/services";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { absoluteUrl } from "../utils/seo";
 import { buildBlogPosting, buildBreadcrumbs } from "../utils/jsonLd";
-import { readingMinutes } from "../utils/readingTime";
+import { readingMinutes, wordCountFromBody } from "../utils/readingTime";
 import type { UiLang } from "../utils/seo";
 
 interface Props {
@@ -45,6 +45,7 @@ const t = useTranslations(currentLang);
 const dateLocale = lang === "it" ? "it-IT" : "en-US";
 const minutes = readingMinutes(wordCount);
 const readingLabel = t("post.readingTime").replace("{n}", String(minutes));
+const category = t("insights.category");
 
 const hubPath = insightsHubPath(lang);
 const canonicalUrl = absoluteUrl(insightPath(insightKey, lang));
@@ -58,7 +59,7 @@ const articleLd = buildBlogPosting({
 	url: canonicalUrl,
 	inLanguage: lang,
 	keywords: relatedServiceKeys,
-	articleSection: t("insights.sectionLabel"),
+	articleSection: category,
 	wordCount,
 });
 
@@ -73,12 +74,19 @@ const relatedServices = (await getServices(lang))
 const otherInsights = (await getInsights(lang))
 	.filter((entry) => entry.data.key !== insightKey)
 	.slice(0, 3)
-	.map((entry) => ({
-		title: entry.data.title,
-		subtitle: entry.data.subtitle,
-		image: entry.data.image,
-		href: insightPath(entry.data.key, lang),
-	}));
+	.map((entry) => {
+		const words = wordCountFromBody(String(entry.body ?? ""));
+		return {
+			title: entry.data.title,
+			image: entry.data.image,
+			date: entry.data.date,
+			href: insightPath(entry.data.key, lang),
+			readingLabel: t("post.readingTime").replace(
+				"{n}",
+				String(readingMinutes(words)),
+			),
+		};
+	});
 
 const jsonLdExtra = [
 	articleLd,
@@ -90,6 +98,7 @@ const jsonLdExtra = [
 ];
 
 const heroWidths = [480, 768, 1200];
+const cardWidths = [320, 480, 640];
 const appendImageParams = (url: string, params: string) =>
 	`${url}${url.includes("?") ? "&" : "?"}${params}`;
 const buildSrcSet = (url: string, widths: number[], format?: "webp") =>
@@ -116,7 +125,7 @@ const formatDate = (value: Date) =>
   canonical={canonicalUrl}
   articlePublishedTime={date.toISOString()}
   articleModifiedTime={(updated ?? date).toISOString()}
-  articleSection={t("insights.sectionLabel")}
+  articleSection={category}
   keywords={relatedServiceKeys}
   jsonLdExtra={jsonLdExtra}
 >
@@ -165,21 +174,39 @@ const formatDate = (value: Date) =>
             <div class="blog__details-info">
               <ul class="blog__meta">
                 <li>
-                  <span class="blog__meta-label">{t("insights.sectionLabel")}</span>
-                  <span class="blog__meta-value">{t("nav.insights")}</span>
+                  <span class="blog__meta-label">{t("post.header.category")}</span>
+                  <span class="blog__meta-value">{category}</span>
                 </li>
                 <li>
                   <span class="blog__meta-label">{t("post.header.date")}</span>
-                  <time class="blog__meta-value" datetime={date.toISOString()}>
+                  <time
+                    class="blog__meta-value"
+                    datetime={date.toISOString()}
+                  >
                     {formatDate(date)}
                   </time>
                 </li>
+                {
+                  updated && (
+                    <li>
+                      <span class="blog__meta-label">{t("post.header.updated")}</span>
+                      <time
+                        class="blog__meta-value"
+                        datetime={updated.toISOString()}
+                      >
+                        {formatDate(updated)}
+                      </time>
+                    </li>
+                  )
+                }
                 <li>
                   <span class="blog__meta-label">{t("post.header.readingTime")}</span>
                   <span class="blog__meta-value">{readingLabel}</span>
                 </li>
               </ul>
-              <h1 class="blog__details_title">{title}</h1>
+              <h1 class="blog__details_title">
+                {title}
+              </h1>
               <p class="blog__details_subtitle">{subtitle}</p>
             </div>
 
@@ -215,31 +242,58 @@ const formatDate = (value: Date) =>
     otherInsights.length > 0 && (
       <section class="blog__related pb-120">
         <div class="container">
-          <div class="sec-title-wrapper pt-120">
-            <h2 class="sec-sub-title mb-20">{t("insights.related.eyebrow")}</h2>
-            <h3 class="sec-title">{t("insights.related.title")}</h3>
+          <div class="row">
+            <div class="col-xxl-12">
+              <div class="sec-title-wrapper pt-120">
+                <h2 class="sec-sub-title mb-20">{t("insights.related.eyebrow")}</h2>
+                <h3 class="sec-title">{t("insights.related.title")}</h3>
+              </div>
+            </div>
           </div>
-          <div class="blog__related-grid">
-            {otherInsights.map((item) => (
-              <article class="lb-blog__item blog-img-zoom">
-                <a class="lb-blog__card" href={item.href}>
-                  <div class="thumb">
-                    <img
-                      src={`${item.image}${item.image.includes("?") ? "&" : "?"}w=480`}
-                      alt=""
-                      width="480"
-                      height="270"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <div class="content">
-                    <h4 class="title">{item.title}</h4>
-                    <p>{item.subtitle}</p>
-                  </div>
-                </a>
-              </article>
-            ))}
+
+          <div class="row">
+            <div class="col-xxl-12">
+              <div class="blog__related-grid">
+                {otherInsights.map((item) => (
+                  <article class="lb-blog__item blog-img-zoom">
+                    <a class="lb-blog__card" href={item.href}>
+                      <div class="thumb">
+                        <picture>
+                          <source
+                            type="image/webp"
+                            srcset={buildSrcSet(item.image, cardWidths, "webp")}
+                            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw"
+                          />
+                          <source
+                            srcset={buildSrcSet(item.image, cardWidths)}
+                            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw"
+                          />
+                          <img
+                            src={appendImageParams(item.image, "w=480")}
+                            srcset={buildSrcSet(item.image, cardWidths)}
+                            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw"
+                            alt=""
+                            width={800}
+                            height={450}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </picture>
+                      </div>
+                      <ul class="lb-blog__meta">
+                        <li>
+                          <time datetime={item.date.toISOString()}>
+                            {formatDate(item.date)}
+                          </time>
+                        </li>
+                        <li>{item.readingLabel}</li>
+                      </ul>
+                      <h3 class="lb-blog__title">{item.title}</h3>
+                    </a>
+                  </article>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -250,58 +304,150 @@ const formatDate = (value: Date) =>
 </BaseLayout>
 
 <style>
+  .blog__details-info :global(ul.blog__meta) {
+    gap: 1.75rem 2rem;
+    padding-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .blog__details-info :global(ul.blog__meta li) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+  .blog__details-info :global(ul.blog__meta li::after) {
+    inset-inline-end: -1rem;
+  }
+  .blog__details-info :global(.blog__meta-label) {
+    display: block;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--black-9);
+  }
+  .blog__details-info :global(.blog__meta-value),
+  .blog__details-info :global(time.blog__meta-value) {
+    display: block;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--white);
+  }
+  :global(.light) .blog__details-info :global(.blog__meta-value),
+  :global(.light) .blog__details-info :global(time.blog__meta-value) {
+    color: var(--black-2);
+  }
+  .blog__details-info :global(.blog__details_title) {
+    padding-bottom: 0.75rem;
+  }
+  .blog__details_subtitle {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    opacity: 0.9;
+    color: var(--black-9);
+    max-width: 48ch;
+  }
+  .blog__details-hero-img {
+    display: block;
+    width: 100%;
+    max-height: 400px;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    object-fit: cover;
+  }
+  @media only screen and (max-width: 767px) {
+    .blog__details-info :global(ul.blog__meta) {
+      gap: 1.1rem 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+    .blog__details_subtitle {
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+  .lb-blog__card:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
   .lb-post__services {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--black-6);
+    margin-top: 3.5rem;
+    padding: 32px 28px;
+    border-radius: 8px;
+    border: 1px solid var(--black-6);
   }
-
   :global(.light) .lb-post__services {
-    border-top-color: var(--gray-13);
+    border-color: var(--gray-13);
   }
-
   .lb-post__services-title {
     font-family: var(--font-heading, "Space Grotesk", sans-serif);
     font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     margin-bottom: 0.75rem;
   }
-
   .lb-post__services-text {
     font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
-    color: var(--gray-4);
-    margin-bottom: 1.25rem;
-    max-width: 60ch;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--black-9);
+    margin-bottom: 1.5rem;
   }
-
-  :global(.light) .lb-post__services-text {
-    color: var(--gray);
-  }
-
   .lb-post__services-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: 1rem;
   }
-
+  .lb-post__services-list li {
+    list-style: none;
+  }
   .lb-post__services-list a {
-    display: grid;
-    gap: 0.25rem;
+    display: block;
+    height: 100%;
+    padding: 18px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--black-6);
     text-decoration: none;
-    color: inherit;
+    transition: border-color 0.2s ease;
   }
-
+  :global(.light) .lb-post__services-list a {
+    border-color: var(--gray-13);
+  }
+  .lb-post__services-list a:hover,
+  .lb-post__services-list a:focus-visible {
+    border-color: var(--primary);
+  }
+  .lb-post__services-list a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
   .lb-post__services-list strong {
-    color: var(--primary);
+    display: block;
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+    color: var(--white);
   }
-
+  :global(.light) .lb-post__services-list strong {
+    color: var(--black-2);
+  }
   .lb-post__services-list span {
-    color: var(--gray-4);
-    font-size: 0.95rem;
-  }
-
-  :global(.light) .lb-post__services-list span {
-    color: var(--gray);
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--black-9);
   }
 </style>
