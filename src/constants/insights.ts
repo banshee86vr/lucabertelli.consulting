@@ -8,11 +8,14 @@ export const INSIGHT_KEYS = [
 
 export type InsightKey = (typeof INSIGHT_KEYS)[number];
 
-/** Localized URL segment for the insights hub. */
+/** URL segment for the insights hub (same in every language). */
 export const INSIGHTS_SECTION_SLUG: Record<UiLang, string> = {
 	en: "insights",
-	it: "approfondimenti",
+	it: "insights",
 };
+
+/** Previous IT section slug; middleware 308s it to `insights`. */
+export const LEGACY_INSIGHTS_SECTION_SLUGS = ["approfondimenti"] as const;
 
 export function isInsightKey(value: string): value is InsightKey {
 	return (INSIGHT_KEYS as readonly string[]).includes(value);

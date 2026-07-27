@@ -53,15 +53,15 @@ export default defineConfig({
         }
 
         const insightMatch = path.match(
-          /^\/(en|it)\/(?:insights|approfondimenti)(?:\/([^/]+))?\/?$/,
+          /^\/(en|it)\/insights(?:\/([^/]+))?\/?$/,
         );
         if (insightMatch) {
           const [, , slug] = insightMatch;
           item.links = ["en", "it"].map((locale) => ({
             lang: locale,
             url: slug
-              ? `https://lucabertelli.consulting/${locale}/${INSIGHTS_SECTION_SLUG[locale]}/${slug}/`
-              : `https://lucabertelli.consulting/${locale}/${INSIGHTS_SECTION_SLUG[locale]}/`,
+              ? `https://lucabertelli.consulting/${locale}/insights/${slug}/`
+              : `https://lucabertelli.consulting/${locale}/insights/`,
           }));
         }
 
@@ -71,9 +71,9 @@ export default defineConfig({
           item.priority = 0.9;
         } else if (/^\/(en|it)\/(services|servizi)\/?$/.test(path)) {
           item.priority = 0.9;
-        } else if (/^\/(en|it)\/(insights|approfondimenti)\//.test(path)) {
+        } else if (/^\/(en|it)\/insights\//.test(path)) {
           item.priority = 0.8;
-        } else if (/^\/(en|it)\/(insights|approfondimenti)\/?$/.test(path)) {
+        } else if (/^\/(en|it)\/insights\/?$/.test(path)) {
           item.priority = 0.8;
         } else if (/^\/(en|it)\/blog\/tag\//.test(path)) {
           item.priority = 0.5;
