@@ -16,9 +16,9 @@ Use this after deploy to verify the implementation and track reachability over t
 | Feeds | `/en/rss.xml`, `/it/rss.xml` | |
 | Agent summary | `/llms.txt` | Generated at build from the content collections |
 
-Expect on the order of **70+ indexable HTML pages** after the commercial articles
-and their tag pages; all must appear in the sitemap. Confirm the exact count with
-`pnpm run verify:seo` after a fresh build.
+Current build inventory after the commercial articles: **72 indexable HTML
+pages**, all present in the sitemap. Re-confirm with `pnpm run verify:seo`
+after a fresh build whenever content or routes change.
 
 ## Post-deploy validation (manual)
 
