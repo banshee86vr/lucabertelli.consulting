@@ -102,6 +102,7 @@ export const ui = {
     'services.related.insights': 'Field guides',
     'services.related.services': 'Other services',
     'insights.sectionLabel': 'Insight',
+    'insights.category': 'Consulting',
     'insights.hub.h1': 'Field guides on DevOps consulting',
     'insights.hub.intro':
       'Practical notes on when to hire help, how Platform Engineering differs from DevOps, and what changes in regulated industries. Separate from the engineering blog.',
@@ -393,6 +394,7 @@ export const ui = {
     'services.related.insights': 'Approfondimenti',
     'services.related.services': 'Altri servizi',
     'insights.sectionLabel': 'Approfondimento',
+    'insights.category': 'Consulenza',
     'insights.hub.h1': 'Approfondimenti di consulenza dal campo',
     'insights.hub.intro':
       'Note pratiche su quando ha senso un consulente, in cosa differiscono Platform Engineering e DevOps, e cosa cambia nei settori regolati. Separate dal blog tecnico.',
