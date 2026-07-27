@@ -1,11 +1,12 @@
 ---
+key: "regulated-industries"
+lang: "en"
 title: "DevOps consulting for Fintech, Insurtech and industrial teams"
 subtitle: "What changes when releases, audits and change windows are business constraints rather than operational details"
-category: "DevOps"
-lang: "en"
+seoTitle: "DevOps consulting for Fintech, Insurtech and industrial teams | Luca Bertelli"
 date: "2026-07-27"
-tags: ["kubernetes", "cicd", "devsecops", "observability", "fintech", "insurtech"]
-image: "/blog/regulated-industries/regulated-industries.webp"
+image: "/insights/regulated-industries/regulated-industries.webp"
+relatedServices: ["devops", "secdevops", "kubernetes", "cloud", "platform-engineering"]
 ---
 
 ## Same Kubernetes, different constraints

@@ -15,7 +15,7 @@ keywords:
   - "supply chain sicurezza software"
   - "HashiCorp Vault"
   - "SecDevOps"
-relatedTags: ["devsecops", "cicd", "github-actions", "dependency-management", "renovate", "fintech", "insurtech"]
+relatedTags: ["devsecops", "cicd", "github-actions", "dependency-management", "renovate"]
 credentials: ["vault-professional", "vault-associate", "vault-chip", "gitlab-sa"]
 outcomes:
   - "Vulnerabilità intercettate in pipeline, quando correggerle costa poco"

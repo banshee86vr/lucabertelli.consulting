@@ -25,9 +25,6 @@ const DISPLAY_OVERRIDES: Record<string, string> = {
 	"dependency-management": "Dependency management",
 	observability: "Observability",
 	drift: "Drift",
-	"platform-engineering": "Platform Engineering",
-	fintech: "Fintech",
-	insurtech: "Insurtech",
 };
 
 export function tagLabel(tag: string): string {

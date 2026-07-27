@@ -1,11 +1,12 @@
 ---
+key: "kubernetes-consultant"
+lang: "it"
 title: "Quando serve un consulente Kubernetes"
 subtitle: "I segnali che il cluster non si sistema da solo, e cosa cambia tra un intervento mirato e un’altra sprint di YAML"
-category: "DevOps"
-lang: "it"
+seoTitle: "Quando serve un consulente Kubernetes | Luca Bertelli"
 date: "2026-07-27"
-tags: ["kubernetes", "multi-tenancy", "helm", "vcluster", "fleet-management", "cicd"]
-image: "/blog/kubernetes-consultant/kubernetes-consultant.webp"
+image: "/insights/kubernetes-consultant/kubernetes-consultant.webp"
+relatedServices: ["kubernetes", "training", "platform-engineering", "cloud"]
 ---
 
 ## La domanda che arriva troppo tardi

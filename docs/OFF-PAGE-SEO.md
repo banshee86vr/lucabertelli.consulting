@@ -16,7 +16,7 @@ After each production deploy that adds or renames URLs:
    - `/it/servizi/consulenza-devops/`
    - `/it/servizi/consulenza-kubernetes/`
    - `/it/servizi/consulenza-agenti-ai/`
-   - `/it/blog/kubernetes-consultant/`
+   - `/it/approfondimenti/kubernetes-consultant/`
 4. Repeat in [Bing Webmaster Tools](https://www.bing.com/webmasters) with the
    same sitemap.
 5. Confirm legacy service slugs **308** (example:
@@ -50,8 +50,9 @@ English About blurb:
 > internal platforms and AI agent governance.
 > Services: https://lucabertelli.consulting/en/services/
 
-When you publish a commercial article, share the article URL first and mention
-the matching service page in the post body.
+When you publish a field guide under `/approfondimenti/` (EN: `/insights/`),
+share that URL first and mention the matching service page in the post body.
+Do not file those guides under the engineering blog.
 
 ## 3. GitHub profile
 

@@ -1,6 +1,7 @@
-import { getBlogPosts, getServices } from "../content/config";
+import { getBlogPosts, getInsights, getServices } from "../content/config";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../constants/site";
+import { insightPath, insightsHubPath } from "../constants/insights";
 import { servicePath, servicesHubPath } from "../constants/services";
 import { tagLabel, tagPath, tagSlug } from "../utils/tags";
 import type { UiLang } from "../utils/seo";
@@ -22,6 +23,7 @@ function isoDate(date: Date): string {
 export async function GET() {
 	const services = await getServices();
 	const posts = await getBlogPosts();
+	const insights = await getInsights();
 	const certifications = await getCollection("certifications");
 
 	const lines: string[] = [];
@@ -57,6 +59,9 @@ export async function GET() {
 		lines.push(`- Blog (${lang}): ${url(`/${lang}/blog`)}`);
 	}
 	for (const lang of LANGS) {
+		lines.push(`- Insights (${lang}): ${url(insightsHubPath(lang))}`);
+	}
+	for (const lang of LANGS) {
 		lines.push(`- RSS (${lang}): ${url(`/${lang}/rss.xml`)}`);
 	}
 	lines.push("");
@@ -72,7 +77,22 @@ export async function GET() {
 	}
 	lines.push("");
 
-	lines.push("## Articles");
+	lines.push("## Field guides (insights)");
+	const sortedInsights = [...insights].sort(
+		(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+	);
+	for (const lang of LANGS) {
+		lines.push("");
+		lines.push(`### ${lang === "it" ? "Italian" : "English"}`);
+		for (const entry of sortedInsights.filter((p) => p.data.lang === lang)) {
+			lines.push(
+				`- [${entry.data.title}](${url(insightPath(entry.data.key, lang))}) - ${isoDate(entry.data.date)} - ${entry.data.subtitle}`,
+			);
+		}
+	}
+	lines.push("");
+
+	lines.push("## Blog articles");
 	const sortedPosts = [...posts].sort(
 		(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 	);

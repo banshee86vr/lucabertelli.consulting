@@ -1,11 +1,12 @@
 ---
+key: "regulated-industries"
+lang: "it"
 title: "Consulenza DevOps in Fintech, Insurtech e industriale"
 subtitle: "Cosa cambia quando release, audit e finestre di cambio non sono un dettaglio operativo ma un vincolo di business"
-category: "DevOps"
-lang: "it"
+seoTitle: "Consulenza DevOps in Fintech, Insurtech e industriale | Luca Bertelli"
 date: "2026-07-27"
-tags: ["kubernetes", "cicd", "devsecops", "observability", "fintech", "insurtech"]
-image: "/blog/regulated-industries/regulated-industries.webp"
+image: "/insights/regulated-industries/regulated-industries.webp"
+relatedServices: ["devops", "secdevops", "kubernetes", "cloud", "platform-engineering"]
 ---
 
 ## Stesso Kubernetes, vincoli diversi

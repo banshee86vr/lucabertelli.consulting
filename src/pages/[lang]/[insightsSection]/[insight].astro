@@ -1,0 +1,62 @@
+---
+import { render } from "astro:content";
+import InsightLayout from "../../../layouts/Insight.astro";
+import { getInsights } from "../../../content/config";
+import type { InsightEntry } from "../../../content/config";
+import {
+  INSIGHTS_SECTION_SLUG,
+  type InsightKey,
+} from "../../../constants/insights";
+import type { UiLang } from "../../../utils/seo";
+import { wordCountFromBody } from "../../../utils/readingTime";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const insights = await getInsights();
+  return insights.map((entry) => {
+    const lang = entry.data.lang as UiLang;
+    return {
+      params: {
+        lang,
+        insightsSection: INSIGHTS_SECTION_SLUG[lang],
+        insight: entry.data.key,
+      },
+      props: entry,
+    };
+  });
+}
+
+const entry = Astro.props as InsightEntry;
+const {
+  key,
+  lang,
+  title,
+  subtitle,
+  seoTitle,
+  date,
+  updated,
+  image,
+  relatedServices,
+} = entry.data;
+
+const wordCount = wordCountFromBody(String(entry.body ?? ""));
+const { Content } = await render(
+  entry as unknown as import("astro:content").CollectionEntry<"insights">,
+);
+---
+
+<InsightLayout
+  title={title}
+  subtitle={subtitle}
+  seoTitle={seoTitle}
+  date={date}
+  updated={updated}
+  image={image}
+  lang={lang}
+  insightKey={key as InsightKey}
+  relatedServices={relatedServices}
+  wordCount={wordCount}
+>
+  <Content />
+</InsightLayout>

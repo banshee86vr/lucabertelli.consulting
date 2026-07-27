@@ -4,8 +4,9 @@ import BaseLayout from "../../../layouts/Common.astro";
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import ServiceIcon from "../../../components/ServiceIcon.astro";
 
-import { getBlogPosts, getServices } from "../../../content/config";
+import { getBlogPosts, getInsights, getServices } from "../../../content/config";
 import type { ServiceEntry } from "../../../content/config";
+import { insightPath } from "../../../constants/insights";
 import {
   SERVICES_SECTION_SLUG,
   SERVICE_ICONS,
@@ -74,6 +75,15 @@ const allCertifications = await getCollection("certifications");
 const relevantCertifications = credentials
   .map((slug) => allCertifications.find((cert) => entryId(cert) === slug))
   .filter((cert): cert is (typeof allCertifications)[number] => Boolean(cert));
+
+const relatedInsights = (await getInsights(lang))
+  .filter((entry) => entry.data.relatedServices.includes(key))
+  .slice(0, 3)
+  .map((entry) => ({
+    title: entry.data.title,
+    subtitle: entry.data.subtitle,
+    href: insightPath(entry.data.key, lang),
+  }));
 
 const relatedPosts = (await getBlogPosts())
   .filter((post) => post.data.lang === lang)
@@ -251,6 +261,26 @@ const dateLocale = lang === "it" ? "it-IT" : "en-US";
           </section>
         </aside>
       </div>
+
+      {
+        relatedInsights.length > 0 && (
+          <section class="lb-service__section lb-service__related">
+            <h2 class="lb-service__section-title">
+              {t("services.related.insights")}
+            </h2>
+            <ul class="lb-service__related-list">
+              {relatedInsights.map((item) => (
+                <li>
+                  <a href={item.href}>
+                    <strong>{item.title}</strong>
+                    <span>{item.subtitle}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
 
       {
         relatedPosts.length > 0 && (

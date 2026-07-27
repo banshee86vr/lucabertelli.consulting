@@ -9,16 +9,16 @@ Use this after deploy to verify the implementation and track reachability over t
 | Home | `/en/`, `/it/` | H1 carries the primary query terms |
 | Services hub | `/en/services/`, `/it/servizi/` | Lists all seven services |
 | Service pages | 7 per language | Localized slugs with commercial intent in the path, e.g. `/it/servizi/consulenza-agenti-ai/` vs `/en/services/ai-agent-governance/` |
-| Blog index | `/en/blog/`, `/it/blog/` | Links every tag page |
-| Blog articles | 7 per language | Includes commercial-intent posts (Kubernetes consultant, PE vs DevOps, regulated industries) |
-| Blog tag pages | per distinct tag × language | `/‹lang›/blog/tag/‹tag›/` — new tags such as `platform-engineering`, `fintech`, `insurtech` |
+| Blog index | `/en/blog/`, `/it/blog/` | Engineering notes only |
+| Blog articles | 4 per language | Tooling / OSS write-ups |
+| Blog tag pages | per distinct tag × language | `/‹lang›/blog/tag/‹tag›/` |
+| Insights hub | `/en/insights/`, `/it/approfondimenti/` | Commercial field guides (not the blog) |
+| Insight pages | 3 per language | Kubernetes consultant, PE vs DevOps, regulated industries |
 | Legal | privacy, cookies | |
-| Feeds | `/en/rss.xml`, `/it/rss.xml` | |
+| Feeds | `/en/rss.xml`, `/it/rss.xml` | Blog only |
 | Agent summary | `/llms.txt` | Generated at build from the content collections |
 
-Current build inventory after the commercial articles: **72 indexable HTML
-pages**, all present in the sitemap. Re-confirm with `pnpm run verify:seo`
-after a fresh build whenever content or routes change.
+Re-confirm the page count with `pnpm run verify:seo` after a fresh build.
 
 ## Post-deploy validation (manual)
 
@@ -43,7 +43,7 @@ after a fresh build whenever content or routes change.
 
 | Metric | Where | Goal |
 |--------|--------|------|
-| Indexed core URLs | URL Inspection / Coverage | All service pages, both blog indexes and the commercial articles indexed |
+| Indexed core URLs | URL Inspection / Coverage | All service pages, insights hub/pages and both blog indexes indexed |
 | Position for "consulente devops", "consulenza kubernetes", "consulenza platform engineering", "governance agenti AI" | Search Console queries | Entering the first pages, then improving |
 | Impressions on service pages | Search Console, filtered by page | Upward trend; they start from zero |
 | Click-through rate on branded + service queries | Search Console | Slow upward trend |

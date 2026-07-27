@@ -1,4 +1,8 @@
 import {
+	INSIGHTS_SECTION_SLUG,
+	isInsightKey,
+} from "../constants/insights";
+import {
 	SERVICES_SECTION_SLUG,
 	SERVICE_SLUGS,
 	serviceKeyFromSlug,
@@ -25,8 +29,8 @@ export function splitLocalizedPath(pathname: string): {
 /**
  * Translate the segments that follow the language prefix into `target`.
  *
- * Only the services section uses localized slugs; every other route keeps the
- * same suffix across languages, so unknown segments pass through untouched.
+ * Services and insights use localized section slugs; every other route keeps
+ * the same suffix across languages.
  */
 function translateSegments(
 	segments: string[],
@@ -34,15 +38,28 @@ function translateSegments(
 	target: UiLang,
 ): string[] {
 	const [section, ...rest] = segments;
-	if (section !== SERVICES_SECTION_SLUG[source]) return segments;
 
-	const translated = [SERVICES_SECTION_SLUG[target]];
-	const [serviceSlug, ...tail] = rest;
-	if (serviceSlug) {
-		const key = serviceKeyFromSlug(serviceSlug, source);
-		translated.push(key ? SERVICE_SLUGS[key][target] : serviceSlug);
+	if (section === SERVICES_SECTION_SLUG[source]) {
+		const translated = [SERVICES_SECTION_SLUG[target]];
+		const [serviceSlug, ...tail] = rest;
+		if (serviceSlug) {
+			const key = serviceKeyFromSlug(serviceSlug, source);
+			translated.push(key ? SERVICE_SLUGS[key][target] : serviceSlug);
+		}
+		return [...translated, ...tail];
 	}
-	return [...translated, ...tail];
+
+	if (section === INSIGHTS_SECTION_SLUG[source]) {
+		const translated = [INSIGHTS_SECTION_SLUG[target]];
+		const [insightSlug, ...tail] = rest;
+		if (insightSlug) {
+			// Insight article slugs are shared across languages.
+			translated.push(isInsightKey(insightSlug) ? insightSlug : insightSlug);
+		}
+		return [...translated, ...tail];
+	}
+
+	return segments;
 }
 
 /**
