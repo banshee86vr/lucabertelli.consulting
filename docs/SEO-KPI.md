@@ -18,7 +18,8 @@ Use this after deploy to verify the implementation and track reachability over t
 | Feeds | `/en/rss.xml`, `/it/rss.xml` | Blog only |
 | Agent summary | `/llms.txt` | Generated at build from the content collections |
 
-Re-confirm the page count with `pnpm run verify:seo` after a fresh build.
+Current inventory: **68 indexable HTML pages**. Re-confirm with
+`pnpm run verify:seo` after a fresh build whenever content or routes change.
 
 ## Post-deploy validation (manual)
 
