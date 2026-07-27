@@ -1,11 +1,12 @@
 ---
+key: "kubernetes-consultant"
+lang: "en"
 title: "When you need a Kubernetes consultant"
 subtitle: "The signals that another YAML sprint will not fix the cluster, and what a focused engagement actually changes"
-category: "DevOps"
-lang: "en"
+seoTitle: "When you need a Kubernetes consultant | Luca Bertelli"
 date: "2026-07-27"
-tags: ["kubernetes", "multi-tenancy", "helm", "vcluster", "fleet-management", "cicd"]
-image: "/blog/kubernetes-consultant/kubernetes-consultant.webp"
+image: "/insights/kubernetes-consultant/kubernetes-consultant.webp"
+relatedServices: ["kubernetes", "training", "platform-engineering", "cloud"]
 ---
 
 ## The question that usually arrives too late

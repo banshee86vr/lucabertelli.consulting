@@ -1,6 +1,8 @@
 import { defineCollection } from "astro:content";
 import { getCollection } from "astro:content";
 import { z } from "astro/zod";
+import { INSIGHT_KEYS } from "../constants/insights";
+import type { InsightKey } from "../constants/insights";
 import { SERVICE_KEYS } from "../constants/services";
 import type { ServiceKey } from "../constants/services";
 import type { UiLang } from "../utils/seo";
@@ -58,10 +60,28 @@ const services = defineCollection({
   }),
 });
 
+const insights = defineCollection({
+  type: "content",
+  schema: z.object({
+    /** Stable identifier shared by every translation of the insight. */
+    key: z.enum(INSIGHT_KEYS),
+    lang: z.enum(["en", "it"]),
+    title: z.string(),
+    subtitle: z.string(),
+    seoTitle: z.string(),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    image: z.string(),
+    /** Service keys this guide should surface on (and link to). */
+    relatedServices: z.array(z.enum(SERVICE_KEYS)).default([]),
+  }),
+});
+
 export const collections = {
   certifications: certifications,
   blog: blog,
   services: services,
+  insights: insights,
 };
 
 export interface BlogPost {
@@ -116,4 +136,31 @@ export async function getServices(lang?: UiLang): Promise<ServiceEntry[]> {
   return entries
     .filter((entry) => (lang ? entry.data.lang === lang : true))
     .sort((a, b) => a.data.order - b.data.order);
+}
+
+export interface InsightData {
+  key: InsightKey;
+  lang: UiLang;
+  title: string;
+  subtitle: string;
+  seoTitle: string;
+  date: Date;
+  updated?: Date;
+  image: string;
+  relatedServices: ServiceKey[];
+}
+
+export interface InsightEntry {
+  data: InsightData;
+  body?: string;
+  // biome-ignore lint/suspicious/noExplicitAny: mirrors the BlogPost helper
+  [key: string]: any;
+}
+
+/** Commercial field guides, newest first. */
+export async function getInsights(lang?: UiLang): Promise<InsightEntry[]> {
+  const entries = (await getCollection("insights")) as unknown as InsightEntry[];
+  return entries
+    .filter((entry) => (lang ? entry.data.lang === lang : true))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }

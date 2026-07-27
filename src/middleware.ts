@@ -1,5 +1,11 @@
 import { defineMiddleware } from "astro:middleware";
 import {
+	INSIGHTS_SECTION_SLUG,
+	LEGACY_INSIGHT_BLOG_SLUGS,
+	insightPath,
+	isInsightKey,
+} from "./constants/insights";
+import {
 	LEGACY_SERVICE_SLUGS,
 	SERVICES_SECTION_SLUG,
 	servicePath,
@@ -34,6 +40,36 @@ export const onRequest = defineMiddleware((context, next) => {
 					return Response.redirect(new URL(target, context.url), 308);
 				}
 			}
+		}
+	}
+
+	// Commercial guides used to live under /blog/; send them to /insights|approfondimenti/
+	const blogInsightMatch = path.match(/^\/(en|it)\/blog\/([^/]+)\/?$/);
+	if (blogInsightMatch) {
+		const [, langRaw, slug] = blogInsightMatch;
+		if (
+			isUiLang(langRaw) &&
+			isInsightKey(slug) &&
+			(LEGACY_INSIGHT_BLOG_SLUGS as readonly string[]).includes(slug)
+		) {
+			return Response.redirect(
+				new URL(`${insightPath(slug, langRaw)}/`, context.url),
+				308,
+			);
+		}
+	}
+
+	// Wrong-language section slug for insights (e.g. /it/insights/…)
+	const insightSectionMatch = path.match(
+		/^\/(en|it)\/(insights|approfondimenti)(?:\/([^/]+))?\/?$/,
+	);
+	if (insightSectionMatch) {
+		const [, langRaw, section, slug] = insightSectionMatch;
+		if (isUiLang(langRaw) && section !== INSIGHTS_SECTION_SLUG[langRaw]) {
+			const hub = `/${langRaw}/${INSIGHTS_SECTION_SLUG[langRaw]}/`;
+			const dest =
+				slug && isInsightKey(slug) ? `${insightPath(slug, langRaw)}/` : hub;
+			return Response.redirect(new URL(dest, context.url), 308);
 		}
 	}
 

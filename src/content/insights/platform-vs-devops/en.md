@@ -1,11 +1,12 @@
 ---
+key: "platform-vs-devops"
+lang: "en"
 title: "Platform Engineering vs DevOps: the difference that matters in practice"
 subtitle: "Same delivery goals, different operating models. How to choose without buying a developer portal too early"
-category: "DevOps"
-lang: "en"
+seoTitle: "Platform Engineering vs DevOps in practice | Luca Bertelli"
 date: "2026-07-27"
-tags: ["kubernetes", "multi-tenancy", "cicd", "vcluster", "platform-engineering"]
-image: "/blog/platform-vs-devops/platform-vs-devops.webp"
+image: "/insights/platform-vs-devops/platform-vs-devops.webp"
+relatedServices: ["devops", "platform-engineering", "kubernetes", "training"]
 ---
 
 ## This is not a labelling war

@@ -1,0 +1,199 @@
+---
+import BaseLayout from "../../../layouts/Common.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+
+import { getInsights } from "../../../content/config";
+import {
+  INSIGHTS_SECTION_SLUG,
+  insightPath,
+  insightsHubPath,
+} from "../../../constants/insights";
+import { useTranslations } from "../../../i18n/utils";
+import { absoluteUrl } from "../../../utils/seo";
+import type { UiLang } from "../../../utils/seo";
+import { buildBreadcrumbs, buildCollectionPage } from "../../../utils/jsonLd";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return (["en", "it"] as UiLang[]).map((lang) => ({
+    params: { lang, insightsSection: INSIGHTS_SECTION_SLUG[lang] },
+  }));
+}
+
+const lang = Astro.params.lang as UiLang;
+const t = useTranslations(lang);
+const hubPath = insightsHubPath(lang);
+const hubUrl = absoluteUrl(hubPath);
+
+const insights = (await getInsights(lang)).map((entry) => ({
+  title: entry.data.title,
+  subtitle: entry.data.subtitle,
+  image: entry.data.image,
+  date: entry.data.date,
+  href: insightPath(entry.data.key, lang),
+}));
+
+const dateLocale = lang === "it" ? "it-IT" : "en-US";
+const formatDate = (value: Date) =>
+  value.toLocaleDateString(dateLocale, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
+const jsonLdExtra = [
+  buildCollectionPage({
+    name: t("insights.hub.h1"),
+    description: t("insights.hub.seoDescription"),
+    url: hubUrl,
+    lang,
+    items: insights.map((item) => ({
+      name: item.title,
+      url: absoluteUrl(item.href),
+    })),
+  }),
+  ...buildBreadcrumbs([
+    { name: t("nav.home"), url: absoluteUrl(`/${lang}`) },
+    { name: t("nav.insights"), url: hubUrl },
+  ]),
+];
+---
+
+<BaseLayout
+  title={t("insights.hub.seoTitle")}
+  description={t("insights.hub.seoDescription")}
+  jsonLdExtra={jsonLdExtra}
+>
+  <section class="lb-insights-hub pt-120 pb-120">
+    <div class="container">
+      <Breadcrumbs
+        items={[
+          { name: t("nav.home"), href: `/${lang}` },
+          { name: t("nav.insights") },
+        ]}
+      />
+
+      <h1 class="lb-insights-hub__title">{t("insights.hub.h1")}</h1>
+      <p class="lb-insights-hub__intro">{t("insights.hub.intro")}</p>
+
+      <ul class="lb-insights-hub__list">
+        {
+          insights.map((item) => (
+            <li>
+              <article class="lb-insights-hub__item">
+                <a class="lb-insights-hub__card" href={item.href}>
+                  <img
+                    src={`${item.image}${item.image.includes("?") ? "&" : "?"}w=640`}
+                    alt=""
+                    width="640"
+                    height="360"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="lb-insights-hub__body">
+                    <time datetime={item.date.toISOString()}>
+                      {formatDate(item.date)}
+                    </time>
+                    <h2>{item.title}</h2>
+                    <p>{item.subtitle}</p>
+                  </div>
+                </a>
+              </article>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lb-insights-hub__title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+  }
+
+  .lb-insights-hub__intro {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    max-width: 62ch;
+    color: var(--gray-4);
+    margin-bottom: 3rem;
+  }
+
+  :global(.light) .lb-insights-hub__intro {
+    color: var(--gray);
+  }
+
+  .lb-insights-hub__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2rem;
+  }
+
+  .lb-insights-hub__card {
+    display: grid;
+    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+    gap: 1.75rem;
+    text-decoration: none;
+    color: inherit;
+    align-items: center;
+  }
+
+  .lb-insights-hub__card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .lb-insights-hub__body time {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--gray-4);
+    margin-bottom: 0.5rem;
+  }
+
+  .lb-insights-hub__body h2 {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+    color: var(--white);
+  }
+
+  .lb-insights-hub__card:hover h2,
+  .lb-insights-hub__card:focus-visible h2 {
+    color: var(--primary);
+  }
+
+  :global(.light) .lb-insights-hub__body h2 {
+    color: var(--black-2);
+  }
+
+  .lb-insights-hub__body p {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    color: var(--gray-4);
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  :global(.light) .lb-insights-hub__body p,
+  :global(.light) .lb-insights-hub__body time {
+    color: var(--gray);
+  }
+
+  @media (max-width: 767px) {
+    .lb-insights-hub__card {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+</style>

@@ -69,6 +69,18 @@ Open Graph and the base JSON-LD graph. Then add, in the page itself:
   `buildCollectionPage`, `buildBlogPosting` and `buildFaqPage` already exist in
   `src/utils/jsonLd.ts`; extend that file rather than inlining JSON-LD.
 
+## Blog vs insights
+
+- The **blog** is for engineering / OSS write-ups. Commercial buying guides live
+  in the `insights` collection (`/en/insights/`, `/it/approfondimenti/`), not
+  under `/blog/`.
+- Adding an insight: key in `INSIGHT_KEYS`, IT+EN markdown under
+  `src/content/insights/<key>/`, cover under `public/insights/`, and
+  `relatedServices` so service pages can surface it. Moving a slug out of the
+  blog requires a 308 in `src/middleware.ts` (see `LEGACY_INSIGHT_BLOG_SLUGS`).
+- Teach `src/i18n/routes.ts` and the sitemap `serialize` about the localized
+  insights section the same way as services.
+
 ## Blog content
 
 - A substantive edit to a published article should set or bump the `updated`

@@ -15,7 +15,7 @@ keywords:
   - "HashiCorp Vault"
   - "DevSecOps"
   - "SecDevOps"
-relatedTags: ["devsecops", "cicd", "github-actions", "dependency-management", "renovate", "fintech", "insurtech"]
+relatedTags: ["devsecops", "cicd", "github-actions", "dependency-management", "renovate"]
 credentials: ["vault-professional", "vault-associate", "vault-chip", "gitlab-sa"]
 outcomes:
   - "Vulnerabilities caught in the pipeline, while fixing them is still cheap"

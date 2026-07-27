@@ -1,0 +1,307 @@
+---
+import BaseLayout from "./Common.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Tickets from "../components/Tickets.astro";
+
+import { getInsights, getServices } from "../content/config";
+import type { InsightKey } from "../constants/insights";
+import { insightPath, insightsHubPath } from "../constants/insights";
+import { servicePath } from "../constants/services";
+import type { ServiceKey } from "../constants/services";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { absoluteUrl } from "../utils/seo";
+import { buildBlogPosting, buildBreadcrumbs } from "../utils/jsonLd";
+import { readingMinutes } from "../utils/readingTime";
+import type { UiLang } from "../utils/seo";
+
+interface Props {
+	title: string;
+	subtitle: string;
+	seoTitle: string;
+	date: Date;
+	updated?: Date;
+	image: string;
+	lang: UiLang;
+	insightKey: InsightKey;
+	relatedServices: ServiceKey[];
+	wordCount?: number;
+}
+
+const {
+	title,
+	subtitle,
+	seoTitle,
+	date,
+	updated,
+	image,
+	lang,
+	insightKey,
+	relatedServices: relatedServiceKeys,
+	wordCount = 0,
+} = Astro.props;
+
+const currentLang = getLangFromUrl(Astro.url) as UiLang;
+const t = useTranslations(currentLang);
+const dateLocale = lang === "it" ? "it-IT" : "en-US";
+const minutes = readingMinutes(wordCount);
+const readingLabel = t("post.readingTime").replace("{n}", String(minutes));
+
+const hubPath = insightsHubPath(lang);
+const canonicalUrl = absoluteUrl(insightPath(insightKey, lang));
+
+const articleLd = buildBlogPosting({
+	headline: title,
+	description: subtitle,
+	datePublished: date,
+	dateModified: updated,
+	image,
+	url: canonicalUrl,
+	inLanguage: lang,
+	keywords: relatedServiceKeys,
+	articleSection: t("insights.sectionLabel"),
+	wordCount,
+});
+
+const relatedServices = (await getServices(lang))
+	.filter((service) => relatedServiceKeys.includes(service.data.key))
+	.map((service) => ({
+		title: service.data.title,
+		tagline: service.data.tagline,
+		href: servicePath(service.data.key, lang),
+	}));
+
+const otherInsights = (await getInsights(lang))
+	.filter((entry) => entry.data.key !== insightKey)
+	.slice(0, 3)
+	.map((entry) => ({
+		title: entry.data.title,
+		subtitle: entry.data.subtitle,
+		image: entry.data.image,
+		href: insightPath(entry.data.key, lang),
+	}));
+
+const jsonLdExtra = [
+	articleLd,
+	...buildBreadcrumbs([
+		{ name: t("nav.home"), url: absoluteUrl(`/${lang}`) },
+		{ name: t("nav.insights"), url: absoluteUrl(hubPath) },
+		{ name: title, url: canonicalUrl },
+	]),
+];
+
+const heroWidths = [480, 768, 1200];
+const appendImageParams = (url: string, params: string) =>
+	`${url}${url.includes("?") ? "&" : "?"}${params}`;
+const buildSrcSet = (url: string, widths: number[], format?: "webp") =>
+	widths
+		.map((width) => {
+			const query = format ? `format=${format}&w=${width}` : `w=${width}`;
+			return `${appendImageParams(url, query)} ${width}w`;
+		})
+		.join(", ");
+
+const formatDate = (value: Date) =>
+	value.toLocaleDateString(dateLocale, {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+	});
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={subtitle}
+  ogImage={image}
+  ogType="article"
+  canonical={canonicalUrl}
+  articlePublishedTime={date.toISOString()}
+  articleModifiedTime={(updated ?? date).toISOString()}
+  articleSection={t("insights.sectionLabel")}
+  keywords={relatedServiceKeys}
+  jsonLdExtra={jsonLdExtra}
+>
+  <section class="blog__details__area pt-120 pb-30">
+    <div class="container">
+      <div class="row">
+        <div class="col-xxl-12">
+          <Breadcrumbs
+            items={[
+              { name: t("nav.home"), href: `/${lang}` },
+              { name: t("nav.insights"), href: hubPath },
+              { name: title },
+            ]}
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xxl-12">
+          <div class="blog__details-top cf_parallax_image">
+            <picture>
+              <source
+                type="image/webp"
+                srcset={buildSrcSet(image, heroWidths, "webp")}
+                sizes="(max-width: 991px) 100vw, 1200px"
+              />
+              <source
+                srcset={buildSrcSet(image, heroWidths)}
+                sizes="(max-width: 991px) 100vw, 1200px"
+              />
+              <img
+                class="blog__details-hero-img"
+                src={appendImageParams(image, "w=768")}
+                srcset={buildSrcSet(image, heroWidths)}
+                sizes="(max-width: 991px) 100vw, 1200px"
+                alt=""
+                width="1200"
+                height="675"
+                fetchpriority="high"
+                decoding="async"
+                data-speed="0.9"
+              />
+            </picture>
+          </div>
+
+          <div class="blog__details-wrap">
+            <div class="blog__details-info">
+              <ul class="blog__meta">
+                <li>
+                  <span class="blog__meta-label">{t("insights.sectionLabel")}</span>
+                  <span class="blog__meta-value">{t("nav.insights")}</span>
+                </li>
+                <li>
+                  <span class="blog__meta-label">{t("post.header.date")}</span>
+                  <time class="blog__meta-value" datetime={date.toISOString()}>
+                    {formatDate(date)}
+                  </time>
+                </li>
+                <li>
+                  <span class="blog__meta-label">{t("post.header.readingTime")}</span>
+                  <span class="blog__meta-value">{readingLabel}</span>
+                </li>
+              </ul>
+              <h1 class="blog__details_title">{title}</h1>
+              <p class="blog__details_subtitle">{subtitle}</p>
+            </div>
+
+            <div class="blog__details">
+              <slot />
+            </div>
+
+            {
+              relatedServices.length > 0 && (
+                <aside class="lb-post__services">
+                  <h2 class="lb-post__services-title">{t("insights.services.title")}</h2>
+                  <p class="lb-post__services-text">{t("insights.services.text")}</p>
+                  <ul class="lb-post__services-list">
+                    {relatedServices.map((service) => (
+                      <li>
+                        <a href={service.href}>
+                          <strong>{service.title}</strong>
+                          <span>{service.tagline}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {
+    otherInsights.length > 0 && (
+      <section class="blog__related pb-120">
+        <div class="container">
+          <div class="sec-title-wrapper pt-120">
+            <h2 class="sec-sub-title mb-20">{t("insights.related.eyebrow")}</h2>
+            <h3 class="sec-title">{t("insights.related.title")}</h3>
+          </div>
+          <div class="blog__related-grid">
+            {otherInsights.map((item) => (
+              <article class="lb-blog__item blog-img-zoom">
+                <a class="lb-blog__card" href={item.href}>
+                  <div class="thumb">
+                    <img
+                      src={`${item.image}${item.image.includes("?") ? "&" : "?"}w=480`}
+                      alt=""
+                      width="480"
+                      height="270"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div class="content">
+                    <h4 class="title">{item.title}</h4>
+                    <p>{item.subtitle}</p>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <Tickets />
+</BaseLayout>
+
+<style>
+  .lb-post__services {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--black-6);
+  }
+
+  :global(.light) .lb-post__services {
+    border-top-color: var(--gray-13);
+  }
+
+  .lb-post__services-title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .lb-post__services-text {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    color: var(--gray-4);
+    margin-bottom: 1.25rem;
+    max-width: 60ch;
+  }
+
+  :global(.light) .lb-post__services-text {
+    color: var(--gray);
+  }
+
+  .lb-post__services-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .lb-post__services-list a {
+    display: grid;
+    gap: 0.25rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .lb-post__services-list strong {
+    color: var(--primary);
+  }
+
+  .lb-post__services-list span {
+    color: var(--gray-4);
+    font-size: 0.95rem;
+  }
+
+  :global(.light) .lb-post__services-list span {
+    color: var(--gray);
+  }
+</style>

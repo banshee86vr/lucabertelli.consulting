@@ -4,7 +4,11 @@ import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import ServiceIcon from "../../../components/ServiceIcon.astro";
 import Tickets from "../../../components/Tickets.astro";
 
-import { getBlogPosts, getServices } from "../../../content/config";
+import { getInsights, getServices } from "../../../content/config";
+import {
+  INSIGHT_KEYS,
+  insightPath,
+} from "../../../constants/insights";
 import {
   SERVICES_SECTION_SLUG,
   SERVICE_ICONS,
@@ -128,32 +132,15 @@ const intents = SERVICE_KEYS.map((key) => {
   };
 });
 
-/** Commercial-intent articles that should feed the hub with internal links. */
-const HUB_ARTICLE_SLUGS = [
-  "kubernetes-consultant",
-  "platform-vs-devops",
-  "regulated-industries",
-] as const;
-
-const hubArticles = (await getBlogPosts())
-  .filter(
-    (post) =>
-      post.data.lang === lang &&
-      (HUB_ARTICLE_SLUGS as readonly string[]).includes(post.blog_slug),
-  )
+const hubArticles = (await getInsights(lang))
   .sort(
     (a, b) =>
-      HUB_ARTICLE_SLUGS.indexOf(
-        a.blog_slug as (typeof HUB_ARTICLE_SLUGS)[number],
-      ) -
-      HUB_ARTICLE_SLUGS.indexOf(
-        b.blog_slug as (typeof HUB_ARTICLE_SLUGS)[number],
-      ),
+      INSIGHT_KEYS.indexOf(a.data.key) - INSIGHT_KEYS.indexOf(b.data.key),
   )
-  .map((post) => ({
-    title: post.data.title,
-    subtitle: post.data.subtitle,
-    href: `/${lang}/blog/${post.blog_slug}`,
+  .map((entry) => ({
+    title: entry.data.title,
+    subtitle: entry.data.subtitle,
+    href: insightPath(entry.data.key, lang),
   }));
 ---
 

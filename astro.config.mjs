@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
 import sitemap from "@astrojs/sitemap";
 import * as dotenv from "dotenv";
+import { INSIGHTS_SECTION_SLUG } from "./src/constants/insights";
 import {
   SERVICES_SECTION_SLUG,
   SERVICE_SLUGS,
@@ -51,12 +52,29 @@ export default defineConfig({
           }));
         }
 
+        const insightMatch = path.match(
+          /^\/(en|it)\/(?:insights|approfondimenti)(?:\/([^/]+))?\/?$/,
+        );
+        if (insightMatch) {
+          const [, , slug] = insightMatch;
+          item.links = ["en", "it"].map((locale) => ({
+            lang: locale,
+            url: slug
+              ? `https://lucabertelli.consulting/${locale}/${INSIGHTS_SECTION_SLUG[locale]}/${slug}/`
+              : `https://lucabertelli.consulting/${locale}/${INSIGHTS_SECTION_SLUG[locale]}/`,
+          }));
+        }
+
         if (/^\/(en|it)\/?$/.test(path)) {
           item.priority = 1.0;
         } else if (/^\/(en|it)\/(services|servizi)\//.test(path)) {
           item.priority = 0.9;
         } else if (/^\/(en|it)\/(services|servizi)\/?$/.test(path)) {
           item.priority = 0.9;
+        } else if (/^\/(en|it)\/(insights|approfondimenti)\//.test(path)) {
+          item.priority = 0.8;
+        } else if (/^\/(en|it)\/(insights|approfondimenti)\/?$/.test(path)) {
+          item.priority = 0.8;
         } else if (/^\/(en|it)\/blog\/tag\//.test(path)) {
           item.priority = 0.5;
           item.changefreq = "monthly";

@@ -15,7 +15,7 @@ keywords:
   - "golden path"
   - "developer experience"
   - "piattaforma interna sviluppatori"
-relatedTags: ["kubernetes", "multi-tenancy", "cicd", "vcluster", "platform-engineering"]
+relatedTags: ["kubernetes", "multi-tenancy", "cicd", "vcluster"]
 credentials: ["cka", "capa", "terraform_associate", "kong-konnect"]
 outcomes:
   - "Uno sviluppatore nuovo arriva in produzione in giorni, non in settimane"
