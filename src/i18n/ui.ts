@@ -89,6 +89,9 @@ export const ui = {
     'services.hub.intent.ai.title': 'AI agents arriving without a perimeter',
     'services.hub.intent.ai.text':
       'AI agent governance and adoption consulting: policy, security, MCP integration and inference cost control.',
+    'services.hub.insights.title': 'Guides from the field',
+    'services.hub.insights.intro':
+      'Longer notes on when to hire help, how Platform Engineering differs from DevOps, and what changes in regulated industries.',
     'services.outcomes.title': 'What you get',
     'services.deliverables.title': "What's included",
     'services.faq.title': 'Frequently asked questions',
@@ -363,6 +366,9 @@ export const ui = {
     'services.hub.intent.ai.title': 'Agenti AI che arrivano senza un perimetro',
     'services.hub.intent.ai.text':
       'Consulenza su governance e adozione di agenti AI: policy, sicurezza, integrazione MCP e controllo dei costi di inferenza.',
+    'services.hub.insights.title': 'Approfondimenti dal campo',
+    'services.hub.insights.intro':
+      'Note più lunghe su quando ha senso un consulente, in cosa differiscono Platform Engineering e DevOps, e cosa cambia nei settori regolati.',
     'services.outcomes.title': 'Risultati attesi',
     'services.deliverables.title': 'Cosa include',
     'services.faq.title': 'Domande frequenti',

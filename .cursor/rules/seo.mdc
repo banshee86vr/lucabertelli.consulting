@@ -94,6 +94,6 @@ a static file and went stale; do not reintroduce static copies of either.
 
 ## Off-page
 
-`docs/SEO-KPI.md` holds the post-deploy checklist and the work that cannot be done
-from the repository (Search Console submission, external links). Update the page
-inventory there when the number or shape of routes changes.
+`docs/SEO-KPI.md` holds the post-deploy checklist. `docs/OFF-PAGE-SEO.md` holds
+the manual Search Console / LinkedIn / GitHub steps. Update the page inventory in
+`SEO-KPI.md` when the number or shape of routes changes.

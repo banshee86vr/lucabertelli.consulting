@@ -10,19 +10,21 @@ Use this after deploy to verify the implementation and track reachability over t
 | Services hub | `/en/services/`, `/it/servizi/` | Lists all seven services |
 | Service pages | 7 per language | Localized slugs with commercial intent in the path, e.g. `/it/servizi/consulenza-agenti-ai/` vs `/en/services/ai-agent-governance/` |
 | Blog index | `/en/blog/`, `/it/blog/` | Links every tag page |
-| Blog articles | 4 per language | |
-| Blog tag pages | 14 per language | `/‹lang›/blog/tag/‹tag›/` |
+| Blog articles | 7 per language | Includes commercial-intent posts (Kubernetes consultant, PE vs DevOps, regulated industries) |
+| Blog tag pages | per distinct tag × language | `/‹lang›/blog/tag/‹tag›/` — new tags such as `platform-engineering`, `fintech`, `insurtech` |
 | Legal | privacy, cookies | |
 | Feeds | `/en/rss.xml`, `/it/rss.xml` | |
 | Agent summary | `/llms.txt` | Generated at build from the content collections |
 
-That is **60 indexable HTML pages**, all present in the sitemap.
+Expect on the order of **70+ indexable HTML pages** after the commercial articles
+and their tag pages; all must appear in the sitemap. Confirm the exact count with
+`pnpm run verify:seo` after a fresh build.
 
 ## Post-deploy validation (manual)
 
 1. **Redirect**: Open `https://lucabertelli.consulting/` - expect **308** (or browser redirect) to `/en/`.
 2. **Robots**: `/robots.txt` - lists the sitemap and explicitly allows AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and others).
-3. **Sitemap**: `/sitemap-index.xml` and the linked `sitemap-0.xml` - 60 URLs with `lastmod`, `changefreq` and `priority`.
+3. **Sitemap**: `/sitemap-index.xml` and the linked `sitemap-0.xml` - every indexable HTML URL with `lastmod`, `changefreq` and `priority`.
 4. **Alternate languages**: view source on `/it/servizi/consulenza-devops/` - the `en` alternate must point to `/en/services/devops-consulting/`, and the reverse must hold. Localized slugs are resolved through `src/i18n/routes.ts`; a new service added without a slug entry there will break this pairing.
 5. **Structured data**: run the [Rich Results Test](https://search.google.com/test/rich-results) on the home page, one service page and one article. Expect `Person`, `ProfessionalService` and `WebSite` everywhere, plus `Service` + `FAQPage` + `BreadcrumbList` on services, `BlogPosting` + `BreadcrumbList` on articles, and `CollectionPage` on the hub and tag pages.
 6. **FAQ rich results**: service pages are the candidates. Confirm the questions are parsed and free of errors.
@@ -41,7 +43,7 @@ That is **60 indexable HTML pages**, all present in the sitemap.
 
 | Metric | Where | Goal |
 |--------|--------|------|
-| Indexed core URLs | URL Inspection / Coverage | All service pages plus both blog indexes indexed |
+| Indexed core URLs | URL Inspection / Coverage | All service pages, both blog indexes and the commercial articles indexed |
 | Position for "consulente devops", "consulenza kubernetes", "consulenza platform engineering", "governance agenti AI" | Search Console queries | Entering the first pages, then improving |
 | Impressions on service pages | Search Console, filtered by page | Upward trend; they start from zero |
 | Click-through rate on branded + service queries | Search Console | Slow upward trend |
@@ -50,12 +52,16 @@ That is **60 indexable HTML pages**, all present in the sitemap.
 
 ## Off-page work, which the code cannot do
 
-On-page optimisation makes the site eligible to rank for these queries, where previously there was no URL to rank at all. Ranking also depends on signals that have to be established outside the repository:
+On-page optimisation makes the site eligible to rank for these queries. Ranking
+also depends on signals established outside the repository. Follow the
+copy-paste checklist in [OFF-PAGE-SEO.md](./OFF-PAGE-SEO.md):
 
 - Submit the sitemap to **Google Search Console** and **Bing Webmaster Tools**.
-- Link the service pages from the **LinkedIn** profile, the **GitHub** profile and any conference or meetup bio.
-- Ask past clients for references that link to the relevant service page rather than the home page.
-- Keep publishing: four articles per language is thin for the competitiveness of these queries.
+- Link service pages (not only the home page) from **LinkedIn**, **GitHub** and
+  conference bios.
+- Ask past clients for references that point at the matching service URL.
+- Keep publishing commercial-intent articles that link back into `/servizi/` /
+  `/services/`.
 
 ## Local checks
 

@@ -15,7 +15,7 @@ keywords:
   - "golden path"
   - "developer experience"
   - "developer platform consulting"
-relatedTags: ["kubernetes", "multi-tenancy", "cicd", "vcluster"]
+relatedTags: ["kubernetes", "multi-tenancy", "cicd", "vcluster", "platform-engineering"]
 credentials: ["cka", "capa", "terraform_associate", "kong-konnect"]
 outcomes:
   - "A new developer reaches production in days rather than weeks"
