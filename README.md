@@ -2,7 +2,7 @@
 
 # lucabertelli.consulting Portfolio and Blog
 
-Welcome to the official repository for Luca Bertelli's portfolio and blog site, showcasing the expertise and experience of a Cloud Native Engineer, Advisor, Consultant, and Developer. 🚀
+Welcome to the official repository for Luca Bertelli's consulting site and blog, covering DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps and AI engineering. 🚀
 
 ## Overview
 
@@ -37,19 +37,21 @@ lucabertelli.consulting/
 ├── docs
 │   ├── perf                  # Lighthouse baselines and post-change reports
 │   └── SEO-KPI.md            # SEO checklist and KPIs
-├── public                    # Static assets (images, fonts, styles, scripts, robots.txt, llms.txt)
+├── public                    # Static assets (images, fonts, styles, scripts, robots.txt)
 ├── scripts                   # Maintenance scripts for Cloudflare Pages deployments
 ├── src
 │   ├── components            # Reusable Astro components
-│   ├── constants             # Site-wide constants (canonical URL, etc.)
+│   ├── constants             # Site-wide constants (canonical URL, service slug map)
 │   ├── content
 │   │   ├── blog              # Blog articles (per language)
-│   │   └── certifications    # Certification badges
-│   ├── i18n                  # Translations and i18n utilities
+│   │   ├── certifications    # Certification badges
+│   │   └── services          # Consulting service pages (per language)
+│   ├── i18n                  # Translations, i18n utilities and the localized route map
 │   ├── layouts               # Page layouts
 │   ├── middleware.ts         # Astro middleware
 │   ├── pages
-│   │   └── [lang]            # Localized routes: index, blog, contact, cookies, privacy
+│   │   ├── llms.txt.ts       # Agent-oriented summary, generated from the collections
+│   │   └── [lang]            # Localized routes: index, services, blog, tags, rss, cookies, privacy
 │   ├── types                 # Shared TypeScript types
 │   └── utils                 # Utility functions
 ├── astro.config.mjs          # Astro config (Cloudflare adapter, sitemap, Vite settings)
@@ -104,7 +106,7 @@ The site runs on Cloudflare Workers. [wrangler.toml](wrangler.toml) defines the 
 
 ## SEO & discoverability
 
-After changes to metadata, sitemaps, or structured data, use the post-deploy checklist and KPIs in [docs/SEO-KPI.md](docs/SEO-KPI.md). The site ships with `sitemap-index.xml` (from `@astrojs/sitemap`), [public/robots.txt](public/robots.txt), [public/llms.txt](public/llms.txt) for agent-oriented discovery, and per-route metadata in [src/layouts/Common.astro](src/layouts/Common.astro). Optional: set `PUBLIC_SITE_URL` if the canonical origin differs from `https://lucabertelli.consulting`.
+After changes to metadata, sitemaps, or structured data, use the post-deploy checklist and KPIs in [docs/SEO-KPI.md](docs/SEO-KPI.md). The site ships with `sitemap-index.xml` (from `@astrojs/sitemap`), [public/robots.txt](public/robots.txt), [src/pages/llms.txt.ts](src/pages/llms.txt.ts) generating `/llms.txt` for agent-oriented discovery, and per-route metadata in [src/layouts/Common.astro](src/layouts/Common.astro). Optional: set `PUBLIC_SITE_URL` if the canonical origin differs from `https://lucabertelli.consulting`.
 
 ## Contributions
 

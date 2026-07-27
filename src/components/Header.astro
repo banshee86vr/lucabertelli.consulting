@@ -1,11 +1,14 @@
 ---
+import { servicesHubPath } from "../constants/services";
 import { getLangFromUrl, useTranslations, getLocalizedPathname } from "../i18n/utils";
+import type { UiLang } from "../utils/seo";
 
-const lang = getLangFromUrl(Astro.url);
+const lang = getLangFromUrl(Astro.url) as UiLang;
 const t = useTranslations(lang);
 
 const homeSlug = `/${lang || ""}`;
 const blogSlug = `/${lang || ""}/blog`;
+const servicesSlug = servicesHubPath(lang);
 
 const { pathname } = Astro.url;
 const normalizedPath =
@@ -19,6 +22,9 @@ const isHome =
 	normalizedPath === "";
 const isBlog =
 	normalizedPath === blogSlug || normalizedPath.startsWith(`${blogSlug}/`);
+const isServices =
+	normalizedPath === servicesSlug ||
+	normalizedPath.startsWith(`${servicesSlug}/`);
 ---
 
 <header class="header__area pos-abs plr-50">
@@ -33,6 +39,9 @@ const isBlog =
         <ul>
           <li>
             <a href={homeSlug} aria-current={isHome ? "page" : undefined}>{t("nav.home")}</a>
+          </li>
+          <li>
+            <a href={servicesSlug} aria-current={isServices ? "page" : undefined}>{t("nav.services")}</a>
           </li>
           <li>
             <a href={blogSlug} aria-current={isBlog ? "page" : undefined}>{t("nav.blog")}</a>

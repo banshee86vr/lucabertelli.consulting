@@ -1,0 +1,108 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+export interface BreadcrumbItem {
+	name: string;
+	/** Absolute path; omitted on the current page. */
+	href?: string;
+}
+
+interface Props {
+	items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<nav class="lb-breadcrumbs" aria-label={t("a11y.breadcrumb")}>
+  <ol>
+    {
+      items.map((item, index) => (
+        <li>
+          {item.href ? (
+            <a href={item.href}>{item.name}</a>
+          ) : (
+            <span aria-current="page">{item.name}</span>
+          )}
+          {index < items.length - 1 && (
+            <span class="lb-breadcrumbs__sep" aria-hidden="true">/</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  /* Owns all the vertical spacing around the breadcrumb: equal above and
+     below, and the same at every breakpoint, so it never depends on what the
+     surrounding section happens to declare. */
+  .lb-breadcrumbs {
+    margin: 2rem 0;
+  }
+
+  /* The theme offsets the first .container by a different amount per area
+     (20px in the blog listing, 45px in an article, none anywhere else), which
+     would place the breadcrumb at three different heights. These rules only
+     ship on pages that actually render a breadcrumb. */
+  :global(.main-blog__area > .container:first-child),
+  :global(.blog__details__area > .container:first-child) {
+    margin-top: 0;
+  }
+
+  .lb-breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lb-breadcrumbs li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .lb-breadcrumbs a {
+    color: var(--gray-4);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .lb-breadcrumbs a:hover,
+  .lb-breadcrumbs a:focus-visible {
+    color: var(--primary);
+  }
+
+  .lb-breadcrumbs a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  .lb-breadcrumbs [aria-current="page"] {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .lb-breadcrumbs__sep {
+    color: var(--gray-4);
+    opacity: 0.6;
+  }
+
+  :global(.light) .lb-breadcrumbs a,
+  :global(.light) .lb-breadcrumbs__sep {
+    color: var(--gray);
+  }
+
+  :global(.light) .lb-breadcrumbs [aria-current="page"] {
+    color: var(--black-2);
+  }
+</style>

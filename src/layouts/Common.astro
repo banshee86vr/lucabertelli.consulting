@@ -3,6 +3,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import CookieBanner from "../components/CookieBanner.astro";
 
+import { servicesHubPath } from "../constants/services";
 import { getLangFromUrl, getLocalizedPathname, useTranslations } from "../i18n/utils";
 import { SEO } from "astro-seo";
 import { absoluteUrl, alternatesForPathname } from "../utils/seo";
@@ -22,6 +23,8 @@ export interface Props {
 	articleModifiedTime?: string;
 	articleSection?: string;
 	articleTags?: string[];
+	/** Advertised as the ProfessionalService offer catalog; set on the home page. */
+	serviceCatalog?: { name: string; url: string }[];
 	/** Extra schema.org nodes merged into @graph (e.g. BlogPosting, Service) */
 	jsonLdExtra?: Record<string, unknown>[];
 }
@@ -38,6 +41,7 @@ const {
 	articleModifiedTime,
 	articleSection,
 	articleTags,
+	serviceCatalog = [],
 	jsonLdExtra = [],
 } = Astro.props;
 
@@ -46,6 +50,7 @@ const t = useTranslations(lang);
 
 const homeSlug = `/${lang || ""}`;
 const blogSlug = `/${lang || ""}/blog`;
+const servicesSlug = servicesHubPath(lang);
 
 const pathname =
 	Astro.url.pathname.endsWith("/") && Astro.url.pathname !== "/"
@@ -70,7 +75,7 @@ const languageAlternates = alternates
 		]
 	: undefined;
 
-const baseGraph = buildPersonAndProfessionalService(lang);
+const baseGraph = buildPersonAndProfessionalService(lang, serviceCatalog);
 const graph = [...baseGraph, ...jsonLdExtra];
 const jsonLdPayload = JSON.stringify({
 	"@context": "https://schema.org",
@@ -174,6 +179,13 @@ const jsonLdPayload = JSON.stringify({
 
 		<!-- Fav Icon -->
 		<link rel="icon" type="image/x-icon" href="/favicon.svg" />
+
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title={`${t("seo.site.title")} - ${t("nav.blog")}`}
+			href={`/${lang}/rss.xml`}
+		/>
 
 		<script type="application/ld+json" set:html={jsonLdPayload} />
 
@@ -331,6 +343,7 @@ const jsonLdPayload = JSON.stringify({
 							<nav class="offcanvas__menu-list" aria-label={t("a11y.openMenu")}>
 								<ul>
 									<li><a href={homeSlug} aria-current={normalizedPath === homeSlug || normalizedPath === `/${lang}` ? "page" : undefined}>{t("nav.home")}</a></li>
+									<li><a href={servicesSlug} aria-current={normalizedPath === servicesSlug || normalizedPath.startsWith(`${servicesSlug}/`) ? "page" : undefined}>{t("nav.services")}</a></li>
 									<li><a href={blogSlug} aria-current={normalizedPath === blogSlug || normalizedPath.startsWith(`${blogSlug}/`) ? "page" : undefined}>{t("nav.blog")}</a></li>
 								</ul>
 							</nav>

@@ -1,34 +1,73 @@
 ---
 import BaseLayout from "./Common.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Tickets from "../components/Tickets.astro";
 
-import { getBlogPosts } from "../content/config";
+import { getBlogPosts, getServices } from "../content/config";
 import type { CollectionEntry } from "astro:content";
 
+import { servicePath } from "../constants/services";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { absoluteUrl } from "../utils/seo";
-import { buildBlogPosting } from "../utils/jsonLd";
+import { tagLabel, tagPath } from "../utils/tags";
+import { buildBlogPosting, buildBreadcrumbs } from "../utils/jsonLd";
 import type { UiLang } from "../utils/seo";
 
 type BlogData = CollectionEntry<"blog">["data"];
-type Props = BlogData & { blogSlug: string };
+type Props = BlogData & { blogSlug: string; wordCount?: number };
 
-const { title, subtitle, date, category, image, tags, lang, blogSlug } =
-	Astro.props as Props;
+const {
+	title,
+	subtitle,
+	date,
+	updated,
+	category,
+	image,
+	tags,
+	lang,
+	blogSlug,
+	wordCount,
+} = Astro.props as Props;
 
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
 
 const canonicalUrl = absoluteUrl(`/${lang}/blog/${blogSlug}`);
+const blogPath = `/${lang}/blog`;
 const blogPosting = buildBlogPosting({
 	headline: title,
 	description: subtitle,
 	datePublished: date,
+	dateModified: updated,
 	image,
 	url: canonicalUrl,
 	inLanguage: lang as UiLang,
 	keywords: tags,
+	articleSection: category,
+	wordCount,
 });
+
+// Services whose topics overlap this article's tags, so readers land on the
+// commercial pages from the content that brought them in.
+const relatedServices = (await getServices(lang as UiLang))
+	.filter((service) =>
+		service.data.relatedTags.some((tag) => tags.includes(tag)),
+	)
+	.slice(0, 3)
+	.map((service) => ({
+		title: service.data.title,
+		tagline: service.data.tagline,
+		href: servicePath(service.data.key, lang as UiLang),
+	}));
+
+const jsonLdExtra = [
+	blogPosting,
+	...buildBreadcrumbs([
+		{ name: t("nav.home"), url: absoluteUrl(`/${lang}`) },
+		{ name: t("nav.blog"), url: absoluteUrl(blogPath) },
+		{ name: title, url: canonicalUrl },
+	]),
+];
 
 const heroWidths = [480, 768, 1200];
 const cardWidths = [320, 480, 640];
@@ -63,15 +102,27 @@ const blogEntries = (await getBlogPosts())
 	ogImage={image}
 	ogType="article"
 	canonical={canonicalUrl}
-	articlePublishedTime={date.toISOString()}
-	articleModifiedTime={date.toISOString()}
-	articleSection={category}
-	articleTags={tags}
-	jsonLdExtra={[blogPosting]}
+  articlePublishedTime={date.toISOString()}
+  articleModifiedTime={(updated ?? date).toISOString()}
+  articleSection={category}
+  articleTags={tags}
+  keywords={tags}
+  jsonLdExtra={jsonLdExtra}
 >
   <!-- Blog Details section end -->
   <section class="blog__details__area pt-120 pb-30">
     <div class="container">
+      <div class="row">
+        <div class="col-xxl-12">
+          <Breadcrumbs
+            items={[
+              { name: t("nav.home"), href: `/${lang}` },
+              { name: t("nav.blog"), href: blogPath },
+              { name: title },
+            ]}
+          />
+        </div>
+      </div>
       <div class="row">
         <div class="col-xxl-12">
           <div class="blog__details-top cf_parallax_image">
@@ -143,13 +194,32 @@ const blogEntries = (await getBlogPosts())
                 {
                   tags.map((tag, i) => (
                     <li>
-                      <a href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}>{tag}</a>
+                      <a href={tagPath(tag, lang)}>{tagLabel(tag)}</a>
                       {i < tags.length - 1 ? <span class="blog__tag-sep" aria-hidden="true"> / </span> : null}
                     </li>
                   ))
                 }
               </ul>
             </div>
+
+            {
+              relatedServices.length > 0 && (
+                <aside class="lb-post__services">
+                  <h2 class="lb-post__services-title">{t("post.services.title")}</h2>
+                  <p class="lb-post__services-text">{t("post.services.text")}</p>
+                  <ul class="lb-post__services-list">
+                    {relatedServices.map((service) => (
+                      <li>
+                        <a href={service.href}>
+                          <strong>{service.title}</strong>
+                          <span>{service.tagline}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
+              )
+            }
           </div>
         </div>
       </div>
@@ -301,5 +371,78 @@ const blogEntries = (await getBlogPosts())
   .lb-blog__item a:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 3px;
+  }
+  .lb-post__services {
+    margin-top: 3.5rem;
+    padding: 32px 28px;
+    border-radius: 12px;
+    border: 1px solid var(--black-6);
+  }
+  :global(.light) .lb-post__services {
+    border-color: var(--gray-13);
+  }
+  .lb-post__services-title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+  .lb-post__services-text {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--black-9);
+    margin-bottom: 1.5rem;
+  }
+  .lb-post__services-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  /* master.css sets `li { list-style: decimal }` globally */
+  .lb-post__services-list li {
+    list-style: none;
+  }
+  .lb-post__services-list a {
+    display: block;
+    height: 100%;
+    padding: 18px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--black-6);
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+  :global(.light) .lb-post__services-list a {
+    border-color: var(--gray-13);
+  }
+  .lb-post__services-list a:hover,
+  .lb-post__services-list a:focus-visible {
+    border-color: var(--primary);
+  }
+  .lb-post__services-list a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+  .lb-post__services-list strong {
+    display: block;
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+    color: var(--white);
+  }
+  :global(.light) .lb-post__services-list strong {
+    color: var(--black-2);
+  }
+  .lb-post__services-list span {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--black-9);
   }
 </style>

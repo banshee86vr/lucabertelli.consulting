@@ -1,10 +1,18 @@
 ---
+import { getServices } from "../content/config";
+import { servicePath, servicesHubPath } from "../constants/services";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import type { UiLang } from "../utils/seo";
 
-const lang = getLangFromUrl(Astro.url);
+const lang = getLangFromUrl(Astro.url) as UiLang;
 const t = useTranslations(lang);
 const privacyUrl = `/${lang}/privacy`;
 const cookiesUrl = `/${lang}/cookies`;
+
+const services = (await getServices(lang)).map((service) => ({
+  title: service.data.title,
+  href: servicePath(service.data.key, lang),
+}));
 ---
 
 <footer class="footer__area pb-0">
@@ -53,6 +61,24 @@ const cookiesUrl = `/${lang}/cookies`;
       </div>
     </div>
   </div>
+  <div class="footer__services">
+    <div class="container">
+      <nav aria-label={t("nav.services")}>
+        <h2 class="footer__title">
+          <a href={servicesHubPath(lang)} class="footer__services-hub">{t("nav.services")}</a>
+        </h2>
+        <ul class="footer__services-list">
+          {
+            services.map((service) => (
+              <li>
+                <a href={service.href}>{service.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
   <div class="footer__btm">
     <div class="container">
       <div class="row">
@@ -76,6 +102,58 @@ const cookiesUrl = `/${lang}/cookies`;
 </footer>
 
 <style>
+  .footer__services {
+    padding: 32px 0;
+  }
+
+  .footer__services-hub {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .footer__services-hub:hover,
+  .footer__services-hub:focus-visible {
+    color: var(--primary);
+  }
+
+  .footer__services-list li {
+    /* master.css sets `li { list-style: decimal }` globally */
+    list-style: none;
+  }
+
+  .footer__services-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 0;
+  }
+
+  .footer__services-list a {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--white-3);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer__services-list a:hover,
+  .footer__services-list a:focus-visible {
+    color: var(--primary);
+  }
+
+  .footer__services-list a:focus-visible,
+  .footer__services-hub:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  .light .footer__services-list a {
+    color: var(--black-2);
+  }
+
   .footer__legal {
     margin-top: 10px;
   }

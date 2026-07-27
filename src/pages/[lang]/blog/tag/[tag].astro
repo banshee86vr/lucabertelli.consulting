@@ -1,0 +1,207 @@
+---
+import BaseLayout from "../../../../layouts/Common.astro";
+import Breadcrumbs from "../../../../components/Breadcrumbs.astro";
+
+import { getBlogPosts } from "../../../../content/config";
+import type { BlogPost } from "../../../../content/config";
+import { useTranslations } from "../../../../i18n/utils";
+import { absoluteUrl } from "../../../../utils/seo";
+import type { UiLang } from "../../../../utils/seo";
+import { tagLabel, tagPath, tagSlug } from "../../../../utils/tags";
+import { buildBreadcrumbs, buildCollectionPage } from "../../../../utils/jsonLd";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getBlogPosts();
+
+  // One page per (language, tag) pair that actually has articles.
+  const byLangAndTag = new Map<string, { lang: UiLang; tag: string; posts: BlogPost[] }>();
+
+  for (const post of posts) {
+    const lang = (post.data.lang === "it" ? "it" : "en") as UiLang;
+    for (const tag of post.data.tags as string[]) {
+      const slug = tagSlug(tag);
+      const mapKey = `${lang}/${slug}`;
+      const existing = byLangAndTag.get(mapKey);
+      if (existing) {
+        existing.posts.push(post);
+      } else {
+        byLangAndTag.set(mapKey, { lang, tag, posts: [post] });
+      }
+    }
+  }
+
+  return [...byLangAndTag.values()].map(({ lang, tag, posts: tagPosts }) => ({
+    params: { lang, tag: tagSlug(tag) },
+    props: {
+      tag,
+      posts: tagPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props as { tag: string; posts: BlogPost[] };
+const lang = Astro.params.lang as UiLang;
+const t = useTranslations(lang);
+
+const label = tagLabel(tag);
+const canonicalPath = tagPath(tag, lang);
+const canonicalUrl = absoluteUrl(canonicalPath);
+const blogPath = `/${lang}/blog`;
+
+const dateLocale = lang === "it" ? "it-IT" : "en-US";
+const cardWidths = [320, 480, 640];
+const appendImageParams = (url: string, params: string) =>
+  `${url}${url.includes("?") ? "&" : "?"}${params}`;
+const buildSrcSet = (url: string, widths: number[], format?: "webp") =>
+  widths
+    .map((width) => {
+      const query = format ? `format=${format}&w=${width}` : `w=${width}`;
+      return `${appendImageParams(url, query)} ${width}w`;
+    })
+    .join(", ");
+
+const pageTitle =
+  lang === "it"
+    ? `${label}: articoli e guide | Luca Bertelli`
+    : `${label}: articles and guides | Luca Bertelli`;
+const pageDescription =
+  lang === "it"
+    ? `Articoli su ${label} scritti da Luca Bertelli, consulente DevOps e Cloud Native: casi reali, scelte architetturali e pratiche operative.`
+    : `Articles about ${label} by Luca Bertelli, DevOps and Cloud Native consultant: real engagements, architectural choices and operational practice.`;
+
+const jsonLdExtra = [
+  buildCollectionPage({
+    name: `${t("blog.tag.heading")} ${label}`,
+    description: pageDescription,
+    url: canonicalUrl,
+    lang,
+    items: posts.map((post) => ({
+      name: post.data.title as string,
+      url: absoluteUrl(`/${lang}/blog/${post.blog_slug}`),
+    })),
+  }),
+  ...buildBreadcrumbs([
+    { name: t("nav.home"), url: absoluteUrl(`/${lang}`) },
+    { name: t("nav.blog"), url: absoluteUrl(blogPath) },
+    { name: label, url: canonicalUrl },
+  ]),
+];
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonicalUrl}
+  keywords={[label, "DevOps", "Cloud Native", "Kubernetes"]}
+  jsonLdExtra={jsonLdExtra}
+>
+  <div class="main-blog__area pt-120 pb-120">
+    <div class="container ptf-0">
+      <Breadcrumbs
+        items={[
+          { name: t("nav.home"), href: `/${lang}` },
+          { name: t("nav.blog"), href: blogPath },
+          { name: label },
+        ]}
+      />
+
+      <h1 class="sec-title blog-index__h1 mb-20">
+        {t("blog.tag.heading")} {label}
+      </h1>
+      <p class="lb-tag__intro">{pageDescription}</p>
+
+      <p class="lb-tag__back">
+        <a href={blogPath}>&larr; {t("blog.tag.back")}</a>
+      </p>
+
+      <div class="main-blog__grid">
+        {
+          posts.map((post) => (
+            <article class="lb-blog__item blog-img-zoom">
+              <div class="thumb">
+                <a href={`/${lang}/blog/${post.blog_slug}`}>
+                  <picture>
+                    <source
+                      type="image/webp"
+                      srcset={buildSrcSet(post.data.image, cardWidths, "webp")}
+                      sizes="(max-width: 767px) 100vw, 50vw"
+                    />
+                    <source
+                      srcset={buildSrcSet(post.data.image, cardWidths)}
+                      sizes="(max-width: 767px) 100vw, 50vw"
+                    />
+                    <img
+                      src={appendImageParams(post.data.image, "w=480")}
+                      srcset={buildSrcSet(post.data.image, cardWidths)}
+                      alt={post.data.title}
+                      width={800}
+                      height={450}
+                      sizes="(max-width: 767px) 100vw, 50vw"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
+                </a>
+              </div>
+              <ul class="lb-blog__meta">
+                <li>
+                  {post.data.date.toLocaleString(dateLocale, {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </li>
+              </ul>
+              <a href={`/${lang}/blog/${post.blog_slug}`}>
+                <h2 class="lb-blog__title">{post.data.title}</h2>
+                {post.data.subtitle}
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .lb-tag__intro {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    max-width: 62ch;
+    color: var(--gray-4);
+  }
+
+  :global(.light) .lb-tag__intro {
+    color: var(--gray);
+  }
+
+  .lb-tag__back {
+    margin-bottom: 3rem;
+  }
+
+  .lb-tag__back a {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+  }
+
+  .lb-tag__back a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+
+  .lb-blog__item a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+
+  .lb-blog__item a:hover .lb-blog__title {
+    color: var(--primary);
+  }
+</style>

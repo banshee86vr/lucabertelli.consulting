@@ -1,3 +1,4 @@
+import { translatePathname } from "./routes";
 import { ui } from "./ui";
 
 export const LANGUAGES = {
@@ -40,11 +41,10 @@ function pathNameStartsWithLanguage(pathname: string) {
   return startsWithLanguage;
 }
 
+/**
+ * Counterpart of `pathname` in `lang`. Delegates to the route map so that
+ * sections with localized slugs (services) switch language correctly.
+ */
 export function getLocalizedPathname(pathname: string, lang: UiType) {
-  if (pathNameStartsWithLanguage(pathname)) {
-    const availableLanguages = Object.keys(LANGUAGES).join('|');
-    const regex = new RegExp(`^\/(${availableLanguages})`);
-    return pathname.replace(regex, `/${lang}`);
-  }
-  return `/${lang}${pathname}`;
+  return translatePathname(pathname, lang);
 }
