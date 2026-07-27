@@ -4,7 +4,7 @@ lang: "it"
 title: "Quando serve un consulente Kubernetes"
 subtitle: "I segnali che il cluster non si sistema da solo, e cosa cambia tra un intervento mirato e un’altra sprint di YAML"
 seoTitle: "Quando serve un consulente Kubernetes | Luca Bertelli"
-date: "2026-07-27"
+date: "2024-04-27"
 image: "/insights/kubernetes-consultant/kubernetes-consultant.webp"
 relatedServices: ["kubernetes", "training", "platform-engineering", "cloud"]
 ---
@@ -29,7 +29,7 @@ Namespace condivisi, ResourceQuota assenti o decorative, NetworkPolicy a macchia
 
 ### 3. GitOps a metà
 
-Argo CD o Flux sono installati, ma metà dei cambiamenti passa ancora da `kubectl` e da ticket. Lo stato desiderato non è la fonte di verità: è una speranza. In queste condizioni ogni audit e ogni disaster recovery riparte da zero.
+Uno strumento GitOps è installato — open source o commerciale, poco importa — ma metà dei cambiamenti passa ancora da `kubectl` e da ticket. Lo stato desiderato non è la fonte di verità: è una speranza. In queste condizioni ogni audit e ogni disaster recovery riparte da zero.
 
 ### 4. Drift che nessuno misura
 

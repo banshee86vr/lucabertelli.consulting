@@ -4,7 +4,7 @@ lang: "en"
 title: "When you need a Kubernetes consultant"
 subtitle: "The signals that another YAML sprint will not fix the cluster, and what a focused engagement actually changes"
 seoTitle: "When you need a Kubernetes consultant | Luca Bertelli"
-date: "2026-07-27"
+date: "2024-04-27"
 image: "/insights/kubernetes-consultant/kubernetes-consultant.webp"
 relatedServices: ["kubernetes", "training", "platform-engineering", "cloud"]
 ---
@@ -29,7 +29,7 @@ Shared namespaces, missing or decorative ResourceQuotas, NetworkPolicies applied
 
 ### 3. Half-finished GitOps
 
-Argo CD or Flux is installed, yet half of the changes still go through `kubectl` and tickets. Desired state is not the source of truth — it is a hope. Every audit and every disaster recovery then starts from scratch.
+A GitOps tool is installed — open source or commercial, it hardly matters — yet half of the changes still go through `kubectl` and tickets. Desired state is not the source of truth — it is a hope. Every audit and every disaster recovery then starts from scratch.
 
 ### 4. Drift nobody measures
 
