@@ -15,7 +15,7 @@ keywords:
   - "automazione CI/CD"
   - "Infrastructure as Code"
   - "consulenza CI/CD"
-relatedTags: ["cicd", "devsecops", "github-actions", "kubernetes"]
+relatedTags: ["cicd", "devsecops", "github-actions", "kubernetes", "fintech", "insurtech", "platform-engineering"]
 credentials: ["cka", "terraform_associate", "capa", "gitlab-sa"]
 outcomes:
   - "Rilasci frequenti e ripetibili, senza finestre notturne e senza passaggi manuali"

@@ -4,7 +4,7 @@ import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import ServiceIcon from "../../../components/ServiceIcon.astro";
 import Tickets from "../../../components/Tickets.astro";
 
-import { getServices } from "../../../content/config";
+import { getBlogPosts, getServices } from "../../../content/config";
 import {
   SERVICES_SECTION_SLUG,
   SERVICE_ICONS,
@@ -127,6 +127,34 @@ const intents = SERVICE_KEYS.map((key) => {
       services.find((service) => service.data.key === key)?.data.title ?? key,
   };
 });
+
+/** Commercial-intent articles that should feed the hub with internal links. */
+const HUB_ARTICLE_SLUGS = [
+  "kubernetes-consultant",
+  "platform-vs-devops",
+  "regulated-industries",
+] as const;
+
+const hubArticles = (await getBlogPosts())
+  .filter(
+    (post) =>
+      post.data.lang === lang &&
+      (HUB_ARTICLE_SLUGS as readonly string[]).includes(post.blog_slug),
+  )
+  .sort(
+    (a, b) =>
+      HUB_ARTICLE_SLUGS.indexOf(
+        a.blog_slug as (typeof HUB_ARTICLE_SLUGS)[number],
+      ) -
+      HUB_ARTICLE_SLUGS.indexOf(
+        b.blog_slug as (typeof HUB_ARTICLE_SLUGS)[number],
+      ),
+  )
+  .map((post) => ({
+    title: post.data.title,
+    subtitle: post.data.subtitle,
+    href: `/${lang}/blog/${post.blog_slug}`,
+  }));
 ---
 
 <BaseLayout
@@ -183,6 +211,32 @@ const intents = SERVICE_KEYS.map((key) => {
           }
         </ul>
       </section>
+
+      {
+        hubArticles.length > 0 && (
+          <section
+            class="lb-services-insights"
+            aria-labelledby="services-insights-title"
+          >
+            <h2 id="services-insights-title" class="lb-services-insights__title">
+              {t("services.hub.insights.title")}
+            </h2>
+            <p class="lb-services-insights__intro">
+              {t("services.hub.insights.intro")}
+            </p>
+            <ul class="lb-services-insights__list">
+              {hubArticles.map((article) => (
+                <li>
+                  <h3 class="lb-services-insights__item-title">
+                    <a href={article.href}>{article.title}</a>
+                  </h3>
+                  <p class="lb-services-insights__item-text">{article.subtitle}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
 
       <div class="lb-services-cta">
         <h2 class="lb-services-cta__title">{t("services.cta.title")}</h2>
@@ -413,6 +467,72 @@ const intents = SERVICE_KEYS.map((key) => {
 
   :global(.light) .lb-services-intents__link {
     color: var(--secondary);
+  }
+
+  .lb-services-insights {
+    margin-top: 5rem;
+    max-width: 72ch;
+  }
+
+  .lb-services-insights__title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .lb-services-insights__intro {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--gray-4);
+    margin-bottom: 2.5rem;
+  }
+
+  :global(.light) .lb-services-insights__intro {
+    color: var(--gray);
+  }
+
+  .lb-services-insights__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .lb-services-insights__item-title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.45rem;
+  }
+
+  .lb-services-insights__item-title a {
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .lb-services-insights__item-title a:hover,
+  .lb-services-insights__item-title a:focus-visible {
+    color: var(--primary);
+  }
+
+  :global(.light) .lb-services-insights__item-title a {
+    color: var(--black-2);
+  }
+
+  .lb-services-insights__item-text {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.975rem;
+    line-height: 1.65;
+    color: var(--gray-4);
+    margin: 0;
+  }
+
+  :global(.light) .lb-services-insights__item-text {
+    color: var(--gray);
   }
 
   .lb-services-cta {

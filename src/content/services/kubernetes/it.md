@@ -13,7 +13,7 @@ keywords:
   - "consulente CKA certificato"
   - "GitOps Argo CD"
   - "multi-tenancy Kubernetes"
-relatedTags: ["kubernetes", "helm", "multi-tenancy", "vcluster", "fleet-management", "drift"]
+relatedTags: ["kubernetes", "helm", "multi-tenancy", "vcluster", "fleet-management", "drift", "cicd", "platform-engineering"]
 credentials: ["cka", "capa", "vmware_master", "kong-mesh"]
 outcomes:
   - "Cluster progettati per la produzione, non prototipi cresciuti per inerzia"
