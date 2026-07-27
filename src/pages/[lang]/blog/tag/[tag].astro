@@ -9,6 +9,7 @@ import { absoluteUrl } from "../../../../utils/seo";
 import type { UiLang } from "../../../../utils/seo";
 import { tagLabel, tagPath, tagSlug } from "../../../../utils/tags";
 import { buildBreadcrumbs, buildCollectionPage } from "../../../../utils/jsonLd";
+import { readingMinutes, wordCountFromBody } from "../../../../utils/readingTime";
 
 export const prerender = true;
 
@@ -118,48 +119,52 @@ const jsonLdExtra = [
 
       <div class="main-blog__grid">
         {
-          posts.map((post) => (
-            <article class="lb-blog__item blog-img-zoom">
-              <div class="thumb">
-                <a href={`/${lang}/blog/${post.blog_slug}`}>
-                  <picture>
-                    <source
-                      type="image/webp"
-                      srcset={buildSrcSet(post.data.image, cardWidths, "webp")}
-                      sizes="(max-width: 767px) 100vw, 50vw"
-                    />
-                    <source
-                      srcset={buildSrcSet(post.data.image, cardWidths)}
-                      sizes="(max-width: 767px) 100vw, 50vw"
-                    />
-                    <img
-                      src={appendImageParams(post.data.image, "w=480")}
-                      srcset={buildSrcSet(post.data.image, cardWidths)}
-                      alt={post.data.title}
-                      width={800}
-                      height={450}
-                      sizes="(max-width: 767px) 100vw, 50vw"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
+          posts.map((post) => {
+            const minutes = readingMinutes(wordCountFromBody(post.body));
+            return (
+              <article class="lb-blog__item blog-img-zoom">
+                <a class="lb-blog__card" href={`/${lang}/blog/${post.blog_slug}`}>
+                  <div class="thumb">
+                    <picture>
+                      <source
+                        type="image/webp"
+                        srcset={buildSrcSet(post.data.image, cardWidths, "webp")}
+                        sizes="(max-width: 767px) 100vw, 50vw"
+                      />
+                      <source
+                        srcset={buildSrcSet(post.data.image, cardWidths)}
+                        sizes="(max-width: 767px) 100vw, 50vw"
+                      />
+                      <img
+                        src={appendImageParams(post.data.image, "w=480")}
+                        srcset={buildSrcSet(post.data.image, cardWidths)}
+                        alt=""
+                        width={800}
+                        height={450}
+                        sizes="(max-width: 767px) 100vw, 50vw"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </picture>
+                  </div>
+                  <ul class="lb-blog__meta">
+                    <li>
+                      <time datetime={post.data.date.toISOString()}>
+                        {post.data.date.toLocaleString(dateLocale, {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </time>
+                    </li>
+                    <li>{t("post.readingTime").replace("{n}", String(minutes))}</li>
+                  </ul>
+                  <h2 class="lb-blog__title">{post.data.title}</h2>
+                  <p class="lb-blog__excerpt">{post.data.subtitle}</p>
                 </a>
-              </div>
-              <ul class="lb-blog__meta">
-                <li>
-                  {post.data.date.toLocaleString(dateLocale, {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </li>
-              </ul>
-              <a href={`/${lang}/blog/${post.blog_slug}`}>
-                <h2 class="lb-blog__title">{post.data.title}</h2>
-                {post.data.subtitle}
-              </a>
-            </article>
-          ))
+              </article>
+            );
+          })
         }
       </div>
     </div>
@@ -194,14 +199,5 @@ const jsonLdExtra = [
   .lb-tag__back a:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 3px;
-  }
-
-  .lb-blog__item a:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 3px;
-  }
-
-  .lb-blog__item a:hover .lb-blog__title {
-    color: var(--primary);
   }
 </style>
