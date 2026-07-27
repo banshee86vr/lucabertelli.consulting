@@ -72,14 +72,13 @@ Open Graph and the base JSON-LD graph. Then add, in the page itself:
 ## Blog vs insights
 
 - The **blog** is for engineering / OSS write-ups. Commercial buying guides live
-  in the `insights` collection (`/en/insights/`, `/it/approfondimenti/`), not
-  under `/blog/`.
+  in the `insights` collection under `/en/insights/` and `/it/insights/`, not
+  under `/blog/`. Keep the section slug as `insights` in both languages.
 - Adding an insight: key in `INSIGHT_KEYS`, IT+EN markdown under
   `src/content/insights/<key>/`, cover under `public/insights/`, and
   `relatedServices` so service pages can surface it. Moving a slug out of the
-  blog requires a 308 in `src/middleware.ts` (see `LEGACY_INSIGHT_BLOG_SLUGS`).
-- Teach `src/i18n/routes.ts` and the sitemap `serialize` about the localized
-  insights section the same way as services.
+  blog (or renaming the section) requires a 308 in `src/middleware.ts`
+  (`LEGACY_INSIGHT_BLOG_SLUGS`, `LEGACY_INSIGHTS_SECTION_SLUGS`).
 
 ## Blog content
 

@@ -295,7 +295,7 @@ export const ui = {
     'nav.home': 'Home',
     'nav.blog': 'Blog',
     'nav.services': 'Servizi',
-    'nav.insights': 'Approfondimenti',
+    'nav.insights': 'Insights',
     'nav.lang': '/lang/it.png',
     'a11y.skipToContent': 'Vai al contenuto principale',
     'a11y.breadcrumb': 'Percorso di navigazione',
@@ -382,7 +382,7 @@ export const ui = {
     'services.hub.intent.ai.title': 'Agenti AI che arrivano senza un perimetro',
     'services.hub.intent.ai.text':
       'Consulenza su governance e adozione di agenti AI: policy, sicurezza, integrazione MCP e controllo dei costi di inferenza.',
-    'services.hub.insights.title': 'Approfondimenti dal campo',
+    'services.hub.insights.title': 'Insights dal campo',
     'services.hub.insights.intro':
       'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati.',
     'services.outcomes.title': 'Risultati attesi',
@@ -391,21 +391,21 @@ export const ui = {
     'services.credentials.title': 'Certificazioni pertinenti',
     'services.credentials.intro': 'Credenziali verificabili a supporto di questa area di servizio.',
     'services.related.articles': 'Dal blog',
-    'services.related.insights': 'Approfondimenti',
+    'services.related.insights': 'Insights',
     'services.related.services': 'Altri servizi',
-    'insights.sectionLabel': 'Approfondimento',
+    'insights.sectionLabel': 'Insight',
     'insights.category': 'Consulenza',
-    'insights.hub.h1': 'Approfondimenti di consulenza dal campo',
+    'insights.hub.h1': 'Insights di consulenza dal campo',
     'insights.hub.intro':
-      'Note pratiche su quando ha senso un consulente, in cosa differiscono Platform Engineering e DevOps, e cosa cambia nei settori regolati. Separate dal blog tecnico.',
-    'insights.hub.seoTitle': 'Approfondimenti: Kubernetes, Platform Engineering, Fintech | Luca Bertelli',
+      'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati.',
+    'insights.hub.seoTitle': 'Insights: Kubernetes, Platform Engineering, Fintech | Luca Bertelli',
     'insights.hub.seoDescription':
-      'Guide su consulenza Kubernetes, Platform Engineering vs DevOps e DevOps in Fintech, Insurtech e contesti industriali.',
+      'Insights su consulenza Kubernetes, Platform Engineering vs DevOps e DevOps in Fintech, Insurtech e contesti industriali.',
     'insights.services.title': 'Servizi di consulenza correlati',
     'insights.services.text':
       'Queste guide servono a scegliere l’intervento giusto. Nelle pagine di servizio trovi perimetro, risultati attesi e FAQ.',
-    'insights.related.eyebrow': 'Altre guide',
-    'insights.related.title': 'Altri approfondimenti',
+    'insights.related.eyebrow': 'Altri insights',
+    'insights.related.title': 'Altre note dal campo',
     'services.cta.title': 'Parlare del tuo caso non costa nulla',
     'services.cta.text':
       'Descrivimi la situazione in poche righe e ti dirò con franchezza se posso essere utile e in che modo. Se non sono la persona giusta, te lo dico.',

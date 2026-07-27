@@ -394,6 +394,103 @@ button:focus-visible,
   padding-bottom: 0;
 }
 
+/* Markdown tables in blog posts and insights */
+.blog__details table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+  margin: 0.75rem 0 1.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  border: 1px solid var(--black-6);
+  border-radius: 8px;
+  background: var(--black-3);
+}
+
+.light .blog__details table {
+  border-color: var(--gray-13);
+  background: var(--white-3);
+}
+
+.blog__details thead,
+.blog__details tbody {
+  display: table;
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: collapse;
+}
+
+.blog__details th,
+.blog__details td {
+  padding: 0.85rem 1.1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--black-6);
+}
+
+.light .blog__details th,
+.light .blog__details td {
+  border-bottom-color: var(--gray-13);
+}
+
+.blog__details th {
+  font-family: var(--font-heading, "Space Grotesk", sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  background: var(--black-4);
+  white-space: nowrap;
+}
+
+.light .blog__details th {
+  color: var(--black-2);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.blog__details td {
+  color: inherit;
+}
+
+.blog__details tbody tr:last-child th,
+.blog__details tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.blog__details tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.light .blog__details tbody tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.blog__details td:first-child,
+.blog__details th:first-child {
+  font-weight: 600;
+  color: var(--white);
+}
+
+.light .blog__details td:first-child,
+.light .blog__details th:first-child {
+  color: var(--black-2);
+}
+
+@media only screen and (max-width: 767px) {
+  .blog__details table {
+    font-size: 0.875rem;
+    border-radius: 6px;
+  }
+
+  .blog__details th,
+  .blog__details td {
+    padding: 0.7rem 0.85rem;
+  }
+}
+
 /* Images + markdown italic captions */
 .blog__details img {
   display: block;

@@ -12,7 +12,7 @@ Use this after deploy to verify the implementation and track reachability over t
 | Blog index | `/en/blog/`, `/it/blog/` | Engineering notes only |
 | Blog articles | 4 per language | Tooling / OSS write-ups |
 | Blog tag pages | per distinct tag × language | `/‹lang›/blog/tag/‹tag›/` |
-| Insights hub | `/en/insights/`, `/it/approfondimenti/` | Commercial field guides (not the blog) |
+| Insights hub | `/en/insights/`, `/it/insights/` | Commercial field guides (not the blog) |
 | Insight pages | 3 per language | Kubernetes consultant, PE vs DevOps, regulated industries |
 | Legal | privacy, cookies | |
 | Feeds | `/en/rss.xml`, `/it/rss.xml` | Blog only |
