@@ -1,4 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>banshee86vr/renovate-preset"]
+  "extends": ["github>banshee86vr/renovate-preset"],
+  "packageRules": [
+    {
+      "description": "TypeScript 7 breaks @astrojs/check (peer ^5 || ^6) until the Astro language server catches up",
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    }
+  ]
 }
