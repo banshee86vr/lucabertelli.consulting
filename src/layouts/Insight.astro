@@ -11,7 +11,6 @@ import type { ServiceKey } from "../constants/services";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { absoluteUrl } from "../utils/seo";
 import { buildBlogPosting, buildBreadcrumbs } from "../utils/jsonLd";
-import { readingMinutes, wordCountFromBody } from "../utils/readingTime";
 import type { UiLang } from "../utils/seo";
 
 interface Props {
@@ -42,9 +41,6 @@ const {
 
 const currentLang = getLangFromUrl(Astro.url) as UiLang;
 const t = useTranslations(currentLang);
-const dateLocale = lang === "it" ? "it-IT" : "en-US";
-const minutes = readingMinutes(wordCount);
-const readingLabel = t("post.readingTime").replace("{n}", String(minutes));
 const category = t("insights.category");
 
 const hubPath = insightsHubPath(lang);
@@ -74,19 +70,11 @@ const relatedServices = (await getServices(lang))
 const otherInsights = (await getInsights(lang))
 	.filter((entry) => entry.data.key !== insightKey)
 	.slice(0, 3)
-	.map((entry) => {
-		const words = wordCountFromBody(String(entry.body ?? ""));
-		return {
-			title: entry.data.title,
-			image: entry.data.image,
-			date: entry.data.date,
-			href: insightPath(entry.data.key, lang),
-			readingLabel: t("post.readingTime").replace(
-				"{n}",
-				String(readingMinutes(words)),
-			),
-		};
-	});
+	.map((entry) => ({
+		title: entry.data.title,
+		subtitle: entry.data.subtitle,
+		href: insightPath(entry.data.key, lang),
+	}));
 
 const jsonLdExtra = [
 	articleLd,
@@ -96,25 +84,6 @@ const jsonLdExtra = [
 		{ name: title, url: canonicalUrl },
 	]),
 ];
-
-const heroWidths = [480, 768, 1200];
-const cardWidths = [320, 480, 640];
-const appendImageParams = (url: string, params: string) =>
-	`${url}${url.includes("?") ? "&" : "?"}${params}`;
-const buildSrcSet = (url: string, widths: number[], format?: "webp") =>
-	widths
-		.map((width) => {
-			const query = format ? `format=${format}&w=${width}` : `w=${width}`;
-			return `${appendImageParams(url, query)} ${width}w`;
-		})
-		.join(", ");
-
-const formatDate = (value: Date) =>
-	value.toLocaleDateString(dateLocale, {
-		year: "numeric",
-		month: "short",
-		day: "numeric",
-	});
 ---
 
 <BaseLayout
@@ -129,279 +98,387 @@ const formatDate = (value: Date) =>
   keywords={relatedServiceKeys}
   jsonLdExtra={jsonLdExtra}
 >
-  <section class="blog__details__area pt-120 pb-30">
+  <article class="lb-insight pt-120 pb-100">
     <div class="container">
-      <div class="row">
-        <div class="col-xxl-12">
-          <Breadcrumbs
-            items={[
-              { name: t("nav.home"), href: `/${lang}` },
-              { name: t("nav.insights"), href: hubPath },
-              { name: title },
-            ]}
-          />
-        </div>
+      <Breadcrumbs
+        items={[
+          { name: t("nav.home"), href: `/${lang}` },
+          { name: t("nav.insights"), href: hubPath },
+          { name: title },
+        ]}
+      />
+
+      <header class="lb-insight__header">
+        <h1 class="lb-insight__title">{title}</h1>
+        <p class="lb-insight__subtitle">{subtitle}</p>
+      </header>
+
+      <div class="lb-insight__body">
+        <slot />
       </div>
-      <div class="row">
-        <div class="col-xxl-12">
-          <div class="blog__details-top cf_parallax_image">
-            <picture>
-              <source
-                type="image/webp"
-                srcset={buildSrcSet(image, heroWidths, "webp")}
-                sizes="(max-width: 991px) 100vw, 1200px"
-              />
-              <source
-                srcset={buildSrcSet(image, heroWidths)}
-                sizes="(max-width: 991px) 100vw, 1200px"
-              />
-              <img
-                class="blog__details-hero-img"
-                src={appendImageParams(image, "w=768")}
-                srcset={buildSrcSet(image, heroWidths)}
-                sizes="(max-width: 991px) 100vw, 1200px"
-                alt=""
-                width="1200"
-                height="675"
-                fetchpriority="high"
-                decoding="async"
-                data-speed="0.9"
-              />
-            </picture>
-          </div>
 
-          <div class="blog__details-wrap">
-            <div class="blog__details-info">
-              <ul class="blog__meta">
+      {
+        relatedServices.length > 0 && (
+          <aside class="lb-insight__services">
+            <h2 class="lb-insight__services-title">{t("insights.services.title")}</h2>
+            <p class="lb-insight__services-text">{t("insights.services.text")}</p>
+            <ul class="lb-insight__services-list">
+              {relatedServices.map((service) => (
                 <li>
-                  <span class="blog__meta-label">{t("post.header.category")}</span>
-                  <span class="blog__meta-value">{category}</span>
+                  <a href={service.href}>
+                    <strong>{service.title}</strong>
+                    <span>{service.tagline}</span>
+                  </a>
                 </li>
-                <li>
-                  <span class="blog__meta-label">{t("post.header.date")}</span>
-                  <time
-                    class="blog__meta-value"
-                    datetime={date.toISOString()}
-                  >
-                    {formatDate(date)}
-                  </time>
-                </li>
-                {
-                  updated && (
-                    <li>
-                      <span class="blog__meta-label">{t("post.header.updated")}</span>
-                      <time
-                        class="blog__meta-value"
-                        datetime={updated.toISOString()}
-                      >
-                        {formatDate(updated)}
-                      </time>
-                    </li>
-                  )
-                }
-                <li>
-                  <span class="blog__meta-label">{t("post.header.readingTime")}</span>
-                  <span class="blog__meta-value">{readingLabel}</span>
-                </li>
-              </ul>
-              <h1 class="blog__details_title">
-                {title}
-              </h1>
-              <p class="blog__details_subtitle">{subtitle}</p>
-            </div>
+              ))}
+            </ul>
+          </aside>
+        )
+      }
 
-            <div class="blog__details">
-              <slot />
-            </div>
-
-            {
-              relatedServices.length > 0 && (
-                <aside class="lb-post__services">
-                  <h2 class="lb-post__services-title">{t("insights.services.title")}</h2>
-                  <p class="lb-post__services-text">{t("insights.services.text")}</p>
-                  <ul class="lb-post__services-list">
-                    {relatedServices.map((service) => (
-                      <li>
-                        <a href={service.href}>
-                          <strong>{service.title}</strong>
-                          <span>{service.tagline}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </aside>
-              )
-            }
-          </div>
-        </div>
-      </div>
+      {
+        otherInsights.length > 0 && (
+          <section class="lb-insight__related">
+            <h2 class="lb-insight__related-eyebrow">{t("insights.related.eyebrow")}</h2>
+            <h3 class="lb-insight__related-title">{t("insights.related.title")}</h3>
+            <ul class="lb-insight__related-list">
+              {otherInsights.map((item) => (
+                <li>
+                  <a href={item.href}>
+                    <strong>{item.title}</strong>
+                    <span>{item.subtitle}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
     </div>
-  </section>
-
-  {
-    otherInsights.length > 0 && (
-      <section class="blog__related pb-120">
-        <div class="container">
-          <div class="row">
-            <div class="col-xxl-12">
-              <div class="sec-title-wrapper pt-120">
-                <h2 class="sec-sub-title mb-20">{t("insights.related.eyebrow")}</h2>
-                <h3 class="sec-title">{t("insights.related.title")}</h3>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xxl-12">
-              <div class="blog__related-grid">
-                {otherInsights.map((item) => (
-                  <article class="lb-blog__item blog-img-zoom">
-                    <a class="lb-blog__card" href={item.href}>
-                      <div class="thumb">
-                        <picture>
-                          <source
-                            type="image/webp"
-                            srcset={buildSrcSet(item.image, cardWidths, "webp")}
-                            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw"
-                          />
-                          <source
-                            srcset={buildSrcSet(item.image, cardWidths)}
-                            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw"
-                          />
-                          <img
-                            src={appendImageParams(item.image, "w=480")}
-                            srcset={buildSrcSet(item.image, cardWidths)}
-                            sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw"
-                            alt=""
-                            width={800}
-                            height={450}
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        </picture>
-                      </div>
-                      <ul class="lb-blog__meta">
-                        <li>
-                          <time datetime={item.date.toISOString()}>
-                            {formatDate(item.date)}
-                          </time>
-                        </li>
-                        <li>{item.readingLabel}</li>
-                      </ul>
-                      <h3 class="lb-blog__title">{item.title}</h3>
-                    </a>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
+  </article>
 
   <Tickets />
 </BaseLayout>
 
 <style>
-  .blog__details-info :global(ul.blog__meta) {
-    gap: 1.75rem 2rem;
-    padding-bottom: 2rem;
-    flex-wrap: wrap;
+  .lb-insight__header {
+    margin-bottom: 2.5rem;
   }
-  .blog__details-info :global(ul.blog__meta li) {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2rem;
-    min-width: 0;
-  }
-  .blog__details-info :global(ul.blog__meta li::after) {
-    inset-inline-end: -1rem;
-  }
-  .blog__details-info :global(.blog__meta-label) {
-    display: block;
-    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
-    font-size: 0.75rem;
-    font-weight: 500;
-    line-height: 1.4;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--black-9);
-  }
-  .blog__details-info :global(.blog__meta-value),
-  .blog__details-info :global(time.blog__meta-value) {
-    display: block;
-    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
-    font-size: 1rem;
+
+  .lb-insight__title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
     color: var(--white);
+    text-wrap: balance;
   }
-  :global(.light) .blog__details-info :global(.blog__meta-value),
-  :global(.light) .blog__details-info :global(time.blog__meta-value) {
+
+  :global(.light) .lb-insight__title {
     color: var(--black-2);
   }
-  .blog__details-info :global(.blog__details_title) {
-    padding-bottom: 0.75rem;
-  }
-  .blog__details_subtitle {
+
+  .lb-insight__subtitle {
     font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
     font-size: 1.125rem;
-    line-height: 1.6;
-    margin-top: 0;
-    margin-bottom: 2rem;
-    font-weight: 500;
-    opacity: 0.9;
-    color: var(--black-9);
-    max-width: 48ch;
+    line-height: 1.7;
+    margin: 0;
+    color: var(--gray-4);
+    max-width: 62ch;
   }
-  .blog__details-hero-img {
-    display: block;
+
+  :global(.light) .lb-insight__subtitle {
+    color: var(--gray);
+  }
+
+  /* Full container width - do not reuse blog `.blog__details` (68ch). */
+  .lb-insight__body {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: #d0d0d0;
+  }
+
+  :global(.light) .lb-insight__body {
+    color: #3a3a3e;
+  }
+
+  .lb-insight__body :global(h2),
+  .lb-insight__body :global(h3),
+  .lb-insight__body :global(h4) {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-top: 2.25rem;
+    margin-bottom: 0.85rem;
+  }
+
+  :global(.light) .lb-insight__body :global(h2),
+  :global(.light) .lb-insight__body :global(h3),
+  :global(.light) .lb-insight__body :global(h4) {
+    color: var(--black-2);
+  }
+
+  .lb-insight__body :global(h2) {
+    font-size: 1.5rem;
+  }
+
+  .lb-insight__body :global(h3) {
+    font-size: 1.25rem;
+  }
+
+  .lb-insight__body :global(p) {
+    margin-bottom: 1.15rem;
+  }
+
+  .lb-insight__body :global(ul),
+  .lb-insight__body :global(ol) {
+    margin: 0 0 1.15rem;
+    padding-inline-start: 1.35rem;
+  }
+
+  .lb-insight__body :global(li) {
+    margin-bottom: 0.4rem;
+  }
+
+  .lb-insight__body :global(a) {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .lb-insight__body :global(strong) {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  :global(.light) .lb-insight__body :global(strong) {
+    color: var(--black-2);
+  }
+
+  .lb-insight__body :global(table) {
+    display: table;
     width: 100%;
-    max-height: 400px;
-    aspect-ratio: 16 / 9;
-    height: auto;
-    object-fit: cover;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1.5rem 0 2.25rem;
+    font-size: 0.94rem;
+    line-height: 1.5;
+    border: 1px solid var(--black-6);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--black-3);
+    box-shadow: 0 14px 42px rgba(0, 0, 0, 0.3);
   }
+
+  :global(.light) .lb-insight__body :global(table) {
+    border-color: var(--gray-13);
+    background: #fff;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.07);
+  }
+
+  .lb-insight__body :global(th),
+  .lb-insight__body :global(td) {
+    padding: 1.05rem 1.25rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--black-6);
+    border-right: 1px solid var(--black-6);
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: manual;
+  }
+
+  :global(.light) .lb-insight__body :global(th),
+  :global(.light) .lb-insight__body :global(td) {
+    border-bottom-color: var(--gray-13);
+    border-right-color: var(--gray-13);
+  }
+
+  .lb-insight__body :global(th:last-child),
+  .lb-insight__body :global(td:last-child) {
+    border-right: none;
+  }
+
+  .lb-insight__body :global(thead th) {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    color: var(--white);
+    background: linear-gradient(180deg, #2c2c31 0%, #1f1f23 100%);
+    border-bottom: 2px solid var(--primary);
+    white-space: normal;
+  }
+
+  :global(.light) .lb-insight__body :global(thead th) {
+    color: var(--black-2);
+    background: linear-gradient(180deg, #f8f8f9 0%, #ececef 100%);
+    border-bottom-color: var(--secondary);
+  }
+
+  .lb-insight__body :global(thead th:first-child) {
+    background: linear-gradient(180deg, #252529 0%, #1a1a1e 100%);
+  }
+
+  :global(.light) .lb-insight__body :global(thead th:first-child) {
+    background: linear-gradient(180deg, #f2f2f4 0%, #e6e6ea 100%);
+  }
+
+  .lb-insight__body :global(td) {
+    color: #c9c9cd;
+    background: var(--black-3);
+  }
+
+  :global(.light) .lb-insight__body :global(td) {
+    color: #3a3a3e;
+    background: #fff;
+  }
+
+  .lb-insight__body :global(tbody tr:last-child th),
+  .lb-insight__body :global(tbody tr:last-child td) {
+    border-bottom: none;
+  }
+
+  .lb-insight__body :global(tbody tr:nth-child(even) td) {
+    background: #222226;
+  }
+
+  :global(.light) .lb-insight__body :global(tbody tr:nth-child(even) td) {
+    background: #f7f7f8;
+  }
+
+  .lb-insight__body :global(tbody tr:hover td) {
+    background: #2a2a2f;
+  }
+
+  :global(.light) .lb-insight__body :global(tbody tr:hover td) {
+    background: #f1f1f3;
+  }
+
+  .lb-insight__body :global(th:first-child),
+  .lb-insight__body :global(td:first-child) {
+    width: 22%;
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 0.86rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+    color: var(--white);
+    background: #1b1b1f;
+  }
+
+  :global(.light) .lb-insight__body :global(th:first-child),
+  :global(.light) .lb-insight__body :global(td:first-child) {
+    color: var(--black-2);
+    background: #f0f0f2;
+  }
+
+  .lb-insight__body :global(tbody tr:nth-child(even) td:first-child),
+  .lb-insight__body :global(tbody tr:hover td:first-child) {
+    background: #1f1f23;
+  }
+
+  :global(.light) .lb-insight__body :global(tbody tr:nth-child(even) td:first-child),
+  :global(.light) .lb-insight__body :global(tbody tr:hover td:first-child) {
+    background: #e8e8eb;
+  }
+
+  .lb-insight__body :global(td:first-child strong),
+  .lb-insight__body :global(th:first-child strong) {
+    font-weight: 600;
+    color: inherit;
+  }
+
+  .lb-insight__body :global(th:not(:first-child)),
+  .lb-insight__body :global(td:not(:first-child)) {
+    width: 39%;
+  }
+
+  @media only screen and (max-width: 991px) {
+    .lb-insight__body :global(table) {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      table-layout: auto;
+      overscroll-behavior-x: contain;
+    }
+
+    .lb-insight__body :global(thead),
+    .lb-insight__body :global(tbody) {
+      display: table;
+      width: 100%;
+      min-width: 36rem;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .lb-insight__body :global(th:first-child),
+    .lb-insight__body :global(td:first-child) {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.18);
+    }
+
+    :global(.light) .lb-insight__body :global(th:first-child),
+    :global(.light) .lb-insight__body :global(td:first-child) {
+      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.06);
+    }
+  }
+
   @media only screen and (max-width: 767px) {
-    .blog__details-info :global(ul.blog__meta) {
-      gap: 1.1rem 1.5rem;
-      padding-bottom: 1.5rem;
+    .lb-insight__body :global(table) {
+      font-size: 0.86rem;
+      border-radius: 12px;
+      margin: 1.15rem 0 1.8rem;
     }
-    .blog__details_subtitle {
-      font-size: 1.05rem;
-      margin-bottom: 1.5rem;
+
+    .lb-insight__body :global(th),
+    .lb-insight__body :global(td) {
+      padding: 0.85rem 1rem;
+    }
+
+    .lb-insight__body :global(thead),
+    .lb-insight__body :global(tbody) {
+      min-width: 32rem;
     }
   }
-  .lb-blog__card:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 3px;
-  }
-  .lb-post__services {
+
+  .lb-insight__services {
     margin-top: 3.5rem;
     padding: 32px 28px;
     border-radius: 8px;
     border: 1px solid var(--black-6);
   }
-  :global(.light) .lb-post__services {
+
+  :global(.light) .lb-insight__services {
     border-color: var(--gray-13);
   }
-  .lb-post__services-title {
+
+  .lb-insight__services-title {
     font-family: var(--font-heading, "Space Grotesk", sans-serif);
     font-size: 1.35rem;
     font-weight: 600;
     letter-spacing: -0.02em;
     margin-bottom: 0.75rem;
   }
-  .lb-post__services-text {
+
+  .lb-insight__services-text {
     font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
     font-size: 0.9375rem;
     line-height: 1.65;
     color: var(--black-9);
     margin-bottom: 1.5rem;
   }
-  .lb-post__services-list {
+
+  .lb-insight__services-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 16px;
@@ -409,30 +486,36 @@ const formatDate = (value: Date) =>
     margin: 0;
     padding: 0;
   }
-  .lb-post__services-list li {
+
+  .lb-insight__services-list li {
     list-style: none;
   }
-  .lb-post__services-list a {
+
+  .lb-insight__services-list a {
     display: block;
     height: 100%;
-    padding: 18px 18px;
+    padding: 18px;
     border-radius: 8px;
     border: 1px solid var(--black-6);
     text-decoration: none;
     transition: border-color 0.2s ease;
   }
-  :global(.light) .lb-post__services-list a {
+
+  :global(.light) .lb-insight__services-list a {
     border-color: var(--gray-13);
   }
-  .lb-post__services-list a:hover,
-  .lb-post__services-list a:focus-visible {
+
+  .lb-insight__services-list a:hover,
+  .lb-insight__services-list a:focus-visible {
     border-color: var(--primary);
   }
-  .lb-post__services-list a:focus-visible {
+
+  .lb-insight__services-list a:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 3px;
   }
-  .lb-post__services-list strong {
+
+  .lb-insight__services-list strong {
     display: block;
     font-family: var(--font-heading, "Space Grotesk", sans-serif);
     font-size: 1rem;
@@ -441,13 +524,92 @@ const formatDate = (value: Date) =>
     margin-bottom: 0.4rem;
     color: var(--white);
   }
-  :global(.light) .lb-post__services-list strong {
+
+  :global(.light) .lb-insight__services-list strong {
     color: var(--black-2);
   }
-  .lb-post__services-list span {
+
+  .lb-insight__services-list span {
     font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
     font-size: 0.8125rem;
     line-height: 1.55;
+    color: var(--black-9);
+  }
+
+  .lb-insight__related {
+    margin-top: 4.5rem;
+  }
+
+  .lb-insight__related-eyebrow {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .lb-insight__related-title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+  }
+
+  :global(.light) .lb-insight__related-title {
+    color: var(--black-2);
+  }
+
+  .lb-insight__related-list {
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .lb-insight__related-list li {
+    list-style: none;
+  }
+
+  .lb-insight__related-list a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .lb-insight__related-list a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+
+  .lb-insight__related-list strong {
+    display: block;
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+    color: var(--white);
+  }
+
+  .lb-insight__related-list a:hover strong,
+  .lb-insight__related-list a:focus-visible strong {
+    color: var(--primary);
+  }
+
+  :global(.light) .lb-insight__related-list strong {
+    color: var(--black-2);
+  }
+
+  .lb-insight__related-list span {
+    display: block;
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.9375rem;
+    line-height: 1.6;
     color: var(--black-9);
   }
 </style>

@@ -169,12 +169,12 @@ try {
         const dateLabel = sameLocalDay
           ? startLabel
           : `${startLabel} – ${end.toLocaleDateString(lang, dateOpts)}`;
-        const category = event.groups?.[0]?.name?.trim() || "—";
+        const category = event.groups?.[0]?.name?.trim() || "-";
         const topics =
           Array.isArray(event.topics) && event.topics.length > 0
             ? event.topics.join(", ")
-            : "—";
-        const location = event.location?.trim() || "—";
+            : "-";
+        const location = event.location?.trim() || "-";
         const paperTone = `lb__ticket-item--paper-${(index % 3) + 1}`;
         const serial = String(event.id ?? index + 1)
           .replace(/\D/g, "")
@@ -351,7 +351,7 @@ try {
       0 2px 5px rgba(0, 0, 0, 0.16);
   }
 
-  /* Subtle stock variations — like different print runs */
+  /* Subtle stock variations - like different print runs */
   :global(.lb__ticket-item--paper-1) {
     background-color: #f4efe6;
   }
@@ -422,7 +422,7 @@ try {
     display: none;
   }
 
-  /* Stub perforation + corner punches — match page bg to cut the paper */
+  /* Stub perforation + corner punches - match page bg to cut the paper */
   :global(.lb__ticket-item .circle-1),
   :global(.lb__ticket-item .circle-2),
   :global(.lb__ticket-item .corner) {
@@ -599,7 +599,7 @@ try {
     word-break: break-word;
   }
 
-  /* Stub barcode — boarding-pass classic */
+  /* Stub barcode - boarding-pass classic */
   :global(.lb__ticket-barcode) {
     display: block;
     flex: 0 0 auto;

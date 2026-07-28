@@ -10,7 +10,7 @@ image: "/blog/snorlx/snorlx.webp"
 
 ## Why do we need it?
 
-GitHub Actions is the standard for CI/CD. GitHub shows runs clearly *inside* a single repo, but when an organization has 50, 100 or more repos with dozens of workflows, there’s no aggregated view: to see what failed you have to open repo after repo. Teams often resort to scripts or expensive SaaS.
+GitHub Actions is the standard for CI/CD. GitHub shows runs clearly *inside* a single repo, but when an organization has 50, 100 or more repos with dozens of workflows, there's no aggregated view: to see what failed you have to open repo after repo. Teams often resort to scripts or expensive SaaS.
 
 **Bottom line:** no central dashboard, no cost breakdown per workflow/repo (GitHub bills by the minute but only shows monthly totals). Commercial options exist but add cost and vendor lock-in. Snorlx is the self-hosted, open-source answer.
 
@@ -27,7 +27,7 @@ The **Dashboard** page shows cards for repositories, workflows, and run stats (s
 
 ![Scanning repositories in the GitHub Organization](/blog/snorlx/scanning.webp)
 
-The **Repositories** page lists synced repositories; for each you can see the **repository score** (when computed): an overall percentage and a tier (gold, silver, bronze) based on seven categories: Security, Testing, CI/CD, Documentation, Code Quality, Maintenance and Community derived from GitHub data (branch protection, Dependabot, code scanning, README, config files, community profile, etc.). The score is computed during sync or on demand via “Refresh grade” from the repository detail page; in the detail view you get a radar chart for the seven dimensions and the list of checks (pass/fail).
+The **Repositories** page lists synced repositories; for each you can see the **repository score** (when computed): an overall percentage and a tier (gold, silver, bronze) based on seven categories: Security, Testing, CI/CD, Documentation, Code Quality, Maintenance and Community derived from GitHub data (branch protection, Dependabot, code scanning, README, config files, community profile, etc.). The score is computed during sync or on demand via "Refresh grade" from the repository detail page; in the detail view you get a radar chart for the seven dimensions and the list of checks (pass/fail).
 
 ![Snorlx repositories list](/blog/snorlx/repositories.webp)
 ![Repository scoring](/blog/snorlx/scoring.webp)
@@ -156,4 +156,4 @@ helm install snorlx ./helm/snorlx \
 
 ## Bottom line
 
-With `pnpm run dev` you get a dashboard that aggregates runs from all your repos, tracks costs, scores each repository (gold/silver/bronze), and updates in real time: self-hosted, open-source, under your control. Start in memory mode to try it in minutes, then switch to PostgreSQL when you need persistence. For anyone running GitHub Actions across many repositories, Snorlx is the central view GitHub doesn’t provide.
+With `pnpm run dev` you get a dashboard that aggregates runs from all your repos, tracks costs, scores each repository (gold/silver/bronze), and updates in real time: self-hosted, open-source, under your control. Start in memory mode to try it in minutes, then switch to PostgreSQL when you need persistence. For anyone running GitHub Actions across many repositories, Snorlx is the central view GitHub doesn't provide.

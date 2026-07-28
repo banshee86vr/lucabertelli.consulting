@@ -23,11 +23,11 @@ Le GitHub Actions sono lo standard per l'automazione CI/CD. GitHub mostra bene l
 
 ## Cosa ci offre la dashboard?
 
-La pagina **Dashboard** mostra card per repository, workflow e statistiche run (tasso di successo, run in corso, confronti con il periodo precedente), grafici per i trend degli ultimi 30 giorni, distribuzione risultati, una sezione live con pipeline in esecuzione e in coda, e la media del punteggio dei repository e il numero di repo “graded”.
+La pagina **Dashboard** mostra card per repository, workflow e statistiche run (tasso di successo, run in corso, confronti con il periodo precedente), grafici per i trend degli ultimi 30 giorni, distribuzione risultati, una sezione live con pipeline in esecuzione e in coda, e la media del punteggio dei repository e il numero di repo "graded".
 
 ![Scanning dei reposity all'interno della GitHub Organization](/blog/snorlx/scanning.webp)
 
-La pagina **Repositories** elenca i repository sincronizzati; per ognuno puoi vedere il **repository score** (se calcolato): un punteggio complessivo in percentuale e un tier (gold, silver, bronze) basato su sette categorie: Security, Testing, CI/CD, Documentation, Code Quality, Maintenance e Community ricavate dai dati GitHub (branch protection, Dependabot, code scanning, README, file di config, community profile, ecc.). Lo score viene calcolato durante la sync o on-demand con “Refresh grade” dalla pagina di dettaglio del repository; nel dettaglio trovi il grafico a radar per le sette dimensioni e l’elenco dei check pass/fail.
+La pagina **Repositories** elenca i repository sincronizzati; per ognuno puoi vedere il **repository score** (se calcolato): un punteggio complessivo in percentuale e un tier (gold, silver, bronze) basato su sette categorie: Security, Testing, CI/CD, Documentation, Code Quality, Maintenance e Community ricavate dai dati GitHub (branch protection, Dependabot, code scanning, README, file di config, community profile, ecc.). Lo score viene calcolato durante la sync o on-demand con "Refresh grade" dalla pagina di dettaglio del repository; nel dettaglio trovi il grafico a radar per le sette dimensioni e l'elenco dei check pass/fail.
 
 ![Sonrlx dashboard](/blog/snorlx/repositories.webp)
 

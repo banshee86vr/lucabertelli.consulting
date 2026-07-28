@@ -1,5 +1,5 @@
 /**
- * Brand typography — single source of truth.
+ * Brand typography - single source of truth.
  * Headings: Space Grotesk · Body / UI: Plus Jakarta Sans
  * Loaded after master.css so these rules win the cascade.
  */
@@ -190,7 +190,7 @@ samp {
   font-family: var(--font-mono);
 }
 
-/* Event tickets — compact airport / boarding-pass typography */
+/* Event tickets - compact airport / boarding-pass typography */
 .lb__ticket-item,
 .lb__ticket-item .title,
 .lb__ticket-item .title a,

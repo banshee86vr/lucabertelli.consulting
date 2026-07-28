@@ -18,7 +18,7 @@ export const onRequest = defineMiddleware((context, next) => {
 	if (path === "/" || path === "") {
 		return Response.redirect(new URL("/en/", context.url), 308);
 	}
-	// Contact page removed — keep old URLs working
+	// Contact page removed - keep old URLs working
 	if (path === "/en/contact" || path === "/en/contact/") {
 		return Response.redirect(new URL("/en/", context.url), 308);
 	}

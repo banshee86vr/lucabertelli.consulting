@@ -1,0 +1,151 @@
+---
+interface InsightCardItem {
+  title: string;
+  subtitle: string;
+  href: string;
+}
+
+interface Props {
+  items: InsightCardItem[];
+  ctaLabel: string;
+  /** Card title level; use 3 when the section already has an h2. */
+  headingLevel?: 2 | 3;
+}
+
+const { items, ctaLabel, headingLevel = 2 } = Astro.props;
+---
+
+<ul class="lb-insight-cards">
+  {
+    items.map((item) => (
+      <li>
+        <article class="lb-insight-card">
+          {headingLevel === 3 ? (
+            <h3 class="lb-insight-card__title">
+              <a href={item.href}>{item.title}</a>
+            </h3>
+          ) : (
+            <h2 class="lb-insight-card__title">
+              <a href={item.href}>{item.title}</a>
+            </h2>
+          )}
+          <p class="lb-insight-card__text">{item.subtitle}</p>
+          <span class="lb-insight-card__cta" aria-hidden="true">
+            {ctaLabel}
+          </span>
+        </article>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .lb-insight-cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  /* master.css sets `li { list-style: decimal }` globally */
+  .lb-insight-cards li {
+    list-style: none;
+    display: flex;
+  }
+
+  .lb-insight-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 32px 28px;
+    border-radius: 12px;
+    background: linear-gradient(168deg, var(--black-4) 0%, var(--black-3) 100%);
+    border: 1px solid var(--black-6);
+    transition: border-color 0.2s ease;
+  }
+
+  .lb-insight-card:hover,
+  .lb-insight-card:focus-within {
+    border-color: var(--primary);
+  }
+
+  .lb-insight-card__title {
+    font-family: var(--font-heading, "Space Grotesk", sans-serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+
+  .lb-insight-card__title a {
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .lb-insight-card__title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .lb-insight-card__title a:hover,
+  .lb-insight-card__title a:focus-visible {
+    color: var(--primary);
+  }
+
+  .lb-insight-card__title a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+  }
+
+  .lb-insight-card__text {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--gray-4);
+    margin: 0 0 20px;
+    flex: 1;
+  }
+
+  .lb-insight-card__cta {
+    font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  :global(.light) .lb-insight-card {
+    background: linear-gradient(168deg, var(--white-3) 0%, rgba(255, 255, 255, 0) 100%);
+    border-color: var(--gray-13);
+  }
+
+  :global(.light) .lb-insight-card__title a {
+    color: var(--black-2);
+  }
+
+  :global(.light) .lb-insight-card__text {
+    color: var(--gray);
+  }
+
+  :global(.light) .lb-insight-card__cta {
+    color: var(--secondary);
+  }
+
+  @media (max-width: 991px) {
+    .lb-insight-cards {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .lb-insight-cards {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+</style>

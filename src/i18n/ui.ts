@@ -68,7 +68,7 @@ export const ui = {
       'Freelance consulting for DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps, CI/CD, training and AI agent governance across Italy and the EU.',
     'services.hub.intents.title': 'When this kind of consulting helps',
     'services.hub.intents.intro':
-      'The same problem shows up under different names. These are the situations I am usually called for — each one links to the service page that owns that work.',
+      'The same problem shows up under different names. These are the situations I am usually called for - each one links to the service page that owns that work.',
     'services.hub.intent.devops.title': 'Releases that scare the team',
     'services.hub.intent.devops.text':
       'Freelance DevOps consulting when deployments pile up, depend on one person, or break in ways nobody can explain.',
@@ -403,7 +403,7 @@ export const ui = {
       'Insights su consulenza Kubernetes, Platform Engineering vs DevOps e DevOps in Fintech, Insurtech e contesti industriali.',
     'insights.services.title': 'Servizi di consulenza correlati',
     'insights.services.text':
-      'Queste guide servono a scegliere l’intervento giusto. Nelle pagine di servizio trovi perimetro, risultati attesi e FAQ.',
+      "Queste guide servono a scegliere l'intervento giusto. Nelle pagine di servizio trovi perimetro, risultati attesi e FAQ.",
     'insights.related.eyebrow': 'Altri insights',
     'insights.related.title': 'Altre note dal campo',
     'services.cta.title': 'Parlare del tuo caso non costa nulla',

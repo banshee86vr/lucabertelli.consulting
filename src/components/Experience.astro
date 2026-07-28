@@ -12,7 +12,7 @@ const experienceSliderLabels = [
 ];
 const experienceSliderLine = experienceSliderLabels.join(" / ");
 
-/** Present as mid-2026 (site “today”) for open-ended roles */
+/** Present as mid-2026 (site "today") for open-ended roles */
 const PRESENT = 2026 + 7 / 12;
 
 const jobsNewestFirst = [
@@ -126,7 +126,7 @@ const jobs = [...jobsNewestFirst].reverse().map((job, index) => {
   (() => {
     const startMarquee = () => {
       const marquees = document.querySelectorAll("[data-about-experience-marquee]");
-      const speed = 90; // pixels per second — intentional brand motion
+      const speed = 90; // pixels per second - intentional brand motion
 
       marquees.forEach((marquee) => {
         const track = marquee.querySelector("[data-about-experience-marquee-track]");

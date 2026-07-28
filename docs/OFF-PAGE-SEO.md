@@ -57,7 +57,7 @@ under the engineering blog.
 ## 3. GitHub profile
 
 In the profile README (`banshee86vr/.github` or the profile repo), link services
-explicitly — not only the consulting site root.
+explicitly - not only the consulting site root.
 
 Example block:
 
