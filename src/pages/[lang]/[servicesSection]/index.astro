@@ -368,7 +368,6 @@ const hubArticles = (await getInsights(lang))
 
   .lb-services-intents {
     margin-top: 5rem;
-    max-width: 72ch;
   }
 
   .lb-services-intents__title {
@@ -396,6 +395,28 @@ const hubArticles = (await getInsights(lang))
     padding: 0;
     display: grid;
     gap: 2rem;
+  }
+
+  /* master.css sets `li { list-style: decimal }` globally — override on the li */
+  .lb-services-intents__list > li {
+    position: relative;
+    list-style: none;
+    padding-left: 1.5rem;
+  }
+
+  .lb-services-intents__list > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+  }
+
+  :global(.light) .lb-services-intents__list > li::before {
+    background: var(--secondary);
   }
 
   .lb-services-intents__item-title {
