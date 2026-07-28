@@ -235,7 +235,7 @@ const hubArticles = (await getInsights(lang))
     </div>
   </section>
 
-  <Tickets />
+  <Tickets lang={lang} server:defer />
 </BaseLayout>
 
 <style>
