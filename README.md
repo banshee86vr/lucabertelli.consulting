@@ -76,7 +76,7 @@ Prerequisites: Node.js >= 22.12.0 and [pnpm](https://pnpm.io/).
    pnpm install
    ```
 
-3. (Optional) Create a `.env` file for the events/tickets integration (in production these values are read from Cloudflare KV; without them the tickets section is simply hidden):
+3. (Optional) Create a `.env` file for the events/tickets integration. Most pages are prerendered; the tickets block is a server island (`server:defer`) so it can still read Cloudflare KV at request time in production. Without these values (locally) or the matching KV keys (in production), the section is simply hidden:
 
    ```bash
    SECRET_LOAD_EVENTS=true

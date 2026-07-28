@@ -1,8 +1,21 @@
 ---
 import { env } from "cloudflare:workers";
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import {
+	DEFAULT_LANG,
+	getLangFromUrl,
+	useTranslations,
+	type UiType,
+} from "../i18n/utils";
 
-const lang = getLangFromUrl(Astro.url);
+interface Props {
+	/**
+	 * Required when rendered as a server island (`server:defer`): Astro.url is
+	 * `/_server-islands/...`, so language cannot be inferred from the pathname.
+	 */
+	lang?: UiType;
+}
+
+const lang = (Astro.props.lang ?? getLangFromUrl(Astro.url) ?? DEFAULT_LANG) as UiType;
 const t = useTranslations(lang);
 
 let events = [];
@@ -12,13 +25,14 @@ try {
 	let apiUsername: string | null = null;
 	let apiPassword: string | null = null;
 
-	// Try environment variables first (works for both dev and production)
+	// Try environment variables first (local .env / build-time secrets)
 	loadEvents = String(import.meta.env.SECRET_LOAD_EVENTS || "");
 	apiUrl = String(import.meta.env.SECRET_EVENTS_API_URL || "");
 	apiUsername = String(import.meta.env.SECRET_EVENTS_API_USERNAME || "");
 	apiPassword = String(import.meta.env.SECRET_EVENTS_API_PASSWORD || "");
 
-	// If env vars are not set, try Cloudflare KV
+	// Production: pages are prerendered, so secrets live in Cloudflare KV and
+	// this component must run on-demand (via server:defer) to read them.
 	if (
 		!loadEvents ||
 		loadEvents === "" ||
