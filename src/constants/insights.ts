@@ -4,6 +4,7 @@ export const INSIGHT_KEYS = [
 	"kubernetes-consultant",
 	"platform-vs-devops",
 	"regulated-industries",
+	"light-knowledge-graphs",
 ] as const;
 
 export type InsightKey = (typeof INSIGHT_KEYS)[number];

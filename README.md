@@ -2,7 +2,7 @@
 
 # lucabertelli.consulting Portfolio and Blog
 
-Welcome to the official repository for Luca Bertelli's consulting site and blog, covering DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps and AI engineering. 🚀
+Welcome to the official repository for Luca Bertelli's consulting site and blog, covering DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps, AI engineering and light knowledge graphs. 🚀
 
 ## Overview
 

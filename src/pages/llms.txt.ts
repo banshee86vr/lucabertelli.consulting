@@ -31,7 +31,7 @@ export async function GET() {
 	lines.push("# lucabertelli.consulting");
 	lines.push("");
 	lines.push(
-		"> Luca Bertelli is a freelance DevOps and Cloud Native consultant based in Italy, working with clients across Italy and the European Union. Areas of work: DevOps consulting, cloud migration, Platform Engineering, Kubernetes, SecDevOps and CI/CD, technical training, and AI engineering.",
+		"> Luca Bertelli is a freelance DevOps and Cloud Native consultant based in Italy, working with clients across Italy and the European Union. Areas of work: DevOps consulting, cloud migration, Platform Engineering, Kubernetes, SecDevOps and CI/CD, technical training, AI engineering, and light knowledge graphs.",
 	);
 	lines.push("");
 

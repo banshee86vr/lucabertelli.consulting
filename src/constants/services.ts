@@ -9,6 +9,7 @@ export const SERVICE_KEYS = [
 	"secdevops",
 	"training",
 	"ai-engineering",
+	"knowledge-graphs",
 ] as const;
 
 export type ServiceKey = (typeof SERVICE_KEYS)[number];
@@ -52,6 +53,10 @@ export const SERVICE_SLUGS: Record<ServiceKey, Record<UiLang, string>> = {
 		en: "ai-agent-governance",
 		it: "consulenza-agenti-ai",
 	},
+	"knowledge-graphs": {
+		en: "knowledge-graph-consulting",
+		it: "consulenza-knowledge-graph",
+	},
 };
 
 /**
@@ -80,6 +85,7 @@ export const SERVICE_ICONS: Record<ServiceKey, ServiceIconName> = {
 	secdevops: "shield-check",
 	training: "graduation-cap",
 	"ai-engineering": "bot",
+	"knowledge-graphs": "share-2",
 };
 
 export function isServiceKey(value: string): value is ServiceKey {

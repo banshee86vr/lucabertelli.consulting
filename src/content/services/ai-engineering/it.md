@@ -62,3 +62,5 @@ Sul piano tecnico un agente va trattato come un servizio con un'identità propri
 La prompt injection indiretta merita attenzione particolare perché non ha un equivalente diretto nei modelli di sicurezza tradizionali: un agente che elabora contenuti provenienti dall'esterno può essere indotto a compiere azioni che nessun utente ha richiesto. La mitigazione pratica è la stessa che vale per ogni componente non affidabile, cioè ridurre ciò che può fare, non sperare che interpreti correttamente ciò che legge.
 
 Sull'integrazione, quando più agenti devono accedere agli stessi sistemi interni conviene esporre un server MCP invece di moltiplicare integrazioni dedicate. Centralizza accesso, permessi e tracciamento in un punto solo, che è anche l'unico modo realistico per mantenerli coerenti nel tempo.
+
+MCP ha comunque bisogno di qualcosa di vero da interrogare. Se l'inventario di come funzionano davvero i sistemi sta in migliaia di file e nella testa di poche persone, gli agenti riempiono i buchi con congetture. È un problema di [knowledge graph leggero](/it/servizi/consulenza-knowledge-graph/), non di modello.
