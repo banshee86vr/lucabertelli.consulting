@@ -7,18 +7,18 @@ Use this after deploy to verify the implementation and track reachability over t
 | Surface | URLs | Notes |
 |---------|------|-------|
 | Home | `/en/`, `/it/` | H1 carries the primary query terms |
-| Services hub | `/en/services/`, `/it/servizi/` | Lists all seven services |
-| Service pages | 7 per language | Localized slugs with commercial intent in the path, e.g. `/it/servizi/consulenza-agenti-ai/` vs `/en/services/ai-agent-governance/` |
+| Services hub | `/en/services/`, `/it/servizi/` | Lists all eight services |
+| Service pages | 8 per language | Localized slugs with commercial intent in the path, e.g. `/it/servizi/consulenza-agenti-ai/` vs `/en/services/ai-agent-governance/` |
 | Blog index | `/en/blog/`, `/it/blog/` | Engineering notes only |
 | Blog articles | 4 per language | Tooling / OSS write-ups |
 | Blog tag pages | per distinct tag × language | `/‹lang›/blog/tag/‹tag›/` |
 | Insights hub | `/en/insights/`, `/it/insights/` | Commercial field guides (not the blog) |
-| Insight pages | 3 per language | Kubernetes consultant, PE vs DevOps, regulated industries |
+| Insight pages | 4 per language | Kubernetes consultant, PE vs DevOps, regulated industries, light knowledge graphs |
 | Legal | privacy, cookies | |
 | Feeds | `/en/rss.xml`, `/it/rss.xml` | Blog only |
 | Agent summary | `/llms.txt` | Generated at build from the content collections |
 
-Current inventory: **68 indexable HTML pages**. Re-confirm with
+Current inventory: **72 indexable HTML pages**. Re-confirm with
 `pnpm run verify:seo` after a fresh build whenever content or routes change.
 
 ## Post-deploy validation (manual)
@@ -36,7 +36,7 @@ Current inventory: **68 indexable HTML pages**. Re-confirm with
 ## Search Console (recommended)
 
 - Submit the **sitemap**: `https://lucabertelli.consulting/sitemap-index.xml`.
-- Monitor **Coverage / Pages**: indexed count against the 60 URLs above.
+- Monitor **Coverage / Pages**: indexed count against the 72 URLs above.
 - Watch **International targeting**: hreflang issues should stay **0**. The localized service slugs are the most likely source of a regression here.
 - Track **Queries / Pages** for the service URLs specifically, not only the home page.
 
@@ -45,7 +45,7 @@ Current inventory: **68 indexable HTML pages**. Re-confirm with
 | Metric | Where | Goal |
 |--------|--------|------|
 | Indexed core URLs | URL Inspection / Coverage | All service pages, insights hub/pages and both blog indexes indexed |
-| Position for "consulente devops", "consulenza kubernetes", "consulenza platform engineering", "governance agenti AI" | Search Console queries | Entering the first pages, then improving |
+| Position for "consulente devops", "consulenza kubernetes", "consulenza platform engineering", "governance agenti AI", "consulenza knowledge graph" | Search Console queries | Entering the first pages, then improving |
 | Impressions on service pages | Search Console, filtered by page | Upward trend; they start from zero |
 | Click-through rate on branded + service queries | Search Console | Slow upward trend |
 | Rich result errors | Rich Results Test / GSC | Zero critical errors |

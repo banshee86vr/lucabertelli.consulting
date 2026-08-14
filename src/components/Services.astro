@@ -78,32 +78,27 @@ const services = (await getServices(lang)).map((service) => {
     gap: 24px;
   }
 
-  /* Desktop: 4 + 3 - avoids a lone card on the second row */
+  /* Desktop: 4 + 4 on a 12-column track */
   @media (min-width: 992px) {
     .services-grid {
       grid-template-columns: repeat(12, 1fr);
     }
 
-    .service-card:nth-child(1) {
+    .service-card:nth-child(1),
+    .service-card:nth-child(5) {
       grid-column: 1 / 4;
     }
-    .service-card:nth-child(2) {
+    .service-card:nth-child(2),
+    .service-card:nth-child(6) {
       grid-column: 4 / 7;
     }
-    .service-card:nth-child(3) {
+    .service-card:nth-child(3),
+    .service-card:nth-child(7) {
       grid-column: 7 / 10;
     }
-    .service-card:nth-child(4) {
+    .service-card:nth-child(4),
+    .service-card:nth-child(8) {
       grid-column: 10 / 13;
-    }
-    .service-card:nth-child(5) {
-      grid-column: 3 / 6;
-    }
-    .service-card:nth-child(6) {
-      grid-column: 6 / 9;
-    }
-    .service-card:nth-child(7) {
-      grid-column: 9 / 12;
     }
   }
 

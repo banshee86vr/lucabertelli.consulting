@@ -7,4 +7,5 @@ export type ServiceIconName =
 	| "infinity"
 	| "layers"
 	| "boxes"
-	| "shield-check";
+	| "shield-check"
+	| "share-2";

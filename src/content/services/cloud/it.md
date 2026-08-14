@@ -55,6 +55,6 @@ La migrazione procede poi per ondate, partendo da carichi a basso rischio che se
 
 ## La governance dei costi, dal primo giorno
 
-Il controllo della spesa non è una fase finale di ottimizzazione, è una proprietà da costruire fin dall'inizio. Se il tagging è coerente dal primo deploy, attribuire i costi a un team o a un progetto è immediato; se lo si introduce dopo, diventa un lavoro archeologico su risorse di cui si è persa la traccia.
+Il controllo della spesa non è una fase finale di ottimizzazione, è una proprietà da costruire fin dall'inizio. Se il tagging è coerente dal primo deploy, attribuire i costi a un team o a un progetto è immediato; se lo si introduce dopo, diventa un lavoro di ricostruzione su risorse di cui si è persa la traccia.
 
 In pratica significa budget e allarmi per ambiente, revisione periodica del dimensionamento, spegnimento automatico di ciò che non serve fuori orario, e una regola semplice: ogni risorsa deve avere un proprietario identificabile.

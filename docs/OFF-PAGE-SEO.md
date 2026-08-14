@@ -16,7 +16,9 @@ After each production deploy that adds or renames URLs:
    - `/it/servizi/consulenza-devops/`
    - `/it/servizi/consulenza-kubernetes/`
    - `/it/servizi/consulenza-agenti-ai/`
+   - `/it/servizi/consulenza-knowledge-graph/`
    - `/it/insights/kubernetes-consultant/`
+   - `/it/insights/light-knowledge-graphs/`
 4. Repeat in [Bing Webmaster Tools](https://www.bing.com/webmasters) with the
    same sitemap.
 5. Confirm legacy service slugs **308** (example:
@@ -34,20 +36,21 @@ Suggested Featured / Experience links (Italian profile):
 | Consulenza Kubernetes | https://lucabertelli.consulting/it/servizi/consulenza-kubernetes/ |
 | Platform Engineering | https://lucabertelli.consulting/it/servizi/consulenza-platform-engineering/ |
 | Governance agenti AI | https://lucabertelli.consulting/it/servizi/consulenza-agenti-ai/ |
+| Consulenza knowledge graph | https://lucabertelli.consulting/it/servizi/consulenza-knowledge-graph/ |
 | Tutti i servizi | https://lucabertelli.consulting/it/servizi/ |
 
 Short About blurb (IT):
 
 > Consulente DevOps e Platform Engineering freelance in Italia e in UE.
 > Aiuto team Fintech, Insurtech e industriali su Kubernetes, CI/CD sicuro,
-> piattaforme interne e governance degli agenti AI.
+> piattaforme interne, governance degli agenti AI e knowledge graph leggeri.
 > Servizi: https://lucabertelli.consulting/it/servizi/
 
 English About blurb:
 
 > Freelance DevOps and Platform Engineering consultant across Italy and the EU.
 > I help Fintech, Insurtech and industrial teams with Kubernetes, secure CI/CD,
-> internal platforms and AI agent governance.
+> internal platforms, AI agent governance and light knowledge graphs.
 > Services: https://lucabertelli.consulting/en/services/
 
 When you publish a field guide under `/insights/`, share that URL first and
@@ -67,6 +70,7 @@ Example block:
 - [Kubernetes consulting](https://lucabertelli.consulting/en/services/kubernetes-consulting/)
 - [Platform Engineering](https://lucabertelli.consulting/en/services/platform-engineering-consulting/)
 - [AI agent governance](https://lucabertelli.consulting/en/services/ai-agent-governance/)
+- [Knowledge graph consulting](https://lucabertelli.consulting/en/services/knowledge-graph-consulting/)
 - [All services](https://lucabertelli.consulting/en/services/)
 ```
 
@@ -81,6 +85,7 @@ Replace a bare personal site URL with the service that matches the talk:
 - Kubernetes / CKA talk → `/…/consulenza-kubernetes/` or `/…/kubernetes-consulting/`
 - Vault / supply chain → `/…/consulenza-secdevops-cicd/` or `/…/secdevops-cicd-consulting/`
 - Platform / IDP talk → Platform Engineering service URL
+- Knowledge graph / MCP / agent-ready platforms → `/…/consulenza-knowledge-graph/` or `/…/knowledge-graph-consulting/`
 
 ## 5. Client references
 

@@ -31,6 +31,8 @@ const KNOWS_ABOUT = [
 	"CI/CD",
 	"GitOps",
 	"AI Engineering",
+	"Knowledge Graphs",
+	"Model Context Protocol",
 ];
 
 /**

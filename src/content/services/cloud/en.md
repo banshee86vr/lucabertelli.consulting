@@ -55,6 +55,6 @@ Migration then proceeds in waves, starting with low-risk workloads that validate
 
 ## Cost governance, from day one
 
-Controlling spend is not a final optimisation phase, it is a property you build in from the start. If tagging is consistent from the first deployment, attributing cost to a team or a project is immediate; introduce it later and it becomes archaeology across resources whose history is lost.
+Controlling spend is not a final optimisation phase, it is a property you build in from the start. If tagging is consistent from the first deployment, attributing cost to a team or a project is immediate; introduce it later and it becomes reconstruction across resources whose history is lost.
 
 In practice that means budgets and alerts per environment, periodic sizing reviews, automatic shutdown of what is not needed outside working hours, and one simple rule: every resource must have an identifiable owner.
