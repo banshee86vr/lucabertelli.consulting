@@ -5,7 +5,7 @@
   "private": true,
   "pnpm": {
     "overrides": {
-      "wrangler": "^4.114.0",
+      "wrangler": "^4.123.0",
       "axios": ">=1.16.0",
       "undici": ">=7.24.0",
       "lodash": ">=4.18.0",
@@ -36,19 +36,19 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/cloudflare": "^14.1.1",
+    "@astrojs/cloudflare": "^14.2.1",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.2",
     "@sendgrid/mail": "^8.1.5",
-    "astro": "^7.1.4",
+    "astro": "^7.2.2",
     "astro-seo": "^1.0.0",
     "dotenv": "^17.2.1",
     "typescript": "^6.0.0"
   },
   "devDependencies": {
     "semantic-release": "^25.0.0",
-    "terser": "^5.49.0",
-    "wrangler": "^4.114.0"
+    "terser": "^5.50.0",
+    "wrangler": "^4.123.0"
   },
   "repository": "https://github.com/banshee86vr/lucabertelli.consulting.git",
   "engines": {
