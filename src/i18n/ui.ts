@@ -93,7 +93,8 @@ export const ui = {
       'AI agent governance and adoption consulting: policy, security, MCP integration and inference cost control.',
     'services.hub.intent.kg.title': 'Platform knowledge trapped in files and heads',
     'services.hub.intent.kg.text':
-      'Light knowledge graph consulting: operational facts for people and AI agents, MCP access, and a path for large CI/CD migrations.',
+      'Light knowledge graph consulting: key information for people and AI agents, MCP access, and support for major migrations such as CI/CD.',
+ 
     'services.hub.insights.title': 'Guides from the field',
     'services.hub.insights.intro':
       'Consulting notes kept outside the engineering blog: when to hire help, Platform Engineering vs DevOps, regulated industries, and light knowledge graphs.',
@@ -326,10 +327,10 @@ export const ui = {
     'a11y.logo': 'Luca Bertelli Consulting',
     'seo.site.title': 'Luca Bertelli | Consulenza DevOps e Cloud Native',
     'seo.site.description':
-      'Consulente DevOps e Cloud Native freelance: Platform Engineering, Kubernetes, CI/CD, agenti AI e consulenza knowledge graph.',
+      'Consulente DevOps e Cloud Native freelance: Platform Engineering, Kubernetes, CI/CD, agenti AI e consulenza sui knowledge graph.',
     'seo.home.title': 'Consulente DevOps e Platform Engineering | Luca Bertelli',
     'seo.home.description':
-      'Consulente DevOps, Kubernetes e Platform Engineering freelance in Italia e in UE. CI/CD sicuro, governance degli agenti AI e knowledge graph leggeri.',
+      'Consulente DevOps, Kubernetes e Platform Engineering freelance in Italia e in UE. CI/CD sicuro, governance degli agenti AI e consulenza sui knowledge graph leggeri.',
     'seo.blog.title': 'Blog DevOps e Kubernetes | Luca Bertelli',
     'seo.blog.description':
       'Articoli su Kubernetes, CI/CD, platform engineering e operatività cloud-native, scritti a partire da progetti di consulenza reali.',
@@ -389,7 +390,7 @@ export const ui = {
       'Consulenza su governance e adozione di agenti AI: policy, sicurezza, integrazione MCP e controllo dei costi di inferenza.',
     'services.hub.intent.kg.title': 'Conoscenza di piattaforma chiusa in file e teste',
     'services.hub.intent.kg.text':
-      'Consulenza knowledge graph: fatti operativi per persone e agenti AI, accesso MCP e un percorso per le grandi migrazioni CI/CD.',
+      'Consulenza knowledge graph: conoscenza operativa a disposizione di persone e agenti AI, integrazione MCP e supporto alle migrazioni CI/CD di grande scala.',
     'services.hub.insights.title': 'Insights dal campo',
     'services.hub.insights.intro':
       'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati, knowledge graph leggeri.',
