@@ -5,7 +5,7 @@
   "private": true,
   "pnpm": {
     "overrides": {
-      "wrangler": "^4.123.0",
+      "wrangler": "^4.126.0",
       "axios": ">=1.16.0",
       "undici": ">=7.24.0",
       "lodash": ">=4.18.0",
@@ -47,8 +47,8 @@
   },
   "devDependencies": {
     "semantic-release": "^25.0.0",
-    "terser": "^5.50.0",
-    "wrangler": "^4.123.0"
+    "terser": "^5.51.0",
+    "wrangler": "^4.126.0"
   },
   "repository": "https://github.com/banshee86vr/lucabertelli.consulting.git",
   "engines": {
