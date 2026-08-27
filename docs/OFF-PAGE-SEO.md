@@ -43,14 +43,14 @@ Short About blurb (IT):
 
 > Consulente DevOps e Platform Engineering freelance in Italia e in UE.
 > Aiuto team Fintech, Insurtech e industriali su Kubernetes, CI/CD sicuro,
-> piattaforme interne, governance degli agenti AI e knowledge graph leggeri.
+> piattaforme interne, governance degli agenti AI e temporal knowledge graph.
 > Servizi: https://lucabertelli.consulting/it/servizi/
 
 English About blurb:
 
 > Freelance DevOps and Platform Engineering consultant across Italy and the EU.
 > I help Fintech, Insurtech and industrial teams with Kubernetes, secure CI/CD,
-> internal platforms, AI agent governance and light knowledge graphs.
+> internal platforms, AI agent governance and temporal knowledge graphs.
 > Services: https://lucabertelli.consulting/en/services/
 
 When you publish a field guide under `/insights/`, share that URL first and

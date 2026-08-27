@@ -1,7 +1,7 @@
 ---
 key: "light-knowledge-graphs"
 lang: "en"
-title: "When a light knowledge graph makes a platform migration possible"
+title: "When a knowledge graph makes a platform migration possible"
 subtitle: "People and AI agents need queryable facts. Without them, large CI/CD migrations stay tribal and stall."
 seoTitle: "Knowledge graphs for agents and migrations | Luca Bertelli"
 date: "2026-08-14"
@@ -26,15 +26,15 @@ That is the point at which [knowledge graph consulting](/en/services/knowledge-g
 
 You often start from hundreds, if not thousands, of files whose code has not been verified or maintained over time. In that setting AI agents hit a basic limit: prior knowledge is not in the prompt; it is spread across catalogues, inventories, repositories and the memory of a few people (often no longer around). Simply adding more files to the context does not increase coverage; it only produces more confident guesses.
 
-A light knowledge graph flips the approach. Typed facts are extracted from the sources through a deterministic, repeatable process, without involving AI agents. You get a clear schema of nodes, directed relationships and a carefully maintained mapping, so two elements with different names can be recognised as the same intent or purpose. That puts people and AI agents in a position to navigate them, including through dedicated MCP servers.
+A purpose-built knowledge graph flips the approach. Typed facts are extracted from the sources through a deterministic, repeatable process, without involving AI agents. You get a clear schema of nodes, directed relationships and a carefully maintained mapping, so two elements with different names can be recognised as the same intent or purpose. That puts people and AI agents in a position to navigate them, including through dedicated MCP servers.
 
 The graph does not migrate anything. It tells you what is ready, what is blocked, and what would be unsafe to invent. Humans still decide. Agents stop filling holes with fiction.
 
-## What "light" means
+## A pragmatic scope
 
-This is not an enterprise knowledge-graph programme. It is not Neo4j as a technology choice. It is not RDF (Resource Description Framework), where data is subject-predicate-object triples typical of the Semantic Web and formal ontologies. Here we mean a pragmatic, light approach, not a semantic framework. It is not a second wiki people are asked to keep in sync by hand either. Nodes, properties and relationships are defined ad hoc, fitted to the client's context and use cases.
+This is not an enterprise knowledge-graph programme. It is not a graph-database technology choice. It is not RDF (Resource Description Framework), where data is subject-predicate-object triples typical of the Semantic Web and formal ontologies. It is a pragmatic, purpose-built approach, not a semantic framework. It is not a second wiki people are asked to keep in sync by hand either. Nodes, properties and relationships are defined ad hoc, fitted to the client's context and use cases.
 
-Light means:
+In practice:
 
 - the schema fits in a review;
 - extractors read artefacts the organisation already owns;

@@ -63,4 +63,4 @@ Indirect prompt injection deserves particular attention because it has no direct
 
 On integration, when several agents need access to the same internal systems it is worth exposing an MCP server instead of multiplying bespoke integrations. It centralises access, permissions and auditing in one place, which is also the only realistic way to keep them consistent over time.
 
-MCP still needs something true to query. If the inventory of how systems actually work lives in thousands of files and a few people's heads, agents fill the gaps with guesses. That is a [light knowledge graph](/en/services/knowledge-graph-consulting/) problem, not a model problem.
+MCP still needs something true to query. If the inventory of how systems actually work lives in thousands of files and a few people's heads, agents fill the gaps with guesses. That is a [knowledge graph](/en/services/knowledge-graph-consulting/) problem, not a model problem.

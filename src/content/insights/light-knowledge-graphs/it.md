@@ -1,7 +1,7 @@
 ---
 key: "light-knowledge-graphs"
 lang: "it"
-title: "Quando un knowledge graph leggero rende possibile una migrazione di piattaforma"
+title: "Quando un knowledge graph rende possibile una migrazione di piattaforma"
 subtitle: "Persone e agenti AI servono fatti interrogabili. Senza, le grandi migrazioni CI/CD restano tribali e si arenano."
 seoTitle: "Knowledge graph per agenti e migrazioni | Luca Bertelli"
 date: "2026-08-14"
@@ -26,15 +26,15 @@ Anche provando a migrare solo con un agente AI, senza una base di fatti interrog
 
 Spesso si parte con centinaia, se non migliaia, di file il cui codice non è stato verificato o mantenuto nel tempo. In questo scenario, gli agenti AI incontrano subito una difficoltà fondamentale: la conoscenza pregressa non è presente nel prompt ma è dispersa tra cataloghi, inventari, repository e nella memoria di poche persone (spesso non più presenti). Aggiungere semplicemente più file nel contesto non porta maggiore copertura, ma solo a congetture più sicure di sé.
 
-Un knowledge graph leggero capovolge l'approccio. I fatti tipizzati vengono estratti dalle sorgenti tramite un processo deterministico e ripetibile, senza coinvolgere agenti AI. Così si ottiene uno schema chiaro fatto di nodi, relazioni dirette e un mapping mantenuto con cura, che permette di riconoscere quando due elementi con nomi diversi rispondono allo stesso intento o scopo. Questo mette le persone e gli agenti AI in condizione di navigarli, anche tramite server MCP dedicati.
+Un knowledge graph costruito per uno scopo preciso capovolge l'approccio. I fatti tipizzati vengono estratti dalle sorgenti tramite un processo deterministico e ripetibile, senza coinvolgere agenti AI. Così si ottiene uno schema chiaro fatto di nodi, relazioni dirette e un mapping mantenuto con cura, che permette di riconoscere quando due elementi con nomi diversi rispondono allo stesso intento o scopo. Questo mette le persone e gli agenti AI in condizione di navigarli, anche tramite server MCP dedicati.
 
 Il grafo non migra nulla. Ti dice che cosa è pronto, che cosa è bloccato, e che cosa sarebbe insicuro inventare. Decidono ancora le persone. Gli agenti smettono di riempire i buchi con finzioni.
 
-## Che cosa si intende per "leggero"
+## Un perimetro pragmatico
 
-Non è un programma enterprise di knowledge graph. Non è Neo4j come scelta tecnologica. Non è RDF (Resource Description Framework), dove i dati sono triplette soggetto-predicato-oggetto tipiche del Semantic Web e delle ontologie formali. Qui parliamo di un approccio pragmatico e leggero, non di un framework semantico. Non è nemmeno un secondo wiki dove si chiede alle persone di tenere allineato a mano. Nodi, proprietà e relazioni si definiscono ad hoc, calati sul contesto del cliente e sugli use-case.
+Non è un programma enterprise di knowledge graph. Non è una scelta di tecnologia graph database. Non è RDF (Resource Description Framework), dove i dati sono triplette soggetto-predicato-oggetto tipiche del Semantic Web e delle ontologie formali. È un approccio pragmatico e costruito per uno scopo preciso, non un framework semantico. Non è nemmeno un secondo wiki che le persone devono tenere allineato a mano. Nodi, proprietà e relazioni si definiscono ad hoc, calati sul contesto del cliente e sugli use-case.
 
-Leggero significa:
+In pratica:
 
 - lo schema sta in una review;
 - gli estrattori leggono artefatti che l'organizzazione possiede già;

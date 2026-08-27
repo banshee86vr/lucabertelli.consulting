@@ -13,7 +13,7 @@ Use this after deploy to verify the implementation and track reachability over t
 | Blog articles | 4 per language | Tooling / OSS write-ups |
 | Blog tag pages | per distinct tag × language | `/‹lang›/blog/tag/‹tag›/` |
 | Insights hub | `/en/insights/`, `/it/insights/` | Commercial field guides (not the blog) |
-| Insight pages | 4 per language | Kubernetes consultant, PE vs DevOps, regulated industries, light knowledge graphs |
+| Insight pages | 4 per language | Kubernetes consultant, PE vs DevOps, regulated industries, knowledge graphs |
 | Legal | privacy, cookies | |
 | Feeds | `/en/rss.xml`, `/it/rss.xml` | Blog only |
 | Agent summary | `/llms.txt` | Generated at build from the content collections |
