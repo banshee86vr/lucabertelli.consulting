@@ -61,7 +61,7 @@ lucabertelli.consulting/
 
 ## Getting Started
 
-Prerequisites: Node.js >= 22.12.0 and [pnpm](https://pnpm.io/).
+Prerequisites: Node.js >= 22.19.0 and [pnpm](https://pnpm.io/).
 
 1. Clone the repository and enter the project directory:
 
