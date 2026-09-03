@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import { fileURLToPath } from "node:url";
 import cloudflare from "@astrojs/cloudflare";
 import sitemap from "@astrojs/sitemap";
 import * as dotenv from "dotenv";
@@ -98,6 +99,15 @@ export default defineConfig({
     enabled: true,
   },
   vite: {
+    resolve: {
+      // Astro 7.3.0 injects `astro/_internal/logger` into the workerd bundle,
+      // but publishConfig strips that export. Absolute path bypasses exports map.
+      alias: {
+        "astro/_internal/logger": fileURLToPath(
+          new URL("./node_modules/astro/dist/core/logger/core.js", import.meta.url),
+        ),
+      },
+    },
     build: {
       minify: "terser",
       terserOptions: {
