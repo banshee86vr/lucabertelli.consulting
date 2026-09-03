@@ -22,6 +22,11 @@ overrides:
   form-data: '>=4.0.6'
   ws: '>=8.21.0'
 
+patchedDependencies:
+  astro@7.3.0:
+    hash: 3a1656ae99900a3317a829029e0c3b2b93266c0ca1e2a0697372334069455fdf
+    path: patches/astro@7.3.0.patch
+
 importers:
 
   .:
@@ -31,7 +36,7 @@ importers:
         version: 0.9.10(prettier@3.8.3)(typescript@6.0.3)
       '@astrojs/cloudflare':
         specifier: ^14.3.0
-        version: 14.3.0(@types/node@25.0.2)(astro@7.3.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@25.0.2)(terser@5.51.1)(yaml@2.8.3))(esbuild@0.28.1)(terser@5.51.1)(wrangler@4.128.0)(yaml@2.8.3)
+        version: 14.3.0(@types/node@25.0.2)(astro@7.3.0(patch_hash=3a1656ae99900a3317a829029e0c3b2b93266c0ca1e2a0697372334069455fdf)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@25.0.2)(terser@5.51.1)(yaml@2.8.3))(esbuild@0.28.1)(terser@5.51.1)(wrangler@4.128.0)(yaml@2.8.3)
       '@astrojs/rss':
         specifier: ^4.0.19
         version: 4.0.19
@@ -43,7 +48,7 @@ importers:
         version: 8.1.6
       astro:
         specifier: ^7.3.0
-        version: 7.3.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@25.0.2)(terser@5.51.1)(yaml@2.8.3)
+        version: 7.3.0(patch_hash=3a1656ae99900a3317a829029e0c3b2b93266c0ca1e2a0697372334069455fdf)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@25.0.2)(terser@5.51.1)(yaml@2.8.3)
       astro-seo:
         specifier: ^1.2.0
         version: 1.2.0
@@ -3206,12 +3211,12 @@ snapshots:
       - prettier
       - prettier-plugin-astro
 
-  '@astrojs/cloudflare@14.3.0(@types/node@25.0.2)(astro@7.3.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@25.0.2)(terser@5.51.1)(yaml@2.8.3))(esbuild@0.28.1)(terser@5.51.1)(wrangler@4.128.0)(yaml@2.8.3)':
+  '@astrojs/cloudflare@14.3.0(@types/node@25.0.2)(astro@7.3.0(patch_hash=3a1656ae99900a3317a829029e0c3b2b93266c0ca1e2a0697372334069455fdf)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@25.0.2)(terser@5.51.1)(yaml@2.8.3))(esbuild@0.28.1)(terser@5.51.1)(wrangler@4.128.0)(yaml@2.8.3)':
     dependencies:
       '@astrojs/internal-helpers': 0.11.0
       '@astrojs/underscore-redirects': 1.0.4
       '@cloudflare/vite-plugin': 1.54.1(vite@8.1.3(@types/node@25.0.2)(esbuild@0.28.1)(terser@5.51.1)(yaml@2.8.3))(wrangler@4.128.0)
-      astro: 7.3.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@25.0.2)(terser@5.51.1)(yaml@2.8.3)
+      astro: 7.3.0(patch_hash=3a1656ae99900a3317a829029e0c3b2b93266c0ca1e2a0697372334069455fdf)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@25.0.2)(terser@5.51.1)(yaml@2.8.3)
       piccolore: 0.1.3
       vite: 8.1.3(@types/node@25.0.2)(esbuild@0.28.1)(terser@5.51.1)(yaml@2.8.3)
       wrangler: 4.128.0
@@ -4187,7 +4192,7 @@ snapshots:
 
   astro-seo@1.2.0: {}
 
-  astro@7.3.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@25.0.2)(terser@5.51.1)(yaml@2.8.3):
+  astro@7.3.0(patch_hash=3a1656ae99900a3317a829029e0c3b2b93266c0ca1e2a0697372334069455fdf)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@25.0.2)(terser@5.51.1)(yaml@2.8.3):
     dependencies:
       '@astrojs/compiler-rs': 0.4.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)
       '@astrojs/internal-helpers': 0.11.0

@@ -26,7 +26,10 @@
       "esbuild",
       "sharp",
       "workerd"
-    ]
+    ],
+    "patchedDependencies": {
+      "astro@7.3.0": "patches/astro@7.3.0.patch"
+    }
   },
   "release": {
     "branches": [
