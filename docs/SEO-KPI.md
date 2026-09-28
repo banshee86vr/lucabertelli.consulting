@@ -13,12 +13,12 @@ Use this after deploy to verify the implementation and track reachability over t
 | Blog articles | 4 per language | Tooling / OSS write-ups |
 | Blog tag pages | per distinct tag × language | `/‹lang›/blog/tag/‹tag›/` |
 | Insights hub | `/en/insights/`, `/it/insights/` | Commercial field guides (not the blog) |
-| Insight pages | 4 per language | Kubernetes consultant, PE vs DevOps, regulated industries, knowledge graphs |
+| Insight pages | 5 per language | Kubernetes consultant, PE vs DevOps, regulated industries, knowledge graphs, Cyber Resilience Act |
 | Legal | privacy, cookies | |
 | Feeds | `/en/rss.xml`, `/it/rss.xml` | Blog only |
 | Agent summary | `/llms.txt` | Generated at build from the content collections |
 
-Current inventory: **74 indexable HTML pages**. Re-confirm with
+Current inventory: **76 indexable HTML pages**. Re-confirm with
 `pnpm run verify:seo` after a fresh build whenever content or routes change.
 
 ## Post-deploy validation (manual)
@@ -36,7 +36,7 @@ Current inventory: **74 indexable HTML pages**. Re-confirm with
 ## Search Console (recommended)
 
 - Submit the **sitemap**: `https://lucabertelli.consulting/sitemap-index.xml`.
-- Monitor **Coverage / Pages**: indexed count against the 74 URLs above.
+- Monitor **Coverage / Pages**: indexed count against the 76 URLs above.
 - Watch **International targeting**: hreflang issues should stay **0**. The localized service slugs are the most likely source of a regression here.
 - Track **Queries / Pages** for the service URLs specifically, not only the home page.
 
