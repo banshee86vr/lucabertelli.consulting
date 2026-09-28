@@ -39,6 +39,10 @@ faq:
     answer: "Prevalentemente da remoto, con la possibilità di giornate in sede quando servono workshop, sessioni di design o formazione al team. Opero principalmente con clienti in Italia e nell'Unione Europea."
   - question: "Su quali tecnologie DevOps sei specializzato?"
     answer: "Kubernetes e l'ecosistema CNCF, Terraform per l'Infrastructure as Code, GitLab CI e GitHub Actions per la continuous integration, Argo CD e Argo Workflows per GitOps e automazione, HashiCorp Vault per la gestione dei segreti, Prometheus e Grafana per l'osservabilità."
+  - question: "Quanto costa un consulente DevOps e come viene prezzato il lavoro?"
+    answer: "Due modelli. Un prezzo fisso per interventi con un risultato definito, come un assessment o una migrazione con perimetro chiaro, e una tariffa giornaliera per collaborazioni più lunghe in cui il perimetro evolve insieme al team. In entrambi i casi ricevete una proposta scritta con deliverable, stima dell'impegno ed esclusioni prima di iniziare, così la cifra è confrontabile con altri preventivi e non una sorpresa alla prima fattura."
+  - question: "Conviene assumere un DevOps engineer o rivolgersi a un consulente?"
+    answer: "Assumere quando il lavoro è continuativo e specifico del vostro prodotto: qualcuno deve presidiare la piattaforma giorno dopo giorno. Rivolgersi a un consulente quando il problema è una transizione che ha una fine, come impostare la pipeline di delivery, migrare a Kubernetes o prepararsi a una normativa, oppure quando serve un secondo parere su scelte già fatte. Spesso le due cose si combinano: imposto la pratica e le pipeline, poi le consegno alla persona che assumete, che eredita documentazione e un sistema funzionante invece di una pagina bianca."
 ---
 
 ## Il problema che di solito trovo
