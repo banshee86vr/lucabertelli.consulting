@@ -20,9 +20,39 @@ After each production deploy that adds or renames URLs:
    - `/it/insights/kubernetes-consultant/`
    - `/it/insights/light-knowledge-graphs/`
 4. Repeat in [Bing Webmaster Tools](https://www.bing.com/webmasters) with the
-   same sitemap.
-5. Confirm legacy service slugs **308** (example:
+   same sitemap. Bing's index is what ChatGPT search, Microsoft Copilot,
+   DuckDuckGo and Ecosia read, so for AI reachability this step matters as much
+   as Google. Bing Webmaster Tools can import the verified Search Console
+   property in one click.
+5. Run `pnpm run submit:indexnow` from the repository. It pushes every sitemap
+   URL to IndexNow (Bing, Yandex, Naver, Seznam); Bing typically recrawls
+   within minutes. Run it after every deploy that changes or adds pages.
+6. Confirm legacy service slugs **308** (example:
    `/it/servizi/ai-engineering/` → `/it/servizi/consulenza-agenti-ai/`).
+7. In the Cloudflare dashboard for the zone, open **Security → AI Crawl
+   Control** (formerly *Block AI bots*) and make sure the answer engines and
+   training crawlers listed in `public/robots.txt` are **allowed**. The edge
+   setting wins over the file: a "block" there silently removes the site from
+   ChatGPT, Perplexity and Claude answers regardless of what the repo says.
+
+## 1b. AI assistants
+
+Assistants do not have a submission form; they cite what search engines
+return and what they have seen during training. The levers you control:
+
+- **Be indexed on Bing and Google** (steps above). No index entry, no citation.
+- **Say the same thing everywhere.** Name, role ("Cloud Native and Platform
+  Engineering consultant"), location (Italy, EU) and the list of services
+  should match across the site, LinkedIn headline, GitHub bio, Medium bio and
+  Credly. Assistants resolve the entity by consistency; a LinkedIn headline
+  still saying "DevOps Engineer" competes with the site.
+- **Publish where models read.** Medium and GitHub READMEs are heavily
+  crawled; each write-up there should link the matching service or insight URL
+  once, in the first paragraph, with the plain service name as anchor text.
+- **Check monthly.** Ask ChatGPT (search on), Perplexity and Google AI mode
+  the queries in `docs/SEO-KPI.md` step 10 and record whether the site is
+  cited. When it is not, look at which pages *are* cited and what question
+  they answer in their first paragraph.
 
 ## 2. LinkedIn profile
 
@@ -37,7 +67,12 @@ Suggested Featured / Experience links (Italian profile):
 | Platform Engineering | https://lucabertelli.consulting/it/servizi/consulenza-platform-engineering/ |
 | Governance agenti AI | https://lucabertelli.consulting/it/servizi/consulenza-agenti-ai/ |
 | Consulenza knowledge graph | https://lucabertelli.consulting/it/servizi/consulenza-knowledge-graph/ |
+| Conformità Cyber Resilience Act | https://lucabertelli.consulting/it/servizi/consulenza-cyber-resilience-act/ |
 | Tutti i servizi | https://lucabertelli.consulting/it/servizi/ |
+
+Headline: use the role as it appears on the site - "Cloud Native and Platform
+Engineering Consultant | Kubernetes, CI/CD, Cyber Resilience Act" - so the
+profile and the site describe the same person in the same words.
 
 Short About blurb (IT):
 
@@ -71,6 +106,7 @@ Example block:
 - [Platform Engineering](https://lucabertelli.consulting/en/services/platform-engineering-consulting/)
 - [AI agent governance](https://lucabertelli.consulting/en/services/ai-agent-governance/)
 - [Knowledge graph consulting](https://lucabertelli.consulting/en/services/knowledge-graph-consulting/)
+- [Cyber Resilience Act compliance](https://lucabertelli.consulting/en/services/cyber-resilience-act-compliance/)
 - [All services](https://lucabertelli.consulting/en/services/)
 ```
 
@@ -84,6 +120,7 @@ Replace a bare personal site URL with the service that matches the talk:
 
 - Kubernetes / CKA talk → `/…/consulenza-kubernetes/` or `/…/kubernetes-consulting/`
 - Vault / supply chain → `/…/consulenza-secdevops-cicd/` or `/…/secdevops-cicd-consulting/`
+- SBOM / CRA / product security → `/…/consulenza-cyber-resilience-act/` or `/…/cyber-resilience-act-compliance/`
 - Platform / IDP talk → Platform Engineering service URL
 - Knowledge graph / MCP / agent-ready platforms → `/…/consulenza-knowledge-graph/` or `/…/knowledge-graph-consulting/`
 

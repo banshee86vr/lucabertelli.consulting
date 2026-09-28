@@ -99,9 +99,18 @@ title usually does not.
 
 ## Things that are generated - do not hand-maintain
 
-`/llms.txt` comes from `src/pages/llms.txt.ts`, built from the content
-collections, and the sitemap comes from `@astrojs/sitemap`. `llms.txt` used to be
-a static file and went stale; do not reintroduce static copies of either.
+`/llms.txt` comes from `src/pages/llms.txt.ts` and `/llms-full.txt` from
+`src/pages/llms-full.txt.ts`, both built from the content collections, and the
+sitemap comes from `@astrojs/sitemap`. `llms.txt` used to be a static file and
+went stale; do not reintroduce static copies of any of them.
+
+Sitemap `lastmod` is computed in `astro.config.mjs` from frontmatter
+`date`/`updated` (blog, insights) or the last commit touching the source
+(services, hubs, legal). A substantive edit to a service page therefore shows up
+by itself; an article edit needs the `updated` field.
+
+After a deploy that adds or changes pages, run `pnpm run submit:indexnow` so
+Bing (and the answer engines built on it) recrawl right away.
 
 ## Off-page
 
