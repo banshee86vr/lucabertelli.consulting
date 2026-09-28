@@ -8,4 +8,5 @@ export type ServiceIconName =
 	| "layers"
 	| "boxes"
 	| "shield-check"
+	| "file-check"
 	| "share-2";

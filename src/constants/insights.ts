@@ -5,6 +5,7 @@ export const INSIGHT_KEYS = [
 	"platform-vs-devops",
 	"regulated-industries",
 	"light-knowledge-graphs",
+	"cyber-resilience-act",
 ] as const;
 
 export type InsightKey = (typeof INSIGHT_KEYS)[number];

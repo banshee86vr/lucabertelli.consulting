@@ -19,20 +19,37 @@ const SAME_AS = [
 	"https://www.credly.com/users/luca-bertelli",
 ];
 
+/**
+ * Plain-language topics, as people and assistants phrase them. Kept in sync
+ * with the service pages; Google and answer engines use these for entity
+ * disambiguation, so they should be recognisable terms rather than slogans.
+ */
 const KNOWS_ABOUT = [
 	"DevOps",
 	"Platform Engineering",
+	"Internal Developer Platform",
 	"Kubernetes",
+	"Cloud Native",
 	"Cloud Migration",
 	"SecDevOps",
-	"Cloud Native",
+	"DevSecOps",
+	"Software Supply Chain Security",
+	"Cyber Resilience Act",
+	"SBOM",
 	"Terraform",
 	"Infrastructure as Code",
 	"CI/CD",
+	"GitLab CI",
+	"GitHub Actions",
 	"GitOps",
+	"Argo CD",
+	"HashiCorp Vault",
+	"Observability",
 	"AI Engineering",
+	"AI Agent Governance",
 	"Knowledge Graphs",
 	"Model Context Protocol",
+	"Technical Training",
 ];
 
 /**
@@ -46,8 +63,8 @@ export function buildPersonAndProfessionalService(
 ): Record<string, unknown>[] {
 	const description =
 		lang === "it"
-			? "Consulenza e ingegneria Cloud Native: consulente DevOps, Platform Engineering, Kubernetes, SecDevOps e formazione."
-			: "Cloud Native consulting and engineering: DevOps consultant, Platform Engineering, Kubernetes, SecDevOps, and training.";
+			? "Consulenza Cloud Native e Platform Engineering freelance in Italia e in UE: DevOps, Kubernetes, CI/CD sicuro, conformità al Cyber Resilience Act, governance degli agenti AI, knowledge graph e formazione tecnica."
+			: "Freelance Cloud Native and Platform Engineering consulting in Italy and the EU: DevOps, Kubernetes, secure CI/CD, Cyber Resilience Act compliance, AI agent governance, knowledge graphs and technical training.";
 
 	const professionalService: Record<string, unknown> = {
 		"@type": "ProfessionalService",
@@ -71,6 +88,7 @@ export function buildPersonAndProfessionalService(
 			{ "@type": "Place", name: "European Union" },
 		],
 		serviceType: KNOWS_ABOUT,
+		knowsAbout: KNOWS_ABOUT,
 		founder: { "@id": PERSON_ID },
 		provider: { "@id": PERSON_ID },
 		sameAs: SAME_AS,
@@ -100,12 +118,24 @@ export function buildPersonAndProfessionalService(
 			url: SITE_URL,
 			jobTitle:
 				lang === "it"
-					? "Consulente DevOps e Cloud Native"
-					: "DevOps and Cloud Native Consultant",
+					? "Consulente Cloud Native e Platform Engineering"
+					: "Cloud Native and Platform Engineering Consultant",
 			description:
 				lang === "it"
-					? "Consulente freelance specializzato in DevOps, Platform Engineering e Kubernetes, con esperienza nei settori Fintech, Insurtech e industriale."
-					: "Freelance consultant specialised in DevOps, Platform Engineering and Kubernetes, with experience across Fintech, Insurtech and industrial sectors.",
+					? "Consulente freelance Cloud Native e Platform Engineering: DevOps, Kubernetes, CI/CD sicuro, conformità al Cyber Resilience Act e governance degli agenti AI. Lavora con startup, scale-up, enterprise e pubblica amministrazione, soprattutto in Fintech, Insurtech e industria."
+					: "Freelance Cloud Native and Platform Engineering consultant: DevOps, Kubernetes, secure CI/CD, Cyber Resilience Act compliance and AI agent governance. Works with startups, scale-ups, enterprises and public sector organisations, mostly in Fintech, Insurtech and industry.",
+			hasOccupation: {
+				"@type": "Occupation",
+				name:
+					lang === "it"
+						? "Consulente Cloud Native e Platform Engineering"
+						: "Cloud Native and Platform Engineering Consultant",
+				occupationLocation: [
+					{ "@type": "Country", name: "Italy" },
+					{ "@type": "Place", name: "European Union" },
+				],
+				skills: KNOWS_ABOUT.join(", "),
+			},
 			email: "info@lucabertelli.consulting",
 			image: absoluteUrl("/about/lucabertelli.jpeg"),
 			nationality: { "@type": "Country", name: "Italy" },
@@ -138,7 +168,11 @@ export function buildCertificationCredentials(
 	return certifications.map((cert, index) => {
 		const id = `${SITE_URL}/#credential-${index + 1}`;
 		const lowerTitle = cert.title.toLowerCase();
-		const issuer = lowerTitle.includes("kubernetes") || lowerTitle.includes("cka")
+		const issuer =
+			lowerTitle.includes("kubernetes") ||
+			lowerTitle.includes("cka") ||
+			lowerTitle.includes("argo") ||
+			lowerTitle.includes("capa")
 			? "CNCF"
 			: lowerTitle.includes("hashicorp") || lowerTitle.includes("vault")
 				? "HashiCorp"

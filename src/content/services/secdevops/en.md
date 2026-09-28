@@ -27,7 +27,7 @@ deliverables:
   - "Security checks embedded in the pipeline: SAST, SCA, image scanning, IaC analysis"
   - "Secrets management with HashiCorp Vault and removal of static credentials"
   - "Automated dependency management with Renovate"
-  - "Artifact signing and SBOM generation"
+  - "Artifact signing, SBOM generation and VEX/VDR statements"
 faq:
   - question: "What is the difference between DevSecOps and SecDevOps?"
     answer: "In practice they describe the same goal: integrating security into the development cycle rather than applying it at the end. I use SecDevOps because the word order better reflects the idea that security is a starting requirement, not a check added after the thing is built."
@@ -60,3 +60,5 @@ The rule that makes the whole thing sustainable is the initial threshold: block 
 On secrets, the goal is moving from static credentials to short-lived ones generated on demand. Vault issues database access when the service needs it, valid for hours, and revokes it afterwards. This is not only about rotation: a credential that does not exist in permanent form cannot end up in a log or a repository.
 
 On the supply chain the work is about traceability of what you ship. Artifact signing, SBOM generation on every build, automated dependency updates with Renovate. That last point has the most immediate return: most vulnerabilities found in production concern dependencies whose fix has existed for months and simply was not applied.
+
+When the product falls under the Cyber Resilience Act, this same chain becomes a regulatory requirement rather than good practice, and it has to keep running for the whole support period. The [CRA compliance page](/en/services/cyber-resilience-act-compliance/) covers what changes: VEX and VDR on top of the SBOM, continuous monitoring of supported releases, and the evidence for the reporting deadlines.

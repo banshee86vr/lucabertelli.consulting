@@ -170,10 +170,32 @@ const jsonLdPayload = JSON.stringify({
 				imageAlt: pageTitle,
 			}}
 			extend={{
-				meta:
-					keywords.length > 0
+				meta: [
+					// astro-seo emits index/follow; this second robots meta is combined
+					// with it and lifts the default snippet and preview limits, which
+					// AI Overviews, Bing Copilot and rich results all respect.
+					...(noindex
+						? []
+						: [
+								{
+									name: "robots",
+									content:
+										"max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+								},
+							]),
+					{ name: "author", content: "Luca Bertelli" },
+					...(keywords.length > 0
 						? [{ name: "keywords", content: keywords.join(", ") }]
-						: [],
+						: []),
+				],
+				link: [
+					{
+						rel: "alternate",
+						type: "text/plain",
+						href: absoluteUrl("/llms.txt"),
+						title: "llms.txt",
+					},
+				],
 			}}
 		/>
 

@@ -23,6 +23,7 @@ if (!fs.existsSync(ROOT)) {
 /** Non-HTML routes that pages are allowed to link to. */
 const NON_HTML_ROUTES = new Set([
   "/llms.txt",
+  "/llms-full.txt",
   "/robots.txt",
   "/en/rss.xml",
   "/it/rss.xml",
@@ -152,6 +153,39 @@ if (!fs.existsSync(sitemapPath)) {
   for (const loc of locs) {
     const route = loc.replace(origin, "") || "/";
     if (!routes.has(route)) fail(`sitemap lists ${loc}, which has no page`);
+  }
+
+  // A lastmod that is the same for every URL is what search engines learn to
+  // ignore; the config derives it from content dates, so it must vary.
+  const lastmods = [...xml.matchAll(/<lastmod>(.*?)<\/lastmod>/g)].map((m) => m[1]);
+  if (lastmods.length !== locs.size) {
+    fail(`sitemap has ${locs.size} URLs but ${lastmods.length} lastmod values`);
+  }
+  for (const value of lastmods) {
+    if (Number.isNaN(Date.parse(value))) fail(`sitemap lastmod "${value}" is not a date`);
+  }
+  if (new Set(lastmods.map((v) => v.slice(0, 10))).size < 2 && locs.size > 1) {
+    fail("every sitemap lastmod falls on the same day; content dates are not being read");
+  }
+}
+
+for (const file of ["llms.txt", "llms-full.txt", "robots.txt"]) {
+  if (!fs.existsSync(path.join(ROOT, file))) fail(`${file} is missing from the build`);
+}
+
+// RFC 9116: an expired security.txt is treated as absent by scanners.
+const securityTxt = path.join(ROOT, ".well-known", "security.txt");
+if (!fs.existsSync(securityTxt)) {
+  fail(".well-known/security.txt is missing from the build");
+} else {
+  const text = fs.readFileSync(securityTxt, "utf8");
+  if (!/^Contact:\s*\S+/m.test(text)) fail("security.txt has no Contact field");
+  const expires = text.match(/^Expires:\s*(\S+)/m)?.[1];
+  const expiresAt = expires ? Date.parse(expires) : Number.NaN;
+  if (Number.isNaN(expiresAt)) fail("security.txt has no valid Expires field");
+  else if (expiresAt < Date.now()) fail(`security.txt expired on ${expires}; bump the date`);
+  else if (expiresAt - Date.now() < 30 * 24 * 3600 * 1000) {
+    fail(`security.txt expires within 30 days (${expires}); bump the date`);
   }
 }
 

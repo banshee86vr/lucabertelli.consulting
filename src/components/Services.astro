@@ -78,27 +78,10 @@ const services = (await getServices(lang)).map((service) => {
     gap: 24px;
   }
 
-  /* Desktop: 4 + 4 on a 12-column track */
+  /* Desktop: three equal columns, so nine cards fill three full rows */
   @media (min-width: 992px) {
     .services-grid {
-      grid-template-columns: repeat(12, 1fr);
-    }
-
-    .service-card:nth-child(1),
-    .service-card:nth-child(5) {
-      grid-column: 1 / 4;
-    }
-    .service-card:nth-child(2),
-    .service-card:nth-child(6) {
-      grid-column: 4 / 7;
-    }
-    .service-card:nth-child(3),
-    .service-card:nth-child(7) {
-      grid-column: 7 / 10;
-    }
-    .service-card:nth-child(4),
-    .service-card:nth-child(8) {
-      grid-column: 10 / 13;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
@@ -266,10 +249,6 @@ const services = (await getServices(lang)).map((service) => {
     .services-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
-    }
-
-    .service-card:nth-child(n) {
-      grid-column: auto;
     }
 
     .service-card__title {

@@ -39,6 +39,10 @@ faq:
     answer: "Mostly remotely, with on-site days available for workshops, design sessions or team training. I work primarily with clients in Italy and the European Union."
   - question: "Which DevOps technologies do you specialise in?"
     answer: "Kubernetes and the CNCF ecosystem, Terraform for Infrastructure as Code, GitLab CI and GitHub Actions for continuous integration, Argo CD and Argo Workflows for GitOps and automation, HashiCorp Vault for secrets management, Prometheus and Grafana for observability."
+  - question: "How much does a DevOps consultant cost, and how is the work priced?"
+    answer: "Two models. A fixed price for work with a defined output, such as an assessment or a migration with a clear perimeter, and a daily rate for longer engagements where the scope evolves with the team. In both cases you receive a written proposal with the deliverables, the estimated effort and what is excluded before anything starts, so the number is comparable with other quotes rather than a surprise on the first invoice."
+  - question: "Should we hire a DevOps engineer or bring in a consultant?"
+    answer: "Hire when the work is continuous and specific to your product: someone has to own the platform day after day. Bring in a consultant when the problem is a transition that ends, such as setting up the delivery pipeline, migrating to Kubernetes or preparing for a regulation, or when you need a second opinion on choices already made. The two often combine: I set up the practice and the pipelines, then hand them over to the person you hire, who inherits documentation and a working system rather than a blank page."
 ---
 
 ## The problem I usually find

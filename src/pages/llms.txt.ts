@@ -31,20 +31,29 @@ export async function GET() {
 	lines.push("# lucabertelli.consulting");
 	lines.push("");
 	lines.push(
-		"> Luca Bertelli is a freelance DevOps and Cloud Native consultant based in Italy, working with clients across Italy and the European Union. Areas of work: DevOps consulting, cloud migration, Platform Engineering, Kubernetes, SecDevOps and CI/CD, technical training, AI engineering, and temporal knowledge graphs.",
+		"> Luca Bertelli is a freelance Cloud Native and Platform Engineering consultant based in Italy, working with clients across Italy and the European Union. Areas of work: DevOps consulting, cloud migration, Platform Engineering, Kubernetes, SecDevOps and CI/CD, Cyber Resilience Act compliance (SBOM, artifact signing, VEX and VDR, vulnerability monitoring), technical training, AI engineering, and temporal knowledge graphs.",
 	);
 	lines.push("");
 
 	lines.push("## Identity");
 	lines.push("- Name: Luca Bertelli");
 	lines.push('- Alternate names: LB Consulting, lb.consulting');
-	lines.push("- Role: Freelance DevOps and Cloud Native consultant");
+	lines.push("- Role: Freelance Cloud Native and Platform Engineering consultant");
 	lines.push("- Based in: Italy. Serves: Italy and the European Union");
+	lines.push(
+		"- Client profile: startups, scale-ups, enterprises and public sector organisations, mostly in Fintech, Insurtech and Industrial",
+	);
 	lines.push("- Languages: Italian, English");
 	lines.push("- Email: info@lucabertelli.consulting");
 	lines.push("- VAT / P.IVA: 05028510237");
 	lines.push(
+		"- Engagement model: independent freelance consultant (no agency); mostly remote, on-site days in Italy and the EU for workshops and training; scope agreed before starting.",
+	);
+	lines.push(
 		"- Site languages: English at /en/ (default), Italian at /it/. Service slugs are localized per language.",
+	);
+	lines.push(
+		`- Full text of every service, guide and article in one file: ${url("/llms-full.txt")}`,
 	);
 	lines.push("");
 
@@ -73,6 +82,10 @@ export async function GET() {
 		for (const service of services.filter((s) => s.data.lang === lang)) {
 			const key = service.data.key;
 			lines.push(`- [${service.data.title}](${url(servicePath(key, lang))}): ${service.data.description}`);
+			const questions = service.data.faq.map((item) => item.question);
+			if (questions.length) {
+				lines.push(`  - Answers on the page: ${questions.join(" | ")}`);
+			}
 		}
 	}
 	lines.push("");
@@ -144,8 +157,13 @@ export async function GET() {
 	lines.push("");
 
 	lines.push("## Machine-readable discovery");
+	lines.push(`- Full text (llms-full.txt): ${url("/llms-full.txt")}`);
 	lines.push(`- Sitemap index: ${url("/sitemap-index.xml")}`);
 	lines.push(`- robots.txt: ${url("/robots.txt")}`);
+	lines.push(`- Security contact (RFC 9116): ${url("/.well-known/security.txt")}`);
+	lines.push(
+		"- Structured data: every HTML page embeds a schema.org JSON-LD graph (Person, ProfessionalService, WebSite; Service + FAQPage on service pages; BlogPosting on articles and guides).",
+	);
 	lines.push("");
 
 	return new Response(lines.join("\n"), {

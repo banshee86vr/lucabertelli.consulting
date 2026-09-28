@@ -5,9 +5,9 @@ title: "Consulenza DevOps in Fintech, Insurtech e industriale"
 subtitle: "Cosa cambia quando release, audit e finestre di change non sono un dettaglio operativo ma un vincolo di business"
 seoTitle: "Consulenza DevOps in Fintech, Insurtech e industriale | Luca Bertelli"
 date: "2025-10-26"
-updated: "2026-07-28"
+updated: "2026-09-28"
 image: "/insights/regulated-industries/regulated-industries.webp"
-relatedServices: ["devops", "secdevops", "kubernetes", "cloud", "platform-engineering"]
+relatedServices: ["devops", "secdevops", "cyber-resilience-act", "kubernetes", "cloud", "platform-engineering"]
 ---
 
 ## Stesso Kubernetes, vincoli diversi
@@ -50,7 +50,8 @@ Cambia il disegno:
 - ambienti di test che **replicano i vincoli reali**, non solo il codice;
 - rollback verificato, non teorico;
 - separazione netta tra reti e identità quando IT e impianti si toccano;
-- osservabilità pensata per operatori, non solo per sviluppatori.
+- osservabilità pensata per operatori, non solo per sviluppatori;
+- **SBOM, firmware firmato e un processo di gestione delle vulnerabilità** se il prodotto rientra nel [Cyber Resilience Act](/it/servizi/consulenza-cyber-resilience-act/): dispositivi connessi e software a bordo macchina sono il caso tipico.
 
 Kubernetes resta utile, ma solo se day-2 e isolation risultano solidi. Altrimenti si aggiunge un piano di controllo senza ridurre il rischio operativo. Su questo la [consulenza Kubernetes](/it/servizi/consulenza-kubernetes/) e le pratiche SecDevOps si intrecciano per forza.
 

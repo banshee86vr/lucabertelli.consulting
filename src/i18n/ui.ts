@@ -14,27 +14,28 @@ export const ui = {
     'a11y.social.medium': 'Luca Bertelli on Medium',
     'a11y.social.credly': 'Digital credentials on Credly',
     'index.hi': "Hi, I'm Luca",
-    'index.hero.title': 'DevOps and Cloud Native Consultant',
+    'index.hero.title': 'Cloud Native and Platform Engineering Consultant',
     'index.hero.connector': 'specialising in',
-    'index.hero.role.1': 'Platform Engineering',
+    'index.hero.role.1': 'DevOps',
     'index.hero.role.2': 'Kubernetes',
     'index.hero.role.3': 'SecDevOps and CI/CD',
     'index.hero.role.4': 'Cloud Migration',
     'index.hero.role.5': 'AI agent governance and adoption',
     'index.hero.role.6': 'Knowledge graphs',
     'index.hero.role.7': 'AI agent memory',
+    'index.hero.role.8': 'Cyber Resilience Act compliance',
     'index.hero.cta.email': 'Email me',
     'index.hero.cta.services': 'See consulting services',
-    'index.bio': 'As a Cloud Native consultant and engineer, I assist customers who desire to adopt the latest cloud technologies in a sustainable and scalable way. Based on a long hands-on experience gained with customers operating in the Fintech, Insurtech, and Industrial sectors. My primary focus is on listening to understand needs and solve tangible problems. Specializing in Platform Engineering, I propose solutions that provide a solid foundation for a smooth user experience, optimizing the processes and making them more efficient and safe.',
+    'index.bio': 'As a Cloud Native consultant and engineer, I assist customers who desire to adopt the latest cloud technologies in a sustainable and scalable way. Based on long hands-on experience gained with customers of every size, from startups and scale-ups to enterprises and public sector organisations, mostly in the Fintech, Insurtech and Industrial sectors. My primary focus is on listening to understand needs and solve tangible problems. Specializing in Platform Engineering, I propose solutions that provide a solid foundation for a smooth user experience, optimizing the processes and making them more efficient and safe.',
     'a11y.openMenu': 'Open menu',
     'a11y.closeMenu': 'Close menu',
     'a11y.logo': 'Luca Bertelli Consulting',
-    'seo.site.title': 'Luca Bertelli | DevOps and Cloud Native Consulting',
+    'seo.site.title': 'Luca Bertelli | Cloud Native and Platform Engineering Consulting',
     'seo.site.description':
-      'Freelance DevOps and Cloud Native consultant: Platform Engineering, Kubernetes, CI/CD, AI agents and knowledge graph consulting.',
-    'seo.home.title': 'DevOps and Platform Engineering Consultant | Luca Bertelli',
+      'Freelance Cloud Native and Platform Engineering consultant: DevOps, Kubernetes, secure CI/CD, Cyber Resilience Act, AI agents and knowledge graphs.',
+    'seo.home.title': 'Cloud Native and Platform Engineering Consultant | Luca Bertelli',
     'seo.home.description':
-      'Freelance DevOps, Kubernetes and Platform Engineering consultant in Italy and the EU. Secure CI/CD, AI agent governance and temporal knowledge graphs.',
+      'Freelance Cloud Native, Platform Engineering and DevOps consultant in Italy and the EU. Kubernetes, secure CI/CD, Cyber Resilience Act and AI agent governance.',
     'seo.blog.title': 'DevOps and Kubernetes Blog | Luca Bertelli',
     'seo.blog.description':
       'Articles on Kubernetes, CI/CD, platform engineering and cloud-native operations, written from real consulting engagements.',
@@ -58,12 +59,12 @@ export const ui = {
     'index.services.title': 'Services',
     'index.tickets.title': 'Upcoming Events',
     'index.services.subtitle':
-      'Consulting on DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps, training, AI agent governance and temporal knowledge graphs, for teams in Italy and across the EU.',
+      'Consulting on DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps, Cyber Resilience Act compliance, training, AI agent governance and temporal knowledge graphs, for teams in Italy and across the EU.',
     'index.services.cta': 'All consulting services',
     'index.services.cardCta': 'Read more',
     'services.hub.h1': 'DevOps, Cloud, AI agents and knowledge graph consulting',
     'services.hub.intro':
-      'I work with engineering teams that need to release faster without giving up control. Each engagement starts from an assessment of what already exists, and ends with the internal team able to maintain what we built together. Below are the areas I cover.',
+      'I work with engineering teams that need to release faster without giving up control, in startups, scale-ups, enterprises and public sector organisations. Each engagement starts from an assessment of what already exists, and ends with the internal team able to maintain what we built together. Below are the areas I cover.',
     'services.hub.seoTitle':
       'Consulting: DevOps, Kubernetes, AI agents, knowledge graphs | Luca Bertelli',
     'services.hub.seoDescription':
@@ -86,6 +87,9 @@ export const ui = {
     'services.hub.intent.secdevops.title': 'Security bolted on at the end of delivery',
     'services.hub.intent.secdevops.text':
       'SecDevOps and CI/CD consulting for secure pipelines, Vault secrets management and supply-chain evidence.',
+    'services.hub.intent.cra.title': 'A product that must ship with Cyber Resilience Act evidence',
+    'services.hub.intent.cra.text':
+      'Cyber Resilience Act compliance consulting: gap assessment against Annex I, vulnerability handling process, SBOM and secure updates, technical documentation and 24-hour reporting readiness.',
     'services.hub.intent.training.title': 'Training that has to match your real toolchain',
     'services.hub.intent.training.text':
       'Corporate DevOps, Kubernetes and cloud-native training with labs based on the tools you already run.',
@@ -98,7 +102,7 @@ export const ui = {
  
     'services.hub.insights.title': 'Guides from the field',
     'services.hub.insights.intro':
-      'Consulting notes kept outside the engineering blog: when to hire help, Platform Engineering vs DevOps, regulated industries, and knowledge graphs.',
+      'Consulting notes kept outside the engineering blog: when to hire help, Platform Engineering vs DevOps, regulated industries, the Cyber Resilience Act, and knowledge graphs.',
     'services.outcomes.title': 'What you get',
     'services.deliverables.title': "What's included",
     'services.faq.title': 'Frequently asked questions',
@@ -111,10 +115,10 @@ export const ui = {
     'insights.category': 'Consulting',
     'insights.hub.h1': 'Field guides on DevOps and knowledge graphs',
     'insights.hub.intro':
-      'Practical notes on when to hire help, how Platform Engineering differs from DevOps, what changes in regulated industries, and when a knowledge graph makes a migration possible. Separate from the engineering blog.',
-    'insights.hub.seoTitle': 'Insights: Kubernetes, knowledge graphs, Fintech | Luca Bertelli',
+      'Practical notes on when to hire help, how Platform Engineering differs from DevOps, what changes in regulated industries, where the Cyber Resilience Act stands, and when a knowledge graph makes a migration possible. Separate from the engineering blog.',
+    'insights.hub.seoTitle': 'Insights: Kubernetes, knowledge graphs, CRA, Fintech | Luca Bertelli',
     'insights.hub.seoDescription':
-      'Field guides on Kubernetes consulting, Platform Engineering vs DevOps, regulated industries, and knowledge graphs for agents and migrations.',
+      'Field guides on Kubernetes consulting, Platform Engineering vs DevOps, regulated industries, the Cyber Resilience Act, and knowledge graphs for agents and migrations.',
     'insights.services.title': 'Related consulting services',
     'insights.services.text':
       'These guides exist to help you choose the right engagement. The service pages below describe scope, outcomes and FAQ.',
@@ -125,7 +129,7 @@ export const ui = {
       'Describe your situation in a few lines and I will tell you honestly whether I can help and how. If I am not the right fit, I will say so.',
     'services.cta.button': 'Email me',
     'contact.email': 'Email',
-    'index.experience.job.1.title': 'Cloud Native & DevOps Consultant',
+    'index.experience.job.1.title': 'Cloud Native & Platform Engineering Consultant',
     'index.experience.job.1.company': 'Freelance',
     'index.experience.job.1.dates': '2024 -',
     'index.experience.job.2.title': 'Client Success Manager & Co-Founder',
@@ -312,27 +316,28 @@ export const ui = {
     'a11y.social.medium': 'Luca Bertelli su Medium',
     'a11y.social.credly': 'Credenziali digitali su Credly',
     'index.hi': 'Ciao, sono Luca',
-    'index.hero.title': 'Consulente DevOps e Cloud Native',
+    'index.hero.title': 'Consulente Cloud Native e Platform Engineering',
     'index.hero.connector': 'specializzato in',
-    'index.hero.role.1': 'Platform Engineering',
+    'index.hero.role.1': 'DevOps',
     'index.hero.role.2': 'Kubernetes',
     'index.hero.role.3': 'SecDevOps e CI/CD',
     'index.hero.role.4': 'Migrazione Cloud',
     'index.hero.role.5': 'Governance e adozione di agenti AI',
     'index.hero.role.6': 'Knowledge graph',
     'index.hero.role.7': 'Memoria per agenti AI',
+    'index.hero.role.8': 'Conformità al Cyber Resilience Act',
     'index.hero.cta.email': 'Contattami',
     'index.hero.cta.services': 'Vedi i servizi di consulenza',
-    'index.bio': "Come consulente ed ingegnere Cloud Native, supporto le realtà che cercano di adottare in modo sostenibile e scalabile le ultime tecnologie cloud disponibili. Basandomi su una prolungata esperienza diretta maturata con clienti operanti nei settori Fintech, Insurtech e Industrial mi pongo l'obiettivo di ascoltare per comprendere le esigenze e risolvere i problemi concreti. Specializzato nel Platform Engineering, propongo soluzioni che forniscono una base solida per poter ottenere un'esperienza utente efficace ed ottimizzare allo stesso tempo i processi rendendoli più efficenti e sicuri.",
+    'index.bio': "Come consulente ed ingegnere Cloud Native, supporto le realtà che cercano di adottare in modo sostenibile e scalabile le ultime tecnologie cloud disponibili. Basandomi su una prolungata esperienza diretta maturata con clienti di ogni dimensione, da startup e scale-up a grandi imprese e pubblica amministrazione, soprattutto nei settori Fintech, Insurtech e Industrial, mi pongo l'obiettivo di ascoltare per comprendere le esigenze e risolvere i problemi concreti. Specializzato nel Platform Engineering, propongo soluzioni che forniscono una base solida per poter ottenere un'esperienza utente efficace ed ottimizzare allo stesso tempo i processi rendendoli più efficenti e sicuri.",
     'a11y.openMenu': 'Apri menu',
     'a11y.closeMenu': 'Chiudi menu',
     'a11y.logo': 'Luca Bertelli Consulting',
-    'seo.site.title': 'Luca Bertelli | Consulenza DevOps e Cloud Native',
+    'seo.site.title': 'Luca Bertelli | Consulenza Cloud Native e Platform Engineering',
     'seo.site.description':
-      'Consulente DevOps e Cloud Native freelance: Platform Engineering, Kubernetes, CI/CD, agenti AI e consulenza sui knowledge graph.',
-    'seo.home.title': 'Consulente DevOps e Platform Engineering | Luca Bertelli',
+      'Consulente Cloud Native e Platform Engineering freelance: DevOps, Kubernetes, CI/CD sicuro, Cyber Resilience Act, agenti AI e knowledge graph.',
+    'seo.home.title': 'Consulente Cloud Native e Platform Engineering | Luca Bertelli',
     'seo.home.description':
-      'Consulente DevOps, Kubernetes e Platform Engineering freelance in Italia e in UE. CI/CD sicuro, governance degli agenti AI e temporal knowledge graph.',
+      'Consulente DevOps, Cloud Native e Platform Engineering freelance in Italia e in UE. Kubernetes, CI/CD sicuro, Cyber Resilience Act e governance degli agenti AI.',
     'seo.blog.title': 'Blog DevOps e Kubernetes | Luca Bertelli',
     'seo.blog.description':
       'Articoli su Kubernetes, CI/CD, platform engineering e operatività cloud-native, scritti a partire da progetti di consulenza reali.',
@@ -356,12 +361,12 @@ export const ui = {
     'index.services.title': 'Servizi',
     'index.tickets.title': 'Prossimi eventi',
     'index.services.subtitle':
-      'Consulenza su DevOps, migrazione cloud, Platform Engineering, Kubernetes, SecDevOps, formazione, governance degli agenti AI e knowledge graph, per team in Italia e in Unione Europea.',
+      'Consulenza su DevOps, migrazione cloud, Platform Engineering, Kubernetes, SecDevOps, conformità al Cyber Resilience Act, formazione, governance degli agenti AI e knowledge graph, per team in Italia e in Unione Europea.',
     'index.services.cta': 'Tutti i servizi di consulenza',
     'index.services.cardCta': 'Scopri di più',
     'services.hub.h1': 'Consulenza DevOps, Cloud, agenti AI e knowledge graph',
     'services.hub.intro':
-      "Lavoro con team tecnici che devono rilasciare più in fretta senza rinunciare al controllo. Ogni intervento parte da un assessment di ciò che esiste già e si chiude quando il team interno è in grado di mantenere ciò che abbiamo costruito insieme. Qui sotto le aree su cui intervengo.",
+      "Lavoro con team tecnici che devono rilasciare più in fretta senza rinunciare al controllo, in startup, scale-up, grandi imprese e pubblica amministrazione. Ogni intervento parte da un assessment di ciò che esiste già e si chiude quando il team interno è in grado di mantenere ciò che abbiamo costruito insieme. Qui sotto le aree su cui intervengo.",
     'services.hub.seoTitle':
       'Consulenza DevOps, Kubernetes, agenti AI, knowledge graph | Luca Bertelli',
     'services.hub.seoDescription':
@@ -384,6 +389,9 @@ export const ui = {
     'services.hub.intent.secdevops.title': 'Sicurezza appiccicata in fondo alla delivery',
     'services.hub.intent.secdevops.text':
       'Consulenza SecDevOps e CI/CD per pipeline sicure, gestione dei segreti con Vault ed evidenze di supply chain.',
+    'services.hub.intent.cra.title': 'Un prodotto che deve uscire con le evidenze del Cyber Resilience Act',
+    'services.hub.intent.cra.text':
+      "Consulenza Cyber Resilience Act: gap assessment sull'Allegato I, processo di gestione delle vulnerabilità, SBOM e aggiornamenti sicuri, documentazione tecnica e preparazione alle notifiche in 24 ore.",
     'services.hub.intent.training.title': 'Formazione che deve parlare della vostra toolchain',
     'services.hub.intent.training.text':
       'Formazione aziendale DevOps, Kubernetes e cloud-native con laboratori basati sugli strumenti che usate già.',
@@ -395,7 +403,7 @@ export const ui = {
       'Consulenza knowledge graph e knowledge graph temporali: fatti operativi per persone e agenti AI, memoria degli agenti nel tempo, integrazione MCP e supporto alle migrazioni CI/CD di grande scala.',
     'services.hub.insights.title': 'Insights dal campo',
     'services.hub.insights.intro':
-      'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati e knowledge graph.',
+      'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati, Cyber Resilience Act e knowledge graph.',
     'services.outcomes.title': 'Risultati attesi',
     'services.deliverables.title': 'Cosa include',
     'services.faq.title': 'Domande frequenti',
@@ -408,10 +416,10 @@ export const ui = {
     'insights.category': 'Consulenza',
     'insights.hub.h1': 'Insights su DevOps e knowledge graph',
     'insights.hub.intro':
-      'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati e quando un knowledge graph rende possibile una migrazione.',
-    'insights.hub.seoTitle': 'Insights: Kubernetes, knowledge graph, Fintech | Luca Bertelli',
+      'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati, a che punto è il Cyber Resilience Act e quando un knowledge graph rende possibile una migrazione.',
+    'insights.hub.seoTitle': 'Insights: Kubernetes, knowledge graph, CRA, Fintech | Luca Bertelli',
     'insights.hub.seoDescription':
-      'Insights su consulenza Kubernetes, Platform Engineering vs DevOps, settori regolati e knowledge graph per agenti AI e migrazioni.',
+      'Insights su consulenza Kubernetes, Platform Engineering vs DevOps, settori regolati, Cyber Resilience Act e knowledge graph per agenti AI e migrazioni.',
     'insights.services.title': 'Servizi di consulenza correlati',
     'insights.services.text':
       "Queste guide servono a scegliere l'intervento giusto. Nelle pagine di servizio trovi perimetro, risultati attesi e FAQ.",
@@ -422,7 +430,7 @@ export const ui = {
       'Descrivimi la situazione in poche righe e ti dirò con franchezza se posso essere utile e in che modo. Se non sono la persona giusta, te lo dico.',
     'services.cta.button': 'Scrivimi',
     'contact.email': 'Email',
-    'index.experience.job.1.title': 'Cloud Native & DevOps Consultant',
+    'index.experience.job.1.title': 'Cloud Native & Platform Engineering Consultant',
     'index.experience.job.1.company': 'Freelance',
     'index.experience.job.1.dates': '2024 -',
     'index.experience.job.2.title': 'Client Success Manager & Co-Founder',
