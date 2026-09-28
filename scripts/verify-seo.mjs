@@ -23,6 +23,7 @@ if (!fs.existsSync(ROOT)) {
 /** Non-HTML routes that pages are allowed to link to. */
 const NON_HTML_ROUTES = new Set([
   "/llms.txt",
+  "/llms-full.txt",
   "/robots.txt",
   "/en/rss.xml",
   "/it/rss.xml",
@@ -153,6 +154,23 @@ if (!fs.existsSync(sitemapPath)) {
     const route = loc.replace(origin, "") || "/";
     if (!routes.has(route)) fail(`sitemap lists ${loc}, which has no page`);
   }
+
+  // A lastmod that is the same for every URL is what search engines learn to
+  // ignore; the config derives it from content dates, so it must vary.
+  const lastmods = [...xml.matchAll(/<lastmod>(.*?)<\/lastmod>/g)].map((m) => m[1]);
+  if (lastmods.length !== locs.size) {
+    fail(`sitemap has ${locs.size} URLs but ${lastmods.length} lastmod values`);
+  }
+  for (const value of lastmods) {
+    if (Number.isNaN(Date.parse(value))) fail(`sitemap lastmod "${value}" is not a date`);
+  }
+  if (new Set(lastmods.map((v) => v.slice(0, 10))).size < 2 && locs.size > 1) {
+    fail("every sitemap lastmod falls on the same day; content dates are not being read");
+  }
+}
+
+for (const file of ["llms.txt", "llms-full.txt", "robots.txt"]) {
+  if (!fs.existsSync(path.join(ROOT, file))) fail(`${file} is missing from the build`);
 }
 
 console.log(`Checked ${files.length} pages in ${ROOT}.`);
