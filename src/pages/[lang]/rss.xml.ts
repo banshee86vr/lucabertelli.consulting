@@ -12,12 +12,12 @@ export function getStaticPaths() {
 
 const FEED_META: Record<UiLang, { title: string; description: string }> = {
 	en: {
-		title: "Luca Bertelli | DevOps and Cloud Native",
+		title: "Luca Bertelli | Cloud Native and Platform Engineering",
 		description:
 			"Articles on Kubernetes, CI/CD, platform engineering and cloud-native operations by Luca Bertelli, freelance DevOps consultant.",
 	},
 	it: {
-		title: "Luca Bertelli | DevOps e Cloud Native",
+		title: "Luca Bertelli | Cloud Native e Platform Engineering",
 		description:
 			"Articoli su Kubernetes, CI/CD, platform engineering e operatività cloud-native di Luca Bertelli, consulente DevOps freelance.",
 	},

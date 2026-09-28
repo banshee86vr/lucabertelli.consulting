@@ -100,8 +100,8 @@ export function buildPersonAndProfessionalService(
 			url: SITE_URL,
 			jobTitle:
 				lang === "it"
-					? "Consulente DevOps e Cloud Native"
-					: "DevOps and Cloud Native Consultant",
+					? "Consulente Cloud Native e Platform Engineering"
+					: "Cloud Native and Platform Engineering Consultant",
 			description:
 				lang === "it"
 					? "Consulente freelance specializzato in DevOps, Platform Engineering e Kubernetes, con esperienza nei settori Fintech, Insurtech e industriale."

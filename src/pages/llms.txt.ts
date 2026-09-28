@@ -31,14 +31,14 @@ export async function GET() {
 	lines.push("# lucabertelli.consulting");
 	lines.push("");
 	lines.push(
-		"> Luca Bertelli is a freelance DevOps and Cloud Native consultant based in Italy, working with clients across Italy and the European Union. Areas of work: DevOps consulting, cloud migration, Platform Engineering, Kubernetes, SecDevOps and CI/CD, Cyber Resilience Act compliance (SBOM, artifact signing, VEX and VDR, vulnerability monitoring), technical training, AI engineering, and temporal knowledge graphs.",
+		"> Luca Bertelli is a freelance Cloud Native and Platform Engineering consultant based in Italy, working with clients across Italy and the European Union. Areas of work: DevOps consulting, cloud migration, Platform Engineering, Kubernetes, SecDevOps and CI/CD, Cyber Resilience Act compliance (SBOM, artifact signing, VEX and VDR, vulnerability monitoring), technical training, AI engineering, and temporal knowledge graphs.",
 	);
 	lines.push("");
 
 	lines.push("## Identity");
 	lines.push("- Name: Luca Bertelli");
 	lines.push('- Alternate names: LB Consulting, lb.consulting');
-	lines.push("- Role: Freelance DevOps and Cloud Native consultant");
+	lines.push("- Role: Freelance Cloud Native and Platform Engineering consultant");
 	lines.push("- Based in: Italy. Serves: Italy and the European Union");
 	lines.push(
 		"- Client profile: startups, scale-ups, enterprises and public sector organisations, mostly in Fintech, Insurtech and Industrial",
