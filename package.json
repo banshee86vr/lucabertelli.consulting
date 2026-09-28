@@ -38,6 +38,7 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "verify:seo": "node scripts/verify-seo.mjs",
+    "submit:indexnow": "node scripts/indexnow.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
