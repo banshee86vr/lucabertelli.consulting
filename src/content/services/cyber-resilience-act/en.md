@@ -61,6 +61,8 @@ The work is then sequenced by return. SBOM generation first, because it is cheap
 
 The tooling comes from what you already run. GitLab CI and GitHub Actions both have adequate options for generating SBOMs and signing artifacts; the differences between them matter far less than whether the output is reviewed and kept.
 
+I have done this kind of work for startups, scale-ups, enterprises and public sector organisations. Size changes who signs off, how long procurement takes and how many products share one pipeline; it does not change the sequence above.
+
 ## Signing, SBOM, VEX and VDR in practice
 
 **Signing and provenance.** Every artifact that leaves the pipeline, whether a container image, a package or a firmware bundle, is signed, and a provenance attestation records which commit, which pipeline run and which inputs produced it. Signing keys are not stored in the pipeline: they are issued at runtime or held in a secrets manager and used through short-lived credentials. This is the same work I do on the [SecDevOps side](/en/services/secdevops-cicd-consulting/), applied with the CRA's secure-distribution requirement in mind.

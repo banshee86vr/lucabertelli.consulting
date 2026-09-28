@@ -26,7 +26,7 @@ export const ui = {
     'index.hero.role.8': 'Cyber Resilience Act compliance',
     'index.hero.cta.email': 'Email me',
     'index.hero.cta.services': 'See consulting services',
-    'index.bio': 'As a Cloud Native consultant and engineer, I assist customers who desire to adopt the latest cloud technologies in a sustainable and scalable way. Based on a long hands-on experience gained with customers operating in the Fintech, Insurtech, and Industrial sectors. My primary focus is on listening to understand needs and solve tangible problems. Specializing in Platform Engineering, I propose solutions that provide a solid foundation for a smooth user experience, optimizing the processes and making them more efficient and safe.',
+    'index.bio': 'As a Cloud Native consultant and engineer, I assist customers who desire to adopt the latest cloud technologies in a sustainable and scalable way. Based on long hands-on experience gained with customers of every size, from startups and scale-ups to enterprises and public sector organisations, mostly in the Fintech, Insurtech and Industrial sectors. My primary focus is on listening to understand needs and solve tangible problems. Specializing in Platform Engineering, I propose solutions that provide a solid foundation for a smooth user experience, optimizing the processes and making them more efficient and safe.',
     'a11y.openMenu': 'Open menu',
     'a11y.closeMenu': 'Close menu',
     'a11y.logo': 'Luca Bertelli Consulting',
@@ -64,7 +64,7 @@ export const ui = {
     'index.services.cardCta': 'Read more',
     'services.hub.h1': 'DevOps, Cloud, AI agents and knowledge graph consulting',
     'services.hub.intro':
-      'I work with engineering teams that need to release faster without giving up control. Each engagement starts from an assessment of what already exists, and ends with the internal team able to maintain what we built together. Below are the areas I cover.',
+      'I work with engineering teams that need to release faster without giving up control, in startups, scale-ups, enterprises and public sector organisations. Each engagement starts from an assessment of what already exists, and ends with the internal team able to maintain what we built together. Below are the areas I cover.',
     'services.hub.seoTitle':
       'Consulting: DevOps, Kubernetes, AI agents, knowledge graphs | Luca Bertelli',
     'services.hub.seoDescription':
@@ -328,7 +328,7 @@ export const ui = {
     'index.hero.role.8': 'Conformità al Cyber Resilience Act',
     'index.hero.cta.email': 'Contattami',
     'index.hero.cta.services': 'Vedi i servizi di consulenza',
-    'index.bio': "Come consulente ed ingegnere Cloud Native, supporto le realtà che cercano di adottare in modo sostenibile e scalabile le ultime tecnologie cloud disponibili. Basandomi su una prolungata esperienza diretta maturata con clienti operanti nei settori Fintech, Insurtech e Industrial mi pongo l'obiettivo di ascoltare per comprendere le esigenze e risolvere i problemi concreti. Specializzato nel Platform Engineering, propongo soluzioni che forniscono una base solida per poter ottenere un'esperienza utente efficace ed ottimizzare allo stesso tempo i processi rendendoli più efficenti e sicuri.",
+    'index.bio': "Come consulente ed ingegnere Cloud Native, supporto le realtà che cercano di adottare in modo sostenibile e scalabile le ultime tecnologie cloud disponibili. Basandomi su una prolungata esperienza diretta maturata con clienti di ogni dimensione, da startup e scale-up a grandi imprese e pubblica amministrazione, soprattutto nei settori Fintech, Insurtech e Industrial, mi pongo l'obiettivo di ascoltare per comprendere le esigenze e risolvere i problemi concreti. Specializzato nel Platform Engineering, propongo soluzioni che forniscono una base solida per poter ottenere un'esperienza utente efficace ed ottimizzare allo stesso tempo i processi rendendoli più efficenti e sicuri.",
     'a11y.openMenu': 'Apri menu',
     'a11y.closeMenu': 'Chiudi menu',
     'a11y.logo': 'Luca Bertelli Consulting',
@@ -366,7 +366,7 @@ export const ui = {
     'index.services.cardCta': 'Scopri di più',
     'services.hub.h1': 'Consulenza DevOps, Cloud, agenti AI e knowledge graph',
     'services.hub.intro':
-      "Lavoro con team tecnici che devono rilasciare più in fretta senza rinunciare al controllo. Ogni intervento parte da un assessment di ciò che esiste già e si chiude quando il team interno è in grado di mantenere ciò che abbiamo costruito insieme. Qui sotto le aree su cui intervengo.",
+      "Lavoro con team tecnici che devono rilasciare più in fretta senza rinunciare al controllo, in startup, scale-up, grandi imprese e pubblica amministrazione. Ogni intervento parte da un assessment di ciò che esiste già e si chiude quando il team interno è in grado di mantenere ciò che abbiamo costruito insieme. Qui sotto le aree su cui intervengo.",
     'services.hub.seoTitle':
       'Consulenza DevOps, Kubernetes, agenti AI, knowledge graph | Luca Bertelli',
     'services.hub.seoDescription':

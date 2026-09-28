@@ -62,6 +62,8 @@ Il lavoro viene poi ordinato per ritorno. Prima la generazione della SBOM, perch
 
 Gli strumenti arrivano da ciò che usate già. GitLab CI e GitHub Actions offrono entrambi opzioni adeguate per generare SBOM e firmare artefatti; le differenze tra loro contano molto meno del fatto che l'output venga rivisto e conservato.
 
+Ho svolto questo tipo di lavoro per startup, scale-up, grandi imprese e pubblica amministrazione. La dimensione cambia chi approva, quanto durano gli acquisti e quanti prodotti condividono una pipeline; non cambia la sequenza descritta sopra.
+
 ## Firma, SBOM, VEX e VDR nella pratica
 
 **Firma e provenance.** Ogni artefatto che esce dalla pipeline, che sia un'immagine container, un pacchetto o un bundle firmware, viene firmato, e un'attestazione di provenance registra commit, esecuzione di pipeline e input che lo hanno prodotto. Le chiavi di firma non vivono nella pipeline: vengono emesse al momento dell'uso o custodite in un secrets manager e usate tramite credenziali a scadenza breve. È lo stesso lavoro che faccio sul fronte [SecDevOps](/it/servizi/consulenza-secdevops-cicd/), applicato tenendo presente il requisito di distribuzione sicura del CRA.

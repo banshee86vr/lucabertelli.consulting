@@ -40,6 +40,9 @@ export async function GET() {
 	lines.push('- Alternate names: LB Consulting, lb.consulting');
 	lines.push("- Role: Freelance DevOps and Cloud Native consultant");
 	lines.push("- Based in: Italy. Serves: Italy and the European Union");
+	lines.push(
+		"- Client profile: startups, scale-ups, enterprises and public sector organisations, mostly in Fintech, Insurtech and Industrial",
+	);
 	lines.push("- Languages: Italian, English");
 	lines.push("- Email: info@lucabertelli.consulting");
 	lines.push("- VAT / P.IVA: 05028510237");
