@@ -47,7 +47,13 @@ export async function GET() {
 	lines.push("- Email: info@lucabertelli.consulting");
 	lines.push("- VAT / P.IVA: 05028510237");
 	lines.push(
+		"- Engagement model: independent freelance consultant (no agency); mostly remote, on-site days in Italy and the EU for workshops and training; scope agreed before starting.",
+	);
+	lines.push(
 		"- Site languages: English at /en/ (default), Italian at /it/. Service slugs are localized per language.",
+	);
+	lines.push(
+		`- Full text of every service, guide and article in one file: ${url("/llms-full.txt")}`,
 	);
 	lines.push("");
 
@@ -76,6 +82,10 @@ export async function GET() {
 		for (const service of services.filter((s) => s.data.lang === lang)) {
 			const key = service.data.key;
 			lines.push(`- [${service.data.title}](${url(servicePath(key, lang))}): ${service.data.description}`);
+			const questions = service.data.faq.map((item) => item.question);
+			if (questions.length) {
+				lines.push(`  - Answers on the page: ${questions.join(" | ")}`);
+			}
 		}
 	}
 	lines.push("");
@@ -147,8 +157,12 @@ export async function GET() {
 	lines.push("");
 
 	lines.push("## Machine-readable discovery");
+	lines.push(`- Full text (llms-full.txt): ${url("/llms-full.txt")}`);
 	lines.push(`- Sitemap index: ${url("/sitemap-index.xml")}`);
 	lines.push(`- robots.txt: ${url("/robots.txt")}`);
+	lines.push(
+		"- Structured data: every HTML page embeds a schema.org JSON-LD graph (Person, ProfessionalService, WebSite; Service + FAQPage on service pages; BlogPosting on articles and guides).",
+	);
 	lines.push("");
 
 	return new Response(lines.join("\n"), {
