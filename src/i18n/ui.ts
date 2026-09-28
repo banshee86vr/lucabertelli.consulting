@@ -89,7 +89,7 @@ export const ui = {
       'SecDevOps and CI/CD consulting for secure pipelines, Vault secrets management and supply-chain evidence.',
     'services.hub.intent.cra.title': 'A product that must ship with Cyber Resilience Act evidence',
     'services.hub.intent.cra.text':
-      'Cyber Resilience Act compliance consulting: SBOM, signed artifacts, VEX and VDR, and vulnerability monitoring built into the release process.',
+      'Cyber Resilience Act compliance consulting: gap assessment against Annex I, vulnerability handling process, SBOM and secure updates, technical documentation and 24-hour reporting readiness.',
     'services.hub.intent.training.title': 'Training that has to match your real toolchain',
     'services.hub.intent.training.text':
       'Corporate DevOps, Kubernetes and cloud-native training with labs based on the tools you already run.',
@@ -102,7 +102,7 @@ export const ui = {
  
     'services.hub.insights.title': 'Guides from the field',
     'services.hub.insights.intro':
-      'Consulting notes kept outside the engineering blog: when to hire help, Platform Engineering vs DevOps, regulated industries, and knowledge graphs.',
+      'Consulting notes kept outside the engineering blog: when to hire help, Platform Engineering vs DevOps, regulated industries, the Cyber Resilience Act, and knowledge graphs.',
     'services.outcomes.title': 'What you get',
     'services.deliverables.title': "What's included",
     'services.faq.title': 'Frequently asked questions',
@@ -115,10 +115,10 @@ export const ui = {
     'insights.category': 'Consulting',
     'insights.hub.h1': 'Field guides on DevOps and knowledge graphs',
     'insights.hub.intro':
-      'Practical notes on when to hire help, how Platform Engineering differs from DevOps, what changes in regulated industries, and when a knowledge graph makes a migration possible. Separate from the engineering blog.',
-    'insights.hub.seoTitle': 'Insights: Kubernetes, knowledge graphs, Fintech | Luca Bertelli',
+      'Practical notes on when to hire help, how Platform Engineering differs from DevOps, what changes in regulated industries, where the Cyber Resilience Act stands, and when a knowledge graph makes a migration possible. Separate from the engineering blog.',
+    'insights.hub.seoTitle': 'Insights: Kubernetes, knowledge graphs, CRA, Fintech | Luca Bertelli',
     'insights.hub.seoDescription':
-      'Field guides on Kubernetes consulting, Platform Engineering vs DevOps, regulated industries, and knowledge graphs for agents and migrations.',
+      'Field guides on Kubernetes consulting, Platform Engineering vs DevOps, regulated industries, the Cyber Resilience Act, and knowledge graphs for agents and migrations.',
     'insights.services.title': 'Related consulting services',
     'insights.services.text':
       'These guides exist to help you choose the right engagement. The service pages below describe scope, outcomes and FAQ.',
@@ -391,7 +391,7 @@ export const ui = {
       'Consulenza SecDevOps e CI/CD per pipeline sicure, gestione dei segreti con Vault ed evidenze di supply chain.',
     'services.hub.intent.cra.title': 'Un prodotto che deve uscire con le evidenze del Cyber Resilience Act',
     'services.hub.intent.cra.text':
-      'Consulenza Cyber Resilience Act: SBOM, artefatti firmati, VEX e VDR e monitoraggio delle vulnerabilità integrati nel processo di rilascio.',
+      "Consulenza Cyber Resilience Act: gap assessment sull'Allegato I, processo di gestione delle vulnerabilità, SBOM e aggiornamenti sicuri, documentazione tecnica e preparazione alle notifiche in 24 ore.",
     'services.hub.intent.training.title': 'Formazione che deve parlare della vostra toolchain',
     'services.hub.intent.training.text':
       'Formazione aziendale DevOps, Kubernetes e cloud-native con laboratori basati sugli strumenti che usate già.',
@@ -403,7 +403,7 @@ export const ui = {
       'Consulenza knowledge graph e knowledge graph temporali: fatti operativi per persone e agenti AI, memoria degli agenti nel tempo, integrazione MCP e supporto alle migrazioni CI/CD di grande scala.',
     'services.hub.insights.title': 'Insights dal campo',
     'services.hub.insights.intro':
-      'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati e knowledge graph.',
+      'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati, Cyber Resilience Act e knowledge graph.',
     'services.outcomes.title': 'Risultati attesi',
     'services.deliverables.title': 'Cosa include',
     'services.faq.title': 'Domande frequenti',
@@ -416,10 +416,10 @@ export const ui = {
     'insights.category': 'Consulenza',
     'insights.hub.h1': 'Insights su DevOps e knowledge graph',
     'insights.hub.intro':
-      'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati e quando un knowledge graph rende possibile una migrazione.',
-    'insights.hub.seoTitle': 'Insights: Kubernetes, knowledge graph, Fintech | Luca Bertelli',
+      'Note di consulenza tenute fuori dal blog tecnico: quando ha senso un consulente, Platform Engineering vs DevOps, settori regolati, a che punto è il Cyber Resilience Act e quando un knowledge graph rende possibile una migrazione.',
+    'insights.hub.seoTitle': 'Insights: Kubernetes, knowledge graph, CRA, Fintech | Luca Bertelli',
     'insights.hub.seoDescription':
-      'Insights su consulenza Kubernetes, Platform Engineering vs DevOps, settori regolati e knowledge graph per agenti AI e migrazioni.',
+      'Insights su consulenza Kubernetes, Platform Engineering vs DevOps, settori regolati, Cyber Resilience Act e knowledge graph per agenti AI e migrazioni.',
     'insights.services.title': 'Servizi di consulenza correlati',
     'insights.services.text':
       "Queste guide servono a scegliere l'intervento giusto. Nelle pagine di servizio trovi perimetro, risultati attesi e FAQ.",
