@@ -5,7 +5,7 @@ title: "Temporal Knowledge Graph Consulting"
 tagline: "Small, deterministic graphs of how your systems actually work, and temporal graphs of how they change, so people and agents query facts, including facts about the past, instead of trying to deduce them."
 seoTitle: "Temporal Knowledge Graph Consulting | Luca Bertelli"
 description: "Knowledge graph and temporal knowledge graph consulting in Italy and the EU: operational facts, time-aware memory for AI agents, and MCP access."
-order: 8
+order: 9
 keywords:
   - "knowledge graph consulting"
   - "temporal knowledge graph"

@@ -5,7 +5,7 @@ title: "DevOps and Cloud Native Training"
 tagline: "Corporate training on Kubernetes, DevOps and SecDevOps, built around your stack rather than a demo environment."
 seoTitle: "DevOps, Kubernetes and Cloud Native Training Courses | Luca Bertelli"
 description: "Corporate training on Kubernetes, DevOps, SecDevOps and Terraform: tailored programmes in English and Italian, with hands-on labs based on your own real tooling."
-order: 6
+order: 7
 keywords:
   - "corporate Kubernetes training"
   - "DevOps training"

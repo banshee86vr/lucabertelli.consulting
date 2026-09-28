@@ -7,6 +7,7 @@ export const SERVICE_KEYS = [
 	"platform-engineering",
 	"kubernetes",
 	"secdevops",
+	"cyber-resilience-act",
 	"training",
 	"ai-engineering",
 	"knowledge-graphs",
@@ -44,6 +45,10 @@ export const SERVICE_SLUGS: Record<ServiceKey, Record<UiLang, string>> = {
 	secdevops: {
 		en: "secdevops-cicd-consulting",
 		it: "consulenza-secdevops-cicd",
+	},
+	"cyber-resilience-act": {
+		en: "cyber-resilience-act-compliance",
+		it: "consulenza-cyber-resilience-act",
 	},
 	training: {
 		en: "devops-cloud-native-training",
@@ -83,6 +88,7 @@ export const SERVICE_ICONS: Record<ServiceKey, ServiceIconName> = {
 	"platform-engineering": "layers",
 	kubernetes: "boxes",
 	secdevops: "shield-check",
+	"cyber-resilience-act": "file-check",
 	training: "graduation-cap",
 	"ai-engineering": "bot",
 	"knowledge-graphs": "share-2",

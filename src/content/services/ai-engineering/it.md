@@ -5,7 +5,7 @@ title: "Governance e adozione di agenti AI"
 tagline: "Adozione di agenti AI in azienda con regole chiare, rischio controllato e spesa prevedibile."
 seoTitle: "Consulenza governance e adozione di agenti AI | Luca Bertelli"
 description: "Consulenza su governance e adozione di agenti AI in Italia: policy di utilizzo, hardening della sicurezza, integrazione MCP e controllo dei costi di inferenza."
-order: 7
+order: 8
 keywords:
   - "governance agenti AI"
   - "adozione agenti AI"

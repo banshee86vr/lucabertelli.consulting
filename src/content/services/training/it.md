@@ -5,7 +5,7 @@ title: "Formazione DevOps e Cloud Native"
 tagline: "Corsi di formazione aziendale su Kubernetes, DevOps e SecDevOps, costruiti sul vostro stack e non su un ambiente di esempio."
 seoTitle: "Corsi di formazione DevOps, Kubernetes e Cloud Native | Luca Bertelli"
 description: "Formazione aziendale su Kubernetes, DevOps, SecDevOps e Terraform: percorsi su misura in italiano e inglese, con laboratori pratici basati sui vostri strumenti reali."
-order: 6
+order: 7
 keywords:
   - "corso Kubernetes aziendale"
   - "formazione DevOps"

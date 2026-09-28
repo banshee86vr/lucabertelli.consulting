@@ -5,9 +5,9 @@ title: "DevOps consulting for Fintech, Insurtech and industrial teams"
 subtitle: "What changes when releases, audits and change windows are business constraints rather than operational details"
 seoTitle: "DevOps consulting for Fintech, Insurtech and industrial teams | Luca Bertelli"
 date: "2025-10-26"
-updated: "2026-07-28"
+updated: "2026-09-28"
 image: "/insights/regulated-industries/regulated-industries.webp"
-relatedServices: ["devops", "secdevops", "kubernetes", "cloud", "platform-engineering"]
+relatedServices: ["devops", "secdevops", "cyber-resilience-act", "kubernetes", "cloud", "platform-engineering"]
 ---
 
 ## Same Kubernetes, different constraints
@@ -50,7 +50,8 @@ The design changes:
 - test environments that **replicate real constraints**, not only the code;
 - verified rollback, not theoretical rollback;
 - clear separation of networks and identities where IT and plant systems meet;
-- observability built for operators, not only for developers.
+- observability built for operators, not only for developers;
+- **SBOMs, signed firmware and a vulnerability handling process** if the product falls under the [Cyber Resilience Act](/en/services/cyber-resilience-act-compliance/): connected devices and on-machine software are the typical case.
 
 Kubernetes remains useful, but only if day-2 and isolation are solid. Otherwise you add a control plane without reducing operational risk. On this point [Kubernetes consulting](/en/services/kubernetes-consulting/) and SecDevOps practices inevitably intertwine.
 

@@ -23,6 +23,7 @@ export const ui = {
     'index.hero.role.5': 'AI agent governance and adoption',
     'index.hero.role.6': 'Knowledge graphs',
     'index.hero.role.7': 'AI agent memory',
+    'index.hero.role.8': 'Cyber Resilience Act compliance',
     'index.hero.cta.email': 'Email me',
     'index.hero.cta.services': 'See consulting services',
     'index.bio': 'As a Cloud Native consultant and engineer, I assist customers who desire to adopt the latest cloud technologies in a sustainable and scalable way. Based on a long hands-on experience gained with customers operating in the Fintech, Insurtech, and Industrial sectors. My primary focus is on listening to understand needs and solve tangible problems. Specializing in Platform Engineering, I propose solutions that provide a solid foundation for a smooth user experience, optimizing the processes and making them more efficient and safe.',
@@ -58,7 +59,7 @@ export const ui = {
     'index.services.title': 'Services',
     'index.tickets.title': 'Upcoming Events',
     'index.services.subtitle':
-      'Consulting on DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps, training, AI agent governance and temporal knowledge graphs, for teams in Italy and across the EU.',
+      'Consulting on DevOps, cloud migration, Platform Engineering, Kubernetes, SecDevOps, Cyber Resilience Act compliance, training, AI agent governance and temporal knowledge graphs, for teams in Italy and across the EU.',
     'index.services.cta': 'All consulting services',
     'index.services.cardCta': 'Read more',
     'services.hub.h1': 'DevOps, Cloud, AI agents and knowledge graph consulting',
@@ -86,6 +87,9 @@ export const ui = {
     'services.hub.intent.secdevops.title': 'Security bolted on at the end of delivery',
     'services.hub.intent.secdevops.text':
       'SecDevOps and CI/CD consulting for secure pipelines, Vault secrets management and supply-chain evidence.',
+    'services.hub.intent.cra.title': 'A product that must ship with Cyber Resilience Act evidence',
+    'services.hub.intent.cra.text':
+      'Cyber Resilience Act compliance consulting: SBOM, signed artifacts, VEX and VDR, and vulnerability monitoring built into the release process.',
     'services.hub.intent.training.title': 'Training that has to match your real toolchain',
     'services.hub.intent.training.text':
       'Corporate DevOps, Kubernetes and cloud-native training with labs based on the tools you already run.',
@@ -321,6 +325,7 @@ export const ui = {
     'index.hero.role.5': 'Governance e adozione di agenti AI',
     'index.hero.role.6': 'Knowledge graph',
     'index.hero.role.7': 'Memoria per agenti AI',
+    'index.hero.role.8': 'Conformità al Cyber Resilience Act',
     'index.hero.cta.email': 'Contattami',
     'index.hero.cta.services': 'Vedi i servizi di consulenza',
     'index.bio': "Come consulente ed ingegnere Cloud Native, supporto le realtà che cercano di adottare in modo sostenibile e scalabile le ultime tecnologie cloud disponibili. Basandomi su una prolungata esperienza diretta maturata con clienti operanti nei settori Fintech, Insurtech e Industrial mi pongo l'obiettivo di ascoltare per comprendere le esigenze e risolvere i problemi concreti. Specializzato nel Platform Engineering, propongo soluzioni che forniscono una base solida per poter ottenere un'esperienza utente efficace ed ottimizzare allo stesso tempo i processi rendendoli più efficenti e sicuri.",
@@ -356,7 +361,7 @@ export const ui = {
     'index.services.title': 'Servizi',
     'index.tickets.title': 'Prossimi eventi',
     'index.services.subtitle':
-      'Consulenza su DevOps, migrazione cloud, Platform Engineering, Kubernetes, SecDevOps, formazione, governance degli agenti AI e knowledge graph, per team in Italia e in Unione Europea.',
+      'Consulenza su DevOps, migrazione cloud, Platform Engineering, Kubernetes, SecDevOps, conformità al Cyber Resilience Act, formazione, governance degli agenti AI e knowledge graph, per team in Italia e in Unione Europea.',
     'index.services.cta': 'Tutti i servizi di consulenza',
     'index.services.cardCta': 'Scopri di più',
     'services.hub.h1': 'Consulenza DevOps, Cloud, agenti AI e knowledge graph',
@@ -384,6 +389,9 @@ export const ui = {
     'services.hub.intent.secdevops.title': 'Sicurezza appiccicata in fondo alla delivery',
     'services.hub.intent.secdevops.text':
       'Consulenza SecDevOps e CI/CD per pipeline sicure, gestione dei segreti con Vault ed evidenze di supply chain.',
+    'services.hub.intent.cra.title': 'Un prodotto che deve uscire con le evidenze del Cyber Resilience Act',
+    'services.hub.intent.cra.text':
+      'Consulenza Cyber Resilience Act: SBOM, artefatti firmati, VEX e VDR e monitoraggio delle vulnerabilità integrati nel processo di rilascio.',
     'services.hub.intent.training.title': 'Formazione che deve parlare della vostra toolchain',
     'services.hub.intent.training.text':
       'Formazione aziendale DevOps, Kubernetes e cloud-native con laboratori basati sugli strumenti che usate già.',

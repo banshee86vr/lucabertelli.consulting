@@ -5,7 +5,7 @@ title: "AI Agent Governance and Adoption"
 tagline: "Adopting AI agents in the enterprise with clear rules, controlled risk and predictable spend."
 seoTitle: "AI Agent Governance and Adoption Consulting | Luca Bertelli"
 description: "Consulting on AI agent governance and adoption across Italy and the EU: usage policy, security hardening, Model Context Protocol integration and inference cost control."
-order: 7
+order: 8
 keywords:
   - "AI agent governance"
   - "AI agent adoption"

@@ -7,8 +7,8 @@ Use this after deploy to verify the implementation and track reachability over t
 | Surface | URLs | Notes |
 |---------|------|-------|
 | Home | `/en/`, `/it/` | H1 carries the primary query terms |
-| Services hub | `/en/services/`, `/it/servizi/` | Lists all eight services |
-| Service pages | 8 per language | Localized slugs with commercial intent in the path, e.g. `/it/servizi/consulenza-agenti-ai/` vs `/en/services/ai-agent-governance/` |
+| Services hub | `/en/services/`, `/it/servizi/` | Lists all nine services |
+| Service pages | 9 per language | Localized slugs with commercial intent in the path, e.g. `/it/servizi/consulenza-cyber-resilience-act/` vs `/en/services/cyber-resilience-act-compliance/` |
 | Blog index | `/en/blog/`, `/it/blog/` | Engineering notes only |
 | Blog articles | 4 per language | Tooling / OSS write-ups |
 | Blog tag pages | per distinct tag × language | `/‹lang›/blog/tag/‹tag›/` |
@@ -18,7 +18,7 @@ Use this after deploy to verify the implementation and track reachability over t
 | Feeds | `/en/rss.xml`, `/it/rss.xml` | Blog only |
 | Agent summary | `/llms.txt` | Generated at build from the content collections |
 
-Current inventory: **72 indexable HTML pages**. Re-confirm with
+Current inventory: **74 indexable HTML pages**. Re-confirm with
 `pnpm run verify:seo` after a fresh build whenever content or routes change.
 
 ## Post-deploy validation (manual)
@@ -36,7 +36,7 @@ Current inventory: **72 indexable HTML pages**. Re-confirm with
 ## Search Console (recommended)
 
 - Submit the **sitemap**: `https://lucabertelli.consulting/sitemap-index.xml`.
-- Monitor **Coverage / Pages**: indexed count against the 72 URLs above.
+- Monitor **Coverage / Pages**: indexed count against the 74 URLs above.
 - Watch **International targeting**: hreflang issues should stay **0**. The localized service slugs are the most likely source of a regression here.
 - Track **Queries / Pages** for the service URLs specifically, not only the home page.
 

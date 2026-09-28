@@ -27,7 +27,7 @@ deliverables:
   - "Controlli di sicurezza integrati in pipeline: SAST, SCA, scansione delle immagini, IaC"
   - "Gestione dei segreti con HashiCorp Vault e rimozione delle credenziali statiche"
   - "Gestione delle dipendenze automatizzata con Renovate"
-  - "Firma degli artefatti e generazione della SBOM"
+  - "Firma degli artefatti, generazione della SBOM e dichiarazioni VEX/VDR"
 faq:
   - question: "Che differenza c'è tra DevSecOps e SecDevOps?"
     answer: "Nella pratica indicano lo stesso obiettivo: integrare la sicurezza nel ciclo di sviluppo invece di applicarla alla fine. Uso SecDevOps perché l'ordine delle parole riflette meglio l'idea che la sicurezza sia un requisito di partenza e non un controllo aggiunto dopo la costruzione."
@@ -60,3 +60,5 @@ La regola che rende sostenibile l'insieme è la soglia iniziale: si blocca solo 
 Sulla gestione dei segreti l'obiettivo è passare da credenziali statiche a credenziali generate al momento con scadenza breve. Vault emette l'accesso al database quando il servizio ne ha bisogno, con una validità di ore, e lo revoca dopo. Non è solo una questione di rotazione: una credenziale che non esiste in forma permanente non può finire in un log o in un repository.
 
 Sulla supply chain il lavoro riguarda la tracciabilità di ciò che si rilascia. Firma degli artefatti, generazione della SBOM a ogni build, aggiornamento automatico delle dipendenze con Renovate. Quest'ultimo punto è quello con il ritorno più immediato: la maggior parte delle vulnerabilità che si trovano in produzione riguarda dipendenze per cui la correzione esiste da mesi e semplicemente non è stata applicata.
+
+Quando il prodotto rientra nel Cyber Resilience Act, questa stessa catena passa da buona pratica a requisito normativo, e deve restare in funzione per tutto il periodo di supporto. La pagina sulla [conformità al CRA](/it/servizi/consulenza-cyber-resilience-act/) descrive che cosa cambia: VEX e VDR sopra la SBOM, monitoraggio continuo dei rilasci supportati ed evidenze per le scadenze di notifica.

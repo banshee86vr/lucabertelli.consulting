@@ -5,7 +5,7 @@ title: "Consulenza temporal knowledge graph"
 tagline: "Grafi piccoli e deterministici su come funzionano davvero i vostri sistemi, e grafi temporali su come cambiano, così persone e agenti interrogano fatti, anche sul passato, invece di provare a dedurre."
 seoTitle: "Consulenza temporal knowledge graph | Luca Bertelli"
 description: "Consulenza temporal knowledge graph in Italia: conoscenza operativa, memoria per agenti AI, accesso MCP e migrazioni CI/CD di grande scala."
-order: 8
+order: 9
 keywords:
   - "consulenza knowledge graph"
   - "knowledge graph temporale"
