@@ -1,0 +1,9 @@
+# Security contact for lucabertelli.consulting (RFC 9116)
+# If you found a vulnerability in this site or in software published by
+# Luca Bertelli, please report it here. Coordinated disclosure is welcome.
+
+Contact: mailto:info@lucabertelli.consulting
+Contact: https://www.linkedin.com/in/luca-bertelli-a1413b77
+Expires: 2027-09-27T00:00:00.000Z
+Preferred-Languages: en, it
+Canonical: https://lucabertelli.consulting/.well-known/security.txt

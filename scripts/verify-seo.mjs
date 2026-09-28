@@ -173,6 +173,22 @@ for (const file of ["llms.txt", "llms-full.txt", "robots.txt"]) {
   if (!fs.existsSync(path.join(ROOT, file))) fail(`${file} is missing from the build`);
 }
 
+// RFC 9116: an expired security.txt is treated as absent by scanners.
+const securityTxt = path.join(ROOT, ".well-known", "security.txt");
+if (!fs.existsSync(securityTxt)) {
+  fail(".well-known/security.txt is missing from the build");
+} else {
+  const text = fs.readFileSync(securityTxt, "utf8");
+  if (!/^Contact:\s*\S+/m.test(text)) fail("security.txt has no Contact field");
+  const expires = text.match(/^Expires:\s*(\S+)/m)?.[1];
+  const expiresAt = expires ? Date.parse(expires) : Number.NaN;
+  if (Number.isNaN(expiresAt)) fail("security.txt has no valid Expires field");
+  else if (expiresAt < Date.now()) fail(`security.txt expired on ${expires}; bump the date`);
+  else if (expiresAt - Date.now() < 30 * 24 * 3600 * 1000) {
+    fail(`security.txt expires within 30 days (${expires}); bump the date`);
+  }
+}
+
 console.log(`Checked ${files.length} pages in ${ROOT}.`);
 
 if (failures.length > 0) {

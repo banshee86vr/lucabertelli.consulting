@@ -19,6 +19,7 @@ Use this after deploy to verify the implementation and track reachability over t
 | Agent summary | `/llms.txt` | Index: identity, pages, FAQ questions per service; generated at build |
 | Agent full text | `/llms-full.txt` | Full text of services (with FAQ), insights and articles; generated at build |
 | IndexNow key | `/4601f867d99a0cb5aeda2cdbaf7f9321.txt` | Ownership token for `pnpm run submit:indexnow` |
+| Security contact | `/.well-known/security.txt` | RFC 9116; `verify:seo` fails when `Expires` is within 30 days, bump it yearly |
 
 Current inventory: **76 indexable HTML pages**. Re-confirm with
 `pnpm run verify:seo` after a fresh build whenever content or routes change.
@@ -58,7 +59,8 @@ Both audiences enter through the same door, so the work is shared:
 7. **Social previews**: Share Debugger - the OG image must load and title/description must match the page.
 8. **Feeds**: `/it/rss.xml` and `/en/rss.xml` must validate and list the articles of that language only.
 9. **llms.txt**: `/llms.txt` must list the current services (with their FAQ questions), guides, articles and certifications, and `/llms-full.txt` must carry their full text. Both are generated at build, so a stale entry means a content collection was not updated.
-10. **Assistant check**: ask ChatGPT (with search), Perplexity and Google AI mode `who is Luca Bertelli consultant` and `consulente cyber resilience act italia`; note whether the site is cited and which page. Repeat monthly; this is the only direct signal of AI reachability.
+10. **security.txt**: `/.well-known/security.txt` must return 200 as `text/plain` with a future `Expires`. Check it at [securitytxt.org](https://securitytxt.org/) after deploy. For a site selling CRA vulnerability-handling work, its absence would be noticed.
+11. **Assistant check**: ask ChatGPT (with search), Perplexity and Google AI mode `who is Luca Bertelli consultant` and `consulente cyber resilience act italia`; note whether the site is cited and which page. Repeat monthly; this is the only direct signal of AI reachability.
 
 ## Search Console (recommended)
 
@@ -74,7 +76,7 @@ Both audiences enter through the same door, so the work is shared:
 | Indexed core URLs | URL Inspection / Coverage | All service pages, insights hub/pages and both blog indexes indexed |
 | Position for "consulente devops", "consulenza kubernetes", "consulenza platform engineering", "consulenza cyber resilience act", "governance agenti AI", "consulenza knowledge graph" | Search Console queries | Entering the first pages, then improving |
 | Bing indexed URLs and Bing impressions | Bing Webmaster Tools | All 76 URLs indexed; impressions on service URLs |
-| Citations by AI assistants for the queries above | Manual monthly check (see step 10) | Site cited on at least the branded and CRA queries |
+| Citations by AI assistants for the queries above | Manual monthly check (see step 11) | Site cited on at least the branded and CRA queries |
 | Impressions on service pages | Search Console, filtered by page | Upward trend; they start from zero |
 | Click-through rate on branded + service queries | Search Console | Slow upward trend |
 | Rich result errors | Rich Results Test / GSC | Zero critical errors |

@@ -50,7 +50,7 @@ return and what they have seen during training. The levers you control:
   crawled; each write-up there should link the matching service or insight URL
   once, in the first paragraph, with the plain service name as anchor text.
 - **Check monthly.** Ask ChatGPT (search on), Perplexity and Google AI mode
-  the queries in `docs/SEO-KPI.md` step 10 and record whether the site is
+  the queries in `docs/SEO-KPI.md` step 11 and record whether the site is
   cited. When it is not, look at which pages *are* cited and what question
   they answer in their first paragraph.
 
