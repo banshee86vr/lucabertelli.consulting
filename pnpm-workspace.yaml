@@ -1,0 +1,26 @@
+overrides:
+  wrangler: "^4.149.0"
+  axios: ">=1.18.0"
+  undici: ">=8.9.0"
+  lodash: ">=4.18.0"
+  lodash-es: ">=4.18.0"
+  fast-uri: ">=3.1.5"
+  follow-redirects: ">=1.16.0"
+  handlebars: ">=4.7.9"
+  yaml: ">=2.8.3"
+  nanoid: ">=3.3.18"
+  js-yaml: ">=4.3.1"
+  postcss: ">=8.5.23"
+  sharp: ">=0.35.5"
+  http-cache-semantics: ">=4.3.0"
+  source-map-js: ">=1.2.2"
+  svgo: ">=4.0.2"
+  form-data: ">=4.0.6"
+  ws: ">=8.21.0"
+
+# Workers Builds ships pnpm 10.11.1. packageManager pnpm@12.9.1 makes that
+# binary re-exec 12.9.1, which is what reads allowBuilds and this lockfile.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
