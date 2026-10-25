@@ -34,6 +34,9 @@ After each production deploy that adds or renames URLs:
    training crawlers listed in `public/robots.txt` are **allowed**. The edge
    setting wins over the file: a "block" there silently removes the site from
    ChatGPT, Perplexity and Claude answers regardless of what the repo says.
+   The same screen can replace the file's Content-Signal policy; leave it so
+   the served `robots.txt` still says `ai-train=yes, search=yes, ai-input=yes`
+   on every user-agent group.
 
 ## 1b. AI assistants
 
