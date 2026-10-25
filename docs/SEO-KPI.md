@@ -20,7 +20,8 @@ Use this after deploy to verify the implementation and track reachability over t
 | Agent full text | `/llms-full.txt` | Full text of services (with FAQ), insights and articles; generated at build |
 | IndexNow key | `/4601f867d99a0cb5aeda2cdbaf7f9321.txt` | Ownership token for `pnpm run submit:indexnow` |
 | Security contact | `/.well-known/security.txt` | RFC 9116; `verify:seo` fails when `Expires` is within 30 days, bump it yearly |
-| API catalog | `/.well-known/api-catalog` | RFC 9727 linkset. Spec at `/api/openapi.yaml`, docs at `/api/docs.md`, status at `/api/status.json` |
+| API catalog | `/.well-known/api-catalog` | RFC 9727 linkset. Spec at `/api/openapi.yaml`, docs at `/api/docs.md`, status at `/api/status.json`. `describedby` points at `/auth.md` |
+| Agent registration | `/auth.md` | Public read-only. Anonymous access, no credential. Protected resource metadata at `/.well-known/oauth-protected-resource`. Authorization server metadata at `/.well-known/oauth-authorization-server` (`issuer` is this origin). `GET` and `POST` `/agent/auth/register`, `/agent/auth/claim`, and `/agent/auth/revoke` describe that and change nothing |
 
 Current inventory: **76 indexable HTML pages**. Re-confirm with
 `pnpm run verify:seo` after a fresh build whenever content or routes change.
@@ -51,6 +52,10 @@ Both audiences enter through the same door, so the work is shared:
   still receive HTML.
 - `/.well-known/api-catalog` is an RFC 9727 linkset for the public read-only
   documents (`/llms.txt`, the feeds, the sitemap, and `security.txt`).
+  `describedby` points at `/auth.md`.
+- `/auth.md` tells agents that access is anonymous. OAuth protected resource
+  metadata and authorization server metadata are published for that discovery
+  chain. No credential is issued.
 - `lastmod` in the sitemap is derived from content dates (frontmatter
   `date`/`updated`, otherwise the last commit touching the source), not from
   the build time, so engines can trust it when deciding what to recrawl.
@@ -68,7 +73,8 @@ Both audiences enter through the same door, so the work is shared:
 8. **Feeds**: `/it/rss.xml` and `/en/rss.xml` must validate and list the articles of that language only.
 9. **llms.txt**: `/llms.txt` must list the current services (with their FAQ questions), guides, articles and certifications, and `/llms-full.txt` must carry their full text. Both are generated at build, so a stale entry means a content collection was not updated.
 10. **security.txt**: `/.well-known/security.txt` must return 200 as `text/plain` with a future `Expires`. Check it at [securitytxt.org](https://securitytxt.org/) after deploy. For a site selling CRA vulnerability-handling work, its absence would be noticed.
-10b. **API catalog**: `/.well-known/api-catalog` must return 200 as `application/linkset+json`. The `service-desc`, `service-doc`, and `status` links must themselves return 200.
+10b. **API catalog**: `/.well-known/api-catalog` must return 200 as `application/linkset+json`. The `service-desc`, `service-doc`, and `status` links must themselves return 200. `describedby` must return `/auth.md`.
+10c. **auth.md**: `/auth.md` must return 200 as `text/markdown` and the H1 must contain `auth.md`. `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server` must return 200 as `application/json`. The authorization server `issuer` is `https://lucabertelli.consulting` and matches `authorization_servers`. `agent_auth` describes anonymous access. `GET` and `POST` `/agent/auth/register` return the same JSON and do not create an account.
 11. **Assistant check**: ask ChatGPT (with search), Perplexity and Google AI mode `who is Luca Bertelli consultant` and `consulente cyber resilience act italia`; note whether the site is cited and which page. Repeat monthly; this is the only direct signal of AI reachability.
 
 ## Search Console (recommended)

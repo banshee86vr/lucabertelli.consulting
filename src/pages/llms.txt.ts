@@ -163,6 +163,13 @@ export async function GET() {
 	lines.push(`- Security contact (RFC 9116): ${url("/.well-known/security.txt")}`);
 	lines.push(`- API catalog (RFC 9727): ${url("/.well-known/api-catalog")}`);
 	lines.push(`- API description: ${url("/api/openapi.yaml")}`);
+	lines.push(`- Agent registration (auth.md): ${url("/auth.md")}`);
+	lines.push(
+		`- OAuth protected resource: ${url("/.well-known/oauth-protected-resource")}`,
+	);
+	lines.push(
+		`- OAuth authorization server: ${url("/.well-known/oauth-authorization-server")}`,
+	);
 	lines.push(
 		"- Structured data: every HTML page embeds a schema.org JSON-LD graph (Person, ProfessionalService, WebSite; Service + FAQPage on service pages; BlogPosting on articles and guides).",
 	);

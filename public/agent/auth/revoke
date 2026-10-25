@@ -1,0 +1,21 @@
+{
+  "revocation_supported": false,
+  "credential_stored": false,
+  "identity_type": "anonymous",
+  "credential_types_supported": [
+    "none"
+  ],
+  "credential_issued": false,
+  "account_created": false,
+  "skill": "https://lucabertelli.consulting/auth.md",
+  "resource": "https://lucabertelli.consulting",
+  "register_uri": "https://lucabertelli.consulting/agent/auth/register",
+  "claim_uri": "https://lucabertelli.consulting/agent/auth/claim",
+  "revocation_uri": "https://lucabertelli.consulting/agent/auth/revoke",
+  "contact": "mailto:info@lucabertelli.consulting",
+  "privacy": [
+    "https://lucabertelli.consulting/en/privacy",
+    "https://lucabertelli.consulting/it/privacy"
+  ],
+  "message": "This origin stores no agent credential to revoke. To ask for deletion of email you sent, write to info@lucabertelli.consulting."
+}

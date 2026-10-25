@@ -49,6 +49,9 @@ export async function GET() {
 	);
 	lines.push("");
 	lines.push("Contact: info@lucabertelli.consulting");
+	lines.push(
+		`Agent access: public and anonymous. No credential is required. See ${url("/auth.md")}`,
+	);
 	lines.push(`Generated: ${isoDate(new Date())}`);
 
 	section(lines, "## Services");
