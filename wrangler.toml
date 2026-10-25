@@ -1,5 +1,6 @@
 name = "lucabertelli-consulting"
 compatibility_date = "2024-09-23"
+main = "src/worker.ts"
 
 [[kv_namespaces]]
 binding = "lb_consulting"
@@ -8,6 +9,12 @@ id = "01ee33bd3673427c975a9804434376d6"
 [[kv_namespaces]]
 binding = "SESSION"
 id = "1b5008e8ee4249bf87131391a7045703"
+
+# HTML routes run the Worker first so Accept: text/markdown can be negotiated.
+# Static files outside /en and /it stay on the asset path.
+[assets]
+binding = "ASSETS"
+run_worker_first = ["/", "/en", "/en/*", "/it", "/it/*"]
 
 [env.preview]
 name = "lucabertelli-consulting-preview"

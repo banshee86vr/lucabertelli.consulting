@@ -164,6 +164,9 @@ export async function GET() {
 	lines.push(
 		"- Structured data: every HTML page embeds a schema.org JSON-LD graph (Person, ProfessionalService, WebSite; Service + FAQPage on service pages; BlogPosting on articles and guides).",
 	);
+	lines.push(
+		"- HTML pages: request the same URL with `Accept: text/markdown` to receive Markdown instead of HTML.",
+	);
 	lines.push("");
 
 	return new Response(lines.join("\n"), {
