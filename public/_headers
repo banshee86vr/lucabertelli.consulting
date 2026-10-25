@@ -1,0 +1,13 @@
+# RFC 9727. The profile parameter marks this linkset as an API catalog.
+/.well-known/api-catalog
+  Content-Type: application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"
+  Link: </.well-known/api-catalog>; rel="api-catalog"
+
+/api/openapi.yaml
+  Content-Type: application/yaml
+
+/api/docs.md
+  Content-Type: text/markdown; charset=utf-8
+
+/api/status.json
+  Content-Type: application/json; charset=utf-8

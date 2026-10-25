@@ -1,0 +1,25 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://lucabertelli.consulting/llms.txt",
+      "service-desc": [
+        {
+          "href": "https://lucabertelli.consulting/api/openapi.yaml",
+          "type": "application/yaml"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://lucabertelli.consulting/api/docs.md",
+          "type": "text/markdown"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://lucabertelli.consulting/api/status.json",
+          "type": "application/json"
+        }
+      ]
+    }
+  ]
+}

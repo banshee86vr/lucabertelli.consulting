@@ -1,0 +1,119 @@
+openapi: 3.0.3
+info:
+  title: lucabertelli.consulting discovery
+  version: "1.0.0"
+  description: |
+    This site does not expose a write API. The resources below are public,
+    unauthenticated, and safe to fetch. The canonical description of how to
+    call them is this document.
+servers:
+  - url: https://lucabertelli.consulting
+paths:
+  /llms.txt:
+    get:
+      operationId: getAgentIndex
+      summary: Agent index
+      description: Identity, page list, and the FAQ questions from each service page.
+      responses:
+        "200":
+          description: Plain-text index.
+          content:
+            text/plain:
+              schema:
+                type: string
+  /llms-full.txt:
+    get:
+      operationId: getAgentFullText
+      summary: Full text for agents
+      description: Full text of services (with FAQ), insights, and articles.
+      responses:
+        "200":
+          description: Plain-text corpus.
+          content:
+            text/plain:
+              schema:
+                type: string
+  /en/rss.xml:
+    get:
+      operationId: getEnglishFeed
+      summary: English feed
+      description: Blog articles and insights written in English.
+      responses:
+        "200":
+          description: RSS 2.0 document.
+          content:
+            application/xml:
+              schema:
+                type: string
+  /it/rss.xml:
+    get:
+      operationId: getItalianFeed
+      summary: Italian feed
+      description: Blog articles and insights written in Italian.
+      responses:
+        "200":
+          description: RSS 2.0 document.
+          content:
+            application/xml:
+              schema:
+                type: string
+  /sitemap-index.xml:
+    get:
+      operationId: getSitemapIndex
+      summary: Sitemap index
+      responses:
+        "200":
+          description: Sitemap index pointing at the URL set.
+          content:
+            application/xml:
+              schema:
+                type: string
+  /.well-known/security.txt:
+    get:
+      operationId: getSecurityContact
+      summary: Security contact
+      description: RFC 9116 contact for vulnerability reports.
+      responses:
+        "200":
+          description: security.txt document.
+          content:
+            text/plain:
+              schema:
+                type: string
+  /.well-known/api-catalog:
+    get:
+      operationId: getApiCatalog
+      summary: API catalog
+      description: RFC 9727 linkset describing this discovery API.
+      responses:
+        "200":
+          description: Linkset document.
+          content:
+            application/linkset+json:
+              schema:
+                type: object
+                required: [linkset]
+                properties:
+                  linkset:
+                    type: array
+                    items:
+                      type: object
+  /api/status.json:
+    get:
+      operationId: getStatus
+      summary: Static health document
+      description: |
+        Returns ok while the site is serving this file. It does not probe
+        anything beyond the origin that returned it.
+      responses:
+        "200":
+          description: Health document.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status:
+                    type: string
+                    enum: [ok]
