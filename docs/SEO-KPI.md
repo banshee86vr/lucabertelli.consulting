@@ -43,6 +43,9 @@ Both audiences enter through the same door, so the work is shared:
   full passage; JSON-LD names the person, the practice and the topics with the
   same words used in the copy; `/llms.txt` and `/llms-full.txt` give an agent
   the whole site in one fetch.
+- HTML pages negotiate Markdown. A request with `Accept: text/markdown` receives
+  that URL as `text/markdown` (main content, frontmatter, and JSON-LD). Browsers
+  still receive HTML.
 - `lastmod` in the sitemap is derived from content dates (frontmatter
   `date`/`updated`, otherwise the last commit touching the source), not from
   the build time, so engines can trust it when deciding what to recrawl.
