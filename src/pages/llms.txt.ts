@@ -164,6 +164,9 @@ export async function GET() {
 	lines.push(`- API catalog (RFC 9727): ${url("/.well-known/api-catalog")}`);
 	lines.push(`- API description: ${url("/api/openapi.yaml")}`);
 	lines.push(
+		`- Homepage Link header (RFC 8288): rel="api-catalog" ${url("/.well-known/api-catalog")}, rel="service-desc" ${url("/api/openapi.yaml")}, rel="service-doc" ${url("/api/docs.md")}, rel="describedby" ${url("/llms.txt")}. Sent on /, /en/, and /it/.`,
+	);
+	lines.push(
 		"- Structured data: every HTML page embeds a schema.org JSON-LD graph (Person, ProfessionalService, WebSite; Service + FAQPage on service pages; BlogPosting on articles and guides).",
 	);
 	lines.push(

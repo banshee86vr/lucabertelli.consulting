@@ -256,6 +256,56 @@ if (!fs.existsSync(headersPath)) {
   if (!headers.includes("application/linkset+json")) {
     fail("_headers does not set application/linkset+json on the API catalog");
   }
+
+  // Homepage Link headers are set by the Worker (HTML runs worker-first, so
+  // _headers would not apply) and repeated here for a direct asset response.
+  // The two copies must stay the same string.
+  const discoverySource = fs.readFileSync(
+    path.resolve("src/utils/discovery-links.ts"),
+    "utf8",
+  );
+  const discoveryLink = discoverySource.match(
+    /export const DISCOVERY_LINK =\s*'([^']*)'/,
+  )?.[1];
+  const workerSource = fs.readFileSync(path.resolve("src/worker.ts"), "utf8");
+  if (!discoveryLink) {
+    fail("src/utils/discovery-links.ts is missing DISCOVERY_LINK");
+  } else if (!workerSource.includes("withDiscoveryLinks")) {
+    fail("src/worker.ts does not attach homepage discovery links");
+  } else {
+    for (const rel of ["api-catalog", "service-desc", "service-doc", "describedby"]) {
+      if (!discoveryLink.includes(`rel="${rel}"`)) {
+        fail(`DISCOVERY_LINK is missing rel="${rel}"`);
+      }
+    }
+    const rules = parseHeaderRules(headers);
+    for (const homepage of ["/", "/en", "/en/", "/it", "/it/"]) {
+      const rule = rules.find((entry) => entry.path === homepage);
+      const link = rule?.headers.find((header) => header.name.toLowerCase() === "link");
+      if (!rule || link?.value !== discoveryLink) {
+        fail(`_headers ${homepage} Link does not match DISCOVERY_LINK`);
+      }
+    }
+  }
+}
+
+/** Split a Cloudflare `_headers` file into path rules. */
+function parseHeaderRules(text) {
+  const rules = [];
+  let current = null;
+  for (const line of text.split("\n")) {
+    if (!line.trim() || line.trim().startsWith("#")) continue;
+    if (!/^\s/.test(line)) {
+      current = { path: line.trim(), headers: [] };
+      rules.push(current);
+      continue;
+    }
+    const match = line.match(/^\s+([^:]+):\s*(.*)$/);
+    if (current && match) {
+      current.headers.push({ name: match[1].trim(), value: match[2].trim() });
+    }
+  }
+  return rules;
 }
 
 // RFC 9116: an expired security.txt is treated as absent by scanners.
