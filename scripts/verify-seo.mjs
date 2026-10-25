@@ -28,6 +28,11 @@ const NON_HTML_ROUTES = new Set([
   "/en/rss.xml",
   "/it/rss.xml",
   "/sitemap-index.xml",
+  "/.well-known/api-catalog",
+  "/.well-known/security.txt",
+  "/api/openapi.yaml",
+  "/api/docs.md",
+  "/api/status.json",
 ]);
 
 /** Prefixes served as static assets rather than routes. */
@@ -171,6 +176,61 @@ if (!fs.existsSync(sitemapPath)) {
 
 for (const file of ["llms.txt", "llms-full.txt", "robots.txt"]) {
   if (!fs.existsSync(path.join(ROOT, file))) fail(`${file} is missing from the build`);
+}
+
+// RFC 9727: the well-known catalog is a linkset, and every link it publishes
+// has to be a file the build actually ships.
+const catalogPath = path.join(ROOT, ".well-known", "api-catalog");
+if (!fs.existsSync(catalogPath)) {
+  fail(".well-known/api-catalog is missing from the build");
+} else {
+  let catalog;
+  try {
+    catalog = JSON.parse(fs.readFileSync(catalogPath, "utf8"));
+  } catch (error) {
+    fail(`.well-known/api-catalog is not JSON (${error.message})`);
+  }
+  const entries = catalog?.linkset;
+  if (!catalog) {
+    // parse failure already reported
+  } else if (!Array.isArray(entries) || entries.length === 0) {
+    fail(".well-known/api-catalog has no linkset entries");
+  } else {
+    for (const [index, entry] of entries.entries()) {
+      if (typeof entry.anchor !== "string" || entry.anchor === "") {
+        fail(`.well-known/api-catalog linkset[${index}] has no anchor`);
+      }
+      for (const rel of ["service-desc", "service-doc", "status"]) {
+        const links = entry[rel];
+        if (!Array.isArray(links) || links.length === 0) {
+          fail(`.well-known/api-catalog linkset[${index}] has no ${rel}`);
+          continue;
+        }
+        for (const link of links) {
+          let pathname = "";
+          try {
+            pathname = new URL(link.href).pathname;
+          } catch {
+            fail(`.well-known/api-catalog ${rel} href is not a URL`);
+            continue;
+          }
+          if (!fs.existsSync(path.join(ROOT, pathname.replace(/^\//, "")))) {
+            fail(`.well-known/api-catalog ${rel} points at ${pathname}, which is not in the build`);
+          }
+        }
+      }
+    }
+  }
+}
+
+const headersPath = path.join(ROOT, "_headers");
+if (!fs.existsSync(headersPath)) {
+  fail("_headers is missing from the build");
+} else {
+  const headers = fs.readFileSync(headersPath, "utf8");
+  if (!headers.includes("application/linkset+json")) {
+    fail("_headers does not set application/linkset+json on the API catalog");
+  }
 }
 
 // RFC 9116: an expired security.txt is treated as absent by scanners.

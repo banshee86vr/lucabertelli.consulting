@@ -161,6 +161,8 @@ export async function GET() {
 	lines.push(`- Sitemap index: ${url("/sitemap-index.xml")}`);
 	lines.push(`- robots.txt: ${url("/robots.txt")}`);
 	lines.push(`- Security contact (RFC 9116): ${url("/.well-known/security.txt")}`);
+	lines.push(`- API catalog (RFC 9727): ${url("/.well-known/api-catalog")}`);
+	lines.push(`- API description: ${url("/api/openapi.yaml")}`);
 	lines.push(
 		"- Structured data: every HTML page embeds a schema.org JSON-LD graph (Person, ProfessionalService, WebSite; Service + FAQPage on service pages; BlogPosting on articles and guides).",
 	);

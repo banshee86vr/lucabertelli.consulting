@@ -195,6 +195,12 @@ const jsonLdPayload = JSON.stringify({
 						href: absoluteUrl("/llms.txt"),
 						title: "llms.txt",
 					},
+					{
+						rel: "api-catalog",
+						type: "application/linkset+json",
+						href: absoluteUrl("/.well-known/api-catalog"),
+						title: "API catalog",
+					},
 				],
 			}}
 		/>

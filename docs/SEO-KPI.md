@@ -20,6 +20,7 @@ Use this after deploy to verify the implementation and track reachability over t
 | Agent full text | `/llms-full.txt` | Full text of services (with FAQ), insights and articles; generated at build |
 | IndexNow key | `/4601f867d99a0cb5aeda2cdbaf7f9321.txt` | Ownership token for `pnpm run submit:indexnow` |
 | Security contact | `/.well-known/security.txt` | RFC 9116; `verify:seo` fails when `Expires` is within 30 days, bump it yearly |
+| API catalog | `/.well-known/api-catalog` | RFC 9727 linkset. Spec at `/api/openapi.yaml`, docs at `/api/docs.md`, status at `/api/status.json` |
 
 Current inventory: **76 indexable HTML pages**. Re-confirm with
 `pnpm run verify:seo` after a fresh build whenever content or routes change.
@@ -46,6 +47,8 @@ Both audiences enter through the same door, so the work is shared:
 - HTML pages negotiate Markdown. A request with `Accept: text/markdown` receives
   that URL as `text/markdown` (main content, frontmatter, and JSON-LD). Browsers
   still receive HTML.
+- `/.well-known/api-catalog` is an RFC 9727 linkset for the public read-only
+  documents (`/llms.txt`, the feeds, the sitemap, and `security.txt`).
 - `lastmod` in the sitemap is derived from content dates (frontmatter
   `date`/`updated`, otherwise the last commit touching the source), not from
   the build time, so engines can trust it when deciding what to recrawl.
@@ -63,6 +66,7 @@ Both audiences enter through the same door, so the work is shared:
 8. **Feeds**: `/it/rss.xml` and `/en/rss.xml` must validate and list the articles of that language only.
 9. **llms.txt**: `/llms.txt` must list the current services (with their FAQ questions), guides, articles and certifications, and `/llms-full.txt` must carry their full text. Both are generated at build, so a stale entry means a content collection was not updated.
 10. **security.txt**: `/.well-known/security.txt` must return 200 as `text/plain` with a future `Expires`. Check it at [securitytxt.org](https://securitytxt.org/) after deploy. For a site selling CRA vulnerability-handling work, its absence would be noticed.
+10b. **API catalog**: `/.well-known/api-catalog` must return 200 as `application/linkset+json`. The `service-desc`, `service-doc`, and `status` links must themselves return 200.
 11. **Assistant check**: ask ChatGPT (with search), Perplexity and Google AI mode `who is Luca Bertelli consultant` and `consulente cyber resilience act italia`; note whether the site is cited and which page. Repeat monthly; this is the only direct signal of AI reachability.
 
 ## Search Console (recommended)
