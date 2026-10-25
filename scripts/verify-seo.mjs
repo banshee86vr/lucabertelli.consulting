@@ -178,6 +178,31 @@ for (const file of ["llms.txt", "llms-full.txt", "robots.txt"]) {
   if (!fs.existsSync(path.join(ROOT, file))) fail(`${file} is missing from the build`);
 }
 
+// A named user-agent group does not inherit rules from `User-agent: *`, so
+// every group must carry the same Content-Signal preference.
+const robotsPath = path.join(ROOT, "robots.txt");
+if (fs.existsSync(robotsPath)) {
+  const robots = fs.readFileSync(robotsPath, "utf8");
+  const groups = robots.split(/\n(?=User-agent:)/).filter((block) => /^User-agent:/m.test(block));
+  if (groups.length === 0) fail("robots.txt has no User-agent groups");
+  const required = ["ai-train=yes", "search=yes", "ai-input=yes"];
+  for (const group of groups) {
+    const agent = group.match(/^User-agent:\s*(\S+)/m)?.[1] ?? "(unknown)";
+    const signal = group.match(/^Content-Signal:\s*(.+)$/m)?.[1] ?? "";
+    const tokens = new Set(
+      signal
+        .split(",")
+        .map((part) => part.trim().toLowerCase())
+        .filter(Boolean),
+    );
+    for (const token of required) {
+      if (!tokens.has(token)) {
+        fail(`robots.txt ${agent} group is missing Content-Signal ${token}`);
+      }
+    }
+  }
+}
+
 // RFC 9727: the well-known catalog is a linkset, and every link it publishes
 // has to be a file the build actually ships.
 const catalogPath = path.join(ROOT, ".well-known", "api-catalog");
