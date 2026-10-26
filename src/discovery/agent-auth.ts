@@ -1,5 +1,6 @@
 import { ACP_BASE_URL, ACP_DOCUMENT_URL, ACP_PATH, API_VERSION, CHECKOUT_URL, acpDocumentText } from "./acp.ts";
 import { UCP_BASE_URL, UCP_CHECKOUT_URL, UCP_DOCUMENT_URL, UCP_PATH, UCP_VERSION, ucpDocumentText } from "./ucp.ts";
+import { POPPY_DOCUMENT_URL, POPPY_PATH, POPPY_VERSION, poppyDocumentText } from "./poppy.ts";
 import { ENGAGEMENT_URL, OPENAPI_FILE, OPENAPI_URL, openApiText } from "./mpp.ts";
 import { FACILITATOR_URL, X402_NETWORK, X402_PAY_TO, X402_PRICE, X402_URL } from "./x402.ts";
 import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, AP2_EXTENSION_URIS, agentCardText } from "./agent-card.ts";
@@ -190,6 +191,7 @@ The API catalog and the OpenAPI description list the read API:
 - [MCP endpoint](${MCP_URL})
 - [ACP discovery](${ACP_DOCUMENT_URL})
 - [UCP profile](${UCP_DOCUMENT_URL})
+- [Personal Agent Protocol](${POPPY_DOCUMENT_URL})
 - [MPP discovery](${OPENAPI_URL})
 - [x402 resource](${X402_URL})
 
@@ -200,6 +202,8 @@ The MCP server card names a Streamable HTTP endpoint. ${link(MCP_URL)} accepts \
 ACP discovery is ${link(ACP_DOCUMENT_URL)}. \`protocol.name\` is \`acp\`. \`protocol.version\` is \`${API_VERSION}\`. The REST base is ${link(ACP_BASE_URL)}. \`transports\` lists \`rest\`. \`capabilities.services\` lists \`checkout\`. ${link(CHECKOUT_URL)} answers \`POST\` with an error. This seller does not create a checkout session, does not take payment, and does not store the request.
 
 Universal Commerce Protocol discovery is ${link(UCP_DOCUMENT_URL)}. \`protocol_version\` is \`${UCP_VERSION}\`. \`ucp.version\` is the same date. \`services\` lists \`dev.ucp.shopping\` over REST at ${link(UCP_BASE_URL)}. \`capabilities\` lists \`dev.ucp.shopping.checkout\`. \`endpoints.rest\` is that REST base. \`ucp.payment_handlers\` is empty. ${link(UCP_CHECKOUT_URL)} answers \`POST\` with an error. This business does not create a checkout session, does not take payment, and does not store the request.
+
+Personal Agent Protocol discovery is ${link(POPPY_DOCUMENT_URL)}. \`protocol_version\` is \`${POPPY_VERSION}\`. \`organization.name\` is Luca Bertelli Consulting. \`organization.domain\` is ${host}. \`web\` is empty. This document does not name an OAuth issuer. A personal agent browses the site as a signed-out visitor. This origin does not issue a session token.
 
 Machine Payment Protocol discovery is ${link(OPENAPI_URL)}. It is OpenAPI 3.1. \`x-service-info.categories\` lists \`developer-tools\`. ${link(ENGAGEMENT_URL)} is the payable operation. \`x-payment-info.intent\` is \`charge\`, \`x-payment-info.method\` is \`card\`, \`x-payment-info.currency\` is \`eur\`, and \`x-payment-info.amount\` is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store payment credentials. Do not send a card number or a payment token.
 
@@ -294,7 +298,7 @@ export function jsonText(value: unknown): string {
 	return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-/** Paths relative to `public/` and `dist/client/`. `/agent/auth`, `/a2a/v1`, `/mcp`, `/acp`, `/ucp/v1`, and path-suffixed protected resource metadata are worker-only. */
+/** Paths relative to `public/` and `dist/client/`. `/agent/auth`, `/a2a/v1`, `/mcp`, `/acp`, `/ucp/v1`, and path-suffixed protected resource metadata are worker-only. `/.well-known/poppy.json` is also served by the Worker. */
 export function fileBodies(): Record<string, string> {
 	return {
 		"auth.md": authMarkdown(),
@@ -304,6 +308,7 @@ export function fileBodies(): Record<string, string> {
 		[MCP_CARD_PATH.replace(/^\//, "")]: mcpCardText(),
 		[ACP_PATH.replace(/^\//, "")]: acpDocumentText(),
 		[UCP_PATH.replace(/^\//, "")]: ucpDocumentText(),
+		[POPPY_PATH.replace(/^\//, "")]: poppyDocumentText(),
 		[OPENAPI_FILE]: openApiText(),
 		"agent/auth/register": jsonText(registrationDocument()),
 		"agent/auth/claim": jsonText(claimDocument()),
@@ -487,6 +492,7 @@ export function assertDiscovery(): void {
 		MCP_CARD_URL,
 		MCP_URL,
 		DIRECTORY_URL,
+		POPPY_DOCUMENT_URL,
 	]) {
 		if (!markdown.includes(`](${url})`)) {
 			errors.push(`auth.md is missing an absolute markdown link to ${url}`);

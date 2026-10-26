@@ -48,6 +48,7 @@ const NON_HTML_ROUTES = new Set([
   "/.well-known/http-message-signatures-directory",
   "/.well-known/acp.json",
   "/.well-known/ucp",
+  "/.well-known/poppy.json",
   "/mcp",
   "/acp",
   "/acp/checkout_sessions",

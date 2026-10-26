@@ -35,6 +35,9 @@ id = "1b5008e8ee4249bf87131391a7045703"
 # checkout, and checkout must not store the body.
 # The UCP profile is a static file. run_worker_first keeps /.well-known/ucp
 # and /ucp/v1 on the Worker, including POST. Checkout must not store the body.
+# The Poppy document is a static file. run_worker_first keeps
+# /.well-known/poppy.json on the Worker, including POST, so the response stays
+# JSON instead of the HTML 404.
 # The MPP OpenAPI document is a static file. run_worker_first keeps
 # /openapi.json and /api/engagement on the Worker, including POST. The
 # engagement route must not store the body.
@@ -63,6 +66,7 @@ run_worker_first = [
   "/.well-known/http-message-signatures-directory",
   "/.well-known/acp.json",
   "/.well-known/ucp",
+  "/.well-known/poppy.json",
   "/openapi.json",
   "/api",
   "/api/engagement",

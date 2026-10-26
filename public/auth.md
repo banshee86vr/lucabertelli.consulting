@@ -71,6 +71,7 @@ The API catalog and the OpenAPI description list the read API:
 - [MCP endpoint](https://lucabertelli.consulting/mcp)
 - [ACP discovery](https://lucabertelli.consulting/.well-known/acp.json)
 - [UCP profile](https://lucabertelli.consulting/.well-known/ucp)
+- [Personal Agent Protocol](https://lucabertelli.consulting/.well-known/poppy.json)
 - [MPP discovery](https://lucabertelli.consulting/openapi.json)
 - [x402 resource](https://lucabertelli.consulting/api)
 
@@ -81,6 +82,8 @@ The MCP server card names a Streamable HTTP endpoint. [https://lucabertelli.cons
 ACP discovery is [https://lucabertelli.consulting/.well-known/acp.json](https://lucabertelli.consulting/.well-known/acp.json). `protocol.name` is `acp`. `protocol.version` is `2026-04-17`. The REST base is [https://lucabertelli.consulting/acp](https://lucabertelli.consulting/acp). `transports` lists `rest`. `capabilities.services` lists `checkout`. [https://lucabertelli.consulting/acp/checkout_sessions](https://lucabertelli.consulting/acp/checkout_sessions) answers `POST` with an error. This seller does not create a checkout session, does not take payment, and does not store the request.
 
 Universal Commerce Protocol discovery is [https://lucabertelli.consulting/.well-known/ucp](https://lucabertelli.consulting/.well-known/ucp). `protocol_version` is `2026-08-25`. `ucp.version` is the same date. `services` lists `dev.ucp.shopping` over REST at [https://lucabertelli.consulting/ucp/v1](https://lucabertelli.consulting/ucp/v1). `capabilities` lists `dev.ucp.shopping.checkout`. `endpoints.rest` is that REST base. `ucp.payment_handlers` is empty. [https://lucabertelli.consulting/ucp/v1/checkout-sessions](https://lucabertelli.consulting/ucp/v1/checkout-sessions) answers `POST` with an error. This business does not create a checkout session, does not take payment, and does not store the request.
+
+Personal Agent Protocol discovery is [https://lucabertelli.consulting/.well-known/poppy.json](https://lucabertelli.consulting/.well-known/poppy.json). `protocol_version` is `0.1`. `organization.name` is Luca Bertelli Consulting. `organization.domain` is lucabertelli.consulting. `web` is empty. This document does not name an OAuth issuer. A personal agent browses the site as a signed-out visitor. This origin does not issue a session token.
 
 Machine Payment Protocol discovery is [https://lucabertelli.consulting/openapi.json](https://lucabertelli.consulting/openapi.json). It is OpenAPI 3.1. `x-service-info.categories` lists `developer-tools`. [https://lucabertelli.consulting/api/engagement](https://lucabertelli.consulting/api/engagement) is the payable operation. `x-payment-info.intent` is `charge`, `x-payment-info.method` is `card`, `x-payment-info.currency` is `eur`, and `x-payment-info.amount` is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store payment credentials. Do not send a card number or a payment token.
 

@@ -9,6 +9,7 @@
 
 import { ACP_BASE_URL, ACP_DOCUMENT_URL, CHECKOUT_URL } from "./acp.ts";
 import { UCP_BASE_URL, UCP_CHECKOUT_URL, UCP_DOCUMENT_URL, UCP_VERSION } from "./ucp.ts";
+import { POPPY_DOCUMENT_URL, POPPY_VERSION } from "./poppy.ts";
 import { ENGAGEMENT_URL, OPENAPI_URL } from "./mpp.ts";
 import { FACILITATOR_URL, X402_ASSET, X402_NETWORK, X402_PAY_TO, X402_PRICE, X402_URL } from "./x402.ts";
 import { AP2_EXTENSION_URIS, ORIGIN } from "./agent-card.ts";
@@ -98,6 +99,10 @@ Read ${ORIGIN}/auth.md. Access is anonymous. No account and no credential are re
 ## UCP
 
 \`GET\` ${UCP_DOCUMENT_URL} is the Universal Commerce Protocol profile. \`protocol_version\` is \`${UCP_VERSION}\`. The REST base is ${UCP_BASE_URL}. \`ucp.payment_handlers\` is empty. \`POST\` ${UCP_CHECKOUT_URL} does not create a session, does not take payment, and does not store the body. Do not send payment credentials.
+
+## Poppy
+
+\`GET\` ${POPPY_DOCUMENT_URL} is the Personal Agent Protocol document. \`protocol_version\` is \`${POPPY_VERSION}\`. \`organization.domain\` is lucabertelli.consulting. \`web\` is empty. There is no \`auth\` issuer. Browse the site as a signed-out visitor. Do not send a session token.
 
 ## Machine payments
 

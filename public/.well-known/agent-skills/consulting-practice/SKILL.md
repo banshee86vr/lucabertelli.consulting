@@ -45,6 +45,10 @@ Read https://lucabertelli.consulting/auth.md. Access is anonymous. No account an
 
 `GET` https://lucabertelli.consulting/.well-known/ucp is the Universal Commerce Protocol profile. `protocol_version` is `2026-08-25`. The REST base is https://lucabertelli.consulting/ucp/v1. `ucp.payment_handlers` is empty. `POST` https://lucabertelli.consulting/ucp/v1/checkout-sessions does not create a session, does not take payment, and does not store the body. Do not send payment credentials.
 
+## Poppy
+
+`GET` https://lucabertelli.consulting/.well-known/poppy.json is the Personal Agent Protocol document. `protocol_version` is `0.1`. `organization.domain` is lucabertelli.consulting. `web` is empty. There is no `auth` issuer. Browse the site as a signed-out visitor. Do not send a session token.
+
 ## Machine payments
 
 `GET` https://lucabertelli.consulting/openapi.json is the Machine Payment Protocol discovery document. `POST` https://lucabertelli.consulting/api/engagement returns 402. `x-payment-info.amount` is null because the price is a written proposal. This origin does not settle Tempo, Stripe, Lightning, or card payments. Do not send a card number or a payment token. Do not invent a price.

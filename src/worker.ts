@@ -6,6 +6,7 @@ import { agentSkillsResponse } from "./discovery/agent-skills";
 import { ardResponse } from "./discovery/ard";
 import { mcpResponse } from "./discovery/mcp-server";
 import { mppResponse } from "./discovery/mpp";
+import { poppyResponse } from "./discovery/poppy";
 import { ucpResponse } from "./discovery/ucp";
 import { x402Response } from "./discovery/x402";
 import { directoryResponse } from "./discovery/web-bot-auth";
@@ -19,7 +20,7 @@ interface WorkerContext {
 export default {
 	async fetch(request: Request, env: unknown, ctx: WorkerContext) {
 		// Answer the Web Bot Auth directory, Agent Skills, the ARD catalog, the
-		// Agent Card, MCP, ACP, UCP, MPP discovery, the x402 challenge, and
+		// Agent Card, MCP, ACP, UCP, Poppy, MPP discovery, the x402 challenge, and
 		// Auth.md discovery before Astro. POST must not fall through to a
 		// static file or a 404, and the body is never stored.
 		const directory = await directoryResponse(request, env);
@@ -36,6 +37,8 @@ export default {
 		if (acp) return withProtectedResourceChallenge(request, acp);
 		const ucp = await ucpResponse(request);
 		if (ucp) return withProtectedResourceChallenge(request, ucp);
+		const poppy = await poppyResponse(request);
+		if (poppy) return withProtectedResourceChallenge(request, poppy);
 		const mpp = await mppResponse(request);
 		if (mpp) return withProtectedResourceChallenge(request, mpp);
 		const x402 = await x402Response(request);

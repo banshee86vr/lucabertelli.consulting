@@ -10,6 +10,7 @@ import { ACP_DOCUMENT_URL, ACP_PATH, assertAcpResponses } from "../src/discovery
 import { ENGAGEMENT_URL, OPENAPI_PATH, OPENAPI_URL, assertMppResponses } from "../src/discovery/mpp.ts";
 import { FACILITATOR_URL, X402_URL, assertX402Responses } from "../src/discovery/x402.ts";
 import { UCP_DOCUMENT_URL, UCP_PATH, UCP_VERSION, assertUcpResponses } from "../src/discovery/ucp.ts";
+import { POPPY_DOCUMENT_URL, assertPoppyResponses } from "../src/discovery/poppy.ts";
 import { AP2_EXTENSION_URIS, agentCard, agentCardResponse, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
 import { authMarkdown, assertDiscoveryResponses, discoveryResponse, fileBodies, ORIGIN } from "../src/discovery/agent-auth.ts";
 import {
@@ -57,6 +58,7 @@ const CONTENT_TYPES: Record<string, string> = {
 	"/.well-known/mcp/server-card.json": "application/json; charset=utf-8",
 	"/.well-known/acp.json": "application/json; charset=utf-8",
 	"/.well-known/ucp": "application/json; charset=utf-8",
+	"/.well-known/poppy.json": "application/json; charset=utf-8",
 	"/openapi.json": "application/json; charset=utf-8",
 	"/.well-known/http-message-signatures-directory": "application/http-message-signatures-directory+json",
 	"/agent/auth/register": "application/json; charset=utf-8",
@@ -222,6 +224,11 @@ async function main(): Promise<void> {
 		errors.push(error instanceof Error ? error.message : String(error));
 	}
 	try {
+		await assertPoppyResponses();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
+	try {
 		await assertMppResponses();
 	} catch (error) {
 		errors.push(error instanceof Error ? error.message : String(error));
@@ -339,6 +346,8 @@ async function main(): Promise<void> {
 	if (acpClaim !== null) errors.push("discovery handler must not claim the ACP document");
 	const ucpClaim = await discoveryResponse(new Request(UCP_DOCUMENT_URL));
 	if (ucpClaim !== null) errors.push("discovery handler must not claim the UCP profile");
+	const poppyClaim = await discoveryResponse(new Request(POPPY_DOCUMENT_URL));
+	if (poppyClaim !== null) errors.push("discovery handler must not claim the Poppy document");
 	const mppClaim = await discoveryResponse(new Request(OPENAPI_URL));
 	if (mppClaim !== null) errors.push("discovery handler must not claim the MPP document");
 	for (const url of [MCP_CARD_URL, MCP_URL]) {
@@ -420,6 +429,8 @@ async function main(): Promise<void> {
 			errors.push("llms.txt does not list the ACP discovery document");
 		} else if (!readFileSync(llmsPath, "utf8").includes(UCP_DOCUMENT_URL)) {
 			errors.push("llms.txt does not list the UCP profile");
+		} else if (!readFileSync(llmsPath, "utf8").includes(POPPY_DOCUMENT_URL)) {
+			errors.push("llms.txt does not list the Poppy discovery document");
 		} else if (!readFileSync(llmsPath, "utf8").includes(OPENAPI_URL)) {
 			errors.push("llms.txt does not list the MPP discovery document");
 		} else if (!readFileSync(llmsPath, "utf8").includes(X402_URL) || !readFileSync(llmsPath, "utf8").includes(FACILITATOR_URL)) {

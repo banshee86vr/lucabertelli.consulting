@@ -2,6 +2,7 @@ import { getBlogPosts, getInsights, getServices } from "../content/config";
 import { getCollection } from "astro:content";
 import { API_VERSION } from "../discovery/acp";
 import { UCP_VERSION } from "../discovery/ucp";
+import { POPPY_VERSION } from "../discovery/poppy";
 import { AP2_EXTENSION_URIS } from "../discovery/agent-card";
 import { FACILITATOR_URL, X402_NETWORK, X402_PAY_TO, X402_PRICE } from "../discovery/x402";
 import { SITE_URL } from "../constants/site";
@@ -191,6 +192,9 @@ export async function GET() {
 	);
 	lines.push(
 		`- UCP profile: ${url("/.well-known/ucp")}. protocol_version is ${UCP_VERSION}. services is dev.ucp.shopping over REST at ${url("/ucp/v1")}. capabilities is dev.ucp.shopping.checkout. endpoints.rest is that base. ucp.payment_handlers is empty. POST ${url("/ucp/v1/checkout-sessions")} does not create a session, does not take payment, and does not store the body.`,
+	);
+	lines.push(
+		`- Personal Agent Protocol: ${url("/.well-known/poppy.json")}. protocol_version is ${POPPY_VERSION}. organization.domain is lucabertelli.consulting. web is empty. There is no auth issuer. A personal agent browses the site as a signed-out visitor.`,
 	);
 	lines.push(
 		`- MPP discovery: ${url("/openapi.json")}. OpenAPI 3.1. x-service-info.categories is developer-tools. POST ${url("/api/engagement")} is the payable operation. x-payment-info.intent is charge, x-payment-info.method is card, x-payment-info.currency is eur, and x-payment-info.amount is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store the body.`,
