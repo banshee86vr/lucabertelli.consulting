@@ -35,7 +35,7 @@ export const AP2_V010_URI = "https://github.com/google-agentic-commerce/AP2/tree
 export const AP2_EXTENSION_URIS = [AP2_SPEC_URI, AP2_V010_URI] as const;
 export const AP2_ROLE = "merchant" as const;
 const AP2_EXTENSION_DESCRIPTION =
-	"Declares the AP2 v0.1 merchant role for discovery. This practice does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. Clients can call SendMessage without this extension.";
+	"Declares the AP2 v0.1 merchant role for discovery. This extension does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. Clients can call SendMessage without this extension.";
 
 interface SkillCopy {
 	name: string;

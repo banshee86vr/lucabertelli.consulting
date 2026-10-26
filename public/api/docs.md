@@ -26,7 +26,7 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 
 `POST /a2a/v1` with `Content-Type: application/json` accepts a JSON-RPC `SendMessage` request. The response is a direct message that points at the public documents. The endpoint does not create a task, store the request, or issue a credential. Streaming, push notifications, and the extended agent card are off.
 
-`capabilities.extensions` lists the [AP2](https://ap2-protocol.org/) v0.1 merchant role twice. The specification identifier is `https://github.com/google-agentic-commerce/ap2/tree/v0.1`. The v0.1.0 identifier is `https://github.com/google-agentic-commerce/AP2/tree/v0.1.0`. `required` is false. This practice does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. A data part whose keys start with `ap2.mandates.` is refused and is not copied into the reply.
+`capabilities.extensions` lists the [AP2](https://ap2-protocol.org/) v0.1 merchant role twice. The specification identifier is `https://github.com/google-agentic-commerce/ap2/tree/v0.1`. The v0.1.0 identifier is `https://github.com/google-agentic-commerce/AP2/tree/v0.1.0`. `required` is false. This card does not take card payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. A data part whose keys start with `ap2.mandates.` is refused and is not copied into the reply.
 
 ## MCP Server Card
 
@@ -51,6 +51,10 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 `GET /openapi.json` is the [Machine Payment Protocol](https://mpp.dev) discovery document. It is OpenAPI 3.1. `x-service-info.categories` lists `developer-tools`. `x-service-info.docs` points at the English homepage, this page, and `/llms.txt`.
 
 `POST /api/engagement` is the payable operation. `x-payment-info.intent` is `charge`, `x-payment-info.method` is `card`, `x-payment-info.currency` is `eur`, and `x-payment-info.amount` is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store the body. Do not send a card number or a payment token.
+
+## x402
+
+`GET`, `HEAD`, and `POST` [`/api`](https://lucabertelli.consulting/api) are the [x402](https://x402.org) resource. An unpaid call returns 402 with a `PAYMENT-REQUIRED` header. The scheme is `exact`, the network is `eip155:84532` (Base Sepolia), and the price is `$0.001` USDC. `payTo` is `0x2C2E3d99BeD343A0499c5b68CeedeFaE64DE6510`. The asset is Base Sepolia USDC `0x036CbD53842c5426634e7929541eC2318f3dCF7e`. The facilitator is [https://x402.org/facilitator](https://x402.org/facilitator). A settled call returns a JSON acknowledgement and does not store the body. Consulting work is still priced in a written proposal. `/api/openapi.yaml`, `/api/docs.md`, `/api/status.json`, and `/api/engagement` are not behind this challenge.
 
 ## Web Bot Auth
 

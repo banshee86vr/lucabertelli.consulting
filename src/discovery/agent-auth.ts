@@ -1,6 +1,7 @@
 import { ACP_BASE_URL, ACP_DOCUMENT_URL, ACP_PATH, API_VERSION, CHECKOUT_URL, acpDocumentText } from "./acp.ts";
 import { UCP_BASE_URL, UCP_CHECKOUT_URL, UCP_DOCUMENT_URL, UCP_PATH, UCP_VERSION, ucpDocumentText } from "./ucp.ts";
 import { ENGAGEMENT_URL, OPENAPI_FILE, OPENAPI_URL, openApiText } from "./mpp.ts";
+import { FACILITATOR_URL, X402_NETWORK, X402_PAY_TO, X402_PRICE, X402_URL } from "./x402.ts";
 import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, AP2_EXTENSION_URIS, agentCardText } from "./agent-card.ts";
 import { AGENT_SKILLS_INDEX_URL, SKILL_NAME, SKILL_URL } from "./agent-skills.ts";
 import { MCP_CARD_PATH, MCP_CARD_URL, MCP_URL, mcpCardText } from "./mcp-server.ts";
@@ -188,8 +189,9 @@ The API catalog and the OpenAPI description list the read API:
 - [ACP discovery](${ACP_DOCUMENT_URL})
 - [UCP profile](${UCP_DOCUMENT_URL})
 - [MPP discovery](${OPENAPI_URL})
+- [x402 resource](${X402_URL})
 
-The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMessage\` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential. \`capabilities.extensions\` lists the AP2 merchant role at \`${AP2_EXTENSION_URIS[0]}\` and \`${AP2_EXTENSION_URIS[1]}\`. \`required\` is false. This practice does not take payment, does not sign a mandate, and does not store payment credentials. A data part whose keys start with \`ap2.mandates.\` is refused.
+The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMessage\` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential. \`capabilities.extensions\` lists the AP2 merchant role at \`${AP2_EXTENSION_URIS[0]}\` and \`${AP2_EXTENSION_URIS[1]}\`. \`required\` is false. This card does not take card payment, does not sign a mandate, and does not store payment credentials. A data part whose keys start with \`ap2.mandates.\` is refused.
 
 The MCP server card names a Streamable HTTP endpoint. ${link(MCP_URL)} accepts \`POST\` JSON-RPC. The tool \`read_practice\` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
 
@@ -198,6 +200,8 @@ ACP discovery is ${link(ACP_DOCUMENT_URL)}. \`protocol.name\` is \`acp\`. \`prot
 Universal Commerce Protocol discovery is ${link(UCP_DOCUMENT_URL)}. \`protocol_version\` is \`${UCP_VERSION}\`. \`ucp.version\` is the same date. \`services\` lists \`dev.ucp.shopping\` over REST at ${link(UCP_BASE_URL)}. \`capabilities\` lists \`dev.ucp.shopping.checkout\`. \`endpoints.rest\` is that REST base. \`ucp.payment_handlers\` is empty. ${link(UCP_CHECKOUT_URL)} answers \`POST\` with an error. This business does not create a checkout session, does not take payment, and does not store the request.
 
 Machine Payment Protocol discovery is ${link(OPENAPI_URL)}. It is OpenAPI 3.1. \`x-service-info.categories\` lists \`developer-tools\`. ${link(ENGAGEMENT_URL)} is the payable operation. \`x-payment-info.intent\` is \`charge\`, \`x-payment-info.method\` is \`card\`, \`x-payment-info.currency\` is \`eur\`, and \`x-payment-info.amount\` is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store payment credentials. Do not send a card number or a payment token.
+
+x402 is ${link(X402_URL)}. \`GET\`, \`HEAD\`, and \`POST\` return 402 with a \`PAYMENT-REQUIRED\` header until a payment settles. The scheme is \`exact\`, the network is \`${X402_NETWORK}\` (Base Sepolia), and the price is \`${X402_PRICE}\` USDC. \`payTo\` is \`${X402_PAY_TO}\`. The facilitator is ${FACILITATOR_URL}. A settled call returns a JSON acknowledgement and does not store the body. Consulting work is still priced in a written proposal.
 
 HTML pages register WebMCP tools on load: \`search_site\` reads the public index, \`read_page\` returns the open page, and \`navigate\` opens a path on this origin. The call is \`document.modelContext.registerTool\`, or \`navigator.modelContext.registerTool\` when that is the browser entry point. An AbortSignal unregisters the tools when the page is discarded.
 

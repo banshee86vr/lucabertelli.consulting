@@ -22,7 +22,7 @@
     "extensions": [
       {
         "uri": "https://github.com/google-agentic-commerce/ap2/tree/v0.1",
-        "description": "Declares the AP2 v0.1 merchant role for discovery. This practice does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. Clients can call SendMessage without this extension.",
+        "description": "Declares the AP2 v0.1 merchant role for discovery. This extension does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. Clients can call SendMessage without this extension.",
         "required": false,
         "params": {
           "roles": [
@@ -32,7 +32,7 @@
       },
       {
         "uri": "https://github.com/google-agentic-commerce/AP2/tree/v0.1.0",
-        "description": "Declares the AP2 v0.1 merchant role for discovery. This practice does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. Clients can call SendMessage without this extension.",
+        "description": "Declares the AP2 v0.1 merchant role for discovery. This extension does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. Clients can call SendMessage without this extension.",
         "required": false,
         "params": {
           "roles": [

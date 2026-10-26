@@ -27,7 +27,7 @@ Read https://lucabertelli.consulting/auth.md. Access is anonymous. No account an
 
 ## Agent card
 
-`GET` https://lucabertelli.consulting/.well-known/agent-card.json is the A2A 1.0 card. `POST` https://lucabertelli.consulting/a2a/v1 with `Content-Type: application/json` accepts JSON-RPC `SendMessage` and returns a public message. It does not create a task. `capabilities.extensions` lists the AP2 merchant role at `https://github.com/google-agentic-commerce/ap2/tree/v0.1` and `https://github.com/google-agentic-commerce/AP2/tree/v0.1.0`. `required` is false. This practice does not take payment. Do not send payment credentials or an `ap2.mandates` data part.
+`GET` https://lucabertelli.consulting/.well-known/agent-card.json is the A2A 1.0 card. `POST` https://lucabertelli.consulting/a2a/v1 with `Content-Type: application/json` accepts JSON-RPC `SendMessage` and returns a public message. It does not create a task. `capabilities.extensions` lists the AP2 merchant role at `https://github.com/google-agentic-commerce/ap2/tree/v0.1` and `https://github.com/google-agentic-commerce/AP2/tree/v0.1.0`. `required` is false. This card does not take card payment. Do not send payment credentials or an `ap2.mandates` data part.
 
 ## MCP
 
@@ -44,6 +44,8 @@ Read https://lucabertelli.consulting/auth.md. Access is anonymous. No account an
 ## Machine payments
 
 `GET` https://lucabertelli.consulting/openapi.json is the Machine Payment Protocol discovery document. `POST` https://lucabertelli.consulting/api/engagement returns 402. `x-payment-info.amount` is null because the price is a written proposal. This origin does not settle Tempo, Stripe, Lightning, or card payments. Do not send a card number or a payment token. Do not invent a price.
+
+`GET`, `HEAD`, and `POST` https://lucabertelli.consulting/api are the x402 resource. An unpaid call returns 402 with a `PAYMENT-REQUIRED` header. The scheme is `exact`, the network is `eip155:84532` (Base Sepolia), the price is `$0.001` USDC, the asset is `0x036CbD53842c5426634e7929541eC2318f3dCF7e`, and `payTo` is `0x2C2E3d99BeD343A0499c5b68CeedeFaE64DE6510`. The facilitator is https://x402.org/facilitator. A settled call returns a JSON acknowledgement and does not store the body. Consulting work is still priced in a written proposal.
 
 ## Web Bot Auth
 

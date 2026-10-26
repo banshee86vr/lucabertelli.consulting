@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import { API_VERSION } from "../discovery/acp";
 import { UCP_VERSION } from "../discovery/ucp";
 import { AP2_EXTENSION_URIS } from "../discovery/agent-card";
+import { FACILITATOR_URL, X402_NETWORK, X402_PAY_TO, X402_PRICE } from "../discovery/x402";
 import { SITE_URL } from "../constants/site";
 import { insightPath, insightsHubPath } from "../constants/insights";
 import { servicePath, servicesHubPath } from "../constants/services";
@@ -174,7 +175,7 @@ export async function GET() {
 		`- OAuth authorization server: ${url("/.well-known/oauth-authorization-server")}`,
 	);
 	lines.push(
-		`- A2A Agent Card: ${url("/.well-known/agent-card.json")}. JSON-RPC 1.0 at ${url("/a2a/v1")} (SendMessage returns a public message and does not create a task). AP2 extensions: ${AP2_EXTENSION_URIS.join(", ")}. Role merchant. required is false. This practice does not take payment, does not sign a mandate, and does not store payment credentials.`,
+		`- A2A Agent Card: ${url("/.well-known/agent-card.json")}. JSON-RPC 1.0 at ${url("/a2a/v1")} (SendMessage returns a public message and does not create a task). AP2 extensions: ${AP2_EXTENSION_URIS.join(", ")}. Role merchant. required is false. This card does not take card payment, does not sign a mandate, and does not store payment credentials.`,
 	);
 	lines.push(
 		`- Agent Skills index: ${url("/.well-known/agent-skills/index.json")}. One skill, consulting-practice, at ${url("/.well-known/agent-skills/consulting-practice/SKILL.md")} (type skill-md, digest sha256 of that file).`,
@@ -190,6 +191,9 @@ export async function GET() {
 	);
 	lines.push(
 		`- MPP discovery: ${url("/openapi.json")}. OpenAPI 3.1. x-service-info.categories is developer-tools. POST ${url("/api/engagement")} is the payable operation. x-payment-info.intent is charge, x-payment-info.method is card, x-payment-info.currency is eur, and x-payment-info.amount is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store the body.`,
+	);
+	lines.push(
+		`- x402: ${url("/api")} answers GET, HEAD, and POST with 402 and a PAYMENT-REQUIRED header until payment settles. The scheme is exact, the network is ${X402_NETWORK} (Base Sepolia), and the price is ${X402_PRICE} USDC. payTo is ${X402_PAY_TO}. The facilitator is ${FACILITATOR_URL}. A settled call returns a JSON acknowledgement and does not store the body. Consulting work is still priced in a written proposal.`,
 	);
 	lines.push(
 		`- Web Bot Auth directory: ${url("/.well-known/http-message-signatures-directory")}. Ed25519 public key. Outbound agent requests carry Signature-Agent and Signature-Input.`,

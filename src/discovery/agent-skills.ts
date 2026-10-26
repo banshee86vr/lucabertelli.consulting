@@ -10,6 +10,7 @@
 import { ACP_BASE_URL, ACP_DOCUMENT_URL, CHECKOUT_URL } from "./acp.ts";
 import { UCP_BASE_URL, UCP_CHECKOUT_URL, UCP_DOCUMENT_URL, UCP_VERSION } from "./ucp.ts";
 import { ENGAGEMENT_URL, OPENAPI_URL } from "./mpp.ts";
+import { FACILITATOR_URL, X402_ASSET, X402_NETWORK, X402_PAY_TO, X402_PRICE, X402_URL } from "./x402.ts";
 import { AP2_EXTENSION_URIS, ORIGIN } from "./agent-card.ts";
 import { MCP_CARD_URL, MCP_URL } from "./mcp-server.ts";
 import { DIRECTORY_URL } from "./web-bot-auth.ts";
@@ -80,7 +81,7 @@ Read ${ORIGIN}/auth.md. Access is anonymous. No account and no credential are re
 
 ## Agent card
 
-\`GET\` ${ORIGIN}/.well-known/agent-card.json is the A2A 1.0 card. \`POST\` ${ORIGIN}/a2a/v1 with \`Content-Type: application/json\` accepts JSON-RPC \`SendMessage\` and returns a public message. It does not create a task. \`capabilities.extensions\` lists the AP2 merchant role at \`${AP2_EXTENSION_URIS[0]}\` and \`${AP2_EXTENSION_URIS[1]}\`. \`required\` is false. This practice does not take payment. Do not send payment credentials or an \`ap2.mandates\` data part.
+\`GET\` ${ORIGIN}/.well-known/agent-card.json is the A2A 1.0 card. \`POST\` ${ORIGIN}/a2a/v1 with \`Content-Type: application/json\` accepts JSON-RPC \`SendMessage\` and returns a public message. It does not create a task. \`capabilities.extensions\` lists the AP2 merchant role at \`${AP2_EXTENSION_URIS[0]}\` and \`${AP2_EXTENSION_URIS[1]}\`. \`required\` is false. This card does not take card payment. Do not send payment credentials or an \`ap2.mandates\` data part.
 
 ## MCP
 
@@ -97,6 +98,8 @@ Read ${ORIGIN}/auth.md. Access is anonymous. No account and no credential are re
 ## Machine payments
 
 \`GET\` ${OPENAPI_URL} is the Machine Payment Protocol discovery document. \`POST\` ${ENGAGEMENT_URL} returns 402. \`x-payment-info.amount\` is null because the price is a written proposal. This origin does not settle Tempo, Stripe, Lightning, or card payments. Do not send a card number or a payment token. Do not invent a price.
+
+\`GET\`, \`HEAD\`, and \`POST\` ${X402_URL} are the x402 resource. An unpaid call returns 402 with a \`PAYMENT-REQUIRED\` header. The scheme is \`exact\`, the network is \`${X402_NETWORK}\` (Base Sepolia), the price is \`${X402_PRICE}\` USDC, the asset is \`${X402_ASSET}\`, and \`payTo\` is \`${X402_PAY_TO}\`. The facilitator is ${FACILITATOR_URL}. A settled call returns a JSON acknowledgement and does not store the body. Consulting work is still priced in a written proposal.
 
 ## Web Bot Auth
 

@@ -1,5 +1,8 @@
 name = "lucabertelli-consulting"
 compatibility_date = "2024-09-23"
+# @x402/evm pulls in viem, which imports Node built-ins. The date stays put
+# so the rest of this Worker keeps its current runtime behavior.
+compatibility_flags = [ "nodejs_compat" ]
 main = "src/worker.ts"
 
 [[kv_namespaces]]
@@ -32,6 +35,9 @@ id = "1b5008e8ee4249bf87131391a7045703"
 # The MPP OpenAPI document is a static file. run_worker_first keeps
 # /openapi.json and /api/engagement on the Worker, including POST. The
 # engagement route must not store the body.
+# x402 protects GET, HEAD, and POST /api. run_worker_first keeps that exact
+# path on the Worker. /api/engagement, /api/openapi.yaml, /api/docs.md, and
+# /api/status.json stay on their own paths.
 # Other static files stay on the asset path.
 [assets]
 binding = "ASSETS"
@@ -53,6 +59,7 @@ run_worker_first = [
   "/.well-known/acp.json",
   "/.well-known/ucp",
   "/openapi.json",
+  "/api",
   "/api/engagement",
   "/mcp",
   "/acp",

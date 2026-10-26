@@ -2,6 +2,7 @@ import { getBlogPosts, getInsights, getServices } from "../content/config";
 import { SITE_URL } from "../constants/site";
 import { API_VERSION } from "../discovery/acp";
 import { UCP_VERSION } from "../discovery/ucp";
+import { FACILITATOR_URL, X402_NETWORK, X402_PRICE } from "../discovery/x402";
 import { insightPath } from "../constants/insights";
 import { servicePath } from "../constants/services";
 import type { UiLang } from "../utils/seo";
@@ -62,6 +63,9 @@ export async function GET() {
 	);
 	lines.push(
 		`UCP profile: ${url("/.well-known/ucp")} (protocol_version ${UCP_VERSION}, REST ${url("/ucp/v1")}, capability dev.ucp.shopping.checkout, payment_handlers empty). POST ${url("/ucp/v1/checkout-sessions")} does not create a session, does not take payment, and does not store the body.`,
+	);
+	lines.push(
+		`x402: ${url("/api")} answers GET, HEAD, and POST with 402 and a PAYMENT-REQUIRED header until payment settles. Network ${X402_NETWORK}, price ${X402_PRICE} USDC, facilitator ${FACILITATOR_URL}. A settled call returns a JSON acknowledgement and does not store the body.`,
 	);
 	lines.push(`Generated: ${isoDate(new Date())}`);
 

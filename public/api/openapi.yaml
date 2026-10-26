@@ -1,16 +1,17 @@
 openapi: 3.0.3
 info:
   title: lucabertelli.consulting discovery
-  version: "1.7.0"
+  version: "1.8.0"
   description: |
-    This site does not expose a write API and does not issue credentials. The resources below are public, unauthenticated, and safe to fetch.
+    This site does not issue credentials. The documents below are public and unauthenticated. GET, HEAD, and POST /api are the x402 challenge and do not store the body.
     Agent registration is anonymous: /auth.md and the two OAuth discovery documents describe it, and POST to the registration URLs changes nothing.
-    The A2A Agent Card is at /.well-known/agent-card.json. POST /a2a/v1 accepts JSON-RPC SendMessage and returns a public message. It does not create a task or store the request. capabilities.extensions lists the AP2 merchant role at the v0.1 specification URI and the v0.1.0 URI. required is false. This practice does not take payment.
+    The A2A Agent Card is at /.well-known/agent-card.json. POST /a2a/v1 accepts JSON-RPC SendMessage and returns a public message. It does not create a task or store the request. capabilities.extensions lists the AP2 merchant role at the v0.1 specification URI and the v0.1.0 URI. required is false. This card does not take card payment.
     The Agent Skills index is at /.well-known/agent-skills/index.json.
     The MCP server card is at /.well-known/mcp/server-card.json. POST /mcp is Streamable HTTP. The tool read_practice returns the public index. Resources, prompts, and sessions are off.
     ACP discovery is at /.well-known/acp.json. POST /acp/checkout_sessions does not create a session, does not take payment, and does not store the body.
     UCP discovery is at /.well-known/ucp. protocol_version is 2026-08-25. POST /ucp/v1/checkout-sessions does not create a session, does not take payment, and does not store the body. ucp.payment_handlers is empty.
     Machine Payment Protocol discovery is GET /openapi.json. POST /api/engagement returns 402, does not settle a charge, and does not store the body. x-payment-info.amount is null because the price is a written proposal.
+    x402 is GET, HEAD, and POST /api. An unpaid call returns 402 with a PAYMENT-REQUIRED header. The scheme is exact, the network is eip155:84532 (Base Sepolia), and the price is $0.001 USDC. payTo is 0x2C2E3d99BeD343A0499c5b68CeedeFaE64DE6510. The facilitator is https://x402.org/facilitator. A settled call returns a JSON acknowledgement and does not store the body.
     The Web Bot Auth directory is at /.well-known/http-message-signatures-directory.
 servers:
   - url: https://lucabertelli.consulting
@@ -104,6 +105,37 @@ paths:
                     type: array
                     items:
                       type: object
+  /api:
+    get:
+      operationId: getX402Challenge
+      summary: x402 payment challenge
+      description: Returns 402 with a PAYMENT-REQUIRED header until an exact USDC payment on Base Sepolia (eip155:84532) settles through https://x402.org/facilitator. The price is $0.001. payTo is 0x2C2E3d99BeD343A0499c5b68CeedeFaE64DE6510. The body is not stored. A settled call returns a JSON acknowledgement. Consulting work is still priced in a written proposal.
+      responses:
+        "402":
+          description: Payment required. Terms are in the PAYMENT-REQUIRED header.
+        "200":
+          description: Settled acknowledgement.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [service, resource, contact, message]
+    post:
+      operationId: postX402Challenge
+      summary: x402 payment challenge
+      description: Same challenge as GET /api. The body is discarded and is not stored.
+      responses:
+        "402":
+          description: Payment required. Terms are in the PAYMENT-REQUIRED header.
+        "200":
+          description: Settled acknowledgement.
+    head:
+      operationId: headX402Challenge
+      summary: x402 payment challenge
+      description: Same challenge as GET /api, with no response body.
+      responses:
+        "402":
+          description: Payment required. Terms are in the PAYMENT-REQUIRED header.
   /api/status.json:
     get:
       operationId: getStatus
@@ -190,7 +222,7 @@ paths:
         capabilities, and skills. The preferred interface is JSON-RPC 1.0
         at /a2a/v1. Streaming, push notifications, and the extended card
         are false. capabilities.extensions lists the AP2 merchant role.
-        required is false. This practice does not take payment.
+        required is false. This card does not take card payment.
       responses:
         "200":
           description: Agent Card JSON.

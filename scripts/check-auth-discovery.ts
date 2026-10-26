@@ -8,6 +8,7 @@ import { parse } from "dotenv";
 import { SERVICE_KEYS } from "../src/constants/services.ts";
 import { ACP_DOCUMENT_URL, ACP_PATH, assertAcpResponses } from "../src/discovery/acp.ts";
 import { ENGAGEMENT_URL, OPENAPI_PATH, OPENAPI_URL, assertMppResponses } from "../src/discovery/mpp.ts";
+import { FACILITATOR_URL, X402_URL, assertX402Responses } from "../src/discovery/x402.ts";
 import { UCP_DOCUMENT_URL, UCP_PATH, UCP_VERSION, assertUcpResponses } from "../src/discovery/ucp.ts";
 import { AP2_EXTENSION_URIS, agentCard, agentCardResponse, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
 import { authMarkdown, assertDiscoveryResponses, discoveryResponse, fileBodies, ORIGIN } from "../src/discovery/agent-auth.ts";
@@ -208,6 +209,11 @@ async function main(): Promise<void> {
 		errors.push(error instanceof Error ? error.message : String(error));
 	}
 	try {
+		await assertX402Responses();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
+	try {
 		await assertWebBotAuthResponses();
 	} catch (error) {
 		errors.push(error instanceof Error ? error.message : String(error));
@@ -235,6 +241,9 @@ async function main(): Promise<void> {
 	if (!authMarkdown().includes(OPENAPI_URL)) {
 		errors.push("auth.md must link the MPP discovery document");
 	}
+	if (!authMarkdown().includes(X402_URL) || !authMarkdown().includes(FACILITATOR_URL)) {
+		errors.push("auth.md must name the x402 resource and facilitator");
+	}
 	if (!skillMarkdown().includes(ACP_DOCUMENT_URL)) {
 		errors.push("consulting-practice skill must name the ACP discovery document");
 	}
@@ -243,6 +252,9 @@ async function main(): Promise<void> {
 	}
 	if (!skillMarkdown().includes(ENGAGEMENT_URL)) {
 		errors.push("consulting-practice skill must name the MPP engagement endpoint");
+	}
+	if (!skillMarkdown().includes(X402_URL) || !skillMarkdown().includes(FACILITATOR_URL)) {
+		errors.push("consulting-practice skill must name the x402 resource and facilitator");
 	}
 	if (!authMarkdown().includes("_index._agents.")) {
 		errors.push("auth.md must name the DNS-AID index");
@@ -264,6 +276,9 @@ async function main(): Promise<void> {
 	}
 	if (!llmsSource.includes(OPENAPI_PATH)) {
 		errors.push("llms.txt source does not list the MPP discovery document");
+	}
+	if (!llmsSource.includes('url("/api")') || !llmsSource.includes("FACILITATOR_URL") || !llmsSource.includes("X402_PAY_TO")) {
+		errors.push("llms.txt source does not list the x402 resource and facilitator");
 	}
 
 	const cardRequest = await discoveryResponse(new Request(`${ORIGIN}/.well-known/agent-card.json`));
@@ -357,6 +372,8 @@ async function main(): Promise<void> {
 			errors.push("llms.txt does not list the UCP profile");
 		} else if (!readFileSync(llmsPath, "utf8").includes(OPENAPI_URL)) {
 			errors.push("llms.txt does not list the MPP discovery document");
+		} else if (!readFileSync(llmsPath, "utf8").includes(X402_URL) || !readFileSync(llmsPath, "utf8").includes(FACILITATOR_URL)) {
+			errors.push("llms.txt does not list the x402 resource and facilitator");
 		} else if (!AP2_EXTENSION_URIS.every((uri) => readFileSync(llmsPath, "utf8").includes(uri))) {
 			errors.push("llms.txt does not name both AP2 extension URIs");
 		}
