@@ -188,6 +188,10 @@ export async function GET() {
 	lines.push(
 		`- Homepage Link header (RFC 8288): rel="api-catalog" ${url("/.well-known/api-catalog")}, rel="service-desc" ${url("/api/openapi.yaml")}, rel="service-doc" ${url("/api/docs.md")}, rel="describedby" ${url("/llms.txt")}. Sent on /, /en/, and /it/.`,
 	);
+	const host = new URL(SITE_URL).host;
+	lines.push(
+		`- DNS-AID: ServiceMode HTTPS and SVCB at _index._agents.${host}, _a2a._agents.${host}, and _mcp._agents.${host}. Target ${host}, alpn h2, port 443. key65402 is the agent protocol. key65400 is the capability URL. key65409 is the well-known path.`,
+	);
 	lines.push(
 		"- Structured data: every HTML page embeds a schema.org JSON-LD graph (Person, ProfessionalService, WebSite; Service + FAQPage on service pages; BlogPosting on articles and guides).",
 	);

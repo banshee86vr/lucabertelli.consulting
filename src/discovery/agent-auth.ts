@@ -111,6 +111,7 @@ function link(url: string): string {
 }
 
 export function authMarkdown(): string {
+	const host = new URL(ORIGIN).host;
 	return `# auth.md
 
 Luca Bertelli Consulting publishes this file for agents that need to know how to access ${ORIGIN}. The site is a public, read-only practice site. Anonymous clients read every document. No account and no credential are required.
@@ -189,6 +190,8 @@ The MCP server card names a Streamable HTTP endpoint. ${link(MCP_URL)} accepts \
 HTML pages register WebMCP tools on load: \`search_site\` reads the public index, \`read_page\` returns the open page, and \`navigate\` opens a path on this origin. The call is \`document.modelContext.registerTool\`, or \`navigator.modelContext.registerTool\` when that is the browser entry point. An AbortSignal unregisters the tools when the page is discarded.
 
 The Agent Skills index lists \`${SKILL_NAME}\`. The artifact is ${link(SKILL_URL)}. Its digest is the SHA-256 of that file.
+
+DNS for AI Discovery publishes ServiceMode HTTPS and SVCB records at \`_index._agents.${host}\`, \`_a2a._agents.${host}\`, and \`_mcp._agents.${host}\`. The target is ${host}, TLS is \`h2\` on port 443, and the agent protocol is the private-use SvcParam \`key65402\`. \`key65400\` is the capability URL. \`key65409\` is the well-known path.
 
 Requests this origin sends as an agent are signed with HTTP message signatures. The public Ed25519 key is ${link(DIRECTORY_URL)}. A verifier fetches that directory and checks the \`Signature-Agent\` and \`Signature-Input\` headers. The directory media type is \`application/http-message-signatures-directory+json\`.
 

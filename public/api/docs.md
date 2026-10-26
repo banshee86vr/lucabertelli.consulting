@@ -40,6 +40,10 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 
 HTML pages call `document.modelContext.registerTool()` on load, and `navigator.modelContext.registerTool()` when that is the browser entry point. The tools are `search_site` (search `/llms.txt`), `read_page` (the open page), and `navigate` (a same-origin path). An `AbortSignal` unregisters them when the page is discarded. This site has no HTML forms, so it does not declare `toolname` tools.
 
+## DNS for AI Discovery
+
+ServiceMode HTTPS and SVCB records at `_index._agents.lucabertelli.consulting`, `_a2a._agents.lucabertelli.consulting`, and `_mcp._agents.lucabertelli.consulting` point at `lucabertelli.consulting` on port 443 with `alpn` `h2`. `key65402` is the agent protocol (`a2a` or `mcp`). `key65400` is the capability URL. `key65409` is the well-known path. The zone is signed with DNSSEC.
+
 ## Agent Skills
 
 `GET /.well-known/agent-skills/index.json` is the [Agent Skills Discovery](https://github.com/cloudflare/agent-skills-discovery-rfc) index, schema `https://schemas.agentskills.io/discovery/0.2.0/schema.json`. It lists `consulting-practice` (`type` `skill-md`). The artifact is [SKILL.md](https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md). `digest` is the SHA-256 of that file.

@@ -204,11 +204,17 @@ async function main(): Promise<void> {
 	if (!authMarkdown().includes(AGENT_SKILLS_INDEX_URL)) {
 		errors.push("auth.md must link the agent skills index");
 	}
+	if (!authMarkdown().includes("_index._agents.")) {
+		errors.push("auth.md must name the DNS-AID index");
+	}
 	const layout = readFileSync(join(import.meta.dirname, "..", "src", "layouts", "Common.astro"), "utf8");
 	if (!layout.includes("startWebMcp")) errors.push("Common.astro does not start WebMCP on page load");
 	const llmsSource = readFileSync(join(import.meta.dirname, "..", "src", "pages", "llms.txt.ts"), "utf8");
 	if (!WEB_MCP_TOOL_NAMES.every((name) => llmsSource.includes(name))) {
 		errors.push("llms.txt source does not list the WebMCP tools");
+	}
+	if (!llmsSource.includes("_index._agents.")) {
+		errors.push("llms.txt source does not name the DNS-AID index");
 	}
 
 	const cardRequest = await discoveryResponse(new Request(`${ORIGIN}/.well-known/agent-card.json`));
@@ -288,6 +294,8 @@ async function main(): Promise<void> {
 			errors.push("llms.txt does not list the Web Bot Auth directory");
 		} else if (!WEB_MCP_TOOL_NAMES.every((name) => readFileSync(llmsPath, "utf8").includes(name))) {
 			errors.push("llms.txt does not list the WebMCP tools");
+		} else if (!readFileSync(llmsPath, "utf8").includes("_index._agents.")) {
+			errors.push("llms.txt does not name the DNS-AID index");
 		}
 
 		for (const lang of ["en", "it"]) {

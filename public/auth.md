@@ -77,6 +77,8 @@ HTML pages register WebMCP tools on load: `search_site` reads the public index, 
 
 The Agent Skills index lists `consulting-practice`. The artifact is [https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md](https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md). Its digest is the SHA-256 of that file.
 
+DNS for AI Discovery publishes ServiceMode HTTPS and SVCB records at `_index._agents.lucabertelli.consulting`, `_a2a._agents.lucabertelli.consulting`, and `_mcp._agents.lucabertelli.consulting`. The target is lucabertelli.consulting, TLS is `h2` on port 443, and the agent protocol is the private-use SvcParam `key65402`. `key65400` is the capability URL. `key65409` is the well-known path.
+
 Requests this origin sends as an agent are signed with HTTP message signatures. The public Ed25519 key is [https://lucabertelli.consulting/.well-known/http-message-signatures-directory](https://lucabertelli.consulting/.well-known/http-message-signatures-directory). A verifier fetches that directory and checks the `Signature-Agent` and `Signature-Input` headers. The directory media type is `application/http-message-signatures-directory+json`.
 
 An HTML page also answers `Accept: text/markdown` with that page's main content.
