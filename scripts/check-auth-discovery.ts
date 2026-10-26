@@ -17,6 +17,7 @@ import {
 	SKILL_PATH,
 } from "../src/discovery/agent-skills.ts";
 import { assertMcpResponses, MCP_CARD_PATH, MCP_CARD_URL, MCP_PATH, MCP_URL, mcpResponse } from "../src/discovery/mcp-server.ts";
+import { assertWebMcpTools, WEB_MCP_TOOL_NAMES } from "../src/discovery/webmcp.ts";
 import {
 	assertWebBotAuthResponses,
 	DIRECTORY_FILE,
@@ -100,6 +101,59 @@ async function assertPublishedKeySigns(): Promise<void> {
 	}
 }
 
+function pageHtml(root: string, lang: string): string | null {
+	for (const rel of [`${lang}/index.html`, `${lang}.html`]) {
+		const full = join(root, rel);
+		if (existsSync(full)) return readFileSync(full, "utf8");
+	}
+	return null;
+}
+
+/** Follow the homepage script graph so a bundled WebMCP chunk is still checked. */
+function scriptBundle(root: string, html: string, errors: string[]): string {
+	const queue: string[] = [];
+	for (const match of html.matchAll(/<script\b[^>]*>/g)) {
+		const src = match[0].match(/\bsrc="([^"]+)"/);
+		if (src?.[1]) queue.push(src[1]);
+	}
+	for (const match of html.matchAll(/<link\b[^>]*>/g)) {
+		const tag = match[0];
+		if (!tag.includes('rel="modulepreload"')) continue;
+		const href = tag.match(/\bhref="([^"]+\.js)"/);
+		if (href?.[1]) queue.push(href[1]);
+	}
+	const seen = new Set<string>();
+	let bundle = html;
+	while (queue.length > 0 && seen.size < 40) {
+		const src = queue.shift();
+		if (!src || seen.has(src) || src.startsWith("http")) continue;
+		seen.add(src);
+		const rel = src.startsWith("/") ? src.slice(1) : src;
+		const file = join(root, rel);
+		if (!existsSync(file)) {
+			errors.push(`WebMCP: script ${src} is missing from the build`);
+			continue;
+		}
+		const text = readFileSync(file, "utf8");
+		bundle += text;
+		for (const match of text.matchAll(/["']((?:\/_astro\/|\.\/)[^"']+\.js)["']/g)) {
+			const spec = match[1];
+			if (!spec) continue;
+			if (spec.startsWith("/")) {
+				queue.push(spec);
+				continue;
+			}
+			try {
+				const base = src.startsWith("/") ? src : `/${src}`;
+				queue.push(new URL(spec, `https://assets.local${base}`).pathname);
+			} catch {
+				errors.push(`WebMCP: could not resolve ${spec} from ${src}`);
+			}
+		}
+	}
+	return bundle;
+}
+
 function headerBlock(headers: string, route: string): string {
 	const marker = `${route}\n`;
 	const start = headers.indexOf(marker);
@@ -137,6 +191,11 @@ async function main(): Promise<void> {
 		errors.push(error instanceof Error ? error.message : String(error));
 	}
 	try {
+		await assertWebMcpTools();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
+	try {
 		await assertPublishedKeySigns();
 	} catch (error) {
 		errors.push(error instanceof Error ? error.message : String(error));
@@ -144,6 +203,12 @@ async function main(): Promise<void> {
 
 	if (!authMarkdown().includes(AGENT_SKILLS_INDEX_URL)) {
 		errors.push("auth.md must link the agent skills index");
+	}
+	const layout = readFileSync(join(import.meta.dirname, "..", "src", "layouts", "Common.astro"), "utf8");
+	if (!layout.includes("startWebMcp")) errors.push("Common.astro does not start WebMCP on page load");
+	const llmsSource = readFileSync(join(import.meta.dirname, "..", "src", "pages", "llms.txt.ts"), "utf8");
+	if (!WEB_MCP_TOOL_NAMES.every((name) => llmsSource.includes(name))) {
+		errors.push("llms.txt source does not list the WebMCP tools");
 	}
 
 	const cardRequest = await discoveryResponse(new Request(`${ORIGIN}/.well-known/agent-card.json`));
@@ -221,6 +286,20 @@ async function main(): Promise<void> {
 			errors.push("llms.txt does not list the MCP server card");
 		} else if (!readFileSync(llmsPath, "utf8").includes(DIRECTORY_URL)) {
 			errors.push("llms.txt does not list the Web Bot Auth directory");
+		} else if (!WEB_MCP_TOOL_NAMES.every((name) => readFileSync(llmsPath, "utf8").includes(name))) {
+			errors.push("llms.txt does not list the WebMCP tools");
+		}
+
+		for (const lang of ["en", "it"]) {
+			const html = pageHtml(root, lang);
+			if (!html) {
+				errors.push(`WebMCP: ${lang} homepage HTML is missing from the build`);
+				continue;
+			}
+			const bundle = scriptBundle(root, html, errors);
+			for (const needle of ["registerTool", "modelContext", ...WEB_MCP_TOOL_NAMES]) {
+				if (!bundle.includes(needle)) errors.push(`WebMCP: ${lang} homepage script is missing ${needle}`);
+			}
 		}
 
 		const headersPath = join(root, "_headers");

@@ -186,6 +186,8 @@ The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMess
 
 The MCP server card names a Streamable HTTP endpoint. ${link(MCP_URL)} accepts \`POST\` JSON-RPC. The tool \`read_practice\` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
 
+HTML pages register WebMCP tools on load: \`search_site\` reads the public index, \`read_page\` returns the open page, and \`navigate\` opens a path on this origin. The call is \`document.modelContext.registerTool\`, or \`navigator.modelContext.registerTool\` when that is the browser entry point. An AbortSignal unregisters the tools when the page is discarded.
+
 The Agent Skills index lists \`${SKILL_NAME}\`. The artifact is ${link(SKILL_URL)}. Its digest is the SHA-256 of that file.
 
 Requests this origin sends as an agent are signed with HTTP message signatures. The public Ed25519 key is ${link(DIRECTORY_URL)}. A verifier fetches that directory and checks the \`Signature-Agent\` and \`Signature-Input\` headers. The directory media type is \`application/http-message-signatures-directory+json\`.
@@ -471,6 +473,9 @@ export function assertDiscovery(): void {
 	}
 	if (markdown.includes("`/.well-known/oauth-protected-resource`")) {
 		errors.push("auth.md wraps the PRM path in a code span; scanners miss that");
+	}
+	if (!markdown.includes("search_site") || !markdown.includes("document.modelContext.registerTool")) {
+		errors.push("auth.md must describe the WebMCP tools");
 	}
 
 	const prm = protectedResourceMetadata();

@@ -87,6 +87,10 @@ Read ${ORIGIN}/auth.md. Access is anonymous. No account and no credential are re
 
 Requests sent as this origin's agent include \`Signature-Agent\` and \`Signature-Input\`. The public key is ${DIRECTORY_URL}.
 
+## WebMCP
+
+HTML pages register \`search_site\`, \`read_page\`, and \`navigate\` on load through \`document.modelContext.registerTool\`, or \`navigator.modelContext.registerTool\` when that is the browser entry point. \`search_site\` searches ${ORIGIN}/llms.txt. \`read_page\` returns the open page. \`navigate\` opens a path or absolute URL on this origin. An AbortSignal unregisters the tools when the page is discarded.
+
 ## Contact
 
 Write to info@lucabertelli.consulting. Do not send secrets.
@@ -224,6 +228,12 @@ export async function assertAgentSkillsResponses(): Promise<void> {
 		errors.push("SKILL.md must point at the MCP server card and endpoint");
 	}
 	if (!skill.includes(DIRECTORY_URL)) errors.push("SKILL.md must point at the Web Bot Auth directory");
+	if (!skill.includes("search_site") || !skill.includes("read_page") || !skill.includes("navigate")) {
+		errors.push("SKILL.md must name the WebMCP tools");
+	}
+	if (!skill.includes("document.modelContext.registerTool")) {
+		errors.push("SKILL.md must name the WebMCP registration call");
+	}
 
 	let index: AgentSkillsIndex;
 	try {

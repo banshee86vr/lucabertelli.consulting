@@ -440,6 +440,11 @@ const jsonLdPayload = JSON.stringify({
 		<!-- Cookie Banner - Fixed floating box at bottom of viewport -->
 		<CookieBanner />
 
+		<script>
+			import { startWebMcp } from "../discovery/webmcp";
+			startWebMcp();
+		</script>
+
 		<!-- Lightweight offcanvas controller replaces full Bootstrap JS bundle -->
 		<script is:inline>
 			(() => {

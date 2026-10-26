@@ -26,6 +26,7 @@ Use this after deploy to verify the implementation and track reachability over t
 | Agent Skills | `/.well-known/agent-skills/index.json` | Discovery RFC v0.2.0. One skill, `consulting-practice`, type `skill-md`, at `/.well-known/agent-skills/consulting-practice/SKILL.md`. `digest` is the SHA-256 of that file. Not an HTML route, so it is not one of the 76 sitemap URLs |
 | MCP Server Card | `/.well-known/mcp/server-card.json` | SEP-1649 JSON. `serverInfo.name` and `serverInfo.version`. Streamable HTTP at `/mcp`. `capabilities.tools` is true. `resources` and `prompts` are false. Not an HTML route, so it is not one of the 76 sitemap URLs |
 | Web Bot Auth | `/.well-known/http-message-signatures-directory` | Ed25519 JWKS, media type `application/http-message-signatures-directory+json`. Not an HTML route, so it is not one of the 76 sitemap URLs |
+| WebMCP | HTML pages | `search_site`, `read_page`, and `navigate` register on page load through `document.modelContext`, or `navigator.modelContext` when that is the browser entry point. Not a separate URL, so the sitemap count stays 76 |
 
 Current inventory: **76 indexable HTML pages**. Re-confirm with
 `pnpm run verify:seo` after a fresh build whenever content or routes change.
@@ -65,6 +66,7 @@ Both audiences enter through the same door, so the work is shared:
 - `/.well-known/agent-skills/index.json` is the Agent Skills discovery index. It lists `consulting-practice`. The artifact is `/.well-known/agent-skills/consulting-practice/SKILL.md`, and `digest` is the SHA-256 of that file.
 - `/.well-known/mcp/server-card.json` is the MCP server card. `POST /mcp` is Streamable HTTP. `read_practice` returns the public index. Resources, prompts, and sessions are off.
 - `/.well-known/http-message-signatures-directory` is the Web Bot Auth key directory. Outbound agent requests carry `Signature-Agent` and `Signature-Input` when the signing key is configured.
+- HTML pages register WebMCP tools on load: `search_site` reads `/llms.txt`, `read_page` returns the open page, and `navigate` opens a path on this origin. The entry point is `document.modelContext`, or `navigator.modelContext` when that is what the browser exposes.
 - `lastmod` in the sitemap is derived from content dates (frontmatter
   `date`/`updated`, otherwise the last commit touching the source), not from
   the build time, so engines can trust it when deciding what to recrawl.
@@ -88,6 +90,7 @@ Both audiences enter through the same door, so the work is shared:
 10e. **A2A Agent Card**: `/.well-known/agent-card.json` must return 200 as `application/json` with `name`, `description`, `version`, `supportedInterfaces` (JSON-RPC 1.0 at `https://lucabertelli.consulting/a2a/v1`), `capabilities`, and one skill per service (`id`, `name`, `description`, `tags`). `POST /a2a/v1` `SendMessage` returns a message and does not create a task. After deploy, `POST https://isitagentready.com/api/scan` with `{"url":"https://lucabertelli.consulting"}` must report `checks.discovery.a2aAgentCard.status` of `pass`.
 10f. **Agent Skills**: `/.well-known/agent-skills/index.json` must return 200 as `application/json` with `$schema` `https://schemas.agentskills.io/discovery/0.2.0/schema.json` and a `skills` entry for `consulting-practice` (`type` `skill-md`, `description`, `url`, `digest`). `GET` the skill URL must return that `SKILL.md` as `text/markdown`, and the SHA-256 of those bytes must equal `digest`. After deploy, the same scan must report `checks.discovery.agentSkills.status` of `pass`.
 10g. **MCP Server Card**: `/.well-known/mcp/server-card.json` must return 200 as `application/json` with `serverInfo.name`, `serverInfo.version`, `transport.endpoint` `https://lucabertelli.consulting/mcp`, and `capabilities` (`tools` true, `resources` false, `prompts` false). `POST /mcp` `tools/call` `read_practice` returns the public index and does not store the body. After deploy, the same scan must report `checks.discovery.mcpServerCard.status` of `pass`.
+10h. **WebMCP**: Open `/en/` in a browser that exposes `document.modelContext` or `navigator.modelContext`. The page registers `search_site`, `read_page`, and `navigate` on load. After deploy, `POST https://isitagentready.com/api/scan` with `{"url":"https://lucabertelli.consulting"}` must report `checks.discovery.webMcp.status` of `pass`.
 11. **Assistant check**: ask ChatGPT (with search), Perplexity and Google AI mode `who is Luca Bertelli consultant` and `consulente cyber resilience act italia`; note whether the site is cited and which page. Repeat monthly; this is the only direct signal of AI reachability.
 
 ## Search Console (recommended)

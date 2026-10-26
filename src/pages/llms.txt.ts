@@ -183,6 +183,9 @@ export async function GET() {
 		`- Web Bot Auth directory: ${url("/.well-known/http-message-signatures-directory")}. Ed25519 public key. Outbound agent requests carry Signature-Agent and Signature-Input.`,
 	);
 	lines.push(
+		`- WebMCP: HTML pages register search_site, read_page, and navigate through document.modelContext.registerTool on load, or navigator.modelContext.registerTool when that is the browser entry point. search_site reads ${url("/llms.txt")}. read_page returns the open page. navigate opens a path on this origin. An AbortSignal unregisters the tools when the page is discarded.`,
+	);
+	lines.push(
 		`- Homepage Link header (RFC 8288): rel="api-catalog" ${url("/.well-known/api-catalog")}, rel="service-desc" ${url("/api/openapi.yaml")}, rel="service-doc" ${url("/api/docs.md")}, rel="describedby" ${url("/llms.txt")}. Sent on /, /en/, and /it/.`,
 	);
 	lines.push(

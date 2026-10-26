@@ -37,6 +37,10 @@ Read https://lucabertelli.consulting/auth.md. Access is anonymous. No account an
 
 Requests sent as this origin's agent include `Signature-Agent` and `Signature-Input`. The public key is https://lucabertelli.consulting/.well-known/http-message-signatures-directory.
 
+## WebMCP
+
+HTML pages register `search_site`, `read_page`, and `navigate` on load through `document.modelContext.registerTool`, or `navigator.modelContext.registerTool` when that is the browser entry point. `search_site` searches https://lucabertelli.consulting/llms.txt. `read_page` returns the open page. `navigate` opens a path or absolute URL on this origin. An AbortSignal unregisters the tools when the page is discarded.
+
 ## Contact
 
 Write to info@lucabertelli.consulting. Do not send secrets.

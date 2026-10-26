@@ -36,6 +36,10 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 
 `GET /.well-known/http-message-signatures-directory` is the key directory. The body is a JWKS with one Ed25519 public key, served as `application/http-message-signatures-directory+json`. Outbound agent requests from this origin carry `Signature-Agent` and `Signature-Input`.
 
+## WebMCP
+
+HTML pages call `document.modelContext.registerTool()` on load, and `navigator.modelContext.registerTool()` when that is the browser entry point. The tools are `search_site` (search `/llms.txt`), `read_page` (the open page), and `navigate` (a same-origin path). An `AbortSignal` unregisters them when the page is discarded. This site has no HTML forms, so it does not declare `toolname` tools.
+
 ## Agent Skills
 
 `GET /.well-known/agent-skills/index.json` is the [Agent Skills Discovery](https://github.com/cloudflare/agent-skills-discovery-rfc) index, schema `https://schemas.agentskills.io/discovery/0.2.0/schema.json`. It lists `consulting-practice` (`type` `skill-md`). The artifact is [SKILL.md](https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md). `digest` is the SHA-256 of that file.

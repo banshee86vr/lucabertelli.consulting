@@ -73,6 +73,8 @@ The Agent Card is A2A 1.0. [https://lucabertelli.consulting/a2a/v1](https://luca
 
 The MCP server card names a Streamable HTTP endpoint. [https://lucabertelli.consulting/mcp](https://lucabertelli.consulting/mcp) accepts `POST` JSON-RPC. The tool `read_practice` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
 
+HTML pages register WebMCP tools on load: `search_site` reads the public index, `read_page` returns the open page, and `navigate` opens a path on this origin. The call is `document.modelContext.registerTool`, or `navigator.modelContext.registerTool` when that is the browser entry point. An AbortSignal unregisters the tools when the page is discarded.
+
 The Agent Skills index lists `consulting-practice`. The artifact is [https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md](https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md). Its digest is the SHA-256 of that file.
 
 Requests this origin sends as an agent are signed with HTTP message signatures. The public Ed25519 key is [https://lucabertelli.consulting/.well-known/http-message-signatures-directory](https://lucabertelli.consulting/.well-known/http-message-signatures-directory). A verifier fetches that directory and checks the `Signature-Agent` and `Signature-Input` headers. The directory media type is `application/http-message-signatures-directory+json`.
