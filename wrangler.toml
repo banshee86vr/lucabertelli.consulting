@@ -11,10 +11,23 @@ binding = "SESSION"
 id = "1b5008e8ee4249bf87131391a7045703"
 
 # HTML routes run the Worker first so Accept: text/markdown can be negotiated.
-# Static files outside /en and /it stay on the asset path.
+# Auth.md discovery runs first too, so GET and POST share one response and a
+# POST cannot be swallowed by the static asset.
+# Other static files stay on the asset path.
 [assets]
 binding = "ASSETS"
-run_worker_first = ["/", "/en", "/en/*", "/it", "/it/*"]
+run_worker_first = [
+  "/",
+  "/en",
+  "/en/*",
+  "/it",
+  "/it/*",
+  "/auth.md",
+  "/.well-known/oauth-protected-resource",
+  "/.well-known/oauth-authorization-server",
+  "/agent/auth",
+  "/agent/auth/*",
+]
 
 [env.preview]
 name = "lucabertelli-consulting-preview"

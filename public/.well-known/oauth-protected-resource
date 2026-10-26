@@ -1,0 +1,34 @@
+{
+  "resource": "https://lucabertelli.consulting",
+  "resource_name": "Luca Bertelli Consulting",
+  "resource_logo_uri": "https://lucabertelli.consulting/logo.png",
+  "authorization_servers": [
+    "https://lucabertelli.consulting"
+  ],
+  "scopes_supported": [
+    "read"
+  ],
+  "bearer_methods_supported": [
+    "header"
+  ],
+  "resource_documentation": "https://lucabertelli.consulting/auth.md",
+  "resource_policy_uri": "https://lucabertelli.consulting/en/privacy",
+  "agent_auth": {
+    "skill": "https://lucabertelli.consulting/auth.md",
+    "register_uri": "https://lucabertelli.consulting/agent/auth/register",
+    "identity_endpoint": "https://lucabertelli.consulting/agent/auth/register",
+    "claim_uri": "https://lucabertelli.consulting/agent/auth/claim",
+    "claim_endpoint": "https://lucabertelli.consulting/agent/auth/claim",
+    "revocation_uri": "https://lucabertelli.consulting/agent/auth/revoke",
+    "identity_types_supported": [
+      "anonymous"
+    ],
+    "anonymous": {
+      "credential_types_supported": [
+        "none"
+      ],
+      "claim_uri": "https://lucabertelli.consulting/agent/auth/claim"
+    },
+    "credentials_note": "No credential is issued. Fetch public documents without an Authorization header. The read scope names that public access."
+  }
+}

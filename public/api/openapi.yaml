@@ -1,11 +1,12 @@
 openapi: 3.0.3
 info:
   title: lucabertelli.consulting discovery
-  version: "1.0.0"
+  version: "1.1.0"
   description: |
-    This site does not expose a write API. The resources below are public,
-    unauthenticated, and safe to fetch. The canonical description of how to
-    call them is this document.
+    This site does not expose a write API and does not issue credentials.
+    The resources below are public, unauthenticated, and safe to fetch.
+    Agent registration is anonymous: /auth.md and the two OAuth discovery
+    documents describe it, and POST to the registration URLs changes nothing.
 servers:
   - url: https://lucabertelli.consulting
 paths:
@@ -117,3 +118,132 @@ paths:
                   status:
                     type: string
                     enum: [ok]
+  /auth.md:
+    get:
+      operationId: getAuthMd
+      summary: Agent registration instructions
+      description: |
+        Public Markdown. The H1 contains auth.md. Anonymous clients need
+        no credential. The document links the OAuth discovery metadata.
+      responses:
+        "200":
+          description: Markdown document.
+          content:
+            text/markdown:
+              schema:
+                type: string
+  /.well-known/oauth-protected-resource:
+    get:
+      operationId: getProtectedResourceMetadata
+      summary: OAuth protected resource metadata
+      description: |
+        RFC 9728 document. authorization_servers is this origin. The scope
+        read names public access anonymous clients already have.
+        bearer_methods_supported lists header. This origin does not mint
+        bearer tokens.
+      responses:
+        "200":
+          description: Protected resource metadata.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - resource
+                  - authorization_servers
+                  - scopes_supported
+                  - bearer_methods_supported
+  /.well-known/oauth-authorization-server:
+    get:
+      operationId: getAuthorizationServerMetadata
+      summary: OAuth authorization server metadata
+      description: |
+        RFC 8414 document. issuer is https://lucabertelli.consulting, the
+        same value as authorization_servers in the protected resource
+        metadata. agent_auth describes anonymous access. grant_types_supported
+        is empty: there is no token endpoint.
+      responses:
+        "200":
+          description: Authorization server metadata.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [issuer, agent_auth]
+  /agent/auth/register:
+    get:
+      operationId: getAgentRegistration
+      summary: Anonymous registration description
+      description: |
+        JSON description of anonymous access. No account is created and
+        no credential is issued.
+      responses:
+        "200":
+          description: Registration description.
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: postAgentRegistration
+      summary: Anonymous registration description
+      description: |
+        Same document as GET. The body is ignored. No account is created,
+        no email is sent, and no credential is issued.
+      responses:
+        "200":
+          description: Registration description.
+          content:
+            application/json:
+              schema:
+                type: object
+  /agent/auth/claim:
+    get:
+      operationId: getAgentClaim
+      summary: Claim description
+      description: There is no account to claim.
+      responses:
+        "200":
+          description: Claim description.
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: postAgentClaim
+      summary: Claim description
+      description: |
+        Same document as GET. Does not start a confirmation ceremony and
+        does not send email.
+      responses:
+        "200":
+          description: Claim description.
+          content:
+            application/json:
+              schema:
+                type: object
+  /agent/auth/revoke:
+    get:
+      operationId: getAgentRevocation
+      summary: Revocation description
+      description: This origin stores no agent credential to revoke.
+      responses:
+        "200":
+          description: Revocation description.
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: postAgentRevocation
+      summary: Revocation description
+      description: |
+        Same document as GET. Nothing is deleted by this call. Email the
+        practice to ask for deletion of correspondence.
+      responses:
+        "200":
+          description: Revocation description.
+          content:
+            application/json:
+              schema:
+                type: object

@@ -11,6 +11,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "predev": "node --experimental-strip-types scripts/check-auth-discovery.ts && node --experimental-strip-types scripts/render-auth-md.ts",
+    "prebuild": "node --experimental-strip-types scripts/check-auth-discovery.ts && node --experimental-strip-types scripts/render-auth-md.ts",
     "build": "astro check && astro build",
     "verify:seo": "node scripts/verify-seo.mjs",
     "submit:indexnow": "node scripts/indexnow.mjs",

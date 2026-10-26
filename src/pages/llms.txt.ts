@@ -163,6 +163,13 @@ export async function GET() {
 	lines.push(`- Security contact (RFC 9116): ${url("/.well-known/security.txt")}`);
 	lines.push(`- API catalog (RFC 9727): ${url("/.well-known/api-catalog")}`);
 	lines.push(`- API description: ${url("/api/openapi.yaml")}`);
+	lines.push(`- Agent registration (auth.md): ${url("/auth.md")}`);
+	lines.push(
+		`- OAuth protected resource: ${url("/.well-known/oauth-protected-resource")}`,
+	);
+	lines.push(
+		`- OAuth authorization server: ${url("/.well-known/oauth-authorization-server")}`,
+	);
 	lines.push(
 		`- Homepage Link header (RFC 8288): rel="api-catalog" ${url("/.well-known/api-catalog")}, rel="service-desc" ${url("/api/openapi.yaml")}, rel="service-doc" ${url("/api/docs.md")}, rel="describedby" ${url("/llms.txt")}. Sent on /, /en/, and /it/.`,
 	);

@@ -10,6 +10,7 @@
  * Optional: pass a different build directory as the first argument.
  */
 
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -33,6 +34,12 @@ const NON_HTML_ROUTES = new Set([
   "/api/openapi.yaml",
   "/api/docs.md",
   "/api/status.json",
+  "/auth.md",
+  "/.well-known/oauth-protected-resource",
+  "/.well-known/oauth-authorization-server",
+  "/agent/auth/register",
+  "/agent/auth/claim",
+  "/agent/auth/revoke",
 ]);
 
 /** Prefixes served as static assets rather than routes. */
@@ -244,6 +251,20 @@ if (!fs.existsSync(catalogPath)) {
           }
         }
       }
+      if (Array.isArray(entry.describedby)) {
+        for (const link of entry.describedby) {
+          let pathname = "";
+          try {
+            pathname = new URL(link.href).pathname;
+          } catch {
+            fail(`.well-known/api-catalog describedby href is not a URL`);
+            continue;
+          }
+          if (!fs.existsSync(path.join(ROOT, pathname.replace(/^\//, "")))) {
+            fail(`.well-known/api-catalog describedby points at ${pathname}, which is not in the build`);
+          }
+        }
+      }
     }
   }
 }
@@ -322,6 +343,16 @@ if (!fs.existsSync(securityTxt)) {
   else if (expiresAt - Date.now() < 30 * 24 * 3600 * 1000) {
     fail(`security.txt expires within 30 days (${expires}); bump the date`);
   }
+}
+
+const authCheck = spawnSync(
+  process.execPath,
+  ["--experimental-strip-types", "scripts/check-auth-discovery.ts", ROOT],
+  { encoding: "utf8" },
+);
+if (authCheck.status !== 0) {
+  const detail = (authCheck.stderr || authCheck.stdout || "auth.md discovery check failed").trim();
+  fail(detail);
 }
 
 console.log(`Checked ${files.length} pages in ${ROOT}.`);

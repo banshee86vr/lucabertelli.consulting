@@ -19,6 +19,12 @@
           "href": "https://lucabertelli.consulting/api/status.json",
           "type": "application/json"
         }
+      ],
+      "describedby": [
+        {
+          "href": "https://lucabertelli.consulting/auth.md",
+          "type": "text/markdown"
+        }
       ]
     }
   ]

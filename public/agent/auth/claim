@@ -1,0 +1,15 @@
+{
+  "claim_supported": false,
+  "identity_type": "anonymous",
+  "credential_types_supported": [
+    "none"
+  ],
+  "credential_issued": false,
+  "account_created": false,
+  "skill": "https://lucabertelli.consulting/auth.md",
+  "resource": "https://lucabertelli.consulting",
+  "register_uri": "https://lucabertelli.consulting/agent/auth/register",
+  "claim_uri": "https://lucabertelli.consulting/agent/auth/claim",
+  "revocation_uri": "https://lucabertelli.consulting/agent/auth/revoke",
+  "message": "There is no account to claim. Public documents are already available without a credential."
+}
