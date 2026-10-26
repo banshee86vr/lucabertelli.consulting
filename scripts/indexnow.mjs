@@ -11,7 +11,24 @@
  *
  * The key must match the file served at https://<host>/<key>.txt (kept in
  * `public/`). It is a public ownership token, not a secret.
+ *
+ * When WEB_BOT_AUTH_PRIVATE_JWK is set (or present in `.dev.vars`), the POST
+ * is signed with Signature-Agent and Signature-Input.
  */
+
+import { existsSync, readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { parse } from "dotenv";
+import { hasWebBotAuthSecret, publishedPrivateJwk, signAgentRequest } from "../src/discovery/web-bot-auth.ts";
+
+function webBotEnv() {
+  const env = { ...process.env };
+  const devVars = fileURLToPath(new URL("../.dev.vars", import.meta.url));
+  if (!env.WEB_BOT_AUTH_PRIVATE_JWK && existsSync(devVars)) {
+    Object.assign(env, parse(readFileSync(devVars, "utf8")));
+  }
+  return env;
+}
 
 const SITE = process.env.INDEXNOW_SITE ?? "https://lucabertelli.consulting";
 const KEY = process.env.INDEXNOW_KEY ?? "4601f867d99a0cb5aeda2cdbaf7f9321";
@@ -67,11 +84,21 @@ async function main() {
     return;
   }
 
-  const res = await fetch(ENDPOINT, {
+  let request = new Request(ENDPOINT, {
     method: "POST",
     headers: { "Content-Type": "application/json; charset=utf-8" },
     body: JSON.stringify(payload),
   });
+  const webBot = webBotEnv();
+  if (hasWebBotAuthSecret(webBot)) {
+    const privateJwk = await publishedPrivateJwk(webBot);
+    if (!privateJwk) {
+      throw new Error("WEB_BOT_AUTH_PRIVATE_JWK does not match the published Ed25519 key");
+    }
+    request = await signAgentRequest(request, privateJwk);
+    console.log("IndexNow request signed with Web Bot Auth");
+  }
+  const res = await fetch(request);
 
   // 200 = accepted, 202 = accepted and key validation pending.
   if (res.status === 200 || res.status === 202) {

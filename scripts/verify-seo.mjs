@@ -41,6 +41,7 @@ const NON_HTML_ROUTES = new Set([
   "/.well-known/agent-skills/index.json",
   "/.well-known/agent-skills/consulting-practice/SKILL.md",
   "/.well-known/mcp/server-card.json",
+  "/.well-known/http-message-signatures-directory",
   "/mcp",
   "/a2a/v1",
   "/agent/auth/register",

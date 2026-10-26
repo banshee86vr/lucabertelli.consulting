@@ -1,6 +1,7 @@
 import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, agentCardText } from "./agent-card.ts";
 import { AGENT_SKILLS_INDEX_URL, SKILL_NAME, SKILL_URL } from "./agent-skills.ts";
 import { MCP_CARD_PATH, MCP_CARD_URL, MCP_URL, mcpCardText } from "./mcp-server.ts";
+import { DIRECTORY_URL } from "./web-bot-auth.ts";
 
 /**
  * Auth.md discovery for a public, read-only site.
@@ -186,6 +187,8 @@ The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMess
 The MCP server card names a Streamable HTTP endpoint. ${link(MCP_URL)} accepts \`POST\` JSON-RPC. The tool \`read_practice\` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
 
 The Agent Skills index lists \`${SKILL_NAME}\`. The artifact is ${link(SKILL_URL)}. Its digest is the SHA-256 of that file.
+
+Requests this origin sends as an agent are signed with HTTP message signatures. The public Ed25519 key is ${link(DIRECTORY_URL)}. A verifier fetches that directory and checks the \`Signature-Agent\` and \`Signature-Input\` headers. The directory media type is \`application/http-message-signatures-directory+json\`.
 
 An HTML page also answers \`Accept: text/markdown\` with that page's main content.
 `;
@@ -457,6 +460,7 @@ export function assertDiscovery(): void {
 		A2A_URL,
 		MCP_CARD_URL,
 		MCP_URL,
+		DIRECTORY_URL,
 	]) {
 		if (!markdown.includes(`](${url})`)) {
 			errors.push(`auth.md is missing an absolute markdown link to ${url}`);

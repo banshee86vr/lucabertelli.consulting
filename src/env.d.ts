@@ -15,6 +15,8 @@ declare namespace NodeJS {
 type KVNamespace = import("@cloudflare/workers-types").KVNamespace;
 type ENV = {
   lb_consulting: KVNamespace;
+  /** Ed25519 private JWK, raw JSON or base64url of that JSON. Never commit it. */
+  WEB_BOT_AUTH_PRIVATE_JWK?: string;
 };
 
 // use a default runtime configuration (advanced mode).

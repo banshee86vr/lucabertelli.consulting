@@ -25,6 +25,7 @@ Use this after deploy to verify the implementation and track reachability over t
 | A2A Agent Card | `/.well-known/agent-card.json` | A2A 1.0 JSON. `supportedInterfaces` is JSON-RPC 1.0 at `/a2a/v1`. Skills match the nine English service pages. Not an HTML route, so it is not one of the 76 sitemap URLs |
 | Agent Skills | `/.well-known/agent-skills/index.json` | Discovery RFC v0.2.0. One skill, `consulting-practice`, type `skill-md`, at `/.well-known/agent-skills/consulting-practice/SKILL.md`. `digest` is the SHA-256 of that file. Not an HTML route, so it is not one of the 76 sitemap URLs |
 | MCP Server Card | `/.well-known/mcp/server-card.json` | SEP-1649 JSON. `serverInfo.name` and `serverInfo.version`. Streamable HTTP at `/mcp`. `capabilities.tools` is true. `resources` and `prompts` are false. Not an HTML route, so it is not one of the 76 sitemap URLs |
+| Web Bot Auth | `/.well-known/http-message-signatures-directory` | Ed25519 JWKS, media type `application/http-message-signatures-directory+json`. Not an HTML route, so it is not one of the 76 sitemap URLs |
 
 Current inventory: **76 indexable HTML pages**. Re-confirm with
 `pnpm run verify:seo` after a fresh build whenever content or routes change.
@@ -63,6 +64,7 @@ Both audiences enter through the same door, so the work is shared:
 - `/.well-known/agent-card.json` is the A2A 1.0 Agent Card. `supportedInterfaces` lists JSON-RPC 1.0 at `/a2a/v1`. `SendMessage` returns a public message and does not create a task.
 - `/.well-known/agent-skills/index.json` is the Agent Skills discovery index. It lists `consulting-practice`. The artifact is `/.well-known/agent-skills/consulting-practice/SKILL.md`, and `digest` is the SHA-256 of that file.
 - `/.well-known/mcp/server-card.json` is the MCP server card. `POST /mcp` is Streamable HTTP. `read_practice` returns the public index. Resources, prompts, and sessions are off.
+- `/.well-known/http-message-signatures-directory` is the Web Bot Auth key directory. Outbound agent requests carry `Signature-Agent` and `Signature-Input` when the signing key is configured.
 - `lastmod` in the sitemap is derived from content dates (frontmatter
   `date`/`updated`, otherwise the last commit touching the source), not from
   the build time, so engines can trust it when deciding what to recrawl.

@@ -52,6 +52,9 @@ export async function GET() {
 	lines.push(
 		`Agent access: public and anonymous. No credential is required. See ${url("/auth.md")}`,
 	);
+	lines.push(
+		`Web Bot Auth: ${url("/.well-known/http-message-signatures-directory")} publishes the Ed25519 public key. Outbound agent requests carry Signature-Agent and Signature-Input.`,
+	);
 	lines.push(`Generated: ${isoDate(new Date())}`);
 
 	section(lines, "## Services");

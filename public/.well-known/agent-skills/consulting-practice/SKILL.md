@@ -33,6 +33,10 @@ Read https://lucabertelli.consulting/auth.md. Access is anonymous. No account an
 
 `GET` https://lucabertelli.consulting/.well-known/mcp/server-card.json is the MCP server card. `POST` https://lucabertelli.consulting/mcp with `Content-Type: application/json` and `Accept: application/json, text/event-stream` is Streamable HTTP. The tool `read_practice` returns the public index. Resources, prompts, and sessions are off.
 
+## Web Bot Auth
+
+Requests sent as this origin's agent include `Signature-Agent` and `Signature-Input`. The public key is https://lucabertelli.consulting/.well-known/http-message-signatures-directory.
+
 ## Contact
 
 Write to info@lucabertelli.consulting. Do not send secrets.

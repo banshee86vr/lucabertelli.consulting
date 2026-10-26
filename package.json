@@ -15,7 +15,7 @@
     "prebuild": "node --experimental-strip-types scripts/check-auth-discovery.ts && node --experimental-strip-types scripts/render-auth-md.ts",
     "build": "astro check && astro build",
     "verify:seo": "node scripts/verify-seo.mjs",
-    "submit:indexnow": "node scripts/indexnow.mjs",
+    "submit:indexnow": "node --experimental-strip-types scripts/indexnow.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -28,10 +28,12 @@
     "astro": "^7.3.8",
     "astro-seo": "^1.2.0",
     "dotenv": "^18.0.0",
+    "http-message-sig": "^0.3.0",
     "linkedom": "^0.18.14",
     "turndown": "^7.2.4",
     "turndown-plugin-gfm": "^1.0.2",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "web-bot-auth": "^0.2.0"
   },
   "devDependencies": {
     "semantic-release": "^25.0.9",

@@ -104,9 +104,11 @@ pnpm preview   # preview the production build locally
 
 The site runs on Cloudflare Workers. [wrangler.toml](wrangler.toml) defines the Worker name, the KV namespaces (`lb_consulting` for runtime secrets, `SESSION` for sessions), and a `preview` environment. Releases are versioned automatically by semantic-release on pushes to `main`.
 
+Web Bot Auth signing uses the Worker secret `WEB_BOT_AUTH_PRIVATE_JWK` (the Ed25519 private JWK as JSON, or base64url of that JSON). Local development reads it from `.dev.vars`, which is gitignored. The public key is served without that secret. Signatures are added when the secret matches the published key.
+
 ## SEO & discoverability
 
-After changes to metadata, sitemaps, or structured data, use the post-deploy checklist and KPIs in [docs/SEO-KPI.md](docs/SEO-KPI.md). The site ships with `sitemap-index.xml` (from `@astrojs/sitemap`), [public/robots.txt](public/robots.txt), [src/pages/llms.txt.ts](src/pages/llms.txt.ts) generating `/llms.txt` for agent-oriented discovery, [`/auth.md`](src/discovery/agent-auth.ts) for anonymous agent access, an A2A Agent Card at `/.well-known/agent-card.json`, an Agent Skills index at `/.well-known/agent-skills/index.json`, an MCP Server Card at `/.well-known/mcp/server-card.json` with Streamable HTTP at `/mcp`, and per-route metadata in [src/layouts/Common.astro](src/layouts/Common.astro). Optional: set `PUBLIC_SITE_URL` if the canonical origin differs from `https://lucabertelli.consulting`.
+After changes to metadata, sitemaps, or structured data, use the post-deploy checklist and KPIs in [docs/SEO-KPI.md](docs/SEO-KPI.md). The site ships with `sitemap-index.xml` (from `@astrojs/sitemap`), [public/robots.txt](public/robots.txt), [src/pages/llms.txt.ts](src/pages/llms.txt.ts) generating `/llms.txt` for agent-oriented discovery, [`/auth.md`](src/discovery/agent-auth.ts) for anonymous agent access, an A2A Agent Card at `/.well-known/agent-card.json`, an Agent Skills index at `/.well-known/agent-skills/index.json`, an MCP Server Card at `/.well-known/mcp/server-card.json` with Streamable HTTP at `/mcp`, a Web Bot Auth directory at `/.well-known/http-message-signatures-directory`, and per-route metadata in [src/layouts/Common.astro](src/layouts/Common.astro). Optional: set `PUBLIC_SITE_URL` if the canonical origin differs from `https://lucabertelli.consulting`.
 
 ## Contributions
 

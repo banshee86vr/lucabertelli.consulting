@@ -180,6 +180,9 @@ export async function GET() {
 		`- MCP Server Card: ${url("/.well-known/mcp/server-card.json")}. Streamable HTTP at ${url("/mcp")} (tool read_practice returns the public index; resources and prompts are off; no session).`,
 	);
 	lines.push(
+		`- Web Bot Auth directory: ${url("/.well-known/http-message-signatures-directory")}. Ed25519 public key. Outbound agent requests carry Signature-Agent and Signature-Input.`,
+	);
+	lines.push(
 		`- Homepage Link header (RFC 8288): rel="api-catalog" ${url("/.well-known/api-catalog")}, rel="service-desc" ${url("/api/openapi.yaml")}, rel="service-doc" ${url("/api/docs.md")}, rel="describedby" ${url("/llms.txt")}. Sent on /, /en/, and /it/.`,
 	);
 	lines.push(

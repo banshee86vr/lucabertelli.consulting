@@ -1,17 +1,14 @@
 openapi: 3.0.3
 info:
   title: lucabertelli.consulting discovery
-  version: "1.4.0"
+  version: "1.5.0"
   description: |
-    This site does not expose a write API and does not issue credentials.
-    The resources below are public, unauthenticated, and safe to fetch.
-    Agent registration is anonymous: /auth.md and the two OAuth discovery
-    documents describe it, and POST to the registration URLs changes nothing.
-    The A2A Agent Card is at /.well-known/agent-card.json. POST /a2a/v1
-    accepts JSON-RPC SendMessage and returns a public message. It does not
-    create a task or store the request.
+    This site does not expose a write API and does not issue credentials. The resources below are public, unauthenticated, and safe to fetch.
+    Agent registration is anonymous: /auth.md and the two OAuth discovery documents describe it, and POST to the registration URLs changes nothing.
+    The A2A Agent Card is at /.well-known/agent-card.json. POST /a2a/v1 accepts JSON-RPC SendMessage and returns a public message. It does not create a task or store the request.
     The Agent Skills index is at /.well-known/agent-skills/index.json.
     The MCP server card is at /.well-known/mcp/server-card.json. POST /mcp is Streamable HTTP. The tool read_practice returns the public index. Resources, prompts, and sessions are off.
+    The Web Bot Auth directory is at /.well-known/http-message-signatures-directory.
 servers:
   - url: https://lucabertelli.consulting
 paths:
@@ -227,6 +224,23 @@ paths:
                   capabilities:
                     type: object
                     required: [tools, resources, prompts]
+  /.well-known/http-message-signatures-directory:
+    get:
+      operationId: getWebBotAuthDirectory
+      summary: Web Bot Auth key directory
+      description: JSON Web Key Set for the Ed25519 key this origin uses to sign outbound agent requests. Verifiers check Signature-Agent and Signature-Input against this directory.
+      responses:
+        "200":
+          description: HTTP message signatures directory.
+          content:
+            application/http-message-signatures-directory+json:
+              schema:
+                type: object
+                required: [keys]
+                properties:
+                  keys:
+                    type: array
+                    minItems: 1
   /mcp:
     post:
       operationId: postMcp

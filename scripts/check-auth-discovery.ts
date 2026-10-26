@@ -4,6 +4,7 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { parse } from "dotenv";
 import { SERVICE_KEYS } from "../src/constants/services.ts";
 import { agentCard, agentCardResponse, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
 import { authMarkdown, assertDiscoveryResponses, discoveryResponse, fileBodies, ORIGIN } from "../src/discovery/agent-auth.ts";
@@ -16,6 +17,17 @@ import {
 	SKILL_PATH,
 } from "../src/discovery/agent-skills.ts";
 import { assertMcpResponses, MCP_CARD_PATH, MCP_CARD_URL, MCP_PATH, MCP_URL, mcpResponse } from "../src/discovery/mcp-server.ts";
+import {
+	assertWebBotAuthResponses,
+	DIRECTORY_FILE,
+	DIRECTORY_TYPE,
+	DIRECTORY_URL,
+	directoryResponse,
+	directoryText,
+	PUBLIC_JWK,
+} from "../src/discovery/web-bot-auth.ts";
+import { verifierFromJWK } from "web-bot-auth/crypto";
+import { component, verifySignature } from "http-message-sig";
 
 const CONTENT_TYPES: Record<string, string> = {
 	"/auth.md": "text/markdown; charset=utf-8",
@@ -25,10 +37,68 @@ const CONTENT_TYPES: Record<string, string> = {
 	"/.well-known/agent-skills/index.json": "application/json; charset=utf-8",
 	"/.well-known/agent-skills/consulting-practice/SKILL.md": "text/markdown; charset=utf-8",
 	"/.well-known/mcp/server-card.json": "application/json; charset=utf-8",
+	"/.well-known/http-message-signatures-directory": "application/http-message-signatures-directory+json",
 	"/agent/auth/register": "application/json; charset=utf-8",
 	"/agent/auth/claim": "application/json; charset=utf-8",
 	"/agent/auth/revoke": "application/json; charset=utf-8",
 };
+
+/** When `.dev.vars` is present, the published key must sign the directory response. */
+async function assertPublishedKeySigns(): Promise<void> {
+	const devVars = join(import.meta.dirname, "..", ".dev.vars");
+	if (!existsSync(devVars)) return;
+	const env = parse(readFileSync(devVars, "utf8"));
+	const now = new Date();
+	const request = new Request(DIRECTORY_URL);
+	const response = await directoryResponse(request, env, now);
+	if (!response || response.status !== 200) throw new Error("signed directory was not served");
+	if (response.headers.get("content-type") !== DIRECTORY_TYPE) {
+		throw new Error("signed directory content-type drifted");
+	}
+	const signature = response.headers.get("signature");
+	const signatureInput = response.headers.get("signature-input");
+	const contentDigest = response.headers.get("content-digest");
+	if (!signature || !signatureInput || !contentDigest) {
+		throw new Error("directory response was not signed with .dev.vars");
+	}
+	if (!signatureInput.includes('"content-digest"')) {
+		throw new Error("directory signature does not cover content-digest");
+	}
+	const body = await response.text();
+	if (body !== directoryText()) throw new Error("signed directory body drifted");
+	const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(body));
+	const expectedDigest = `sha-256=:${Buffer.from(digest).toString("base64")}:`;
+	if (contentDigest !== expectedDigest) throw new Error("Content-Digest does not match the directory body");
+	const verified = await verifySignature(
+		{
+			kind: "response",
+			status: 200,
+			fields: [
+				{ name: "content-digest", value: contentDigest },
+				{ name: "signature", value: signature },
+				{ name: "signature-input", value: signatureInput },
+			],
+			request,
+		},
+		{
+			label: "sig1",
+			policy: {
+				algorithms: ["ed25519"],
+				requiredComponents: [component("@authority", { req: true }), "content-digest"],
+				requiredParameters: ["created", "expires", "keyid", "alg", "tag"],
+				now: Math.floor(now.getTime() / 1000),
+				maxAge: 3600,
+			},
+			resolveVerifier: async () => verifierFromJWK(PUBLIC_JWK),
+		},
+	);
+	if (verified.parameters.keyid !== PUBLIC_JWK.kid) {
+		throw new Error("directory signature keyid is not the published thumbprint");
+	}
+	if (verified.parameters.tag !== "http-message-signatures-directory") {
+		throw new Error("directory signature tag drifted");
+	}
+}
 
 function headerBlock(headers: string, route: string): string {
 	const marker = `${route}\n`;
@@ -61,6 +131,16 @@ async function main(): Promise<void> {
 	} catch (error) {
 		errors.push(error instanceof Error ? error.message : String(error));
 	}
+	try {
+		await assertWebBotAuthResponses();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
+	try {
+		await assertPublishedKeySigns();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
 
 	if (!authMarkdown().includes(AGENT_SKILLS_INDEX_URL)) {
 		errors.push("auth.md must link the agent skills index");
@@ -78,6 +158,8 @@ async function main(): Promise<void> {
 	if (mcpCardRequest !== null) errors.push("discovery handler must not claim the MCP server card");
 	const mcpRequest = await discoveryResponse(new Request(MCP_URL, { method: "POST" }));
 	if (mcpRequest !== null) errors.push("discovery handler must not claim the MCP endpoint");
+	const directoryClaim = await discoveryResponse(new Request(DIRECTORY_URL));
+	if (directoryClaim !== null) errors.push("discovery handler must not claim the Web Bot Auth directory");
 	for (const url of [MCP_CARD_URL, MCP_URL]) {
 		if ((await agentCardResponse(new Request(url))) !== null) errors.push(`agent card handler claimed ${url}`);
 		if ((await agentSkillsResponse(new Request(url))) !== null) errors.push(`agent skills handler claimed ${url}`);
@@ -105,9 +187,22 @@ async function main(): Promise<void> {
 		}
 	}
 
+	const publicRoot = join(import.meta.dirname, "..", "public");
+	const sourceBodies = { ...fileBodies(), ...(await agentSkillFiles()), [DIRECTORY_FILE]: directoryText() };
+	for (const [rel, body] of Object.entries(sourceBodies)) {
+		const full = join(publicRoot, rel);
+		if (!existsSync(full)) {
+			errors.push(`${rel} is missing from public/; run render-auth-md.ts`);
+			continue;
+		}
+		if (readFileSync(full, "utf8") !== body) {
+			errors.push(`${rel} in public/ does not match the discovery source; run render-auth-md.ts`);
+		}
+	}
+
 	const root = process.argv[2];
 	if (root) {
-		const bodies = { ...fileBodies(), ...(await agentSkillFiles()) };
+		const bodies = { ...fileBodies(), ...(await agentSkillFiles()), [DIRECTORY_FILE]: directoryText() };
 		for (const [rel, body] of Object.entries(bodies)) {
 			const full = join(root, rel);
 			if (!existsSync(full)) {
@@ -124,6 +219,8 @@ async function main(): Promise<void> {
 			errors.push("llms.txt does not list the agent skills index");
 		} else if (!readFileSync(llmsPath, "utf8").includes(MCP_CARD_URL)) {
 			errors.push("llms.txt does not list the MCP server card");
+		} else if (!readFileSync(llmsPath, "utf8").includes(DIRECTORY_URL)) {
+			errors.push("llms.txt does not list the Web Bot Auth directory");
 		}
 
 		const headersPath = join(root, "_headers");

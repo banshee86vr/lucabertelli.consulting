@@ -75,4 +75,6 @@ The MCP server card names a Streamable HTTP endpoint. [https://lucabertelli.cons
 
 The Agent Skills index lists `consulting-practice`. The artifact is [https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md](https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md). Its digest is the SHA-256 of that file.
 
+Requests this origin sends as an agent are signed with HTTP message signatures. The public Ed25519 key is [https://lucabertelli.consulting/.well-known/http-message-signatures-directory](https://lucabertelli.consulting/.well-known/http-message-signatures-directory). A verifier fetches that directory and checks the `Signature-Agent` and `Signature-Input` headers. The directory media type is `application/http-message-signatures-directory+json`.
+
 An HTML page also answers `Accept: text/markdown` with that page's main content.
