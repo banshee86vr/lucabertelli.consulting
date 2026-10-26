@@ -68,10 +68,13 @@ The API catalog and the OpenAPI description list the read API:
 - [Agent Skills index](https://lucabertelli.consulting/.well-known/agent-skills/index.json)
 - [MCP Server Card](https://lucabertelli.consulting/.well-known/mcp/server-card.json)
 - [MCP endpoint](https://lucabertelli.consulting/mcp)
+- [ACP discovery](https://lucabertelli.consulting/.well-known/acp.json)
 
 The Agent Card is A2A 1.0. [https://lucabertelli.consulting/a2a/v1](https://lucabertelli.consulting/a2a/v1) accepts `POST` JSON-RPC `SendMessage` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential.
 
 The MCP server card names a Streamable HTTP endpoint. [https://lucabertelli.consulting/mcp](https://lucabertelli.consulting/mcp) accepts `POST` JSON-RPC. The tool `read_practice` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
+
+ACP discovery is [https://lucabertelli.consulting/.well-known/acp.json](https://lucabertelli.consulting/.well-known/acp.json). `protocol.name` is `acp`. `protocol.version` is `2026-04-17`. The REST base is [https://lucabertelli.consulting/acp](https://lucabertelli.consulting/acp). `transports` lists `rest`. `capabilities.services` lists `checkout`. [https://lucabertelli.consulting/acp/checkout_sessions](https://lucabertelli.consulting/acp/checkout_sessions) answers `POST` with an error. This seller does not create a checkout session, does not take payment, and does not store the request.
 
 HTML pages register WebMCP tools on load: `search_site` reads the public index, `read_page` returns the open page, and `navigate` opens a path on this origin. The call is `document.modelContext.registerTool`, or `navigator.modelContext.registerTool` when that is the browser entry point. An AbortSignal unregisters the tools when the page is discarded.
 

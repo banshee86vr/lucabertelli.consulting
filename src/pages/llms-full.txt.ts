@@ -1,5 +1,6 @@
 import { getBlogPosts, getInsights, getServices } from "../content/config";
 import { SITE_URL } from "../constants/site";
+import { API_VERSION } from "../discovery/acp";
 import { insightPath } from "../constants/insights";
 import { servicePath } from "../constants/services";
 import type { UiLang } from "../utils/seo";
@@ -54,6 +55,9 @@ export async function GET() {
 	);
 	lines.push(
 		`Web Bot Auth: ${url("/.well-known/http-message-signatures-directory")} publishes the Ed25519 public key. Outbound agent requests carry Signature-Agent and Signature-Input.`,
+	);
+	lines.push(
+		`ACP discovery: ${url("/.well-known/acp.json")} (protocol acp ${API_VERSION}, REST ${url("/acp")}, service checkout). POST ${url("/acp/checkout_sessions")} does not create a session, does not take payment, and does not store the body.`,
 	);
 	lines.push(`Generated: ${isoDate(new Date())}`);
 

@@ -1,13 +1,14 @@
 openapi: 3.0.3
 info:
   title: lucabertelli.consulting discovery
-  version: "1.5.0"
+  version: "1.6.0"
   description: |
     This site does not expose a write API and does not issue credentials. The resources below are public, unauthenticated, and safe to fetch.
     Agent registration is anonymous: /auth.md and the two OAuth discovery documents describe it, and POST to the registration URLs changes nothing.
     The A2A Agent Card is at /.well-known/agent-card.json. POST /a2a/v1 accepts JSON-RPC SendMessage and returns a public message. It does not create a task or store the request.
     The Agent Skills index is at /.well-known/agent-skills/index.json.
     The MCP server card is at /.well-known/mcp/server-card.json. POST /mcp is Streamable HTTP. The tool read_practice returns the public index. Resources, prompts, and sessions are off.
+    ACP discovery is at /.well-known/acp.json. POST /acp/checkout_sessions does not create a session, does not take payment, and does not store the body.
     The Web Bot Auth directory is at /.well-known/http-message-signatures-directory.
 servers:
   - url: https://lucabertelli.consulting
@@ -224,6 +225,27 @@ paths:
                   capabilities:
                     type: object
                     required: [tools, resources, prompts]
+  /.well-known/acp.json:
+    get:
+      operationId: getAcpDiscovery
+      summary: ACP discovery document
+      description: |
+        Agentic Commerce Protocol discovery. protocol.name is acp.
+        protocol.version is 2026-04-17. api_base_url is
+        https://lucabertelli.consulting/acp. transports lists rest.
+        capabilities.services lists checkout. No authentication.
+      responses:
+        "200":
+          description: Discovery JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - protocol
+                  - api_base_url
+                  - transports
+                  - capabilities
   /.well-known/http-message-signatures-directory:
     get:
       operationId: getWebBotAuthDirectory
@@ -276,6 +298,29 @@ paths:
           description: Unknown method on protocol 2026-07-28.
         "406":
           description: Accept does not list application/json and text/event-stream.
+        "413":
+          description: Request body is larger than 64 KiB.
+        "415":
+          description: Content-Type is not application/json.
+  /acp/checkout_sessions:
+    post:
+      operationId: postAcpCheckoutSession
+      summary: Refuse an ACP checkout session
+      description: |
+        Accepts an ACP create-checkout POST and does not create a session.
+        There is no catalog and no payment handler. The body is discarded
+        and is not stored. API-Version 2026-04-17 and Idempotency-Key are
+        required. Orders, carts, and delegate_payment are not offered.
+      responses:
+        "400":
+          description: No session is created, or a required header is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [type, code, message]
+        "403":
+          description: Origin is local, private, or not https.
         "413":
           description: Request body is larger than 64 KiB.
         "415":

@@ -1,0 +1,19 @@
+{
+  "protocol": {
+    "name": "acp",
+    "version": "2026-04-17",
+    "supported_versions": [
+      "2026-04-17"
+    ],
+    "documentation_url": "https://lucabertelli.consulting/api/docs.md"
+  },
+  "api_base_url": "https://lucabertelli.consulting/acp",
+  "transports": [
+    "rest"
+  ],
+  "capabilities": {
+    "services": [
+      "checkout"
+    ]
+  }
+}

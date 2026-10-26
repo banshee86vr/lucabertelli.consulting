@@ -24,6 +24,9 @@ id = "1b5008e8ee4249bf87131391a7045703"
 # /mcp on the Worker, including POST. The card must not answer the transport.
 # The Web Bot Auth directory is also a static JWKS. run_worker_first keeps
 # the path on the Worker so a matching private key can sign the response.
+# The ACP discovery document is a static file. run_worker_first keeps that
+# path and /acp on the Worker, including POST. The document must not answer
+# checkout, and checkout must not store the body.
 # Other static files stay on the asset path.
 [assets]
 binding = "ASSETS"
@@ -42,7 +45,10 @@ run_worker_first = [
   "/.well-known/agent-skills/consulting-practice/SKILL.md",
   "/.well-known/mcp/server-card.json",
   "/.well-known/http-message-signatures-directory",
+  "/.well-known/acp.json",
   "/mcp",
+  "/acp",
+  "/acp/*",
   "/a2a/v1",
   "/agent/auth",
   "/agent/auth/*",

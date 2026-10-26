@@ -1,3 +1,4 @@
+import { ACP_BASE_URL, ACP_DOCUMENT_URL, ACP_PATH, API_VERSION, CHECKOUT_URL, acpDocumentText } from "./acp.ts";
 import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, agentCardText } from "./agent-card.ts";
 import { AGENT_SKILLS_INDEX_URL, SKILL_NAME, SKILL_URL } from "./agent-skills.ts";
 import { MCP_CARD_PATH, MCP_CARD_URL, MCP_URL, mcpCardText } from "./mcp-server.ts";
@@ -182,10 +183,13 @@ The API catalog and the OpenAPI description list the read API:
 - [Agent Skills index](${AGENT_SKILLS_INDEX_URL})
 - [MCP Server Card](${MCP_CARD_URL})
 - [MCP endpoint](${MCP_URL})
+- [ACP discovery](${ACP_DOCUMENT_URL})
 
 The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMessage\` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential.
 
 The MCP server card names a Streamable HTTP endpoint. ${link(MCP_URL)} accepts \`POST\` JSON-RPC. The tool \`read_practice\` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
+
+ACP discovery is ${link(ACP_DOCUMENT_URL)}. \`protocol.name\` is \`acp\`. \`protocol.version\` is \`${API_VERSION}\`. The REST base is ${link(ACP_BASE_URL)}. \`transports\` lists \`rest\`. \`capabilities.services\` lists \`checkout\`. ${link(CHECKOUT_URL)} answers \`POST\` with an error. This seller does not create a checkout session, does not take payment, and does not store the request.
 
 HTML pages register WebMCP tools on load: \`search_site\` reads the public index, \`read_page\` returns the open page, and \`navigate\` opens a path on this origin. The call is \`document.modelContext.registerTool\`, or \`navigator.modelContext.registerTool\` when that is the browser entry point. An AbortSignal unregisters the tools when the page is discarded.
 
@@ -276,7 +280,7 @@ export function jsonText(value: unknown): string {
 	return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-/** Paths relative to `public/` and `dist/client/`. `/agent/auth`, `/a2a/v1`, `/mcp`, and path-suffixed protected resource metadata are worker-only. */
+/** Paths relative to `public/` and `dist/client/`. `/agent/auth`, `/a2a/v1`, `/mcp`, `/acp`, and path-suffixed protected resource metadata are worker-only. */
 export function fileBodies(): Record<string, string> {
 	return {
 		"auth.md": authMarkdown(),
@@ -284,6 +288,7 @@ export function fileBodies(): Record<string, string> {
 		".well-known/oauth-authorization-server": jsonText(authorizationServerMetadata()),
 		[AGENT_CARD_PATH.replace(/^\//, "")]: agentCardText(),
 		[MCP_CARD_PATH.replace(/^\//, "")]: mcpCardText(),
+		[ACP_PATH.replace(/^\//, "")]: acpDocumentText(),
 		"agent/auth/register": jsonText(registrationDocument()),
 		"agent/auth/claim": jsonText(claimDocument()),
 		"agent/auth/revoke": jsonText(revocationDocument()),

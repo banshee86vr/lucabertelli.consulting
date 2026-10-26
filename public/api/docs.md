@@ -32,6 +32,12 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 
 `POST /mcp` with `Content-Type: application/json` and `Accept: application/json, text/event-stream` is Streamable HTTP. `server/discover` answers protocol `2026-07-28`. `initialize` answers `2025-11-25`, `2025-06-18`, and `2025-03-26`. The tool `read_practice` returns the public index. The endpoint does not offer resources, prompts, or a session, and it does not store the request or issue a credential.
 
+## ACP discovery
+
+`GET /.well-known/acp.json` is the [Agentic Commerce Protocol](https://agenticcommerce.dev) discovery document. `protocol.name` is `acp`. `protocol.version` is `2026-04-17`. `api_base_url` is `https://lucabertelli.consulting/acp`. `transports` lists `rest`. `capabilities.services` lists `checkout`.
+
+`POST /acp/checkout_sessions` with `Content-Type: application/json`, `API-Version: 2026-04-17`, and `Idempotency-Key` returns an error. This seller does not create a checkout session, does not take payment, and does not store the request. Orders, carts, and delegate payment are not offered.
+
 ## Web Bot Auth
 
 `GET /.well-known/http-message-signatures-directory` is the key directory. The body is a JWKS with one Ed25519 public key, served as `application/http-message-signatures-directory+json`. Outbound agent requests from this origin carry `Signature-Agent` and `Signature-Input`.

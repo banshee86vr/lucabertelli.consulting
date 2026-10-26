@@ -6,6 +6,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "dotenv";
 import { SERVICE_KEYS } from "../src/constants/services.ts";
+import { ACP_DOCUMENT_URL, ACP_PATH, assertAcpResponses } from "../src/discovery/acp.ts";
 import { agentCard, agentCardResponse, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
 import { authMarkdown, assertDiscoveryResponses, discoveryResponse, fileBodies, ORIGIN } from "../src/discovery/agent-auth.ts";
 import {
@@ -14,6 +15,7 @@ import {
 	agentSkillFiles,
 	agentSkillsResponse,
 	assertAgentSkillsResponses,
+	skillMarkdown,
 	SKILL_PATH,
 } from "../src/discovery/agent-skills.ts";
 import { assertMcpResponses, MCP_CARD_PATH, MCP_CARD_URL, MCP_PATH, MCP_URL, mcpResponse } from "../src/discovery/mcp-server.ts";
@@ -38,6 +40,7 @@ const CONTENT_TYPES: Record<string, string> = {
 	"/.well-known/agent-skills/index.json": "application/json; charset=utf-8",
 	"/.well-known/agent-skills/consulting-practice/SKILL.md": "text/markdown; charset=utf-8",
 	"/.well-known/mcp/server-card.json": "application/json; charset=utf-8",
+	"/.well-known/acp.json": "application/json; charset=utf-8",
 	"/.well-known/http-message-signatures-directory": "application/http-message-signatures-directory+json",
 	"/agent/auth/register": "application/json; charset=utf-8",
 	"/agent/auth/claim": "application/json; charset=utf-8",
@@ -186,6 +189,11 @@ async function main(): Promise<void> {
 		errors.push(error instanceof Error ? error.message : String(error));
 	}
 	try {
+		await assertAcpResponses();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
+	try {
 		await assertWebBotAuthResponses();
 	} catch (error) {
 		errors.push(error instanceof Error ? error.message : String(error));
@@ -204,6 +212,12 @@ async function main(): Promise<void> {
 	if (!authMarkdown().includes(AGENT_SKILLS_INDEX_URL)) {
 		errors.push("auth.md must link the agent skills index");
 	}
+	if (!authMarkdown().includes(ACP_DOCUMENT_URL)) {
+		errors.push("auth.md must link the ACP discovery document");
+	}
+	if (!skillMarkdown().includes(ACP_DOCUMENT_URL)) {
+		errors.push("consulting-practice skill must name the ACP discovery document");
+	}
 	if (!authMarkdown().includes("_index._agents.")) {
 		errors.push("auth.md must name the DNS-AID index");
 	}
@@ -215,6 +229,9 @@ async function main(): Promise<void> {
 	}
 	if (!llmsSource.includes("_index._agents.")) {
 		errors.push("llms.txt source does not name the DNS-AID index");
+	}
+	if (!llmsSource.includes(ACP_PATH)) {
+		errors.push("llms.txt source does not list the ACP discovery document");
 	}
 
 	const cardRequest = await discoveryResponse(new Request(`${ORIGIN}/.well-known/agent-card.json`));
@@ -231,6 +248,8 @@ async function main(): Promise<void> {
 	if (mcpRequest !== null) errors.push("discovery handler must not claim the MCP endpoint");
 	const directoryClaim = await discoveryResponse(new Request(DIRECTORY_URL));
 	if (directoryClaim !== null) errors.push("discovery handler must not claim the Web Bot Auth directory");
+	const acpClaim = await discoveryResponse(new Request(ACP_DOCUMENT_URL));
+	if (acpClaim !== null) errors.push("discovery handler must not claim the ACP document");
 	for (const url of [MCP_CARD_URL, MCP_URL]) {
 		if ((await agentCardResponse(new Request(url))) !== null) errors.push(`agent card handler claimed ${url}`);
 		if ((await agentSkillsResponse(new Request(url))) !== null) errors.push(`agent skills handler claimed ${url}`);
@@ -296,6 +315,8 @@ async function main(): Promise<void> {
 			errors.push("llms.txt does not list the WebMCP tools");
 		} else if (!readFileSync(llmsPath, "utf8").includes("_index._agents.")) {
 			errors.push("llms.txt does not name the DNS-AID index");
+		} else if (!readFileSync(llmsPath, "utf8").includes(ACP_DOCUMENT_URL)) {
+			errors.push("llms.txt does not list the ACP discovery document");
 		}
 
 		for (const lang of ["en", "it"]) {

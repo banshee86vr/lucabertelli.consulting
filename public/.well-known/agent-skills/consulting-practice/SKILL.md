@@ -1,6 +1,6 @@
 ---
 name: consulting-practice
-description: "Read the public site of Luca Bertelli Consulting, a freelance Cloud Native and Platform Engineering practice in Italy and the EU. Use when an agent needs the services, articles, or machine-readable index. Access is anonymous and the site does not create tasks or issue credentials."
+description: "Read the public site of Luca Bertelli Consulting, a freelance Cloud Native and Platform Engineering practice in Italy and the EU. Use when an agent needs the services, articles, or machine-readable index. Access is anonymous and the site does not create tasks, checkout sessions, or issue credentials."
 ---
 
 # Consulting practice
@@ -32,6 +32,10 @@ Read https://lucabertelli.consulting/auth.md. Access is anonymous. No account an
 ## MCP
 
 `GET` https://lucabertelli.consulting/.well-known/mcp/server-card.json is the MCP server card. `POST` https://lucabertelli.consulting/mcp with `Content-Type: application/json` and `Accept: application/json, text/event-stream` is Streamable HTTP. The tool `read_practice` returns the public index. Resources, prompts, and sessions are off.
+
+## ACP
+
+`GET` https://lucabertelli.consulting/.well-known/acp.json is the Agentic Commerce Protocol discovery document. `protocol.name` is `acp`. The REST base is https://lucabertelli.consulting/acp. `POST` https://lucabertelli.consulting/acp/checkout_sessions does not create a session, does not take payment, and does not store the body. Do not send payment credentials.
 
 ## Web Bot Auth
 

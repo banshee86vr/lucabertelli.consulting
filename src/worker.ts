@@ -1,4 +1,5 @@
 import { handle } from "@astrojs/cloudflare/handler";
+import { acpResponse } from "./discovery/acp";
 import { agentCardResponse } from "./discovery/agent-card";
 import { discoveryResponse, withProtectedResourceChallenge } from "./discovery/agent-auth";
 import { agentSkillsResponse } from "./discovery/agent-skills";
@@ -14,8 +15,8 @@ interface WorkerContext {
 export default {
 	async fetch(request: Request, env: unknown, ctx: WorkerContext) {
 		// Answer the Web Bot Auth directory, Agent Skills, the Agent Card, MCP,
-		// and Auth.md discovery before Astro. POST must not fall through to a
-		// static file or a 404, and the body is never stored.
+		// ACP, and Auth.md discovery before Astro. POST must not fall through
+		// to a static file or a 404, and the body is never stored.
 		const directory = await directoryResponse(request, env);
 		if (directory) return withProtectedResourceChallenge(request, directory);
 		const skills = await agentSkillsResponse(request);
@@ -24,6 +25,8 @@ export default {
 		if (agentCard) return withProtectedResourceChallenge(request, agentCard);
 		const mcp = await mcpResponse(request);
 		if (mcp) return withProtectedResourceChallenge(request, mcp);
+		const acp = await acpResponse(request);
+		if (acp) return withProtectedResourceChallenge(request, acp);
 		const discovered = await discoveryResponse(request);
 		if (discovered) return withProtectedResourceChallenge(request, discovered);
 		const response = await negotiateMarkdown(request, await handle(request, env, ctx));

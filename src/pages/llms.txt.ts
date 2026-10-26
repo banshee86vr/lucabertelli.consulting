@@ -1,5 +1,6 @@
 import { getBlogPosts, getInsights, getServices } from "../content/config";
 import { getCollection } from "astro:content";
+import { API_VERSION } from "../discovery/acp";
 import { SITE_URL } from "../constants/site";
 import { insightPath, insightsHubPath } from "../constants/insights";
 import { servicePath, servicesHubPath } from "../constants/services";
@@ -178,6 +179,9 @@ export async function GET() {
 	);
 	lines.push(
 		`- MCP Server Card: ${url("/.well-known/mcp/server-card.json")}. Streamable HTTP at ${url("/mcp")} (tool read_practice returns the public index; resources and prompts are off; no session).`,
+	);
+	lines.push(
+		`- ACP discovery: ${url("/.well-known/acp.json")}. protocol.name is acp, protocol.version is ${API_VERSION}, api_base_url is ${url("/acp")}, transports is rest, capabilities.services is checkout. POST ${url("/acp/checkout_sessions")} does not create a session, does not take payment, and does not store the body.`,
 	);
 	lines.push(
 		`- Web Bot Auth directory: ${url("/.well-known/http-message-signatures-directory")}. Ed25519 public key. Outbound agent requests carry Signature-Agent and Signature-Input.`,

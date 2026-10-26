@@ -64,6 +64,10 @@
   Content-Type: application/json; charset=utf-8
   Cache-Control: public, max-age=3600
 
+/.well-known/acp.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=3600
+
 # Web Bot Auth key directory. The Worker signs this response when the
 # private key is configured. The asset path serves the same public JWKS.
 /.well-known/http-message-signatures-directory

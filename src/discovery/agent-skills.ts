@@ -7,6 +7,7 @@
  * bytes. The Worker and the static files serve the same body.
  */
 
+import { ACP_BASE_URL, ACP_DOCUMENT_URL, CHECKOUT_URL } from "./acp.ts";
 import { ORIGIN } from "./agent-card.ts";
 import { MCP_CARD_URL, MCP_URL } from "./mcp-server.ts";
 import { DIRECTORY_URL } from "./web-bot-auth.ts";
@@ -19,7 +20,7 @@ export const AGENT_SKILLS_INDEX_URL = `${ORIGIN}${AGENT_SKILLS_INDEX_PATH}`;
 export const SKILL_URL = `${ORIGIN}${SKILL_PATH}`;
 
 export const SKILL_DESCRIPTION =
-	"Read the public site of Luca Bertelli Consulting, a freelance Cloud Native and Platform Engineering practice in Italy and the EU. Use when an agent needs the services, articles, or machine-readable index. Access is anonymous and the site does not create tasks or issue credentials.";
+	"Read the public site of Luca Bertelli Consulting, a freelance Cloud Native and Platform Engineering practice in Italy and the EU. Use when an agent needs the services, articles, or machine-readable index. Access is anonymous and the site does not create tasks, checkout sessions, or issue credentials.";
 
 const JSON_TYPE = "application/json; charset=utf-8";
 const MARKDOWN = "text/markdown; charset=utf-8";
@@ -82,6 +83,10 @@ Read ${ORIGIN}/auth.md. Access is anonymous. No account and no credential are re
 ## MCP
 
 \`GET\` ${MCP_CARD_URL} is the MCP server card. \`POST\` ${MCP_URL} with \`Content-Type: application/json\` and \`Accept: application/json, text/event-stream\` is Streamable HTTP. The tool \`read_practice\` returns the public index. Resources, prompts, and sessions are off.
+
+## ACP
+
+\`GET\` ${ACP_DOCUMENT_URL} is the Agentic Commerce Protocol discovery document. \`protocol.name\` is \`acp\`. The REST base is ${ACP_BASE_URL}. \`POST\` ${CHECKOUT_URL} does not create a session, does not take payment, and does not store the body. Do not send payment credentials.
 
 ## Web Bot Auth
 
