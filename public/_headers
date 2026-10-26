@@ -1,3 +1,21 @@
+# RFC 8288 homepage discovery. HTML is normally produced by the Worker
+# (see src/worker.ts); these rules cover the same paths when an asset is
+# served directly. Keep the value identical to DISCOVERY_LINK.
+/
+  Link: </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </api/openapi.yaml>; rel="service-desc"; type="application/yaml", </api/docs.md>; rel="service-doc"; type="text/markdown", </llms.txt>; rel="describedby"; type="text/plain"
+
+/en
+  Link: </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </api/openapi.yaml>; rel="service-desc"; type="application/yaml", </api/docs.md>; rel="service-doc"; type="text/markdown", </llms.txt>; rel="describedby"; type="text/plain"
+
+/en/
+  Link: </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </api/openapi.yaml>; rel="service-desc"; type="application/yaml", </api/docs.md>; rel="service-doc"; type="text/markdown", </llms.txt>; rel="describedby"; type="text/plain"
+
+/it
+  Link: </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </api/openapi.yaml>; rel="service-desc"; type="application/yaml", </api/docs.md>; rel="service-doc"; type="text/markdown", </llms.txt>; rel="describedby"; type="text/plain"
+
+/it/
+  Link: </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </api/openapi.yaml>; rel="service-desc"; type="application/yaml", </api/docs.md>; rel="service-doc"; type="text/markdown", </llms.txt>; rel="describedby"; type="text/plain"
+
 # RFC 9727. The profile parameter marks this linkset as an API catalog.
 /.well-known/api-catalog
   Content-Type: application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"

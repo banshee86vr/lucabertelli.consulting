@@ -6,7 +6,7 @@ Use this after deploy to verify the implementation and track reachability over t
 
 | Surface | URLs | Notes |
 |---------|------|-------|
-| Home | `/en/`, `/it/` | H1 carries the primary query terms |
+| Home | `/en/`, `/it/` | H1 carries the primary query terms. The response `Link` header (RFC 8288) points at the API catalog, OpenAPI description, API docs, and `llms.txt` |
 | Services hub | `/en/services/`, `/it/servizi/` | Lists all nine services |
 | Service pages | 9 per language | Localized slugs with commercial intent in the path, e.g. `/it/servizi/consulenza-cyber-resilience-act/` vs `/en/services/cyber-resilience-act-compliance/` |
 | Blog index | `/en/blog/`, `/it/blog/` | Engineering notes only |
@@ -52,7 +52,10 @@ Both audiences enter through the same door, so the work is shared:
   still receive HTML.
 - `/.well-known/api-catalog` is an RFC 9727 linkset for the public read-only
   documents (`/llms.txt`, the feeds, the sitemap, and `security.txt`).
-  `describedby` points at `/auth.md`.
+  The catalog's `describedby` link points at `/auth.md`.
+- The homepage response (`/`, `/en/`, `/it/`) sends an RFC 8288 `Link` header
+  with `api-catalog`, `service-desc`, `service-doc`, and `describedby`.
+  That header's `describedby` target is `/llms.txt`.
 - `/auth.md` tells agents that access is anonymous. OAuth protected resource
   metadata and authorization server metadata are published for that discovery
   chain. No credential is issued.
@@ -73,8 +76,9 @@ Both audiences enter through the same door, so the work is shared:
 8. **Feeds**: `/it/rss.xml` and `/en/rss.xml` must validate and list the articles of that language only.
 9. **llms.txt**: `/llms.txt` must list the current services (with their FAQ questions), guides, articles and certifications, and `/llms-full.txt` must carry their full text. Both are generated at build, so a stale entry means a content collection was not updated.
 10. **security.txt**: `/.well-known/security.txt` must return 200 as `text/plain` with a future `Expires`. Check it at [securitytxt.org](https://securitytxt.org/) after deploy. For a site selling CRA vulnerability-handling work, its absence would be noticed.
-10b. **API catalog**: `/.well-known/api-catalog` must return 200 as `application/linkset+json`. The `service-desc`, `service-doc`, and `status` links must themselves return 200. `describedby` must return `/auth.md`.
-10c. **auth.md**: `/auth.md` must return 200 as `text/markdown` and the H1 must contain `auth.md`. `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server` must return 200 as `application/json`. The authorization server `issuer` is `https://lucabertelli.consulting` and matches `authorization_servers`. `agent_auth` describes anonymous access. `GET` and `POST` `/agent/auth/register` return the same JSON and do not create an account.
+10b. **API catalog**: `/.well-known/api-catalog` must return 200 as `application/linkset+json`. The `service-desc`, `service-doc`, and `status` links must themselves return 200. The catalog's `describedby` link must return `/auth.md`.
+10c. **Homepage Link header**: `curl -sI https://lucabertelli.consulting/en/` (and the `/` redirect, and `/it/`) includes `rel="api-catalog"`, `rel="service-desc"`, `rel="service-doc"`, and `rel="describedby"`. That header's `describedby` target is `/llms.txt`.
+10d. **auth.md**: `/auth.md` must return 200 as `text/markdown` and the H1 must contain `auth.md`. `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server` must return 200 as `application/json`. The authorization server `issuer` is `https://lucabertelli.consulting` and matches `authorization_servers`. `agent_auth` describes anonymous access. `GET` and `POST` `/agent/auth/register` return the same JSON and do not create an account.
 11. **Assistant check**: ask ChatGPT (with search), Perplexity and Google AI mode `who is Luca Bertelli consultant` and `consulente cyber resilience act italia`; note whether the site is cited and which page. Repeat monthly; this is the only direct signal of AI reachability.
 
 ## Search Console (recommended)
