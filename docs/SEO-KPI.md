@@ -22,6 +22,7 @@ Use this after deploy to verify the implementation and track reachability over t
 | Security contact | `/.well-known/security.txt` | RFC 9116; `verify:seo` fails when `Expires` is within 30 days, bump it yearly |
 | API catalog | `/.well-known/api-catalog` | RFC 9727 linkset. Spec at `/api/openapi.yaml`, docs at `/api/docs.md`, status at `/api/status.json`. `describedby` points at `/auth.md` |
 | Agent registration | `/auth.md` | Public read-only. Anonymous access, no credential. Protected resource metadata at `/.well-known/oauth-protected-resource` and, for the English homepage, `/.well-known/oauth-protected-resource/en/`. `authorization_servers` lists `https://lucabertelli.cloudflareaccess.com` and this origin. Authorization server metadata at `/.well-known/oauth-authorization-server` (`issuer` is this origin). `GET` and `POST` `/agent/auth/register`, `/agent/auth/claim`, and `/agent/auth/revoke` describe that and change nothing |
+| A2A Agent Card | `/.well-known/agent-card.json` | A2A 1.0 JSON. `supportedInterfaces` is JSON-RPC 1.0 at `/a2a/v1`. Skills match the nine English service pages. Not an HTML route, so it is not one of the 76 sitemap URLs |
 
 Current inventory: **76 indexable HTML pages**. Re-confirm with
 `pnpm run verify:seo` after a fresh build whenever content or routes change.
@@ -57,6 +58,7 @@ Both audiences enter through the same door, so the work is shared:
   with `api-catalog`, `service-desc`, `service-doc`, and `describedby`.
   That header's `describedby` target is `/llms.txt`.
 - `/auth.md` tells agents that access is anonymous. OAuth protected resource metadata and authorization server metadata are published for that discovery chain. The English homepage resource identifier is `/.well-known/oauth-protected-resource/en/`. `authorization_servers` lists Cloudflare Access and this origin. No credential is issued.
+- `/.well-known/agent-card.json` is the A2A 1.0 Agent Card. `supportedInterfaces` lists JSON-RPC 1.0 at `/a2a/v1`. `SendMessage` returns a public message and does not create a task.
 - `lastmod` in the sitemap is derived from content dates (frontmatter
   `date`/`updated`, otherwise the last commit touching the source), not from
   the build time, so engines can trust it when deciding what to recrawl.
@@ -77,6 +79,7 @@ Both audiences enter through the same door, so the work is shared:
 10b. **API catalog**: `/.well-known/api-catalog` must return 200 as `application/linkset+json`. The `service-desc`, `service-doc`, and `status` links must themselves return 200. The catalog's `describedby` link must return `/auth.md`.
 10c. **Homepage Link header**: `curl -sI https://lucabertelli.consulting/en/` (and the `/` redirect, and `/it/`) includes `rel="api-catalog"`, `rel="service-desc"`, `rel="service-doc"`, and `rel="describedby"`. That header's `describedby` target is `/llms.txt`.
 10d. **auth.md**: `/auth.md` must return 200 as `text/markdown` and the H1 must contain `auth.md`. `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server` must return 200 as `application/json`. `/.well-known/oauth-protected-resource/en/` must return 200 with `resource` `https://lucabertelli.consulting/en/`. `authorization_servers` lists `https://lucabertelli.cloudflareaccess.com` first and this origin second. The authorization server `issuer` is `https://lucabertelli.consulting`. `agent_auth` describes anonymous access. `GET` and `POST` `/agent/auth/register` return the same JSON and do not create an account. A 401 includes `WWW-Authenticate` with `resource_metadata`. Public pages stay 200.
+10e. **A2A Agent Card**: `/.well-known/agent-card.json` must return 200 as `application/json` with `name`, `description`, `version`, `supportedInterfaces` (JSON-RPC 1.0 at `https://lucabertelli.consulting/a2a/v1`), `capabilities`, and one skill per service (`id`, `name`, `description`, `tags`). `POST /a2a/v1` `SendMessage` returns a message and does not create a task. After deploy, `POST https://isitagentready.com/api/scan` with `{"url":"https://lucabertelli.consulting"}` must report `checks.discovery.a2aAgentCard.status` of `pass`.
 11. **Assistant check**: ask ChatGPT (with search), Perplexity and Google AI mode `who is Luca Bertelli consultant` and `consulente cyber resilience act italia`; note whether the site is cited and which page. Repeat monthly; this is the only direct signal of AI reachability.
 
 ## Search Console (recommended)

@@ -106,7 +106,7 @@ The site runs on Cloudflare Workers. [wrangler.toml](wrangler.toml) defines the 
 
 ## SEO & discoverability
 
-After changes to metadata, sitemaps, or structured data, use the post-deploy checklist and KPIs in [docs/SEO-KPI.md](docs/SEO-KPI.md). The site ships with `sitemap-index.xml` (from `@astrojs/sitemap`), [public/robots.txt](public/robots.txt), [src/pages/llms.txt.ts](src/pages/llms.txt.ts) generating `/llms.txt` for agent-oriented discovery, [`/auth.md`](src/discovery/agent-auth.ts) for anonymous agent access, and per-route metadata in [src/layouts/Common.astro](src/layouts/Common.astro). Optional: set `PUBLIC_SITE_URL` if the canonical origin differs from `https://lucabertelli.consulting`.
+After changes to metadata, sitemaps, or structured data, use the post-deploy checklist and KPIs in [docs/SEO-KPI.md](docs/SEO-KPI.md). The site ships with `sitemap-index.xml` (from `@astrojs/sitemap`), [public/robots.txt](public/robots.txt), [src/pages/llms.txt.ts](src/pages/llms.txt.ts) generating `/llms.txt` for agent-oriented discovery, [`/auth.md`](src/discovery/agent-auth.ts) for anonymous agent access, an A2A Agent Card at `/.well-known/agent-card.json`, and per-route metadata in [src/layouts/Common.astro](src/layouts/Common.astro). Optional: set `PUBLIC_SITE_URL` if the canonical origin differs from `https://lucabertelli.consulting`.
 
 ## Contributions
 

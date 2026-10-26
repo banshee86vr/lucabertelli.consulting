@@ -1,12 +1,15 @@
 openapi: 3.0.3
 info:
   title: lucabertelli.consulting discovery
-  version: "1.1.0"
+  version: "1.2.0"
   description: |
     This site does not expose a write API and does not issue credentials.
     The resources below are public, unauthenticated, and safe to fetch.
     Agent registration is anonymous: /auth.md and the two OAuth discovery
     documents describe it, and POST to the registration URLs changes nothing.
+    The A2A Agent Card is at /.well-known/agent-card.json. POST /a2a/v1
+    accepts JSON-RPC SendMessage and returns a public message. It does not
+    create a task or store the request.
 servers:
   - url: https://lucabertelli.consulting
 paths:
@@ -176,6 +179,64 @@ paths:
               schema:
                 type: object
                 required: [issuer, agent_auth]
+  /.well-known/agent-card.json:
+    get:
+      operationId: getA2aAgentCard
+      summary: A2A Agent Card
+      description: |
+        A2A 1.0 Agent Card. name, description, version, supportedInterfaces,
+        capabilities, and skills. The preferred interface is JSON-RPC 1.0
+        at /a2a/v1. Streaming, push notifications, and the extended card
+        are false.
+      responses:
+        "200":
+          description: Agent Card JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - name
+                  - description
+                  - version
+                  - supportedInterfaces
+                  - capabilities
+                  - skills
+  /a2a/v1:
+    post:
+      operationId: postA2aSendMessage
+      summary: A2A JSON-RPC
+      description: |
+        JSON-RPC 2.0. SendMessage returns a direct message that points at
+        the public documents. The body is not stored. GetTask, streaming,
+        push notification configuration, and GetExtendedAgentCard return
+        an A2A error. There is no task store.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [jsonrpc, id, method]
+              properties:
+                jsonrpc:
+                  type: string
+                  enum: ["2.0"]
+                id:
+                  type: string
+                method:
+                  type: string
+      responses:
+        "200":
+          description: JSON-RPC result or error.
+          content:
+            application/json:
+              schema:
+                type: object
+        "413":
+          description: Request body is larger than 64 KiB.
+        "415":
+          description: Content-Type is not application/json.
   /agent/auth/register:
     get:
       operationId: getAgentRegistration

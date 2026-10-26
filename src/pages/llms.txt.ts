@@ -171,6 +171,9 @@ export async function GET() {
 		`- OAuth authorization server: ${url("/.well-known/oauth-authorization-server")}`,
 	);
 	lines.push(
+		`- A2A Agent Card: ${url("/.well-known/agent-card.json")}. JSON-RPC 1.0 at ${url("/a2a/v1")} (SendMessage returns a public message and does not create a task).`,
+	);
+	lines.push(
 		`- Homepage Link header (RFC 8288): rel="api-catalog" ${url("/.well-known/api-catalog")}, rel="service-desc" ${url("/api/openapi.yaml")}, rel="service-doc" ${url("/api/docs.md")}, rel="describedby" ${url("/llms.txt")}. Sent on /, /en/, and /it/.`,
 	);
 	lines.push(

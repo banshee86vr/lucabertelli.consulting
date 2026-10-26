@@ -4,12 +4,15 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { assertDiscoveryResponses, fileBodies } from "../src/discovery/agent-auth.ts";
+import { SERVICE_KEYS } from "../src/constants/services.ts";
+import { agentCard, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
+import { assertDiscoveryResponses, discoveryResponse, fileBodies, ORIGIN } from "../src/discovery/agent-auth.ts";
 
 const CONTENT_TYPES: Record<string, string> = {
 	"/auth.md": "text/markdown; charset=utf-8",
 	"/.well-known/oauth-protected-resource": "application/json; charset=utf-8",
 	"/.well-known/oauth-authorization-server": "application/json; charset=utf-8",
+	"/.well-known/agent-card.json": "application/json; charset=utf-8",
 	"/agent/auth/register": "application/json; charset=utf-8",
 	"/agent/auth/claim": "application/json; charset=utf-8",
 	"/agent/auth/revoke": "application/json; charset=utf-8",
@@ -30,6 +33,34 @@ async function main(): Promise<void> {
 		await assertDiscoveryResponses();
 	} catch (error) {
 		errors.push(error instanceof Error ? error.message : String(error));
+	}
+	try {
+		await assertAgentCardResponses();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
+
+	const cardRequest = await discoveryResponse(new Request(`${ORIGIN}/.well-known/agent-card.json`));
+	if (cardRequest !== null) errors.push("discovery handler must not claim the agent card");
+	const rpcRequest = await discoveryResponse(new Request(`${ORIGIN}/a2a/v1`));
+	if (rpcRequest !== null) errors.push("discovery handler must not claim the A2A endpoint");
+
+	const servicesRoot = join(import.meta.dirname, "..", "src", "content", "services");
+	const skills = agentCard().skills;
+	if (skills.length !== SERVICE_KEYS.length) errors.push("agent card skill count drifted from SERVICE_KEYS");
+	for (const skill of skills) {
+		const page = join(servicesRoot, skill.id, "en.md");
+		if (!existsSync(page)) {
+			errors.push(`agent card skill ${skill.id} has no English service page`);
+			continue;
+		}
+		const markdown = readFileSync(page, "utf8");
+		const title = markdown.match(/^title:\s*"([^"]*)"\s*$/m)?.[1];
+		const description = markdown.match(/^description:\s*"([^"]*)"\s*$/m)?.[1];
+		if (skill.name !== title) errors.push(`agent card skill ${skill.id} name drifted from the English title`);
+		if (skill.description !== description) {
+			errors.push(`agent card skill ${skill.id} description drifted from the English service page`);
+		}
 	}
 
 	const root = process.argv[2];

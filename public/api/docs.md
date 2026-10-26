@@ -20,6 +20,12 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 - `GET /sitemap-index.xml` lists the indexable HTML URLs.
 - `GET /.well-known/security.txt` is the RFC 9116 vulnerability contact.
 
+## A2A Agent Card
+
+`GET /.well-known/agent-card.json` is the [A2A 1.0](https://a2a-protocol.org/latest/specification/) Agent Card. `supportedInterfaces` lists JSON-RPC 1.0 at `https://lucabertelli.consulting/a2a/v1`.
+
+`POST /a2a/v1` with `Content-Type: application/json` accepts a JSON-RPC `SendMessage` request. The response is a direct message that points at the public documents. The endpoint does not create a task, store the request, or issue a credential. Streaming, push notifications, and the extended agent card are off.
+
 ## Agent registration
 
 Access is anonymous. Protected resource metadata lists Cloudflare Access (`https://lucabertelli.cloudflareaccess.com`) and this origin. The English homepage identifier is published at `/.well-known/oauth-protected-resource/en/`. Read these in order:

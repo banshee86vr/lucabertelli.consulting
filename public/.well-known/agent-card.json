@@ -1,0 +1,148 @@
+{
+  "name": "Luca Bertelli Consulting",
+  "description": "Public agent card for Luca Bertelli, a freelance Cloud Native and Platform Engineering consultant in Italy and the European Union. It describes this practice's services and points callers at the public documents. It does not run tasks, store messages, or issue credentials.",
+  "version": "1.0.0",
+  "provider": {
+    "organization": "Luca Bertelli Consulting",
+    "url": "https://lucabertelli.consulting"
+  },
+  "documentationUrl": "https://lucabertelli.consulting/llms.txt",
+  "iconUrl": "https://lucabertelli.consulting/logo.png",
+  "supportedInterfaces": [
+    {
+      "url": "https://lucabertelli.consulting/a2a/v1",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extendedAgentCard": false
+  },
+  "defaultInputModes": [
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "text/plain"
+  ],
+  "skills": [
+    {
+      "id": "devops",
+      "name": "DevOps Consultant",
+      "description": "Freelance DevOps consultant working across Italy and the EU: delivery automation, CI/CD pipelines, Infrastructure as Code and operational practices for Fintech, Insurtech and industrial teams.",
+      "tags": [
+        "devops",
+        "ci-cd",
+        "infrastructure-as-code"
+      ],
+      "examples": [
+        "What does a freelance DevOps engagement cover for a team that wants CI/CD and Infrastructure as Code?"
+      ]
+    },
+    {
+      "id": "cloud",
+      "name": "Cloud Consulting and Migration",
+      "description": "Cloud consulting across Italy and the EU: adoption strategy, migration of applications and infrastructure to AWS, Azure and Google Cloud, governance and cost control.",
+      "tags": [
+        "cloud",
+        "migration",
+        "cost-governance"
+      ],
+      "examples": [
+        "How do you approach a cloud migration to AWS, Azure, or Google Cloud?"
+      ]
+    },
+    {
+      "id": "platform-engineering",
+      "name": "Platform Engineering Consulting",
+      "description": "Platform Engineering consulting across Italy and the EU: Internal Developer Platform design, golden paths, self-service on Kubernetes, and measuring real adoption by product teams.",
+      "tags": [
+        "platform-engineering",
+        "internal-developer-platform",
+        "golden-path"
+      ],
+      "examples": [
+        "What does an Internal Developer Platform engagement include?"
+      ]
+    },
+    {
+      "id": "kubernetes",
+      "name": "Kubernetes Consulting",
+      "description": "Kubernetes consulting from a CKA certified consultant: cluster architecture, multi-tenancy, GitOps with Argo CD, security hardening and day-2 operations.",
+      "tags": [
+        "kubernetes",
+        "gitops",
+        "multi-tenancy"
+      ],
+      "examples": [
+        "How do you design a production Kubernetes cluster with GitOps?"
+      ]
+    },
+    {
+      "id": "secdevops",
+      "name": "SecDevOps and CI/CD Consulting",
+      "description": "SecDevOps and CI/CD consulting across Italy and the EU: toolchain selection, secure pipelines, HashiCorp Vault secrets management, software supply chain security and NIS2 evidence.",
+      "tags": [
+        "secdevops",
+        "ci-cd",
+        "supply-chain"
+      ],
+      "examples": [
+        "How do you secure a CI/CD pipeline and its secrets?"
+      ]
+    },
+    {
+      "id": "cyber-resilience-act",
+      "name": "Cyber Resilience Act Compliance Consulting",
+      "description": "Cyber Resilience Act consulting in Italy and the EU: Annex I gap assessment, vulnerability handling, SBOM, secure updates, documentation, reporting readiness.",
+      "tags": [
+        "cyber-resilience-act",
+        "sbom",
+        "vulnerability-handling"
+      ],
+      "examples": [
+        "What is the engineering work in a Cyber Resilience Act gap assessment?"
+      ]
+    },
+    {
+      "id": "training",
+      "name": "DevOps and Cloud Native Training",
+      "description": "Corporate training on Kubernetes, DevOps, SecDevOps and Terraform: tailored programmes in English and Italian, with hands-on labs based on your own real tooling.",
+      "tags": [
+        "training",
+        "kubernetes",
+        "devops"
+      ],
+      "examples": [
+        "What does a corporate Kubernetes or DevOps training engagement look like?"
+      ]
+    },
+    {
+      "id": "ai-engineering",
+      "name": "AI Agent Governance and Adoption",
+      "description": "Consulting on AI agent governance and adoption across Italy and the EU: usage policy, security hardening, Model Context Protocol integration and inference cost control.",
+      "tags": [
+        "ai-agent-governance",
+        "mcp",
+        "inference-cost"
+      ],
+      "examples": [
+        "How should an enterprise govern AI agents, MCP access, and inference cost?"
+      ]
+    },
+    {
+      "id": "knowledge-graphs",
+      "name": "Temporal Knowledge Graph Consulting",
+      "description": "Knowledge graph and temporal knowledge graph consulting in Italy and the EU: operational facts, time-aware memory for AI agents, and MCP access.",
+      "tags": [
+        "knowledge-graph",
+        "temporal",
+        "mcp"
+      ],
+      "examples": [
+        "When is a temporal knowledge graph the right model for operational facts?"
+      ]
+    }
+  ]
+}

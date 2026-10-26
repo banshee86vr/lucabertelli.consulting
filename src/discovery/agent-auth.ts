@@ -1,3 +1,5 @@
+import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, agentCardText } from "./agent-card.ts";
+
 /**
  * Auth.md discovery for a public, read-only site.
  *
@@ -171,6 +173,10 @@ The API catalog and the OpenAPI description list the read API:
 - [llms.txt](${ORIGIN}/llms.txt)
 - [llms-full.txt](${ORIGIN}/llms-full.txt)
 - [Security contact](${ORIGIN}/.well-known/security.txt)
+- [A2A Agent Card](${AGENT_CARD_URL})
+- [A2A JSON-RPC](${A2A_URL})
+
+The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMessage\` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential.
 
 An HTML page also answers \`Accept: text/markdown\` with that page's main content.
 `;
@@ -253,12 +259,13 @@ export function jsonText(value: unknown): string {
 	return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-/** Paths relative to `public/` and `dist/client/`. `/agent/auth` and path-suffixed protected resource metadata are worker-only. */
+/** Paths relative to `public/` and `dist/client/`. `/agent/auth`, `/a2a/v1`, and path-suffixed protected resource metadata are worker-only. */
 export function fileBodies(): Record<string, string> {
 	return {
 		"auth.md": authMarkdown(),
 		".well-known/oauth-protected-resource": jsonText(protectedResourceMetadata()),
 		".well-known/oauth-authorization-server": jsonText(authorizationServerMetadata()),
+		[AGENT_CARD_PATH.replace(/^\//, "")]: agentCardText(),
 		"agent/auth/register": jsonText(registrationDocument()),
 		"agent/auth/claim": jsonText(claimDocument()),
 		"agent/auth/revoke": jsonText(revocationDocument()),
@@ -428,10 +435,23 @@ export function assertDiscovery(): void {
 	const englishPrmUrl = `${prmUrl}/en/`;
 	const asUrl = `${ORIGIN}${PATHS.authorizationServer}`;
 	const accessMetadataUrl = `${ACCESS_ISSUER}/.well-known/oauth-authorization-server`;
-	for (const url of [prmUrl, englishPrmUrl, asUrl, accessMetadataUrl, registerUri, claimUri, revocationUri]) {
+	for (const url of [
+		prmUrl,
+		englishPrmUrl,
+		asUrl,
+		accessMetadataUrl,
+		registerUri,
+		claimUri,
+		revocationUri,
+		AGENT_CARD_URL,
+		A2A_URL,
+	]) {
 		if (!markdown.includes(`](${url})`)) {
 			errors.push(`auth.md is missing an absolute markdown link to ${url}`);
 		}
+	}
+	if (!AGENT_CARD_URL.startsWith(`${ORIGIN}/`) || !A2A_URL.startsWith(`${ORIGIN}/`)) {
+		errors.push("A2A URLs must use this origin");
 	}
 	if (markdown.includes("`/.well-known/oauth-protected-resource`")) {
 		errors.push("auth.md wraps the PRM path in a code span; scanners miss that");
