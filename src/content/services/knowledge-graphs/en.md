@@ -13,6 +13,9 @@ keywords:
   - "operational knowledge graph"
   - "knowledge graph for AI agents"
   - "AI agent memory"
+  - "AI agent memory architecture"
+  - "knowledge graph vs vector database"
+  - "GraphRAG"
   - "MCP knowledge graph"
   - "CI/CD platform migration"
 relatedTags: ["mcp", "cicd", "observability"]
@@ -35,6 +38,8 @@ faq:
     answer: "A small, typed graph of operational facts extracted from systems you already have: catalogues, inventories, repositories, APIs. Nodes and directed relationships are explicit, the mapping layer is curated, and a rebuild produces the same result. It is not an enterprise ontology, not a graph-database product, and not a project that starts by modelling the whole company."
   - question: "How is this different from a graph database or a data-catalogue knowledge graph?"
     answer: "Those approaches assume you already know what to put in the graph and that the hard part is storage, search or governance at scale. Here the hard part is choosing a schema small enough to stay true, wiring extractors to sources that already exist, and exposing the same facts to people and to agents. The store is an implementation detail; an embeddable database is usually enough."
+  - question: "Knowledge graph or vector database?"
+    answer: "They answer different questions and often live side by side. A vector database finds the passages of text most similar to the question, and it is the right tool for RAG over unstructured documentation; it does not know that one service depends on another, or who owned it in March. A knowledge graph makes entities and relationships explicit, so it answers questions of structure, counting and time with a verifiable result. GraphRAG combines the two: the graph picks out the relevant entities and relationships, and vector search retrieves the text that describes them."
   - question: "When is a knowledge graph worth building?"
     answer: "When the answers you need live in thousands of files, several tools, and a few people's heads, and when guessing is expensive. Typical signals: a platform migration nobody can size, AI agents that sketch the inventory without certainty, or the same question answered differently depending on who you ask."
   - question: "What is a temporal knowledge graph?"
@@ -63,7 +68,7 @@ Then extractors, not people filling forms. Facts come from artefacts the organis
 
 People get an explorer. Agents get the same facts over MCP. One source of truth, two interfaces. Refresh is a pipeline you re-run, not a committee that tends an ontology.
 
-## When the graph needs a clock
+## When the graph needs a clock: memory for AI agents
 
 Some questions are not about what is true but about what was true, and when it stopped being. Which team owned this service when the incident happened. What the platform looked like before the last reorganisation. What an agent already learned about a customer in previous sessions. A snapshot graph, however honest, cannot answer them: every rebuild throws the past away.
 

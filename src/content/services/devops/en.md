@@ -4,7 +4,7 @@ lang: "en"
 title: "DevOps Consultant"
 tagline: "Freelance DevOps consulting for teams that want to ship more often, with fewer incidents and without depending on a single person."
 seoTitle: "Freelance DevOps Consultant in Italy & EU | Luca Bertelli"
-description: "Freelance DevOps consultant working across Italy and the EU: delivery automation, CI/CD pipelines, Infrastructure as Code and operational practices for Fintech, Insurtech and industrial teams."
+description: "Freelance DevOps consultant in Italy and the EU: maturity assessment, CI/CD pipelines and Infrastructure as Code for Fintech, Insurtech and industrial teams."
 order: 1
 keywords:
   - "DevOps consultant"
@@ -15,6 +15,8 @@ keywords:
   - "CI/CD automation"
   - "CI/CD consulting"
   - "Infrastructure as Code"
+  - "DevOps maturity assessment"
+  - "DORA metrics"
 relatedTags: ["cicd", "devsecops", "github-actions", "kubernetes"]
 credentials: ["cka", "terraform_associate", "capa", "gitlab-sa"]
 outcomes:
@@ -29,12 +31,16 @@ deliverables:
   - "Operational runbooks and documented architectural decisions"
   - "Hands-on support for your team throughout adoption"
 faq:
+  - question: "What is DevOps, in practice?"
+    answer: "A way of working in which development and operations share responsibility for getting software into production and keeping it running, instead of handing it over between departments. In practice it means small and frequent releases, automated CI/CD pipelines, infrastructure described as code and reliability measures the whole team shares."
   - question: "What does a DevOps consultant actually do?"
     answer: "A DevOps consultant works on how software travels from the repository to production: CI/CD pipeline automation, infrastructure as code, environment standardisation, observability and operational practice. The goal is not to introduce tools but to cut the time and risk of every release, while leaving the internal team able to maintain what was built."
   - question: "Do you work as a freelancer or through a consultancy?"
     answer: "I work as an independent freelance consultant registered in Italy. That means one technical counterpart who takes part in the implementation rather than only supervising it."
   - question: "How long does a DevOps consulting engagement last?"
     answer: "It depends on scope. A focused assessment takes a handful of days and produces a prioritised list. A full adoption path, with pipeline implementation and team enablement, runs over several months with verifiable milestones. In both cases the scope is agreed before we start."
+  - question: "What does a DevOps maturity assessment measure?"
+    answer: "The real path a change takes from commit to production, using the four DORA metrics (DevOps Research and Assessment, not to be confused with the EU DORA regulation): deployment frequency, lead time for changes, change failure rate and failed deployment recovery time. Alongside the numbers I look at pipelines, infrastructure management, secrets, observability and team skills. The output is not a score but a list of interventions ordered by impact and effort."
   - question: "Do you work remotely or on site?"
     answer: "Mostly remotely, with on-site days available for workshops, design sessions or team training. I work primarily with clients in Italy and the European Union."
   - question: "Which DevOps technologies do you specialise in?"
@@ -55,7 +61,7 @@ None of these are tooling problems. They are process problems, and tools alone d
 
 ## How I work
 
-I always start with an assessment, because installing tooling before understanding how a team works is the fastest way to add complexity nobody asked for. I look at the real path a change takes from commit to production, measure where time is lost and where incidents originate, and turn that into a list of interventions ordered by impact against effort.
+I always start with a DevOps maturity assessment, because installing tooling before understanding how a team works is the fastest way to add complexity nobody asked for. I look at the real path a change takes from commit to production, use the DORA metrics to measure where time is lost and where incidents originate, and turn that into a list of interventions ordered by impact against effort.
 
 From there the work is incremental. Continuous integration comes first, because a pipeline the team does not trust makes everything else pointless. Then infrastructure comes under control with Terraform, so environments are rebuildable and comparable. Finally delivery gets automated, typically with a GitOps approach where the desired state of the system lives in Git and reconciliation is continuous.
 

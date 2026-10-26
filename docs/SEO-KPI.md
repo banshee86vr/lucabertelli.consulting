@@ -112,7 +112,7 @@ Both audiences enter through the same door, so the work is shared:
 10m. **x402**: `GET /api` must return 402 with a `PAYMENT-REQUIRED` header whose base64 JSON has `x402Version` 2, `resource.url` `https://lucabertelli.consulting/api`, and `accepts[0]` scheme `exact`, network `eip155:84532`, amount `1000`, asset `0x036CbD53842c5426634e7929541eC2318f3dCF7e`, and payTo `0x2C2E3d99BeD343A0499c5b68CeedeFaE64DE6510`. The body is not stored. `GET /api/status.json` stays 200. After deploy, `POST https://isitagentready.com/api/scan` with `{"url":"https://lucabertelli.consulting"}` must report `checks.commerce.x402.status` of `pass`.
 10n. **ARD catalog**: `/.well-known/ai-catalog.json` and `/.well-known/ard.json` must return 200 as `application/json` with `Access-Control-Allow-Origin: *`. The body has `specVersion` `1.0`, a `host` object, and an `entries` array. Each entry has a `urn:air:lucabertelli.consulting` identifier, `displayName`, a media type, exactly one of `url` or `data`, and 2 to 5 `representativeQueries`. `robots.txt` includes `Agentmap` for both URLs. After deploy, `POST https://isitagentready.com/api/scan` with `{"url":"https://lucabertelli.consulting"}` must report `checks.discovery.ard.status` of `pass`.
 10o. **Personal Agent Protocol**: `GET /.well-known/poppy.json` must return 200 as `application/json` with `protocol_version` `0.1`, `organization.name` `Luca Bertelli Consulting`, `organization.domain` `lucabertelli.consulting`, and `web` `{}`. The document must not include `auth`. `POST` that URL returns 405 as JSON. After deploy, `POST https://isitagentready.com/api/scan` with `{"url":"https://lucabertelli.consulting"}` must report `checks.discovery.personalAgentProtocol` with the manifest found and `details.issuerValidation` `notRequired`.
-11. **Assistant check**: ask ChatGPT (with search), Perplexity and Google AI mode `who is Luca Bertelli consultant` and `consulente cyber resilience act italia`; note whether the site is cited and which page. Repeat monthly; this is the only direct signal of AI reachability.
+11. **Assistant check**: run the prompt set in [KEYWORD-MAP.md](./KEYWORD-MAP.md#prompt-set-for-ai-assistants) on ChatGPT (with search), Perplexity, Google AI mode, Copilot and Claude; note whether the site is cited and which page. Repeat monthly; this is the only direct signal of AI reachability.
 
 ## Search Console (recommended)
 
@@ -126,7 +126,7 @@ Both audiences enter through the same door, so the work is shared:
 | Metric | Where | Goal |
 |--------|--------|------|
 | Indexed core URLs | URL Inspection / Coverage | All service pages, insights hub/pages and both blog indexes indexed |
-| Position for "consulente devops", "consulenza kubernetes", "consulenza platform engineering", "consulenza cyber resilience act", "governance agenti AI", "consulenza knowledge graph" | Search Console queries | Entering the first pages, then improving |
+| Position for the primary query of each cluster in [KEYWORD-MAP.md](./KEYWORD-MAP.md) | Search Console queries | Entering the first pages, then improving |
 | Bing indexed URLs and Bing impressions | Bing Webmaster Tools | All 76 URLs indexed; impressions on service URLs |
 | Citations by AI assistants for the queries above | Manual monthly check (see step 11) | Site cited on at least the branded and CRA queries |
 | Impressions on service pages | Search Console, filtered by page | Upward trend; they start from zero |

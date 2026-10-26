@@ -5,13 +5,14 @@ title: "Cyber Resilience Act: a che punto siamo e da dove cominciare"
 subtitle: "Le notifiche sono già obbligatorie, le norme armonizzate non ci sono ancora, e dicembre 2027 è più vicino di quanto suggerisca il calendario dei rilasci"
 seoTitle: "Cyber Resilience Act: guida per chi sviluppa software | Luca Bertelli"
 date: "2026-09-28"
+updated: "2026-10-26"
 image: "/insights/cyber-resilience-act/cyber-resilience-act.webp"
 relatedServices: ["cyber-resilience-act", "secdevops", "devops", "kubernetes"]
 ---
 
 ## A che punto siamo, settembre 2026
 
-Il Cyber Resilience Act, Regolamento (UE) 2024/2847, è in vigore dal 10 dicembre 2024, e il primo obbligo con conseguenze concrete è arrivato l'**11 settembre 2026**: le notifiche dell'articolo 14. Da quella data un fabbricante che viene a conoscenza di una vulnerabilità attivamente sfruttata in uno dei suoi prodotti, o di un incidente grave che ne compromette la sicurezza, deve inviare un preallarme entro 24 ore, una notifica entro 72 ore e un rapporto finale, attraverso la **piattaforma unica di segnalazione** che ENISA ha aperto lo stesso giorno. L'obbligo copre ogni prodotto in perimetro già sul mercato, non solo quelli immessi dopo il 2027 (articolo 69(3)). Non copre invece lo sfruttamento di cui si era già a conoscenza prima dell'11 settembre: il cronometro parte dalla nuova consapevolezza.
+Il Cyber Resilience Act, [Regolamento (UE) 2024/2847](https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32024R2847), è in vigore dal 10 dicembre 2024, e il primo obbligo con conseguenze concrete è arrivato l'**11 settembre 2026**: le notifiche dell'articolo 14. Da quella data, un fabbricante che viene a conoscenza di una vulnerabilità attivamente sfruttata in uno dei suoi prodotti, o di un incidente grave che ne compromette la sicurezza, deve inviare un preallarme entro 24 ore, una notifica entro 72 ore e un rapporto finale. Tutto passa dalla **piattaforma unica di segnalazione**, che ENISA ha aperto lo stesso giorno. L'obbligo copre ogni prodotto in perimetro già sul mercato, non solo quelli immessi dopo il 2027 (articolo 69(3)). Non copre invece lo sfruttamento di cui si era già a conoscenza prima dell'11 settembre: il cronometro parte solo quando si viene a conoscenza di uno sfruttamento nuovo.
 
 Intorno a quella data alcuni pezzi sono andati a posto:
 
@@ -20,13 +21,13 @@ Intorno a quella data alcuni pezzi sono andati a posto:
 - **Regolamento delegato (UE) 2026/881**: quando un CSIRT può ritardare la trasmissione della vostra notifica ad altri. Non sposta le vostre scadenze.
 - In Italia la **Legge 36/2026** designa l'Agenzia per la Cybersicurezza Nazionale sia come autorità di notifica sia come autorità di vigilanza del mercato, con il CSIRT Italia come coordinatore che riceve le notifiche. Il decreto legislativo che fissa la scala nazionale delle sanzioni è ancora atteso.
 
-Due cose non sono andate a posto. **Nessuna norma armonizzata è stata citata nella Gazzetta ufficiale.** La serie orizzontale EN 40000 (vocabolario, principi, gestione delle vulnerabilità, requisiti di sicurezza generici) è in parte in approvazione e in parte ancora in stesura, la Commissione ha proposto di spostare in avanti le scadenze di normazione, e le prime citazioni non sono attese prima del 2027. Fino ad allora non esiste presunzione di conformità per nessuno, e i prodotti di classe I non possono usare l'autovalutazione. E il **Digital Omnibus**, che propone un punto di ingresso unico per la segnalazione degli incidenti tra NIS2, CRA, GDPR e DORA costruito sopra la piattaforma ENISA, è ancora in Consiglio. Non cambia nessuna data del CRA.
+Due cose non sono andate a posto. **Nessuna norma armonizzata è stata citata nella Gazzetta ufficiale.** La serie orizzontale EN 40000 (vocabolario, principi, gestione delle vulnerabilità, requisiti di sicurezza generici) è in parte in approvazione e in parte ancora in stesura. La Commissione ha proposto di spostare in avanti le scadenze di normazione, e le prime citazioni non sono attese prima del 2027. Fino ad allora non esiste presunzione di conformità per nessuno, e i prodotti di classe I non possono usare l'autovalutazione. Quanto al **Digital Omnibus**, è ancora in Consiglio: propone un punto di ingresso unico per segnalare gli incidenti previsti da NIS2, CRA, GDPR e DORA, costruito sopra la piattaforma ENISA, e non cambia nessuna data del CRA.
 
 ## Che cosa chiede il regolamento, in breve
 
 L'Allegato I ha due parti. La **Parte I** riguarda il prodotto: tredici proprietà, da "nessuna vulnerabilità sfruttabile nota al rilascio" e configurazione sicura per impostazione predefinita fino a cifratura, integrità, minimizzazione dei dati, riduzione della superficie di attacco, registrazione degli eventi di sicurezza e cancellazione sicura, ciascuna applicata secondo una valutazione del rischio documentata. La **Parte II** riguarda il processo del fabbricante: otto doveri, tra cui la SBOM, la correzione delle vulnerabilità senza ritardo, i test regolari, la divulgazione pubblica delle vulnerabilità corrette, una policy di coordinated vulnerability disclosure, un indirizzo di contatto per le segnalazioni, la distribuzione sicura degli aggiornamenti e aggiornamenti di sicurezza gratuiti con un avviso.
 
-Intorno: le informazioni per l'utente (Allegato II, compresa la data di fine supporto e dove segnalare le vulnerabilità), la documentazione tecnica (Allegato VII, compresa la SBOM e la motivazione del periodo di supporto), un periodo di supporto di almeno cinque anni e aggiornamenti di sicurezza che devono restare disponibili per dieci anni dal rilascio. Le sanzioni arrivano a 15 milioni di euro o al 2,5% del fatturato mondiale.
+Attorno a questi requisiti ci sono le informazioni per l'utente (Allegato II, compresa la data di fine supporto e dove segnalare le vulnerabilità) e la documentazione tecnica (Allegato VII, compresa la SBOM e la motivazione del periodo di supporto). Il periodo di supporto dura almeno cinque anni, e gli aggiornamenti di sicurezza devono restare disponibili per dieci anni dal rilascio. Le sanzioni arrivano a 15 milioni di euro o al 2,5% del fatturato mondiale.
 
 ## Tre fraintendimenti che incontro di continuo
 
@@ -34,15 +35,29 @@ Intorno: le informazioni per l'utente (Allegato II, compresa la data di fine sup
 
 **"La SBOM è il deliverable."** È un punto su ventuno, e da sola produce un lungo elenco di vulnerabilità in codice che il prodotto non esegue mai. Le linee guida della Commissione sono esplicite: un componente vulnerabile il cui codice non è raggiungibile non rende la vulnerabilità del prodotto attivamente sfruttata. Ciò che trasforma l'elenco in evidenza è il giudizio registrato per ogni rilievo (VEX) e il rapporto costruito da quei giudizi (VDR), insieme a un processo che continua a produrli per ogni rilascio supportato.
 
-**"Ce ne occupiamo nel 2027."** L'articolo 14 si applica oggi. La decisione sulla classe determina se serve un organismo notificato, e finora ce ne sono pochissimi; l'articolo 35 chiede agli Stati membri di garantire capacità sufficiente entro l'11 dicembre 2026, il che dice quanto sarà stretta la coda. E il periodo di supporto è di almeno cinque anni dal giorno del rilascio, quindi il processo che gestisce le vulnerabilità su quel rilascio deve esistere quel giorno.
+**"Ce ne occupiamo nel 2027."** L'articolo 14 si applica oggi. La decisione sulla classe determina se serve un organismo notificato, e finora ce ne sono pochissimi; l'articolo 35 chiede agli Stati membri di garantire capacità sufficiente entro l'11 dicembre 2026, e questo fa capire quanto sarà lunga la coda. E il periodo di supporto è di almeno cinque anni dal giorno del rilascio, quindi il processo che gestisce le vulnerabilità su quel rilascio deve esistere quel giorno.
+
+## Checklist CRA: le domande da farsi oggi
+
+Una verifica rapida, prima di qualsiasi progetto. Ogni no è un punto di partenza.
+
+- Avete un elenco dei prodotti con elementi digitali che immettete sul mercato UE, compresi firmware, agent, app e connettori?
+- Ogni prodotto ha una classe assegnata: predefinita, importante di classe I o II, o critica?
+- Esiste un indirizzo pubblicato per segnalare una vulnerabilità, e qualcuno lo legge ogni giorno?
+- Siete registrati sulla piattaforma unica di segnalazione, con un runbook per i passi a 24 ore, 72 ore e 14 giorni?
+- Ogni build produce una SBOM legata all'artefatto che descrive?
+- Le vulnerabilità trovate vengono valutate e registrate come VEX, invece di restare un elenco di corrispondenze?
+- Gli aggiornamenti di sicurezza possono uscire separati da quelli funzionali?
+- Il periodo di supporto di ogni prodotto è deciso, motivato e comunicato agli utenti?
+- Sapete distinguere un rilascio di manutenzione da una modifica sostanziale prima di pubblicarlo?
 
 ## Come ordinare il lavoro
 
-Non esiste un unico ordine giusto, ma questo ha tenuto in contesti regolati e segue ciò che è già applicabile:
+Non esiste un unico ordine giusto, ma questo ha funzionato in contesti regolamentati e segue ciò che è già obbligatorio:
 
-1. **Inventario e classificazione.** Ogni prodotto con elementi digitali, compresi firmware, agent, connettori e componenti di terze parti integrati, mappato su categoria predefinita, importante di classe I o II, o critica. Questo decide il calendario.
+1. **Inventario e classificazione.** Ogni prodotto con elementi digitali, compresi firmware, agent, connettori e componenti di terze parti integrati, assegnato a una categoria: predefinita, importante di classe I o II, o critica. Questo decide il calendario.
 2. **Preparazione alle notifiche.** Un punto di contatto unico che gli utenti riescono a trovare, una policy di coordinated vulnerability disclosure, la registrazione sulla piattaforma unica di segnalazione, un criterio scritto per che cosa significa "venire a conoscenza" e dove viene registrato, un runbook per i passi a 24 ore, 72 ore e 14 giorni, e una prova generale.
-3. **Evidenze di supply chain.** SBOM per artefatto dalla build, artefatti firmati con provenance, VEX e VDR per ogni rilascio supportato, monitoraggio continuo contro i nuovi dati sulle vulnerabilità. È il lavoro [SecDevOps](/it/servizi/consulenza-secdevops-cicd/) con in più i doveri di conservazione e divulgazione del CRA.
+3. **Evidenze di supply chain.** SBOM per artefatto dalla build, artefatti firmati con attestazione di provenienza, VEX e VDR per ogni rilascio supportato, monitoraggio continuo contro i nuovi dati sulle vulnerabilità. È il lavoro [SecDevOps](/it/servizi/consulenza-secdevops-cicd/) con in più i doveri di conservazione e divulgazione del CRA.
 4. **Requisiti di prodotto.** Le proprietà della Parte I che sono decisioni di progetto, affrontate con il team di prodotto e registrate nella valutazione del rischio. Aggiornamenti di sicurezza distribuiti separatamente dalle funzionalità dove possibile.
 5. **Documentazione tecnica e percorso di conformità.** L'Allegato VII assemblato dagli output precedenti, poi la decisione tra autovalutazione e organismo notificato presa con il consulente legale.
 

@@ -4,7 +4,7 @@ lang: "it"
 title: "Consulente DevOps"
 tagline: "Consulenza DevOps freelance per team che vogliono rilasciare più spesso, con meno incidenti e senza dipendere da una sola persona."
 seoTitle: "Consulente DevOps freelance in Italia | Luca Bertelli"
-description: "Consulente DevOps freelance in Italia: automazione della delivery, pipeline CI/CD, Infrastructure as Code e pratiche operative per team Fintech, Insurtech e industriali."
+description: "Consulente DevOps freelance in Italia: assessment di maturità DevOps, pipeline CI/CD e Infrastructure as Code per team Fintech, Insurtech e industriali."
 order: 1
 keywords:
   - "consulente DevOps"
@@ -15,11 +15,13 @@ keywords:
   - "automazione CI/CD"
   - "Infrastructure as Code"
   - "consulenza CI/CD"
+  - "assessment maturità DevOps"
+  - "metriche DORA"
 relatedTags: ["cicd", "devsecops", "github-actions", "kubernetes"]
 credentials: ["cka", "terraform_associate", "capa", "gitlab-sa"]
 outcomes:
   - "Rilasci frequenti e ripetibili, senza finestre notturne e senza passaggi manuali"
-  - "Tempi di build e di deploy ridotti, con feedback agli sviluppatori in minuti anziché ore"
+  - "Tempi di build e di deploy ridotti, con feedback agli sviluppatori in minuti anziché in ore"
   - "Infrastruttura descritta in codice, versionata e ricostruibile da zero"
   - "Conoscenza operativa distribuita nel team, non concentrata in una sola persona"
 deliverables:
@@ -29,17 +31,21 @@ deliverables:
   - "Runbook operativi e documentazione delle scelte architetturali"
   - "Affiancamento al team interno durante l'adozione"
 faq:
+  - question: "Che cos'è DevOps, in pratica?"
+    answer: "È un modo di lavorare in cui sviluppo e operations condividono la responsabilità di portare il software in produzione e di tenerlo in funzione, invece di passarselo da un reparto all'altro. In pratica significa rilasci piccoli e frequenti, pipeline CI/CD automatizzate, infrastruttura descritta in codice e misure di affidabilità condivise dal team."
   - question: "Che cosa fa concretamente un consulente DevOps?"
     answer: "Un consulente DevOps interviene sul modo in cui il software passa dal repository alla produzione: automazione delle pipeline CI/CD, gestione dell'infrastruttura come codice, standardizzazione degli ambienti, osservabilità e pratiche operative. L'obiettivo non è introdurre strumenti, ma ridurre il tempo e il rischio di ogni rilascio, lasciando al team interno la capacità di mantenere ciò che è stato costruito."
   - question: "Lavori come freelance o tramite società di consulenza?"
-    answer: "Lavoro come consulente freelance indipendente con partita IVA italiana. Questo significa un interlocutore tecnico unico, che partecipa direttamente all'implementazione invece di limitarsi alla supervisione."
+    answer: "Lavoro come consulente freelance indipendente con partita IVA italiana. Per voi significa avere un solo interlocutore tecnico, che partecipa direttamente all'implementazione invece di limitarsi alla supervisione."
   - question: "Quanto dura un intervento di consulenza DevOps?"
     answer: "Dipende dal perimetro. Un assessment mirato si esaurisce in poche giornate e produce una lista di priorità. Un percorso di adozione completo, con implementazione delle pipeline e affiancamento del team, si articola su più mesi con obiettivi verificabili a ogni tappa. In entrambi i casi il perimetro viene definito prima di iniziare."
+  - question: "Che cosa misura un assessment di maturità DevOps?"
+    answer: "Misura il percorso reale di una modifica, dal commit alla produzione, con le quattro metriche DORA (DevOps Research and Assessment, da non confondere con il regolamento europeo DORA): frequenza dei rilasci, tempo dalla modifica alla produzione, percentuale di rilasci che causano un incidente e tempo di ripristino dopo un rilascio fallito. Accanto ai numeri guardo pipeline, gestione dell'infrastruttura, segreti, osservabilità e competenze del team. Il risultato non è un punteggio, ma una lista di interventi ordinata per impatto e sforzo."
   - question: "Lavori da remoto o in sede?"
-    answer: "Prevalentemente da remoto, con la possibilità di giornate in sede quando servono workshop, sessioni di design o formazione al team. Opero principalmente con clienti in Italia e nell'Unione Europea."
-  - question: "Su quali tecnologie DevOps sei specializzato?"
+    answer: "Prevalentemente da remoto, con la possibilità di giornate in sede quando servono workshop, sessioni di design o formazione al team. Lavoro soprattutto con clienti in Italia e nell'Unione europea."
+  - question: "In quali tecnologie DevOps sei specializzato?"
     answer: "Kubernetes e l'ecosistema CNCF, Terraform per l'Infrastructure as Code, GitLab CI e GitHub Actions per la continuous integration, Argo CD e Argo Workflows per GitOps e automazione, HashiCorp Vault per la gestione dei segreti, Prometheus e Grafana per l'osservabilità."
-  - question: "Quanto costa un consulente DevOps e come viene prezzato il lavoro?"
+  - question: "Quanto costa un consulente DevOps e come si calcola il prezzo?"
     answer: "Due modelli. Un prezzo fisso per interventi con un risultato definito, come un assessment o una migrazione con perimetro chiaro, e una tariffa giornaliera per collaborazioni più lunghe in cui il perimetro evolve insieme al team. In entrambi i casi ricevete una proposta scritta con deliverable, stima dell'impegno ed esclusioni prima di iniziare, così la cifra è confrontabile con altri preventivi e non una sorpresa alla prima fattura."
   - question: "Conviene assumere un DevOps engineer o rivolgersi a un consulente?"
     answer: "Assumere quando il lavoro è continuativo e specifico del vostro prodotto: qualcuno deve presidiare la piattaforma giorno dopo giorno. Rivolgersi a un consulente quando il problema è una transizione che ha una fine, come impostare la pipeline di delivery, migrare a Kubernetes o prepararsi a una normativa, oppure quando serve un secondo parere su scelte già fatte. Spesso le due cose si combinano: imposto la pratica e le pipeline, poi le consegno alla persona che assumete, che eredita documentazione e un sistema funzionante invece di una pagina bianca."
@@ -49,20 +55,20 @@ faq:
 
 Quasi sempre la richiesta arriva nello stesso modo: i rilasci fanno paura. Si accumulano per settimane, richiedono una finestra concordata, coinvolgono una persona sola che "sa come si fa" e ogni tanto qualcosa si rompe in produzione senza che sia chiaro perché.
 
-Sotto quella superficie trovo quasi sempre le stesse cause. Gli ambienti di test non somigliano alla produzione, quindi i problemi emergono tardi. L'infrastruttura è stata creata a mano nel tempo e nessuno sa ricostruirla. Le pipeline esistono ma sono lente, non affidabili, e il team ha imparato a rilanciarle finché non passano. I segreti sono sparsi tra variabili d'ambiente e file di configurazione.
+Sotto quella superficie trovo quasi sempre le stesse cause. Gli ambienti di test non somigliano alla produzione, quindi i problemi emergono tardi. L'infrastruttura è stata creata a mano nel tempo e nessuno sa ricostruirla. Le pipeline esistono ma sono lente e inaffidabili, e il team ha imparato a rilanciarle finché non passano. I segreti sono sparsi tra variabili d'ambiente e file di configurazione.
 
 Nessuno di questi è un problema di strumenti. Sono problemi di processo, che gli strumenti da soli non risolvono.
 
 ## Come intervengo
 
-Parto sempre da un assessment, perché installare tooling prima di capire come lavora il team è il modo più veloce per aggiungere complessità inutile. Guardo il flusso reale che porta una modifica dal commit alla produzione, misuro dove si perde tempo e dove nascono gli incidenti, e ne ricavo una lista di interventi ordinata per rapporto tra impatto e sforzo.
+Parto sempre da un assessment di maturità DevOps, perché installare strumenti prima di capire come lavora il team è il modo più veloce per aggiungere complessità inutile. Guardo il flusso reale che porta una modifica dal commit alla produzione e misuro con le metriche DORA dove si perde tempo e dove nascono gli incidenti. Ne ricavo una lista di interventi ordinata per rapporto tra impatto e sforzo.
 
-Da lì si lavora in modo incrementale. Prima si stabilizza la continuous integration, perché una pipeline di cui il team non si fida rende inutile tutto il resto. Poi si porta l'infrastruttura sotto controllo con Terraform, in modo che gli ambienti siano ricostruibili e confrontabili. Infine si automatizza la delivery, tipicamente con un approccio GitOps in cui lo stato desiderato del sistema vive in Git e la riconciliazione è continua.
+Da lì si lavora in modo incrementale. Prima si stabilizza la continuous integration, perché una pipeline di cui il team non si fida rende inutile tutto il resto. Poi si porta l'infrastruttura sotto controllo con Terraform, in modo che gli ambienti siano ricostruibili e confrontabili. Infine si automatizza la delivery, di solito con un approccio GitOps in cui lo stato desiderato del sistema vive in Git e la riconciliazione è continua.
 
 L'ultima fase è quella che conta di più a distanza di un anno: il trasferimento di competenze. Documentazione delle scelte, runbook per le operazioni ricorrenti, sessioni di lavoro con il team. Una consulenza DevOps riuscita è quella dopo la quale il cliente non ha più bisogno del consulente.
 
 ## L'esperienza da cui arrivo
 
-Ho lavorato su questi problemi dal 2018, prima come DevOps Engineer, poi come Cloud Native Engineering Manager e oggi come consulente indipendente. I settori in cui ho maturato più esperienza sono Fintech, Insurtech e industriale: contesti in cui il vincolo non è solo tecnico, ma anche di conformità, auditabilità e continuità del servizio.
+Lavoro su questi problemi dal 2018, prima come DevOps Engineer, poi come Cloud Native Engineering Manager e oggi come consulente indipendente. I settori in cui ho maturato più esperienza sono Fintech, Insurtech e industria: contesti in cui il vincolo non è solo tecnico, ma anche di conformità, auditabilità e continuità del servizio.
 
 Questa origine spiega l'approccio. In un ambiente regolamentato non basta che il deploy funzioni: deve essere tracciabile, ripetibile e spiegabile a chi lo verifica.

@@ -49,7 +49,7 @@ const SKILL_COPY: Record<ServiceKey, SkillCopy> = {
 	devops: {
 		name: "DevOps Consultant",
 		description:
-			"Freelance DevOps consultant working across Italy and the EU: delivery automation, CI/CD pipelines, Infrastructure as Code and operational practices for Fintech, Insurtech and industrial teams.",
+			"Freelance DevOps consultant in Italy and the EU: maturity assessment, CI/CD pipelines and Infrastructure as Code for Fintech, Insurtech and industrial teams.",
 		tags: ["devops", "ci-cd", "infrastructure-as-code"],
 		examples: [
 			"What does a freelance DevOps engagement cover for a team that wants CI/CD and Infrastructure as Code?",
@@ -58,7 +58,7 @@ const SKILL_COPY: Record<ServiceKey, SkillCopy> = {
 	cloud: {
 		name: "Cloud Consulting and Migration",
 		description:
-			"Cloud consulting across Italy and the EU: adoption strategy, migration of applications and infrastructure to AWS, Azure and Google Cloud, governance and cost control.",
+			"Cloud consulting across Italy and the EU: adoption strategy, migration of applications and infrastructure to AWS, Azure and Google Cloud, governance and FinOps.",
 		tags: ["cloud", "migration", "cost-governance"],
 		examples: ["How do you approach a cloud migration to AWS, Azure, or Google Cloud?"],
 	},
@@ -79,7 +79,7 @@ const SKILL_COPY: Record<ServiceKey, SkillCopy> = {
 	secdevops: {
 		name: "SecDevOps and CI/CD Consulting",
 		description:
-			"SecDevOps and CI/CD consulting across Italy and the EU: toolchain selection, secure pipelines, HashiCorp Vault secrets management, software supply chain security and NIS2 evidence.",
+			"SecDevOps and CI/CD consulting in Italy and the EU: secure pipelines, HashiCorp Vault secrets, software supply chain security, SLSA and NIS2 evidence.",
 		tags: ["secdevops", "ci-cd", "supply-chain"],
 		examples: ["How do you secure a CI/CD pipeline and its secrets?"],
 	},
@@ -93,14 +93,14 @@ const SKILL_COPY: Record<ServiceKey, SkillCopy> = {
 	training: {
 		name: "DevOps and Cloud Native Training",
 		description:
-			"Corporate training on Kubernetes, DevOps, SecDevOps and Terraform: tailored programmes in English and Italian, with hands-on labs based on your own real tooling.",
+			"Corporate training on Kubernetes, DevOps, SecDevOps and Terraform: tailored programmes in English and Italian, with hands-on labs based on your own tooling.",
 		tags: ["training", "kubernetes", "devops"],
 		examples: ["What does a corporate Kubernetes or DevOps training engagement look like?"],
 	},
 	"ai-engineering": {
 		name: "AI Agent Governance and Adoption",
 		description:
-			"Consulting on AI agent governance and adoption across Italy and the EU: usage policy, security hardening, Model Context Protocol integration and inference cost control.",
+			"AI agent governance consulting across Italy and the EU: usage policy, AI Act readiness, MCP server security, internal integration and inference cost control.",
 		tags: ["ai-agent-governance", "mcp", "inference-cost"],
 		examples: ["How should an enterprise govern AI agents, MCP access, and inference cost?"],
 	},

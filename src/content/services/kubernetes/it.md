@@ -4,7 +4,7 @@ lang: "it"
 title: "Consulenza Kubernetes"
 tagline: "Progettazione, messa in sicurezza e gestione di cluster Kubernetes in produzione, da parte di un Certified Kubernetes Administrator."
 seoTitle: "Consulente Kubernetes certificato CKA in Italia | Luca Bertelli"
-description: "Consulenza Kubernetes in Italia da consulente certificato CKA: architettura dei cluster, multi-tenancy, GitOps con Argo CD, hardening di sicurezza e operatività day-2."
+description: "Consulenza Kubernetes in Italia da consulente certificato CKA: architettura, multi-tenancy, GitOps con Argo CD, audit di sicurezza e aggiornamenti dei cluster."
 order: 4
 keywords:
   - "consulente Kubernetes"
@@ -13,29 +13,33 @@ keywords:
   - "consulente CKA certificato"
   - "GitOps Argo CD"
   - "multi-tenancy Kubernetes"
+  - "audit sicurezza Kubernetes"
+  - "aggiornamento Kubernetes"
 relatedTags: ["kubernetes", "helm", "multi-tenancy", "vcluster", "fleet-management", "drift"]
 credentials: ["cka", "capa", "vmware_master", "kong-mesh"]
 outcomes:
   - "Cluster progettati per la produzione, non prototipi cresciuti per inerzia"
   - "Isolamento reale tra team e ambienti, con quote e policy di rete applicate"
-  - "Deploy dichiarativi in GitOps, con drift rilevato invece che subito"
-  - "Operatività day-2 documentata: aggiornamenti, backup, ripristino"
+  - "Deploy dichiarativi in GitOps, con ogni scostamento (drift) rilevato prima che causi un incidente"
+  - "Operatività quotidiana (day-2) documentata: aggiornamenti, backup, ripristino"
 deliverables:
   - "Revisione dell'architettura dei cluster esistenti, con criticità ordinate per gravità"
   - "Provisioning dei cluster in Terraform, riproducibile tra gli ambienti"
   - "Modello di multi-tenancy: namespace, RBAC, quote, network policy"
   - "Continuous delivery in GitOps con Argo CD e Helm o Kustomize"
-  - "Hardening di sicurezza e osservabilità con Prometheus e Grafana"
+  - "Messa in sicurezza (hardening) e osservabilità con Prometheus e Grafana"
 faq:
   - question: "Sei certificato su Kubernetes?"
     answer: "Sì. Sono Certified Kubernetes Administrator (CKA) dal 2020 e Certified Argo Project Associate (CAPA), oltre a VMware Certified Master Specialist in Cloud Native. Le credenziali sono verificabili sui rispettivi badge pubblici Credly, collegati nella sezione certificazioni del sito."
   - question: "Quali sono gli errori più frequenti nei cluster Kubernetes in produzione?"
     answer: "I tre che incontro quasi sempre: assenza di resource request e limit, che rende lo scheduling imprevedibile e provoca contese di risorse tra carichi non correlati; nessuna network policy, per cui ogni pod può parlare con ogni altro pod; e configurazioni applicate a mano sul cluster, che rendono impossibile sapere se l'ambiente corrisponde a quanto descritto nel repository."
-  - question: "Meglio Kubernetes gestito o self-managed?"
+  - question: "Meglio Kubernetes gestito o autogestito (self-managed)?"
     answer: "Nella grande maggioranza dei casi, gestito: EKS, AKS o GKE. Gestire il control plane in proprio ha senso solo con vincoli specifici di sovranità del dato, requisiti on-premise o esigenze di personalizzazione che i servizi gestiti non coprono. Il valore che si costruisce sta quasi sempre sopra il control plane, non dentro."
   - question: "Puoi intervenire su cluster già in produzione?"
     answer: "Sì, ed è lo scenario più comune. Si parte da una revisione dell'architettura e della configurazione esistente, con le criticità ordinate per gravità, e si interviene per passi verificabili senza fermare l'attività. Riscrivere da zero un ambiente che funziona è raramente la scelta giusta."
-  - question: "Come gestisci ambienti di test su Kubernetes?"
+  - question: "Come si aggiorna Kubernetes senza fermare i servizi?"
+    answer: "Con una strategia ripetibile, non con un progetto ogni volta. Prima si verificano le API deprecate che la nuova versione rimuove e la compatibilità di add-on e chart. Poi si aggiorna il control plane e infine i nodi, a rotazione o creando nuovi node pool su cui spostare i carichi. PodDisruptionBudget, almeno due repliche per i servizi critici e probe configurate bene rendono l'aggiornamento invisibile agli utenti. Kubernetes rilascia circa tre versioni minori all'anno e ciascuna è supportata per poco più di un anno, quindi conviene aggiornare con regolarità invece di accumulare ritardo."
+  - question: "Come gestisci gli ambienti di test su Kubernetes?"
     answer: "Con cluster virtuali effimeri creati per ogni pull request e distrutti alla chiusura. È un approccio che ho documentato in dettaglio in un articolo del blog basato su vCluster e Argo Workflows: dà a ogni sviluppatore un ambiente isolato e realistico senza moltiplicare i cluster reali da mantenere."
 ---
 
@@ -47,12 +51,12 @@ I sintomi si assomigliano molto tra un cliente e l'altro. Nessuno sa dire con ce
 
 ## Come intervengo
 
-Se il cluster esiste già, si comincia da una revisione strutturata: architettura, configurazione, sicurezza, osservabilità e prassi operative. Il risultato è un elenco di criticità ordinate per gravità e sforzo, non un documento generico di buone pratiche. Quasi sempre le prime tre voci coprono la maggior parte del rischio reale.
+Se il cluster esiste già, si comincia da un audit di sicurezza e operatività del cluster: architettura, configurazione, controlli di accesso, osservabilità e prassi operative. Il risultato è un elenco di criticità ordinate per gravità e sforzo, non un documento generico di buone pratiche. Quasi sempre le prime tre voci coprono la maggior parte del rischio reale.
 
-Sul piano dell'isolamento, il lavoro consiste nel rendere effettivo ciò che i namespace suggeriscono soltanto. Namespace, RBAC con privilegi minimi, resource quota, limit range e network policy in negazione predefinita: senza queste, la multi-tenancy è una convenzione di denominazione, non una separazione.
+Sul piano dell'isolamento, il lavoro consiste nel rendere effettivo ciò che i namespace suggeriscono soltanto. Namespace, RBAC con privilegi minimi, resource quota, limit range e network policy che negano tutto per impostazione predefinita: senza questi controlli, la multi-tenancy è una convenzione di denominazione, non una separazione.
 
-La delivery passa a GitOps con Argo CD. Il vantaggio che conta non è l'automazione in sé, è che lo stato desiderato diventa leggibile in Git e ogni scostamento viene rilevato invece che scoperto durante un incidente. Da lì si costruisce l'operatività day-2: strategia di aggiornamento, backup e ripristino provato davvero, allarmi che segnalano problemi reali invece di generare rumore.
+La delivery passa a GitOps con Argo CD. Il vantaggio che conta non è l'automazione in sé, è che lo stato desiderato diventa leggibile in Git e ogni scostamento viene rilevato invece che scoperto durante un incidente. Da lì si costruisce l'operatività quotidiana: strategia di aggiornamento, backup e ripristino provati davvero, allarmi che segnalano problemi reali invece di generare rumore.
 
 ## Fleet e ambienti effimeri
 
-Quando i cluster diventano più d'uno, i problemi cambiano natura. La domanda non è più se un cluster è configurato bene, ma se i cluster sono allineati tra loro e quanto sono indietro rispetto alle versioni correnti di immagini e chart. È un tema su cui lavoro spesso e su cui ho scritto pubblicamente, insieme all'uso di cluster virtuali effimeri per dare a ogni pull request un ambiente di test isolato senza moltiplicare l'infrastruttura da mantenere.
+Quando i cluster diventano più d'uno, i problemi cambiano natura. La domanda non è più se un cluster è configurato bene, ma se i cluster sono allineati tra loro e quanto sono indietro rispetto alle versioni correnti di immagini e chart. È un tema su cui lavoro spesso e su cui ho [scritto pubblicamente](/it/blog/omastx/), insieme all'[uso di cluster virtuali effimeri](/it/blog/vcluster/) per dare a ogni pull request un ambiente di test isolato senza moltiplicare l'infrastruttura da mantenere.

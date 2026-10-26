@@ -40,7 +40,9 @@ deliverables:
   - "Handover: the internal team runs and extends everything without me"
 faq:
   - question: "Who does the Cyber Resilience Act apply to?"
-    answer: "Manufacturers placing products with digital elements on the EU market: software and hardware that can connect to a network, directly or indirectly, and the components embedded in them, regardless of where the manufacturer is established. Importers and distributors have their own duties. Software offered purely as a service is out of scope, since NIS2 covers it, unless it is remote data processing without which the product cannot perform its functions. Free and open source software developed outside a commercial activity is not covered; organisations that sustain such projects may be 'open source stewards' with a lighter regime. The Commission guidance of 27 July 2026 (C(2026) 5252) walks through these boundaries with worked examples. Whether your product is in scope and in which class is a question for your legal advisor; my work starts once the answer is yes."
+    answer: "Manufacturers placing products with digital elements on the EU market: software and hardware that can connect to a network, directly or indirectly, and the components embedded in them, regardless of where the manufacturer is established. Importers and distributors have their own duties. The Commission guidance of 27 July 2026 (C(2026) 5252) walks through the scope boundaries with worked examples. Whether your product is in scope and in which class is a question for your legal advisor; my work starts once the answer is yes."
+  - question: "Does the Cyber Resilience Act apply to SaaS and open source software?"
+    answer: "Not to pure SaaS: software offered purely as a service is covered by NIS2, unless it is remote data processing without which a product cannot perform its functions. Almost every SaaS offering, however, also ships something that is a product with digital elements: an edge agent, a mobile app, an on-premise connector, the firmware in a gateway. Those are in scope. Free and open source software developed outside a commercial activity is not covered, and organisations that sustain such projects on a lasting basis may be 'open source stewards' with a lighter regime. When a manufacturer integrates an open source component into its own product, on the other hand, it answers for it like any other third-party component, with a due diligence duty."
   - question: "What are the Cyber Resilience Act deadlines?"
     answer: "Regulation (EU) 2024/2847 entered into force on 10 December 2024. Chapter IV, on notified bodies, applies since 11 June 2026. The reporting obligations of Article 14 apply since 11 September 2026, and they cover every in-scope product already on the market, not only new ones. Everything else, essential requirements, conformity assessment, CE marking and technical documentation, applies from 11 December 2027 to products placed on the market from that date, and to older products only if they are substantially modified. The Digital Omnibus package has not changed these dates."
   - question: "What does the CRA actually require beyond an SBOM?"
@@ -98,7 +100,8 @@ The tooling comes from what is already in use. GitLab CI and GitHub Actions, for
 - A manufacturer of connected devices whose firmware is built by a supplier, and who has to answer for the SBOM, the update channel and the support period without owning the build.
 - An independent software vendor shipping on-premise software to customers who are themselves in scope and are already asking for SBOMs and disclosure policies in procurement.
 - A SaaS company that thought it was out of scope until it counted its edge agents, mobile apps and on-premise connectors.
-- A product built on Kubernetes that ships a container runtime. A public sector supplier whose tender responses now include CRA questions.
+- A product built on Kubernetes that ships a container runtime.
+- A public sector supplier whose tender responses now include CRA questions.
 
 In each case the regulation is the same; what changes is where the evidence has to come from.
 

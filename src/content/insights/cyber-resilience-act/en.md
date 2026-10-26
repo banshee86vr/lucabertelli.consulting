@@ -5,13 +5,14 @@ title: "Cyber Resilience Act: where things stand and what to do first"
 subtitle: "Reporting is live, harmonised standards are not, and December 2027 is closer than the release calendar suggests"
 seoTitle: "Cyber Resilience Act guide for software teams | Luca Bertelli"
 date: "2026-09-28"
+updated: "2026-10-26"
 image: "/insights/cyber-resilience-act/cyber-resilience-act.webp"
 relatedServices: ["cyber-resilience-act", "secdevops", "devops", "kubernetes"]
 ---
 
 ## Where things stand, September 2026
 
-The Cyber Resilience Act, Regulation (EU) 2024/2847, has been in force since 10 December 2024, and the first obligation with teeth arrived on **11 September 2026**: Article 14 reporting. Since that date a manufacturer that becomes aware of an actively exploited vulnerability in one of its products, or of a severe incident affecting its security, must send an early warning within 24 hours, a notification within 72 hours and a final report, through the **Single Reporting Platform** that ENISA opened the same day. The duty covers every in-scope product already on the market, not only the ones placed after 2027 (Article 69(3)). What it does not cover is exploitation you already knew about before 11 September; the clock starts on fresh awareness.
+The Cyber Resilience Act, [Regulation (EU) 2024/2847](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R2847), has been in force since 10 December 2024, and the first obligation with teeth arrived on **11 September 2026**: Article 14 reporting. Since that date a manufacturer that becomes aware of an actively exploited vulnerability in one of its products, or of a severe incident affecting its security, must send an early warning within 24 hours, a notification within 72 hours and a final report, through the **Single Reporting Platform** that ENISA opened the same day. The duty covers every in-scope product already on the market, not only the ones placed after 2027 (Article 69(3)). What it does not cover is exploitation you already knew about before 11 September; the clock starts on fresh awareness.
 
 Around that date a few pieces fell into place:
 
@@ -35,6 +36,20 @@ Around them: user information (Annex II, including the support end date and wher
 **"The SBOM is the deliverable."** It is one point out of twenty-one, and on its own it produces a long list of vulnerabilities in code the product never executes. The Commission guidance is explicit that a vulnerable component whose code is not reachable does not make the product's vulnerability actively exploited. What turns the list into evidence is the judgement recorded per finding (VEX) and the report assembled from those judgements (VDR), together with a process that keeps producing them for every supported release.
 
 **"We will deal with it in 2027."** Article 14 applies today. The class decision determines whether you need a notified body, and there are very few of them so far; Article 35 asks Member States to ensure enough capacity by 11 December 2026, which tells you how tight the queue will be. And the support period is at least five years from the day you ship, so the process that handles vulnerabilities on that release has to exist on that day.
+
+## CRA checklist: questions to ask today
+
+A quick check, before any project starts. Every no is a starting point.
+
+- Do you have a list of the products with digital elements you place on the EU market, including firmware, agents, apps and connectors?
+- Does every product have an assigned class: default, important class I or II, or critical?
+- Is there a published address for reporting a vulnerability, and does someone read it every day?
+- Are you registered on the Single Reporting Platform, with a runbook for the 24-hour, 72-hour and 14-day steps?
+- Does every build produce an SBOM tied to the artifact it describes?
+- Are vulnerability findings assessed and recorded as VEX, rather than left as a list of matches?
+- Can security updates ship separately from feature updates?
+- Is the support period of each product decided, justified and communicated to users?
+- Can you tell a maintenance release from a substantial modification before you ship it?
 
 ## How to sequence the work
 

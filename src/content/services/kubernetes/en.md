@@ -13,6 +13,8 @@ keywords:
   - "CKA certified consultant"
   - "GitOps Argo CD"
   - "Kubernetes multi-tenancy"
+  - "Kubernetes security audit"
+  - "Kubernetes upgrade strategy"
 relatedTags: ["kubernetes", "helm", "multi-tenancy", "vcluster", "fleet-management", "drift"]
 credentials: ["cka", "capa", "vmware_master", "kong-mesh"]
 outcomes:
@@ -35,6 +37,8 @@ faq:
     answer: "In the large majority of cases, managed: EKS, AKS or GKE. Running your own control plane only makes sense with specific data sovereignty constraints, on-premise requirements or customisation needs that managed services do not cover. The value you build almost always sits above the control plane, not inside it."
   - question: "Can you work on clusters that are already in production?"
     answer: "Yes, and it is the most common scenario. We start from a review of the existing architecture and configuration, with findings ordered by severity, and work in verifiable steps without halting operations. Rewriting a working environment from scratch is rarely the right call."
+  - question: "How do you upgrade Kubernetes without downtime?"
+    answer: "With a repeatable strategy rather than a new project every time. First check which deprecated APIs the new version removes and whether add-ons and charts are compatible, then upgrade the control plane and finally the nodes, either rolling or by creating new node pools and moving workloads onto them. PodDisruptionBudgets, multiple replicas for critical services and well-configured probes are what make the upgrade invisible to users. Kubernetes ships about three minor versions a year and each is supported for a little over a year, so upgrading regularly beats accumulating lag."
   - question: "How do you handle test environments on Kubernetes?"
     answer: "With ephemeral virtual clusters created per pull request and destroyed on close. I have documented that approach in detail in a blog article based on vCluster and Argo Workflows: it gives every developer an isolated, realistic environment without multiplying the real clusters you have to maintain."
 ---
@@ -47,7 +51,7 @@ The symptoms look remarkably similar from one client to the next. Nobody can say
 
 ## How I work
 
-If the cluster already exists, we start with a structured review: architecture, configuration, security, observability and operational practice. The output is a list of findings ordered by severity and effort, not a generic best-practices document. The first three items usually account for most of the real risk.
+If the cluster already exists, we start with a structured review, in effect a Kubernetes security and operations audit: architecture, configuration, security, observability and operational practice. The output is a list of findings ordered by severity and effort, not a generic best-practices document. The first three items usually account for most of the real risk.
 
 On isolation, the work consists of making real what namespaces only imply. Namespaces, least-privilege RBAC, resource quotas, limit ranges and default-deny network policies: without these, multi-tenancy is a naming convention rather than a separation.
 
@@ -55,4 +59,4 @@ Delivery moves to GitOps with Argo CD. The benefit that matters is not automatio
 
 ## Fleets and ephemeral environments
 
-Once there is more than one cluster, the problems change shape. The question is no longer whether a cluster is well configured, but whether clusters are aligned with each other and how far behind they are on current image and chart versions. It is a topic I work on regularly and have written about publicly, alongside the use of ephemeral virtual clusters to give every pull request an isolated test environment without multiplying the infrastructure you have to maintain.
+Once there is more than one cluster, the problems change shape. The question is no longer whether a cluster is well configured, but whether clusters are aligned with each other and how far behind they are on current image and chart versions. It is a topic I work on regularly and have [written about publicly](/en/blog/omastx/), alongside the use of [ephemeral virtual clusters](/en/blog/vcluster/) to give every pull request an isolated test environment without multiplying the infrastructure you have to maintain.
