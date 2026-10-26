@@ -8,6 +8,7 @@
  */
 
 import { ACP_BASE_URL, ACP_DOCUMENT_URL, CHECKOUT_URL } from "./acp.ts";
+import { UCP_BASE_URL, UCP_CHECKOUT_URL, UCP_DOCUMENT_URL, UCP_VERSION } from "./ucp.ts";
 import { ENGAGEMENT_URL, OPENAPI_URL } from "./mpp.ts";
 import { AP2_EXTENSION_URIS, ORIGIN } from "./agent-card.ts";
 import { MCP_CARD_URL, MCP_URL } from "./mcp-server.ts";
@@ -88,6 +89,10 @@ Read ${ORIGIN}/auth.md. Access is anonymous. No account and no credential are re
 ## ACP
 
 \`GET\` ${ACP_DOCUMENT_URL} is the Agentic Commerce Protocol discovery document. \`protocol.name\` is \`acp\`. The REST base is ${ACP_BASE_URL}. \`POST\` ${CHECKOUT_URL} does not create a session, does not take payment, and does not store the body. Do not send payment credentials.
+
+## UCP
+
+\`GET\` ${UCP_DOCUMENT_URL} is the Universal Commerce Protocol profile. \`protocol_version\` is \`${UCP_VERSION}\`. The REST base is ${UCP_BASE_URL}. \`ucp.payment_handlers\` is empty. \`POST\` ${UCP_CHECKOUT_URL} does not create a session, does not take payment, and does not store the body. Do not send payment credentials.
 
 ## Machine payments
 

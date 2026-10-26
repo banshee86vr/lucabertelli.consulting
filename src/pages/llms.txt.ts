@@ -1,6 +1,7 @@
 import { getBlogPosts, getInsights, getServices } from "../content/config";
 import { getCollection } from "astro:content";
 import { API_VERSION } from "../discovery/acp";
+import { UCP_VERSION } from "../discovery/ucp";
 import { AP2_EXTENSION_URIS } from "../discovery/agent-card";
 import { SITE_URL } from "../constants/site";
 import { insightPath, insightsHubPath } from "../constants/insights";
@@ -183,6 +184,9 @@ export async function GET() {
 	);
 	lines.push(
 		`- ACP discovery: ${url("/.well-known/acp.json")}. protocol.name is acp, protocol.version is ${API_VERSION}, api_base_url is ${url("/acp")}, transports is rest, capabilities.services is checkout. POST ${url("/acp/checkout_sessions")} does not create a session, does not take payment, and does not store the body.`,
+	);
+	lines.push(
+		`- UCP profile: ${url("/.well-known/ucp")}. protocol_version is ${UCP_VERSION}. services is dev.ucp.shopping over REST at ${url("/ucp/v1")}. capabilities is dev.ucp.shopping.checkout. endpoints.rest is that base. ucp.payment_handlers is empty. POST ${url("/ucp/v1/checkout-sessions")} does not create a session, does not take payment, and does not store the body.`,
 	);
 	lines.push(
 		`- MPP discovery: ${url("/openapi.json")}. OpenAPI 3.1. x-service-info.categories is developer-tools. POST ${url("/api/engagement")} is the payable operation. x-payment-info.intent is charge, x-payment-info.method is card, x-payment-info.currency is eur, and x-payment-info.amount is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store the body.`,

@@ -40,6 +40,12 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 
 `POST /acp/checkout_sessions` with `Content-Type: application/json`, `API-Version: 2026-04-17`, and `Idempotency-Key` returns an error. This seller does not create a checkout session, does not take payment, and does not store the request. Orders, carts, and delegate payment are not offered.
 
+## UCP profile
+
+`GET /.well-known/ucp` is the [Universal Commerce Protocol](https://ucp.dev/specification/overview/) business profile. `protocol_version` is `2026-08-25`. `ucp.version` is the same date. `services` lists `dev.ucp.shopping` over REST at `https://lucabertelli.consulting/ucp/v1`. `capabilities` lists `dev.ucp.shopping.checkout`. `endpoints.rest` is that REST base. `ucp.payment_handlers` is empty. The spec and schema URLs in the profile are on `ucp.dev` for release `2026-08-25`.
+
+`POST /ucp/v1/checkout-sessions` with `Content-Type: application/json` returns an error. This business does not create a checkout session, does not take payment, and does not store the request. Do not send payment credentials.
+
 ## Machine Payment Protocol
 
 `GET /openapi.json` is the [Machine Payment Protocol](https://mpp.dev) discovery document. It is OpenAPI 3.1. `x-service-info.categories` lists `developer-tools`. `x-service-info.docs` points at the English homepage, this page, and `/llms.txt`.

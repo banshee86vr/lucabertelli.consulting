@@ -1,0 +1,51 @@
+{
+  "$schema": "https://ucp.dev/2026-08-25/schemas/profile.json",
+  "protocol_version": "2026-08-25",
+  "services": {
+    "dev.ucp.shopping": [
+      {
+        "version": "2026-08-25",
+        "spec": "https://ucp.dev/2026-08-25/specification/overview/",
+        "transport": "rest",
+        "endpoint": "https://lucabertelli.consulting/ucp/v1",
+        "schema": "https://ucp.dev/2026-08-25/services/shopping/rest.openapi.json"
+      }
+    ]
+  },
+  "capabilities": {
+    "dev.ucp.shopping.checkout": [
+      {
+        "version": "2026-08-25",
+        "spec": "https://ucp.dev/2026-08-25/specification/shopping/checkout/",
+        "schema": "https://ucp.dev/2026-08-25/schemas/shopping/checkout.json"
+      }
+    ]
+  },
+  "endpoints": {
+    "rest": "https://lucabertelli.consulting/ucp/v1"
+  },
+  "ucp": {
+    "version": "2026-08-25",
+    "services": {
+      "dev.ucp.shopping": [
+        {
+          "version": "2026-08-25",
+          "spec": "https://ucp.dev/2026-08-25/specification/overview/",
+          "transport": "rest",
+          "endpoint": "https://lucabertelli.consulting/ucp/v1",
+          "schema": "https://ucp.dev/2026-08-25/services/shopping/rest.openapi.json"
+        }
+      ]
+    },
+    "capabilities": {
+      "dev.ucp.shopping.checkout": [
+        {
+          "version": "2026-08-25",
+          "spec": "https://ucp.dev/2026-08-25/specification/shopping/checkout/",
+          "schema": "https://ucp.dev/2026-08-25/schemas/shopping/checkout.json"
+        }
+      ]
+    },
+    "payment_handlers": {}
+  }
+}

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: lucabertelli.consulting discovery
-  version: "1.6.0"
+  version: "1.7.0"
   description: |
     This site does not expose a write API and does not issue credentials. The resources below are public, unauthenticated, and safe to fetch.
     Agent registration is anonymous: /auth.md and the two OAuth discovery documents describe it, and POST to the registration URLs changes nothing.
@@ -9,6 +9,7 @@ info:
     The Agent Skills index is at /.well-known/agent-skills/index.json.
     The MCP server card is at /.well-known/mcp/server-card.json. POST /mcp is Streamable HTTP. The tool read_practice returns the public index. Resources, prompts, and sessions are off.
     ACP discovery is at /.well-known/acp.json. POST /acp/checkout_sessions does not create a session, does not take payment, and does not store the body.
+    UCP discovery is at /.well-known/ucp. protocol_version is 2026-08-25. POST /ucp/v1/checkout-sessions does not create a session, does not take payment, and does not store the body. ucp.payment_handlers is empty.
     Machine Payment Protocol discovery is GET /openapi.json. POST /api/engagement returns 402, does not settle a charge, and does not store the body. x-payment-info.amount is null because the price is a written proposal.
     The Web Bot Auth directory is at /.well-known/http-message-signatures-directory.
 servers:
@@ -248,6 +249,29 @@ paths:
                   - api_base_url
                   - transports
                   - capabilities
+  /.well-known/ucp:
+    get:
+      operationId: getUcpProfile
+      summary: UCP business profile
+      description: |
+        Universal Commerce Protocol profile. protocol_version is 2026-08-25.
+        services lists dev.ucp.shopping over REST at
+        https://lucabertelli.consulting/ucp/v1. capabilities lists
+        dev.ucp.shopping.checkout. endpoints.rest is that base.
+        ucp.payment_handlers is empty. No authentication.
+      responses:
+        "200":
+          description: UCP profile JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - protocol_version
+                  - services
+                  - capabilities
+                  - endpoints
+                  - ucp
   /.well-known/http-message-signatures-directory:
     get:
       operationId: getWebBotAuthDirectory
@@ -321,6 +345,28 @@ paths:
               schema:
                 type: object
                 required: [type, code, message]
+        "403":
+          description: Origin is local, private, or not https.
+        "413":
+          description: Request body is larger than 64 KiB.
+        "415":
+          description: Content-Type is not application/json.
+  /ucp/v1/checkout-sessions:
+    post:
+      operationId: postUcpCheckoutSession
+      summary: Refuse a UCP checkout session
+      description: |
+        Accepts a UCP create-checkout POST and does not create a session.
+        payment_handlers is empty. There is no catalog. The body is discarded
+        and is not stored. Do not send payment credentials.
+      responses:
+        "400":
+          description: No session is created.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ucp, messages, continue_url]
         "403":
           description: Origin is local, private, or not https.
         "413":

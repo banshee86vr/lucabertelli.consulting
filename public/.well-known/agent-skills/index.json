@@ -6,7 +6,7 @@
       "type": "skill-md",
       "description": "Read the public site of Luca Bertelli Consulting, a freelance Cloud Native and Platform Engineering practice in Italy and the EU. Use when an agent needs the services, articles, or machine-readable index. Access is anonymous and the site does not create tasks, checkout sessions, or issue credentials.",
       "url": "/.well-known/agent-skills/consulting-practice/SKILL.md",
-      "digest": "sha256:8f56ea9f2e090e7819953496ca2e1cad6bf54d280559c5e2cb837f941bfc065c"
+      "digest": "sha256:fa79c44c5935f8c0e947e6ceec633b974714a71ffd1fc4efe3395ed06cd92b91"
     }
   ]
 }
