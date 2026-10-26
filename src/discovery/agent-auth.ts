@@ -4,6 +4,7 @@ import { ENGAGEMENT_URL, OPENAPI_FILE, OPENAPI_URL, openApiText } from "./mpp.ts
 import { FACILITATOR_URL, X402_NETWORK, X402_PAY_TO, X402_PRICE, X402_URL } from "./x402.ts";
 import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, AP2_EXTENSION_URIS, agentCardText } from "./agent-card.ts";
 import { AGENT_SKILLS_INDEX_URL, SKILL_NAME, SKILL_URL } from "./agent-skills.ts";
+import { AI_CATALOG_URL, ARD_URL } from "./ard.ts";
 import { MCP_CARD_PATH, MCP_CARD_URL, MCP_URL, mcpCardText } from "./mcp-server.ts";
 import { DIRECTORY_URL } from "./web-bot-auth.ts";
 
@@ -176,6 +177,7 @@ A 401 response carries a \`WWW-Authenticate\` challenge whose \`resource_metadat
 The API catalog and the OpenAPI description list the read API:
 
 - [API catalog](${ORIGIN}/.well-known/api-catalog)
+- [ARD catalog](${AI_CATALOG_URL}) (same document at ${ARD_URL})
 - [OpenAPI description](${ORIGIN}/api/openapi.yaml)
 - [API docs](${ORIGIN}/api/docs.md)
 - [llms.txt](${ORIGIN}/llms.txt)

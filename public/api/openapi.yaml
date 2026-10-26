@@ -1,13 +1,14 @@
 openapi: 3.0.3
 info:
   title: lucabertelli.consulting discovery
-  version: "1.8.0"
+  version: "1.9.0"
   description: |
     This site does not issue credentials. The documents below are public and unauthenticated. GET, HEAD, and POST /api are the x402 challenge and do not store the body.
     Agent registration is anonymous: /auth.md and the two OAuth discovery documents describe it, and POST to the registration URLs changes nothing.
     The A2A Agent Card is at /.well-known/agent-card.json. POST /a2a/v1 accepts JSON-RPC SendMessage and returns a public message. It does not create a task or store the request. capabilities.extensions lists the AP2 merchant role at the v0.1 specification URI and the v0.1.0 URI. required is false. This card does not take card payment.
     The Agent Skills index is at /.well-known/agent-skills/index.json.
     The MCP server card is at /.well-known/mcp/server-card.json. POST /mcp is Streamable HTTP. The tool read_practice returns the public index. Resources, prompts, and sessions are off.
+    The ARD catalog is at /.well-known/ai-catalog.json and /.well-known/ard.json. specVersion is 1.0. Entries point at the MCP server card, the A2A agent card, the consulting-practice skill, and the OpenAPI documents.
     ACP discovery is at /.well-known/acp.json. POST /acp/checkout_sessions does not create a session, does not take payment, and does not store the body.
     UCP discovery is at /.well-known/ucp. protocol_version is 2026-08-25. POST /ucp/v1/checkout-sessions does not create a session, does not take payment, and does not store the body. ucp.payment_handlers is empty.
     Machine Payment Protocol discovery is GET /openapi.json. POST /api/engagement returns 402, does not settle a charge, and does not store the body. x-payment-info.amount is null because the price is a written proposal.
@@ -260,6 +261,36 @@ paths:
                   capabilities:
                     type: object
                     required: [tools, resources, prompts]
+  /.well-known/ai-catalog.json:
+    get:
+      operationId: getAiCatalog
+      summary: ARD capability catalog
+      description: |
+        Agentic Resource Discovery manifest. The same JSON is served at
+        /.well-known/ard.json. specVersion is 1.0. host names this origin.
+        Each entry has an urn:air identifier, a displayName, a media type,
+        one url, and 2 to 5 representativeQueries.
+      responses:
+        "200":
+          description: AI Catalog JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [specVersion, host, entries]
+  /.well-known/ard.json:
+    get:
+      operationId: getArdManifest
+      summary: ARD manifest
+      description: Same document as /.well-known/ai-catalog.json.
+      responses:
+        "200":
+          description: ARD manifest JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [specVersion, host, entries]
   /.well-known/acp.json:
     get:
       operationId: getAcpDiscovery

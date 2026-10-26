@@ -167,6 +167,9 @@ export async function GET() {
 	lines.push(`- Security contact (RFC 9116): ${url("/.well-known/security.txt")}`);
 	lines.push(`- API catalog (RFC 9727): ${url("/.well-known/api-catalog")}`);
 	lines.push(`- API description: ${url("/api/openapi.yaml")}`);
+	lines.push(
+		`- ARD catalog: ${url("/.well-known/ai-catalog.json")} and ${url("/.well-known/ard.json")}. specVersion is 1.0. Entries point at the MCP server card, the A2A agent card, the consulting-practice skill, and the OpenAPI documents.`,
+	);
 	lines.push(`- Agent registration (auth.md): ${url("/auth.md")}`);
 	lines.push(
 		`- OAuth protected resource (RFC 9728): ${url("/.well-known/oauth-protected-resource")}. The English homepage identifier is ${url("/.well-known/oauth-protected-resource/en/")}. authorization_servers lists https://lucabertelli.cloudflareaccess.com and this origin.`,

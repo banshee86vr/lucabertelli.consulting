@@ -3,6 +3,7 @@ import { acpResponse } from "./discovery/acp";
 import { agentCardResponse } from "./discovery/agent-card";
 import { discoveryResponse, withProtectedResourceChallenge } from "./discovery/agent-auth";
 import { agentSkillsResponse } from "./discovery/agent-skills";
+import { ardResponse } from "./discovery/ard";
 import { mcpResponse } from "./discovery/mcp-server";
 import { mppResponse } from "./discovery/mpp";
 import { ucpResponse } from "./discovery/ucp";
@@ -17,14 +18,16 @@ interface WorkerContext {
 
 export default {
 	async fetch(request: Request, env: unknown, ctx: WorkerContext) {
-		// Answer the Web Bot Auth directory, Agent Skills, the Agent Card, MCP,
-		// ACP, UCP, MPP discovery, the x402 challenge, and Auth.md discovery
-		// before Astro. POST must not fall through to a static file or a 404,
-		// and the body is never stored.
+		// Answer the Web Bot Auth directory, Agent Skills, the ARD catalog, the
+		// Agent Card, MCP, ACP, UCP, MPP discovery, the x402 challenge, and
+		// Auth.md discovery before Astro. POST must not fall through to a
+		// static file or a 404, and the body is never stored.
 		const directory = await directoryResponse(request, env);
 		if (directory) return withProtectedResourceChallenge(request, directory);
 		const skills = await agentSkillsResponse(request);
 		if (skills) return withProtectedResourceChallenge(request, skills);
+		const ard = await ardResponse(request);
+		if (ard) return withProtectedResourceChallenge(request, ard);
 		const agentCard = await agentCardResponse(request);
 		if (agentCard) return withProtectedResourceChallenge(request, agentCard);
 		const mcp = await mcpResponse(request);

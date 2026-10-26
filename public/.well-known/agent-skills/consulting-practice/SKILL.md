@@ -33,6 +33,10 @@ Read https://lucabertelli.consulting/auth.md. Access is anonymous. No account an
 
 `GET` https://lucabertelli.consulting/.well-known/mcp/server-card.json is the MCP server card. `POST` https://lucabertelli.consulting/mcp with `Content-Type: application/json` and `Accept: application/json, text/event-stream` is Streamable HTTP. The tool `read_practice` returns the public index. Resources, prompts, and sessions are off.
 
+## ARD
+
+`GET` https://lucabertelli.consulting/.well-known/ai-catalog.json and `GET` https://lucabertelli.consulting/.well-known/ard.json are the same catalog. `specVersion` is `1.0`. Entries point at the MCP server card, the A2A agent card, this skill, and the OpenAPI documents.
+
 ## ACP
 
 `GET` https://lucabertelli.consulting/.well-known/acp.json is the Agentic Commerce Protocol discovery document. `protocol.name` is `acp`. The REST base is https://lucabertelli.consulting/acp. `POST` https://lucabertelli.consulting/acp/checkout_sessions does not create a session, does not take payment, and does not store the body. Do not send payment credentials.

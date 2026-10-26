@@ -24,6 +24,16 @@ import {
 import { assertMcpResponses, MCP_CARD_PATH, MCP_CARD_URL, MCP_PATH, MCP_URL, mcpResponse } from "../src/discovery/mcp-server.ts";
 import { assertWebMcpTools, WEB_MCP_TOOL_NAMES } from "../src/discovery/webmcp.ts";
 import {
+	AI_CATALOG_PATH,
+	AI_CATALOG_URL,
+	ARD_PATH,
+	ARD_URL,
+	ardResponse,
+	assertArdHttp,
+	assertArdResponses,
+	catalogFiles,
+} from "../src/discovery/ard.ts";
+import {
 	assertWebBotAuthResponses,
 	DIRECTORY_FILE,
 	DIRECTORY_TYPE,
@@ -42,6 +52,8 @@ const CONTENT_TYPES: Record<string, string> = {
 	"/.well-known/agent-card.json": "application/json; charset=utf-8",
 	"/.well-known/agent-skills/index.json": "application/json; charset=utf-8",
 	"/.well-known/agent-skills/consulting-practice/SKILL.md": "text/markdown; charset=utf-8",
+	[AI_CATALOG_PATH]: "application/json; charset=utf-8",
+	[ARD_PATH]: "application/json; charset=utf-8",
 	"/.well-known/mcp/server-card.json": "application/json; charset=utf-8",
 	"/.well-known/acp.json": "application/json; charset=utf-8",
 	"/.well-known/ucp": "application/json; charset=utf-8",
@@ -189,6 +201,12 @@ async function main(): Promise<void> {
 		errors.push(error instanceof Error ? error.message : String(error));
 	}
 	try {
+		assertArdResponses();
+		await assertArdHttp();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
+	try {
 		await assertMcpResponses();
 	} catch (error) {
 		errors.push(error instanceof Error ? error.message : String(error));
@@ -232,6 +250,12 @@ async function main(): Promise<void> {
 	if (!authMarkdown().includes(AGENT_SKILLS_INDEX_URL)) {
 		errors.push("auth.md must link the agent skills index");
 	}
+	if (!authMarkdown().includes(AI_CATALOG_URL) || !authMarkdown().includes(ARD_URL)) {
+		errors.push("auth.md must link both ARD catalog URLs");
+	}
+	if (!skillMarkdown().includes(AI_CATALOG_URL) || !skillMarkdown().includes(ARD_URL)) {
+		errors.push("consulting-practice skill must name both ARD catalog URLs");
+	}
 	if (!authMarkdown().includes(ACP_DOCUMENT_URL)) {
 		errors.push("auth.md must link the ACP discovery document");
 	}
@@ -261,6 +285,13 @@ async function main(): Promise<void> {
 	}
 	const layout = readFileSync(join(import.meta.dirname, "..", "src", "layouts", "Common.astro"), "utf8");
 	if (!layout.includes("startWebMcp")) errors.push("Common.astro does not start WebMCP on page load");
+	if (!layout.includes('rel: "ard"') || !layout.includes('rel: "ai-catalog"') || !layout.includes(AI_CATALOG_PATH)) {
+		errors.push("Common.astro does not link the ARD catalog");
+	}
+	const robots = readFileSync(join(import.meta.dirname, "..", "public", "robots.txt"), "utf8");
+	if (!robots.includes(`Agentmap: ${ARD_URL}`) || !robots.includes(`Agentmap: ${AI_CATALOG_URL}`)) {
+		errors.push("robots.txt is missing an ARD Agentmap directive");
+	}
 	const llmsSource = readFileSync(join(import.meta.dirname, "..", "src", "pages", "llms.txt.ts"), "utf8");
 	if (!WEB_MCP_TOOL_NAMES.every((name) => llmsSource.includes(name))) {
 		errors.push("llms.txt source does not list the WebMCP tools");
@@ -277,6 +308,9 @@ async function main(): Promise<void> {
 	if (!llmsSource.includes(OPENAPI_PATH)) {
 		errors.push("llms.txt source does not list the MPP discovery document");
 	}
+	if (!llmsSource.includes(AI_CATALOG_PATH) || !llmsSource.includes(ARD_PATH)) {
+		errors.push("llms.txt source does not list the ARD catalog");
+	}
 	if (!llmsSource.includes('url("/api")') || !llmsSource.includes("FACILITATOR_URL") || !llmsSource.includes("X402_PAY_TO")) {
 		errors.push("llms.txt source does not list the x402 resource and facilitator");
 	}
@@ -287,6 +321,12 @@ async function main(): Promise<void> {
 	if (skillsRequest !== null) errors.push("discovery handler must not claim the agent skills index");
 	const skillFileRequest = await discoveryResponse(new Request(`${ORIGIN}${SKILL_PATH}`));
 	if (skillFileRequest !== null) errors.push("discovery handler must not claim the skill file");
+	for (const url of [AI_CATALOG_URL, ARD_URL]) {
+		if ((await discoveryResponse(new Request(url))) !== null) {
+			errors.push("discovery handler must not claim the ARD catalog");
+		}
+		if ((await ardResponse(new Request(url))) === null) errors.push(`ARD handler missed ${url}`);
+	}
 	const rpcRequest = await discoveryResponse(new Request(`${ORIGIN}/a2a/v1`));
 	if (rpcRequest !== null) errors.push("discovery handler must not claim the A2A endpoint");
 	const mcpCardRequest = await discoveryResponse(new Request(MCP_CARD_URL));
@@ -329,7 +369,12 @@ async function main(): Promise<void> {
 	}
 
 	const publicRoot = join(import.meta.dirname, "..", "public");
-	const sourceBodies = { ...fileBodies(), ...(await agentSkillFiles()), [DIRECTORY_FILE]: directoryText() };
+	const sourceBodies = {
+		...fileBodies(),
+		...(await agentSkillFiles()),
+		...catalogFiles(),
+		[DIRECTORY_FILE]: directoryText(),
+	};
 	for (const [rel, body] of Object.entries(sourceBodies)) {
 		const full = join(publicRoot, rel);
 		if (!existsSync(full)) {
@@ -343,7 +388,12 @@ async function main(): Promise<void> {
 
 	const root = process.argv[2];
 	if (root) {
-		const bodies = { ...fileBodies(), ...(await agentSkillFiles()), [DIRECTORY_FILE]: directoryText() };
+		const bodies = {
+			...fileBodies(),
+			...(await agentSkillFiles()),
+			...catalogFiles(),
+			[DIRECTORY_FILE]: directoryText(),
+		};
 		for (const [rel, body] of Object.entries(bodies)) {
 			const full = join(root, rel);
 			if (!existsSync(full)) {
@@ -376,6 +426,8 @@ async function main(): Promise<void> {
 			errors.push("llms.txt does not list the x402 resource and facilitator");
 		} else if (!AP2_EXTENSION_URIS.every((uri) => readFileSync(llmsPath, "utf8").includes(uri))) {
 			errors.push("llms.txt does not name both AP2 extension URIs");
+		} else if (!readFileSync(llmsPath, "utf8").includes(AI_CATALOG_URL) || !readFileSync(llmsPath, "utf8").includes(ARD_URL)) {
+			errors.push("llms.txt does not list the ARD catalog");
 		}
 
 		for (const lang of ["en", "it"]) {

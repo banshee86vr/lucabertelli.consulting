@@ -58,6 +58,7 @@ A 401 response carries a `WWW-Authenticate` challenge whose `resource_metadata` 
 The API catalog and the OpenAPI description list the read API:
 
 - [API catalog](https://lucabertelli.consulting/.well-known/api-catalog)
+- [ARD catalog](https://lucabertelli.consulting/.well-known/ai-catalog.json) (same document at https://lucabertelli.consulting/.well-known/ard.json)
 - [OpenAPI description](https://lucabertelli.consulting/api/openapi.yaml)
 - [API docs](https://lucabertelli.consulting/api/docs.md)
 - [llms.txt](https://lucabertelli.consulting/llms.txt)

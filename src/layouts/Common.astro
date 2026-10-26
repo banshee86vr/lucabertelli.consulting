@@ -202,6 +202,18 @@ const jsonLdPayload = JSON.stringify({
 						title: "API catalog",
 					},
 					{
+						rel: "ai-catalog",
+						type: "application/json",
+						href: absoluteUrl("/.well-known/ai-catalog.json"),
+						title: "AI Catalog",
+					},
+					{
+						rel: "ard",
+						type: "application/json",
+						href: absoluteUrl("/.well-known/ard.json"),
+						title: "ARD manifest",
+					},
+					{
 						rel: "describedby",
 						type: "text/markdown",
 						href: absoluteUrl("/auth.md"),

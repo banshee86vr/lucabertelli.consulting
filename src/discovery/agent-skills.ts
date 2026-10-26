@@ -87,6 +87,10 @@ Read ${ORIGIN}/auth.md. Access is anonymous. No account and no credential are re
 
 \`GET\` ${MCP_CARD_URL} is the MCP server card. \`POST\` ${MCP_URL} with \`Content-Type: application/json\` and \`Accept: application/json, text/event-stream\` is Streamable HTTP. The tool \`read_practice\` returns the public index. Resources, prompts, and sessions are off.
 
+## ARD
+
+\`GET\` ${ORIGIN}/.well-known/ai-catalog.json and \`GET\` ${ORIGIN}/.well-known/ard.json are the same catalog. \`specVersion\` is \`1.0\`. Entries point at the MCP server card, the A2A agent card, this skill, and the OpenAPI documents.
+
 ## ACP
 
 \`GET\` ${ACP_DOCUMENT_URL} is the Agentic Commerce Protocol discovery document. \`protocol.name\` is \`acp\`. The REST base is ${ACP_BASE_URL}. \`POST\` ${CHECKOUT_URL} does not create a session, does not take payment, and does not store the body. Do not send payment credentials.

@@ -68,6 +68,10 @@ HTML pages call `document.modelContext.registerTool()` on load, and `navigator.m
 
 ServiceMode HTTPS and SVCB records at `_index._agents.lucabertelli.consulting`, `_a2a._agents.lucabertelli.consulting`, and `_mcp._agents.lucabertelli.consulting` point at `lucabertelli.consulting` on port 443 with `alpn` `h2`. `key65402` is the agent protocol (`a2a` or `mcp`). `key65400` is the capability URL. `key65409` is the well-known path. The zone is signed with DNSSEC.
 
+## ARD catalog
+
+`GET /.well-known/ai-catalog.json` and `GET /.well-known/ard.json` return the same [Agentic Resource Discovery](https://agenticresourcediscovery.org/) catalog. `specVersion` is `1.0`. Entries point at the MCP server card, the A2A agent card, the consulting-practice skill, and the OpenAPI documents. Each entry has 2 to 5 `representativeQueries`. The response is `application/json` and allows any origin to read it.
+
 ## Agent Skills
 
 `GET /.well-known/agent-skills/index.json` is the [Agent Skills Discovery](https://github.com/cloudflare/agent-skills-discovery-rfc) index, schema `https://schemas.agentskills.io/discovery/0.2.0/schema.json`. It lists `consulting-practice` (`type` `skill-md`). The artifact is [SKILL.md](https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md). `digest` is the SHA-256 of that file.

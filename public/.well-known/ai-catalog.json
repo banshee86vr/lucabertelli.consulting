@@ -1,0 +1,70 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Luca Bertelli Consulting",
+    "identifier": "https://lucabertelli.consulting",
+    "documentationUrl": "https://lucabertelli.consulting/llms.txt"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:lucabertelli.consulting:server:practice",
+      "displayName": "Practice MCP server",
+      "type": "application/mcp-server-card+json",
+      "url": "https://lucabertelli.consulting/.well-known/mcp/server-card.json",
+      "description": "Public MCP server card. The read_practice tool returns the practice index. Resources, prompts, and sessions are off.",
+      "representativeQueries": [
+        "what public documents does this consulting practice publish",
+        "list the English service page URLs",
+        "read the practice index"
+      ]
+    },
+    {
+      "identifier": "urn:air:lucabertelli.consulting:a2a:practice",
+      "displayName": "Luca Bertelli Consulting",
+      "type": "application/a2a-agent-card+json",
+      "url": "https://lucabertelli.consulting/.well-known/agent-card.json",
+      "description": "A2A agent card for Luca Bertelli Consulting. SendMessage returns a public message and does not create a task.",
+      "representativeQueries": [
+        "what services does Luca Bertelli Consulting offer",
+        "how do I contact this platform engineering practice",
+        "what does the consulting agent answer"
+      ]
+    },
+    {
+      "identifier": "urn:air:lucabertelli.consulting:skill:consulting-practice",
+      "displayName": "Consulting practice",
+      "type": "application/agent-skills+md",
+      "url": "https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md",
+      "description": "Agent skill that tells a client how to read this public practice site. Access is anonymous.",
+      "representativeQueries": [
+        "how should an agent read this consulting site",
+        "where is the machine-readable index of this practice",
+        "which documents describe anonymous access"
+      ]
+    },
+    {
+      "identifier": "urn:air:lucabertelli.consulting:api:site",
+      "displayName": "Public site API",
+      "type": "application/vnd.oai.openapi+yaml",
+      "url": "https://lucabertelli.consulting/api/openapi.yaml",
+      "description": "OpenAPI description of the public read-only documents on this origin.",
+      "representativeQueries": [
+        "which public HTTP routes does this site document",
+        "show the OpenAPI description of the agent index",
+        "what discovery documents can an agent fetch"
+      ]
+    },
+    {
+      "identifier": "urn:air:lucabertelli.consulting:api:engagement",
+      "displayName": "Engagement OpenAPI",
+      "type": "application/vnd.oai.openapi+json",
+      "url": "https://lucabertelli.consulting/openapi.json",
+      "description": "OpenAPI document for the engagement declaration. amount is null because consulting work is priced in a written proposal.",
+      "representativeQueries": [
+        "does this practice publish a fixed machine charge",
+        "what does the engagement endpoint return",
+        "how is consulting work priced"
+      ]
+    }
+  ]
+}
