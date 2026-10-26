@@ -5,7 +5,7 @@ info:
   description: |
     This site does not expose a write API and does not issue credentials. The resources below are public, unauthenticated, and safe to fetch.
     Agent registration is anonymous: /auth.md and the two OAuth discovery documents describe it, and POST to the registration URLs changes nothing.
-    The A2A Agent Card is at /.well-known/agent-card.json. POST /a2a/v1 accepts JSON-RPC SendMessage and returns a public message. It does not create a task or store the request.
+    The A2A Agent Card is at /.well-known/agent-card.json. POST /a2a/v1 accepts JSON-RPC SendMessage and returns a public message. It does not create a task or store the request. capabilities.extensions lists the AP2 merchant role at the v0.1 specification URI and the v0.1.0 URI. required is false. This practice does not take payment.
     The Agent Skills index is at /.well-known/agent-skills/index.json.
     The MCP server card is at /.well-known/mcp/server-card.json. POST /mcp is Streamable HTTP. The tool read_practice returns the public index. Resources, prompts, and sessions are off.
     ACP discovery is at /.well-known/acp.json. POST /acp/checkout_sessions does not create a session, does not take payment, and does not store the body.
@@ -187,7 +187,8 @@ paths:
         A2A 1.0 Agent Card. name, description, version, supportedInterfaces,
         capabilities, and skills. The preferred interface is JSON-RPC 1.0
         at /a2a/v1. Streaming, push notifications, and the extended card
-        are false.
+        are false. capabilities.extensions lists the AP2 merchant role.
+        required is false. This practice does not take payment.
       responses:
         "200":
           description: Agent Card JSON.

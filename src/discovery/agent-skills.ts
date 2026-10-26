@@ -8,7 +8,7 @@
  */
 
 import { ACP_BASE_URL, ACP_DOCUMENT_URL, CHECKOUT_URL } from "./acp.ts";
-import { ORIGIN } from "./agent-card.ts";
+import { AP2_EXTENSION_URIS, ORIGIN } from "./agent-card.ts";
 import { MCP_CARD_URL, MCP_URL } from "./mcp-server.ts";
 import { DIRECTORY_URL } from "./web-bot-auth.ts";
 
@@ -78,7 +78,7 @@ Read ${ORIGIN}/auth.md. Access is anonymous. No account and no credential are re
 
 ## Agent card
 
-\`GET\` ${ORIGIN}/.well-known/agent-card.json is the A2A 1.0 card. \`POST\` ${ORIGIN}/a2a/v1 with \`Content-Type: application/json\` accepts JSON-RPC \`SendMessage\` and returns a public message. It does not create a task.
+\`GET\` ${ORIGIN}/.well-known/agent-card.json is the A2A 1.0 card. \`POST\` ${ORIGIN}/a2a/v1 with \`Content-Type: application/json\` accepts JSON-RPC \`SendMessage\` and returns a public message. It does not create a task. \`capabilities.extensions\` lists the AP2 merchant role at \`${AP2_EXTENSION_URIS[0]}\` and \`${AP2_EXTENSION_URIS[1]}\`. \`required\` is false. This practice does not take payment. Do not send payment credentials or an \`ap2.mandates\` data part.
 
 ## MCP
 

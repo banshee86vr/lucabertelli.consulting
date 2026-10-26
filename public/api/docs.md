@@ -26,6 +26,8 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 
 `POST /a2a/v1` with `Content-Type: application/json` accepts a JSON-RPC `SendMessage` request. The response is a direct message that points at the public documents. The endpoint does not create a task, store the request, or issue a credential. Streaming, push notifications, and the extended agent card are off.
 
+`capabilities.extensions` lists the [AP2](https://ap2-protocol.org/) v0.1 merchant role twice. The specification identifier is `https://github.com/google-agentic-commerce/ap2/tree/v0.1`. The v0.1.0 identifier is `https://github.com/google-agentic-commerce/AP2/tree/v0.1.0`. `required` is false. This practice does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. A data part whose keys start with `ap2.mandates.` is refused and is not copied into the reply.
+
 ## MCP Server Card
 
 `GET /.well-known/mcp/server-card.json` is the MCP server card. `serverInfo` carries `name` and `version`. `transport.endpoint` is `https://lucabertelli.consulting/mcp` (`streamable-http`). `capabilities` lists tools as on, and resources and prompts as off.

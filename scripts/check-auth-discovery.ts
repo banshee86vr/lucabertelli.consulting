@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { parse } from "dotenv";
 import { SERVICE_KEYS } from "../src/constants/services.ts";
 import { ACP_DOCUMENT_URL, ACP_PATH, assertAcpResponses } from "../src/discovery/acp.ts";
-import { agentCard, agentCardResponse, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
+import { AP2_EXTENSION_URIS, agentCard, agentCardResponse, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
 import { authMarkdown, assertDiscoveryResponses, discoveryResponse, fileBodies, ORIGIN } from "../src/discovery/agent-auth.ts";
 import {
 	AGENT_SKILLS_INDEX_PATH,
@@ -317,6 +317,8 @@ async function main(): Promise<void> {
 			errors.push("llms.txt does not name the DNS-AID index");
 		} else if (!readFileSync(llmsPath, "utf8").includes(ACP_DOCUMENT_URL)) {
 			errors.push("llms.txt does not list the ACP discovery document");
+		} else if (!AP2_EXTENSION_URIS.every((uri) => readFileSync(llmsPath, "utf8").includes(uri))) {
+			errors.push("llms.txt does not name both AP2 extension URIs");
 		}
 
 		for (const lang of ["en", "it"]) {

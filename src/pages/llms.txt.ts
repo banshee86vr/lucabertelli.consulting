@@ -1,6 +1,7 @@
 import { getBlogPosts, getInsights, getServices } from "../content/config";
 import { getCollection } from "astro:content";
 import { API_VERSION } from "../discovery/acp";
+import { AP2_EXTENSION_URIS } from "../discovery/agent-card";
 import { SITE_URL } from "../constants/site";
 import { insightPath, insightsHubPath } from "../constants/insights";
 import { servicePath, servicesHubPath } from "../constants/services";
@@ -172,7 +173,7 @@ export async function GET() {
 		`- OAuth authorization server: ${url("/.well-known/oauth-authorization-server")}`,
 	);
 	lines.push(
-		`- A2A Agent Card: ${url("/.well-known/agent-card.json")}. JSON-RPC 1.0 at ${url("/a2a/v1")} (SendMessage returns a public message and does not create a task).`,
+		`- A2A Agent Card: ${url("/.well-known/agent-card.json")}. JSON-RPC 1.0 at ${url("/a2a/v1")} (SendMessage returns a public message and does not create a task). AP2 extensions: ${AP2_EXTENSION_URIS.join(", ")}. Role merchant. required is false. This practice does not take payment, does not sign a mandate, and does not store payment credentials.`,
 	);
 	lines.push(
 		`- Agent Skills index: ${url("/.well-known/agent-skills/index.json")}. One skill, consulting-practice, at ${url("/.well-known/agent-skills/consulting-practice/SKILL.md")} (type skill-md, digest sha256 of that file).`,

@@ -27,7 +27,7 @@ Read https://lucabertelli.consulting/auth.md. Access is anonymous. No account an
 
 ## Agent card
 
-`GET` https://lucabertelli.consulting/.well-known/agent-card.json is the A2A 1.0 card. `POST` https://lucabertelli.consulting/a2a/v1 with `Content-Type: application/json` accepts JSON-RPC `SendMessage` and returns a public message. It does not create a task.
+`GET` https://lucabertelli.consulting/.well-known/agent-card.json is the A2A 1.0 card. `POST` https://lucabertelli.consulting/a2a/v1 with `Content-Type: application/json` accepts JSON-RPC `SendMessage` and returns a public message. It does not create a task. `capabilities.extensions` lists the AP2 merchant role at `https://github.com/google-agentic-commerce/ap2/tree/v0.1` and `https://github.com/google-agentic-commerce/AP2/tree/v0.1.0`. `required` is false. This practice does not take payment. Do not send payment credentials or an `ap2.mandates` data part.
 
 ## MCP
 

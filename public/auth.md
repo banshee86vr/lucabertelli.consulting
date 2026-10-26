@@ -70,7 +70,7 @@ The API catalog and the OpenAPI description list the read API:
 - [MCP endpoint](https://lucabertelli.consulting/mcp)
 - [ACP discovery](https://lucabertelli.consulting/.well-known/acp.json)
 
-The Agent Card is A2A 1.0. [https://lucabertelli.consulting/a2a/v1](https://lucabertelli.consulting/a2a/v1) accepts `POST` JSON-RPC `SendMessage` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential.
+The Agent Card is A2A 1.0. [https://lucabertelli.consulting/a2a/v1](https://lucabertelli.consulting/a2a/v1) accepts `POST` JSON-RPC `SendMessage` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential. `capabilities.extensions` lists the AP2 merchant role at `https://github.com/google-agentic-commerce/ap2/tree/v0.1` and `https://github.com/google-agentic-commerce/AP2/tree/v0.1.0`. `required` is false. This practice does not take payment, does not sign a mandate, and does not store payment credentials. A data part whose keys start with `ap2.mandates.` is refused.
 
 The MCP server card names a Streamable HTTP endpoint. [https://lucabertelli.consulting/mcp](https://lucabertelli.consulting/mcp) accepts `POST` JSON-RPC. The tool `read_practice` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
 

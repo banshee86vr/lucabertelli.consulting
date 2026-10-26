@@ -4,6 +4,11 @@
  * The card is discovery. `/a2a/v1` speaks JSON-RPC and answers `SendMessage`
  * with a message that points at the public documents. It does not create a
  * task, store the request, or call any URL the caller supplies.
+ *
+ * `capabilities.extensions` lists the AP2 v0.1 merchant role twice: once under
+ * the specification URI and once under the v0.1.0 URI some scanners compare.
+ * `required` is false. A data part whose keys start with `ap2.mandates.` is
+ * refused and is not copied into the reply.
  */
 
 import { SERVICE_KEYS, servicePath } from "../constants/services.ts";
@@ -22,6 +27,15 @@ const CARD_CACHE = "public, max-age=3600";
 const MAX_BODY = 65_536;
 const PROTOCOL_VERSION = "1.0";
 const SUPPORTED_VERSIONS = new Set(["1.0", "1.0.0"]);
+
+/** AP2 v0.1 specification identifier. Clients compare this string. They do not fetch it. */
+export const AP2_SPEC_URI = "https://github.com/google-agentic-commerce/ap2/tree/v0.1";
+/** Identifier named by discovery checks that still look for the v0.1.0 tag form. */
+export const AP2_V010_URI = "https://github.com/google-agentic-commerce/AP2/tree/v0.1.0";
+export const AP2_EXTENSION_URIS = [AP2_SPEC_URI, AP2_V010_URI] as const;
+export const AP2_ROLE = "merchant" as const;
+const AP2_EXTENSION_DESCRIPTION =
+	"Declares the AP2 v0.1 merchant role for discovery. This practice does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. Clients can call SendMessage without this extension.";
 
 interface SkillCopy {
 	name: string;
@@ -107,6 +121,13 @@ export interface AgentSkill {
 	examples: string[];
 }
 
+export interface Ap2Extension {
+	uri: string;
+	description: string;
+	required: boolean;
+	params: { roles: ["merchant"] };
+}
+
 export interface AgentCard {
 	name: string;
 	description: string;
@@ -115,17 +136,31 @@ export interface AgentCard {
 	documentationUrl: string;
 	iconUrl: string;
 	supportedInterfaces: { url: string; protocolBinding: string; protocolVersion: string }[];
-	capabilities: { streaming: boolean; pushNotifications: boolean; extendedAgentCard: boolean };
+	capabilities: {
+		streaming: boolean;
+		pushNotifications: boolean;
+		extendedAgentCard: boolean;
+		extensions: Ap2Extension[];
+	};
 	defaultInputModes: string[];
 	defaultOutputModes: string[];
 	skills: AgentSkill[];
+}
+
+function ap2Extension(uri: (typeof AP2_EXTENSION_URIS)[number]): Ap2Extension {
+	return {
+		uri,
+		description: AP2_EXTENSION_DESCRIPTION,
+		required: false,
+		params: { roles: [AP2_ROLE] },
+	};
 }
 
 export function agentCard(): AgentCard {
 	return {
 		name: "Luca Bertelli Consulting",
 		description:
-			"Public agent card for Luca Bertelli, a freelance Cloud Native and Platform Engineering consultant in Italy and the European Union. It describes this practice's services and points callers at the public documents. It does not run tasks, store messages, or issue credentials.",
+			"Public agent card for Luca Bertelli, a freelance Cloud Native and Platform Engineering consultant in Italy and the European Union. It describes this practice's services and points callers at the public documents. It does not run tasks, store messages, issue credentials, or take payment.",
 		version: "1.0.0",
 		provider: {
 			organization: "Luca Bertelli Consulting",
@@ -144,6 +179,7 @@ export function agentCard(): AgentCard {
 			streaming: false,
 			pushNotifications: false,
 			extendedAgentCard: false,
+			extensions: AP2_EXTENSION_URIS.map(ap2Extension),
 		},
 		defaultInputModes: ["text/plain"],
 		defaultOutputModes: ["text/plain"],
@@ -171,7 +207,7 @@ export function agentCardEtag(body: string): string {
 
 function publicReply(): string {
 	const lines = [
-		"Luca Bertelli Consulting answers with public documents. This endpoint does not create tasks, store messages, or issue credentials.",
+		"Luca Bertelli Consulting answers with public documents. This endpoint does not create tasks, store messages, issue credentials, or take payment. Do not send payment credentials or AP2 mandates.",
 		`Agent card: ${AGENT_CARD_URL}`,
 		`Index: ${ORIGIN}/llms.txt`,
 		`Full text: ${ORIGIN}/llms-full.txt`,
@@ -348,6 +384,13 @@ function contextIdFrom(message: Record<string, unknown>): string {
 	return crypto.randomUUID();
 }
 
+function isAp2MandatePart(part: unknown): boolean {
+	if (part === null || typeof part !== "object" || Array.isArray(part)) return false;
+	const data = (part as Record<string, unknown>).data;
+	if (data === null || typeof data !== "object" || Array.isArray(data)) return false;
+	return Object.keys(data as Record<string, unknown>).some((key) => key.startsWith("ap2.mandates."));
+}
+
 type PartCheck = { ok: true } | { ok: false; field: string; description: string; unsupported: boolean };
 
 function checkPart(part: unknown, index: number): PartCheck {
@@ -429,6 +472,14 @@ function sendMessage(id: string | number | null, params: unknown): RpcErrorBody 
 		return invalidParams(id, "message.parts", "At least one part is required");
 	}
 	for (let index = 0; index < record.parts.length; index += 1) {
+		if (isAp2MandatePart(record.parts[index])) {
+			return a2aError(
+				id,
+				-32004,
+				"This agent does not accept payment mandates or payment credentials",
+				"UNSUPPORTED_OPERATION",
+			);
+		}
 		const checked = checkPart(record.parts[index], index);
 		if (!checked.ok) {
 			if (checked.unsupported) {
@@ -576,6 +627,24 @@ export async function assertAgentCardResponses(): Promise<void> {
 	if (parsed.capabilities.streaming || parsed.capabilities.pushNotifications || parsed.capabilities.extendedAgentCard) {
 		errors.push("capabilities must stay false; this agent does not stream, push, or serve an extended card");
 	}
+	const extensions = parsed.capabilities.extensions;
+	if (!extensions || extensions.length !== AP2_EXTENSION_URIS.length) {
+		errors.push("capabilities.extensions must list both AP2 identifiers");
+	} else {
+		for (let index = 0; index < AP2_EXTENSION_URIS.length; index += 1) {
+			const extension = extensions[index];
+			if (!extension || extension.uri !== AP2_EXTENSION_URIS[index]) {
+				errors.push(`AP2 extension ${index} uri drifted`);
+			}
+			if (!extension || extension.required !== false) errors.push("AP2 extension must not be required");
+			if (!extension || extension.params.roles.length !== 1 || extension.params.roles[0] !== AP2_ROLE) {
+				errors.push("AP2 role must be merchant only");
+			}
+			if (!extension || !extension.description.includes("does not take payment")) {
+				errors.push("AP2 description must say this practice does not take payment");
+			}
+		}
+	}
 	if (parsed.defaultInputModes[0] !== "text/plain" || parsed.defaultOutputModes[0] !== "text/plain") {
 		errors.push("default modes must be text/plain");
 	}
@@ -647,6 +716,9 @@ export async function assertAgentCardResponses(): Promise<void> {
 	else {
 		const text = await send.text();
 		if (text.includes(sentinel)) errors.push("SendMessage echoed the request text");
+		if (!text.includes("does not") || !text.includes("take payment")) {
+			errors.push("SendMessage reply must say this endpoint does not take payment");
+		}
 		const result = JSON.parse(text) as {
 			result?: { message?: { messageId?: string; contextId?: string; role?: string; taskId?: string; parts?: { text?: string }[] }; task?: unknown };
 		};
@@ -775,6 +847,34 @@ export async function assertAgentCardResponses(): Promise<void> {
 	);
 	if (!tooBig || tooBig.status !== 413) errors.push("oversized POST must be 413");
 	else if ((await tooBig.text()).includes("xxxx")) errors.push("413 echoed the request body");
+
+	const mandateToken = "pm_live_super-secret-mandate-token";
+	for (const [id, key] of [
+		[8, "ap2.mandates.PaymentMandate"],
+		[9, "ap2.mandates.CartMandate"],
+	] as const) {
+		const mandate = await agentCardResponse(
+			new Request(A2A_URL, {
+				method: "POST",
+				headers: { "content-type": "application/json" },
+				body: JSON.stringify({
+					jsonrpc: "2.0",
+					id,
+					method: "SendMessage",
+					params: {
+						message: {
+							messageId: "m",
+							role: "ROLE_USER",
+							parts: [{ data: { [key]: { token: mandateToken } } }],
+						},
+					},
+				}),
+			}),
+		);
+		const text = mandate ? await mandate.text() : "";
+		if (!text || JSON.parse(text).error?.code !== -32004) errors.push(`${key} must be refused`);
+		if (text.includes(mandateToken)) errors.push(`${key} echoed the payload`);
+	}
 
 	const ignored = await agentCardResponse(new Request(`${ORIGIN}/en/`));
 	if (ignored !== null) errors.push("agent card handler must ignore site pages");

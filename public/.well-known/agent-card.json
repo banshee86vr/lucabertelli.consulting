@@ -1,6 +1,6 @@
 {
   "name": "Luca Bertelli Consulting",
-  "description": "Public agent card for Luca Bertelli, a freelance Cloud Native and Platform Engineering consultant in Italy and the European Union. It describes this practice's services and points callers at the public documents. It does not run tasks, store messages, or issue credentials.",
+  "description": "Public agent card for Luca Bertelli, a freelance Cloud Native and Platform Engineering consultant in Italy and the European Union. It describes this practice's services and points callers at the public documents. It does not run tasks, store messages, issue credentials, or take payment.",
   "version": "1.0.0",
   "provider": {
     "organization": "Luca Bertelli Consulting",
@@ -18,7 +18,29 @@
   "capabilities": {
     "streaming": false,
     "pushNotifications": false,
-    "extendedAgentCard": false
+    "extendedAgentCard": false,
+    "extensions": [
+      {
+        "uri": "https://github.com/google-agentic-commerce/ap2/tree/v0.1",
+        "description": "Declares the AP2 v0.1 merchant role for discovery. This practice does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. Clients can call SendMessage without this extension.",
+        "required": false,
+        "params": {
+          "roles": [
+            "merchant"
+          ]
+        }
+      },
+      {
+        "uri": "https://github.com/google-agentic-commerce/AP2/tree/v0.1.0",
+        "description": "Declares the AP2 v0.1 merchant role for discovery. This practice does not take payment, does not sign a cart mandate or a payment mandate, and does not store payment credentials. Clients can call SendMessage without this extension.",
+        "required": false,
+        "params": {
+          "roles": [
+            "merchant"
+          ]
+        }
+      }
+    ]
   },
   "defaultInputModes": [
     "text/plain"

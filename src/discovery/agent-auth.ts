@@ -1,5 +1,5 @@
 import { ACP_BASE_URL, ACP_DOCUMENT_URL, ACP_PATH, API_VERSION, CHECKOUT_URL, acpDocumentText } from "./acp.ts";
-import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, agentCardText } from "./agent-card.ts";
+import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, AP2_EXTENSION_URIS, agentCardText } from "./agent-card.ts";
 import { AGENT_SKILLS_INDEX_URL, SKILL_NAME, SKILL_URL } from "./agent-skills.ts";
 import { MCP_CARD_PATH, MCP_CARD_URL, MCP_URL, mcpCardText } from "./mcp-server.ts";
 import { DIRECTORY_URL } from "./web-bot-auth.ts";
@@ -185,7 +185,7 @@ The API catalog and the OpenAPI description list the read API:
 - [MCP endpoint](${MCP_URL})
 - [ACP discovery](${ACP_DOCUMENT_URL})
 
-The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMessage\` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential.
+The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMessage\` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential. \`capabilities.extensions\` lists the AP2 merchant role at \`${AP2_EXTENSION_URIS[0]}\` and \`${AP2_EXTENSION_URIS[1]}\`. \`required\` is false. This practice does not take payment, does not sign a mandate, and does not store payment credentials. A data part whose keys start with \`ap2.mandates.\` is refused.
 
 The MCP server card names a Streamable HTTP endpoint. ${link(MCP_URL)} accepts \`POST\` JSON-RPC. The tool \`read_practice\` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
 
