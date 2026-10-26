@@ -185,6 +185,9 @@ export async function GET() {
 		`- ACP discovery: ${url("/.well-known/acp.json")}. protocol.name is acp, protocol.version is ${API_VERSION}, api_base_url is ${url("/acp")}, transports is rest, capabilities.services is checkout. POST ${url("/acp/checkout_sessions")} does not create a session, does not take payment, and does not store the body.`,
 	);
 	lines.push(
+		`- MPP discovery: ${url("/openapi.json")}. OpenAPI 3.1. x-service-info.categories is developer-tools. POST ${url("/api/engagement")} is the payable operation. x-payment-info.intent is charge, x-payment-info.method is card, x-payment-info.currency is eur, and x-payment-info.amount is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store the body.`,
+	);
+	lines.push(
 		`- Web Bot Auth directory: ${url("/.well-known/http-message-signatures-directory")}. Ed25519 public key. Outbound agent requests carry Signature-Agent and Signature-Input.`,
 	);
 	lines.push(

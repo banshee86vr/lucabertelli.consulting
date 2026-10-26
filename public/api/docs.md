@@ -40,6 +40,12 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 
 `POST /acp/checkout_sessions` with `Content-Type: application/json`, `API-Version: 2026-04-17`, and `Idempotency-Key` returns an error. This seller does not create a checkout session, does not take payment, and does not store the request. Orders, carts, and delegate payment are not offered.
 
+## Machine Payment Protocol
+
+`GET /openapi.json` is the [Machine Payment Protocol](https://mpp.dev) discovery document. It is OpenAPI 3.1. `x-service-info.categories` lists `developer-tools`. `x-service-info.docs` points at the English homepage, this page, and `/llms.txt`.
+
+`POST /api/engagement` is the payable operation. `x-payment-info.intent` is `charge`, `x-payment-info.method` is `card`, `x-payment-info.currency` is `eur`, and `x-payment-info.amount` is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store the body. Do not send a card number or a payment token.
+
 ## Web Bot Auth
 
 `GET /.well-known/http-message-signatures-directory` is the key directory. The body is a JWKS with one Ed25519 public key, served as `application/http-message-signatures-directory+json`. Outbound agent requests from this origin carry `Signature-Agent` and `Signature-Input`.

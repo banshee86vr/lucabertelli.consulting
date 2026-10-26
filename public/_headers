@@ -24,6 +24,10 @@
 /api/openapi.yaml
   Content-Type: application/yaml
 
+/openapi.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=300
+
 /api/docs.md
   Content-Type: text/markdown; charset=utf-8
 

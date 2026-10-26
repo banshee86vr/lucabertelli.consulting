@@ -69,12 +69,15 @@ The API catalog and the OpenAPI description list the read API:
 - [MCP Server Card](https://lucabertelli.consulting/.well-known/mcp/server-card.json)
 - [MCP endpoint](https://lucabertelli.consulting/mcp)
 - [ACP discovery](https://lucabertelli.consulting/.well-known/acp.json)
+- [MPP discovery](https://lucabertelli.consulting/openapi.json)
 
 The Agent Card is A2A 1.0. [https://lucabertelli.consulting/a2a/v1](https://lucabertelli.consulting/a2a/v1) accepts `POST` JSON-RPC `SendMessage` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential. `capabilities.extensions` lists the AP2 merchant role at `https://github.com/google-agentic-commerce/ap2/tree/v0.1` and `https://github.com/google-agentic-commerce/AP2/tree/v0.1.0`. `required` is false. This practice does not take payment, does not sign a mandate, and does not store payment credentials. A data part whose keys start with `ap2.mandates.` is refused.
 
 The MCP server card names a Streamable HTTP endpoint. [https://lucabertelli.consulting/mcp](https://lucabertelli.consulting/mcp) accepts `POST` JSON-RPC. The tool `read_practice` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
 
 ACP discovery is [https://lucabertelli.consulting/.well-known/acp.json](https://lucabertelli.consulting/.well-known/acp.json). `protocol.name` is `acp`. `protocol.version` is `2026-04-17`. The REST base is [https://lucabertelli.consulting/acp](https://lucabertelli.consulting/acp). `transports` lists `rest`. `capabilities.services` lists `checkout`. [https://lucabertelli.consulting/acp/checkout_sessions](https://lucabertelli.consulting/acp/checkout_sessions) answers `POST` with an error. This seller does not create a checkout session, does not take payment, and does not store the request.
+
+Machine Payment Protocol discovery is [https://lucabertelli.consulting/openapi.json](https://lucabertelli.consulting/openapi.json). It is OpenAPI 3.1. `x-service-info.categories` lists `developer-tools`. [https://lucabertelli.consulting/api/engagement](https://lucabertelli.consulting/api/engagement) is the payable operation. `x-payment-info.intent` is `charge`, `x-payment-info.method` is `card`, `x-payment-info.currency` is `eur`, and `x-payment-info.amount` is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store payment credentials. Do not send a card number or a payment token.
 
 HTML pages register WebMCP tools on load: `search_site` reads the public index, `read_page` returns the open page, and `navigate` opens a path on this origin. The call is `document.modelContext.registerTool`, or `navigator.modelContext.registerTool` when that is the browser entry point. An AbortSignal unregisters the tools when the page is discarded.
 

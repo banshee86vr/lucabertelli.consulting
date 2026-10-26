@@ -8,6 +8,7 @@
  */
 
 import { ACP_BASE_URL, ACP_DOCUMENT_URL, CHECKOUT_URL } from "./acp.ts";
+import { ENGAGEMENT_URL, OPENAPI_URL } from "./mpp.ts";
 import { AP2_EXTENSION_URIS, ORIGIN } from "./agent-card.ts";
 import { MCP_CARD_URL, MCP_URL } from "./mcp-server.ts";
 import { DIRECTORY_URL } from "./web-bot-auth.ts";
@@ -87,6 +88,10 @@ Read ${ORIGIN}/auth.md. Access is anonymous. No account and no credential are re
 ## ACP
 
 \`GET\` ${ACP_DOCUMENT_URL} is the Agentic Commerce Protocol discovery document. \`protocol.name\` is \`acp\`. The REST base is ${ACP_BASE_URL}. \`POST\` ${CHECKOUT_URL} does not create a session, does not take payment, and does not store the body. Do not send payment credentials.
+
+## Machine payments
+
+\`GET\` ${OPENAPI_URL} is the Machine Payment Protocol discovery document. \`POST\` ${ENGAGEMENT_URL} returns 402. \`x-payment-info.amount\` is null because the price is a written proposal. This origin does not settle Tempo, Stripe, Lightning, or card payments. Do not send a card number or a payment token. Do not invent a price.
 
 ## Web Bot Auth
 

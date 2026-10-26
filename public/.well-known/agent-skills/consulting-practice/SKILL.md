@@ -37,6 +37,10 @@ Read https://lucabertelli.consulting/auth.md. Access is anonymous. No account an
 
 `GET` https://lucabertelli.consulting/.well-known/acp.json is the Agentic Commerce Protocol discovery document. `protocol.name` is `acp`. The REST base is https://lucabertelli.consulting/acp. `POST` https://lucabertelli.consulting/acp/checkout_sessions does not create a session, does not take payment, and does not store the body. Do not send payment credentials.
 
+## Machine payments
+
+`GET` https://lucabertelli.consulting/openapi.json is the Machine Payment Protocol discovery document. `POST` https://lucabertelli.consulting/api/engagement returns 402. `x-payment-info.amount` is null because the price is a written proposal. This origin does not settle Tempo, Stripe, Lightning, or card payments. Do not send a card number or a payment token. Do not invent a price.
+
 ## Web Bot Auth
 
 Requests sent as this origin's agent include `Signature-Agent` and `Signature-Input`. The public key is https://lucabertelli.consulting/.well-known/http-message-signatures-directory.

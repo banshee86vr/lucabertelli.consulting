@@ -32,6 +32,8 @@ const NON_HTML_ROUTES = new Set([
   "/.well-known/api-catalog",
   "/.well-known/security.txt",
   "/api/openapi.yaml",
+  "/openapi.json",
+  "/api/engagement",
   "/api/docs.md",
   "/api/status.json",
   "/auth.md",

@@ -1,0 +1,91 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Luca Bertelli Consulting",
+    "version": "1.0.0",
+    "description": "Machine Payment Protocol discovery for Luca Bertelli Consulting. POST /api/engagement is the payable operation. amount is null because the price is a written proposal. This origin does not settle the charge."
+  },
+  "servers": [
+    {
+      "url": "https://lucabertelli.consulting"
+    }
+  ],
+  "x-service-info": {
+    "categories": [
+      "developer-tools"
+    ],
+    "docs": {
+      "homepage": "https://lucabertelli.consulting/en/",
+      "apiReference": "https://lucabertelli.consulting/api/docs.md",
+      "llms": "https://lucabertelli.consulting/llms.txt"
+    }
+  },
+  "paths": {
+    "/api/engagement": {
+      "post": {
+        "operationId": "postEngagement",
+        "summary": "Request a consulting engagement",
+        "description": "Payable operation. The body is discarded and is not stored. The response is 402. Do not send a card number or a payment token.",
+        "x-payment-info": {
+          "intent": "charge",
+          "method": "card",
+          "amount": null,
+          "currency": "eur",
+          "description": "The engagement price is a written proposal in EUR. amount is null because this endpoint does not publish a fixed charge. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store payment credentials."
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "maxLength": 4000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "402": {
+            "description": "Payment Required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "error",
+                    "message"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "const": "payment_not_settled"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Origin is local, private, or not https."
+          },
+          "413": {
+            "description": "Request body is larger than 64 KiB."
+          },
+          "415": {
+            "description": "Content-Type is not application/json."
+          }
+        }
+      }
+    }
+  }
+}

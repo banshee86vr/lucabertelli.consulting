@@ -1,4 +1,5 @@
 import { ACP_BASE_URL, ACP_DOCUMENT_URL, ACP_PATH, API_VERSION, CHECKOUT_URL, acpDocumentText } from "./acp.ts";
+import { ENGAGEMENT_URL, OPENAPI_FILE, OPENAPI_URL, openApiText } from "./mpp.ts";
 import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, AP2_EXTENSION_URIS, agentCardText } from "./agent-card.ts";
 import { AGENT_SKILLS_INDEX_URL, SKILL_NAME, SKILL_URL } from "./agent-skills.ts";
 import { MCP_CARD_PATH, MCP_CARD_URL, MCP_URL, mcpCardText } from "./mcp-server.ts";
@@ -184,12 +185,15 @@ The API catalog and the OpenAPI description list the read API:
 - [MCP Server Card](${MCP_CARD_URL})
 - [MCP endpoint](${MCP_URL})
 - [ACP discovery](${ACP_DOCUMENT_URL})
+- [MPP discovery](${OPENAPI_URL})
 
 The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMessage\` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential. \`capabilities.extensions\` lists the AP2 merchant role at \`${AP2_EXTENSION_URIS[0]}\` and \`${AP2_EXTENSION_URIS[1]}\`. \`required\` is false. This practice does not take payment, does not sign a mandate, and does not store payment credentials. A data part whose keys start with \`ap2.mandates.\` is refused.
 
 The MCP server card names a Streamable HTTP endpoint. ${link(MCP_URL)} accepts \`POST\` JSON-RPC. The tool \`read_practice\` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
 
 ACP discovery is ${link(ACP_DOCUMENT_URL)}. \`protocol.name\` is \`acp\`. \`protocol.version\` is \`${API_VERSION}\`. The REST base is ${link(ACP_BASE_URL)}. \`transports\` lists \`rest\`. \`capabilities.services\` lists \`checkout\`. ${link(CHECKOUT_URL)} answers \`POST\` with an error. This seller does not create a checkout session, does not take payment, and does not store the request.
+
+Machine Payment Protocol discovery is ${link(OPENAPI_URL)}. It is OpenAPI 3.1. \`x-service-info.categories\` lists \`developer-tools\`. ${link(ENGAGEMENT_URL)} is the payable operation. \`x-payment-info.intent\` is \`charge\`, \`x-payment-info.method\` is \`card\`, \`x-payment-info.currency\` is \`eur\`, and \`x-payment-info.amount\` is null because the price is a written proposal. The response is 402. This origin does not settle Tempo, Stripe, Lightning, or card payments and does not store payment credentials. Do not send a card number or a payment token.
 
 HTML pages register WebMCP tools on load: \`search_site\` reads the public index, \`read_page\` returns the open page, and \`navigate\` opens a path on this origin. The call is \`document.modelContext.registerTool\`, or \`navigator.modelContext.registerTool\` when that is the browser entry point. An AbortSignal unregisters the tools when the page is discarded.
 
@@ -289,6 +293,7 @@ export function fileBodies(): Record<string, string> {
 		[AGENT_CARD_PATH.replace(/^\//, "")]: agentCardText(),
 		[MCP_CARD_PATH.replace(/^\//, "")]: mcpCardText(),
 		[ACP_PATH.replace(/^\//, "")]: acpDocumentText(),
+		[OPENAPI_FILE]: openApiText(),
 		"agent/auth/register": jsonText(registrationDocument()),
 		"agent/auth/claim": jsonText(claimDocument()),
 		"agent/auth/revoke": jsonText(revocationDocument()),

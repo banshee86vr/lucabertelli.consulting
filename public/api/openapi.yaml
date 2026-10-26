@@ -9,6 +9,7 @@ info:
     The Agent Skills index is at /.well-known/agent-skills/index.json.
     The MCP server card is at /.well-known/mcp/server-card.json. POST /mcp is Streamable HTTP. The tool read_practice returns the public index. Resources, prompts, and sessions are off.
     ACP discovery is at /.well-known/acp.json. POST /acp/checkout_sessions does not create a session, does not take payment, and does not store the body.
+    Machine Payment Protocol discovery is GET /openapi.json. POST /api/engagement returns 402, does not settle a charge, and does not store the body. x-payment-info.amount is null because the price is a written proposal.
     The Web Bot Auth directory is at /.well-known/http-message-signatures-directory.
 servers:
   - url: https://lucabertelli.consulting

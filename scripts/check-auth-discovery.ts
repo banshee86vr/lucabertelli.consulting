@@ -7,6 +7,7 @@ import { join } from "node:path";
 import { parse } from "dotenv";
 import { SERVICE_KEYS } from "../src/constants/services.ts";
 import { ACP_DOCUMENT_URL, ACP_PATH, assertAcpResponses } from "../src/discovery/acp.ts";
+import { ENGAGEMENT_URL, OPENAPI_PATH, OPENAPI_URL, assertMppResponses } from "../src/discovery/mpp.ts";
 import { AP2_EXTENSION_URIS, agentCard, agentCardResponse, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
 import { authMarkdown, assertDiscoveryResponses, discoveryResponse, fileBodies, ORIGIN } from "../src/discovery/agent-auth.ts";
 import {
@@ -41,6 +42,7 @@ const CONTENT_TYPES: Record<string, string> = {
 	"/.well-known/agent-skills/consulting-practice/SKILL.md": "text/markdown; charset=utf-8",
 	"/.well-known/mcp/server-card.json": "application/json; charset=utf-8",
 	"/.well-known/acp.json": "application/json; charset=utf-8",
+	"/openapi.json": "application/json; charset=utf-8",
 	"/.well-known/http-message-signatures-directory": "application/http-message-signatures-directory+json",
 	"/agent/auth/register": "application/json; charset=utf-8",
 	"/agent/auth/claim": "application/json; charset=utf-8",
@@ -194,6 +196,11 @@ async function main(): Promise<void> {
 		errors.push(error instanceof Error ? error.message : String(error));
 	}
 	try {
+		await assertMppResponses();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
+	try {
 		await assertWebBotAuthResponses();
 	} catch (error) {
 		errors.push(error instanceof Error ? error.message : String(error));
@@ -215,8 +222,14 @@ async function main(): Promise<void> {
 	if (!authMarkdown().includes(ACP_DOCUMENT_URL)) {
 		errors.push("auth.md must link the ACP discovery document");
 	}
+	if (!authMarkdown().includes(OPENAPI_URL)) {
+		errors.push("auth.md must link the MPP discovery document");
+	}
 	if (!skillMarkdown().includes(ACP_DOCUMENT_URL)) {
 		errors.push("consulting-practice skill must name the ACP discovery document");
+	}
+	if (!skillMarkdown().includes(ENGAGEMENT_URL)) {
+		errors.push("consulting-practice skill must name the MPP engagement endpoint");
 	}
 	if (!authMarkdown().includes("_index._agents.")) {
 		errors.push("auth.md must name the DNS-AID index");
@@ -232,6 +245,9 @@ async function main(): Promise<void> {
 	}
 	if (!llmsSource.includes(ACP_PATH)) {
 		errors.push("llms.txt source does not list the ACP discovery document");
+	}
+	if (!llmsSource.includes(OPENAPI_PATH)) {
+		errors.push("llms.txt source does not list the MPP discovery document");
 	}
 
 	const cardRequest = await discoveryResponse(new Request(`${ORIGIN}/.well-known/agent-card.json`));
@@ -250,6 +266,8 @@ async function main(): Promise<void> {
 	if (directoryClaim !== null) errors.push("discovery handler must not claim the Web Bot Auth directory");
 	const acpClaim = await discoveryResponse(new Request(ACP_DOCUMENT_URL));
 	if (acpClaim !== null) errors.push("discovery handler must not claim the ACP document");
+	const mppClaim = await discoveryResponse(new Request(OPENAPI_URL));
+	if (mppClaim !== null) errors.push("discovery handler must not claim the MPP document");
 	for (const url of [MCP_CARD_URL, MCP_URL]) {
 		if ((await agentCardResponse(new Request(url))) !== null) errors.push(`agent card handler claimed ${url}`);
 		if ((await agentSkillsResponse(new Request(url))) !== null) errors.push(`agent skills handler claimed ${url}`);
@@ -317,6 +335,8 @@ async function main(): Promise<void> {
 			errors.push("llms.txt does not name the DNS-AID index");
 		} else if (!readFileSync(llmsPath, "utf8").includes(ACP_DOCUMENT_URL)) {
 			errors.push("llms.txt does not list the ACP discovery document");
+		} else if (!readFileSync(llmsPath, "utf8").includes(OPENAPI_URL)) {
+			errors.push("llms.txt does not list the MPP discovery document");
 		} else if (!AP2_EXTENSION_URIS.every((uri) => readFileSync(llmsPath, "utf8").includes(uri))) {
 			errors.push("llms.txt does not name both AP2 extension URIs");
 		}

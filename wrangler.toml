@@ -27,6 +27,9 @@ id = "1b5008e8ee4249bf87131391a7045703"
 # The ACP discovery document is a static file. run_worker_first keeps that
 # path and /acp on the Worker, including POST. The document must not answer
 # checkout, and checkout must not store the body.
+# The MPP OpenAPI document is a static file. run_worker_first keeps
+# /openapi.json and /api/engagement on the Worker, including POST. The
+# engagement route must not store the body.
 # Other static files stay on the asset path.
 [assets]
 binding = "ASSETS"
@@ -46,6 +49,8 @@ run_worker_first = [
   "/.well-known/mcp/server-card.json",
   "/.well-known/http-message-signatures-directory",
   "/.well-known/acp.json",
+  "/openapi.json",
+  "/api/engagement",
   "/mcp",
   "/acp",
   "/acp/*",
