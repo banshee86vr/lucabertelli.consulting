@@ -21,7 +21,7 @@ Use this after deploy to verify the implementation and track reachability over t
 | IndexNow key | `/4601f867d99a0cb5aeda2cdbaf7f9321.txt` | Ownership token for `pnpm run submit:indexnow` |
 | Security contact | `/.well-known/security.txt` | RFC 9116; `verify:seo` fails when `Expires` is within 30 days, bump it yearly |
 | API catalog | `/.well-known/api-catalog` | RFC 9727 linkset. Spec at `/api/openapi.yaml`, docs at `/api/docs.md`, status at `/api/status.json`. `describedby` points at `/auth.md` |
-| Agent registration | `/auth.md` | Public read-only. Anonymous access, no credential. Protected resource metadata at `/.well-known/oauth-protected-resource`. Authorization server metadata at `/.well-known/oauth-authorization-server` (`issuer` is this origin). `GET` and `POST` `/agent/auth/register`, `/agent/auth/claim`, and `/agent/auth/revoke` describe that and change nothing |
+| Agent registration | `/auth.md` | Public read-only. Anonymous access, no credential. Protected resource metadata at `/.well-known/oauth-protected-resource` and, for the English homepage, `/.well-known/oauth-protected-resource/en/`. `authorization_servers` lists `https://lucabertelli.cloudflareaccess.com` and this origin. Authorization server metadata at `/.well-known/oauth-authorization-server` (`issuer` is this origin). `GET` and `POST` `/agent/auth/register`, `/agent/auth/claim`, and `/agent/auth/revoke` describe that and change nothing |
 
 Current inventory: **76 indexable HTML pages**. Re-confirm with
 `pnpm run verify:seo` after a fresh build whenever content or routes change.
@@ -56,9 +56,7 @@ Both audiences enter through the same door, so the work is shared:
 - The homepage response (`/`, `/en/`, `/it/`) sends an RFC 8288 `Link` header
   with `api-catalog`, `service-desc`, `service-doc`, and `describedby`.
   That header's `describedby` target is `/llms.txt`.
-- `/auth.md` tells agents that access is anonymous. OAuth protected resource
-  metadata and authorization server metadata are published for that discovery
-  chain. No credential is issued.
+- `/auth.md` tells agents that access is anonymous. OAuth protected resource metadata and authorization server metadata are published for that discovery chain. The English homepage resource identifier is `/.well-known/oauth-protected-resource/en/`. `authorization_servers` lists Cloudflare Access and this origin. No credential is issued.
 - `lastmod` in the sitemap is derived from content dates (frontmatter
   `date`/`updated`, otherwise the last commit touching the source), not from
   the build time, so engines can trust it when deciding what to recrawl.
@@ -78,7 +76,7 @@ Both audiences enter through the same door, so the work is shared:
 10. **security.txt**: `/.well-known/security.txt` must return 200 as `text/plain` with a future `Expires`. Check it at [securitytxt.org](https://securitytxt.org/) after deploy. For a site selling CRA vulnerability-handling work, its absence would be noticed.
 10b. **API catalog**: `/.well-known/api-catalog` must return 200 as `application/linkset+json`. The `service-desc`, `service-doc`, and `status` links must themselves return 200. The catalog's `describedby` link must return `/auth.md`.
 10c. **Homepage Link header**: `curl -sI https://lucabertelli.consulting/en/` (and the `/` redirect, and `/it/`) includes `rel="api-catalog"`, `rel="service-desc"`, `rel="service-doc"`, and `rel="describedby"`. That header's `describedby` target is `/llms.txt`.
-10d. **auth.md**: `/auth.md` must return 200 as `text/markdown` and the H1 must contain `auth.md`. `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server` must return 200 as `application/json`. The authorization server `issuer` is `https://lucabertelli.consulting` and matches `authorization_servers`. `agent_auth` describes anonymous access. `GET` and `POST` `/agent/auth/register` return the same JSON and do not create an account.
+10d. **auth.md**: `/auth.md` must return 200 as `text/markdown` and the H1 must contain `auth.md`. `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server` must return 200 as `application/json`. `/.well-known/oauth-protected-resource/en/` must return 200 with `resource` `https://lucabertelli.consulting/en/`. `authorization_servers` lists `https://lucabertelli.cloudflareaccess.com` first and this origin second. The authorization server `issuer` is `https://lucabertelli.consulting`. `agent_auth` describes anonymous access. `GET` and `POST` `/agent/auth/register` return the same JSON and do not create an account. A 401 includes `WWW-Authenticate` with `resource_metadata`. Public pages stay 200.
 11. **Assistant check**: ask ChatGPT (with search), Perplexity and Google AI mode `who is Luca Bertelli consultant` and `consulente cyber resilience act italia`; note whether the site is cited and which page. Repeat monthly; this is the only direct signal of AI reachability.
 
 ## Search Console (recommended)

@@ -22,7 +22,7 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 
 ## Agent registration
 
-Access is anonymous. Read these in order:
+Access is anonymous. Protected resource metadata lists Cloudflare Access (`https://lucabertelli.cloudflareaccess.com`) and this origin. The English homepage identifier is published at `/.well-known/oauth-protected-resource/en/`. Read these in order:
 
 - [auth.md](https://lucabertelli.consulting/auth.md)
 - [Protected Resource Metadata](https://lucabertelli.consulting/.well-known/oauth-protected-resource)

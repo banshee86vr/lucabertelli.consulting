@@ -38,16 +38,20 @@ This origin stores no agent credential. [https://lucabertelli.consulting/agent/a
 
 ## Discovery
 
-Read these two documents in order. Both are public.
+Read these documents. All of them are public.
 
-1. Protected Resource Metadata: [https://lucabertelli.consulting/.well-known/oauth-protected-resource](https://lucabertelli.consulting/.well-known/oauth-protected-resource)
-2. Authorization Server metadata: [https://lucabertelli.consulting/.well-known/oauth-authorization-server](https://lucabertelli.consulting/.well-known/oauth-authorization-server)
+1. Protected Resource Metadata for this origin: [https://lucabertelli.consulting/.well-known/oauth-protected-resource](https://lucabertelli.consulting/.well-known/oauth-protected-resource)
+2. Protected Resource Metadata for the English homepage: [https://lucabertelli.consulting/.well-known/oauth-protected-resource/en/](https://lucabertelli.consulting/.well-known/oauth-protected-resource/en/)
+3. Authorization Server metadata for anonymous access: [https://lucabertelli.consulting/.well-known/oauth-authorization-server](https://lucabertelli.consulting/.well-known/oauth-authorization-server)
+4. Cloudflare Access authorization server metadata: [https://lucabertelli.cloudflareaccess.com/.well-known/oauth-authorization-server](https://lucabertelli.cloudflareaccess.com/.well-known/oauth-authorization-server)
 
-`issuer` in the authorization server metadata is `https://lucabertelli.consulting`. That string is also the single entry in `authorization_servers`. The `agent_auth` block carries `skill` (this file), `register_uri`, `claim_uri`, `revocation_uri`, and the anonymous method above. `identity_endpoint` and `claim_endpoint` repeat `register_uri` and `claim_uri` for clients that look up those names.
+`authorization_servers` lists Cloudflare Access first (`https://lucabertelli.cloudflareaccess.com`) and this origin second. Access is the OAuth authorization server. This origin does not mint tokens. Its authorization server metadata describes anonymous access, and its `issuer` is `https://lucabertelli.consulting`, the second entry in `authorization_servers`. The `agent_auth` block carries `skill` (this file), `register_uri`, `claim_uri`, `revocation_uri`, and the anonymous method above. `identity_endpoint` and `claim_endpoint` repeat `register_uri` and `claim_uri` for clients that look up those names.
 
-`grant_types_supported` is an empty list. There is no authorization endpoint and no token endpoint.
+`grant_types_supported` on this origin is an empty list. There is no authorization endpoint and no token endpoint here. Access publishes those endpoints on its own issuer.
 
-This origin does not answer 401, so there is no `WWW-Authenticate` challenge to follow. The two links above are how you find this file.
+The apex redirects to the English homepage, so clients that start at [https://lucabertelli.consulting](https://lucabertelli.consulting) use [https://lucabertelli.consulting/en/](https://lucabertelli.consulting/en/) as the resource identifier. That identifier's metadata is the second link above, and its `resource` value is the identifier itself. The same insertion applies to any other path on this host.
+
+A 401 response carries a `WWW-Authenticate` challenge whose `resource_metadata` parameter is the metadata URL for the resource that was requested. Public pages answer 200 and do not send that challenge.
 
 ## Public documents
 

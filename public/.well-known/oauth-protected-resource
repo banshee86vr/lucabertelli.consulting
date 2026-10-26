@@ -3,6 +3,7 @@
   "resource_name": "Luca Bertelli Consulting",
   "resource_logo_uri": "https://lucabertelli.consulting/logo.png",
   "authorization_servers": [
+    "https://lucabertelli.cloudflareaccess.com",
     "https://lucabertelli.consulting"
   ],
   "scopes_supported": [

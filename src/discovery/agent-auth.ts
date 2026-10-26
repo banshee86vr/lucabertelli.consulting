@@ -9,6 +9,12 @@
 
 export const ORIGIN = "https://lucabertelli.consulting";
 
+/**
+ * Cloudflare Access issuer for this account. Its OAuth authorization server
+ * metadata is `/.well-known/oauth-authorization-server` on this host.
+ */
+export const ACCESS_ISSUER = "https://lucabertelli.cloudflareaccess.com";
+
 export const PATHS = {
 	authMd: "/auth.md",
 	protectedResource: "/.well-known/oauth-protected-resource",
@@ -65,12 +71,14 @@ export function agentAuthBlock(): AgentAuthBlock {
 	};
 }
 
-export function protectedResourceMetadata() {
+export function protectedResourceMetadata(resource = ORIGIN) {
 	return {
-		resource: ORIGIN,
+		resource,
 		resource_name: "Luca Bertelli Consulting",
 		resource_logo_uri: `${ORIGIN}/logo.png`,
-		authorization_servers: [ORIGIN],
+		// Access is the OAuth issuer. This origin stays listed so the anonymous
+		// Auth.md issuer is one of the servers the protected resource names.
+		authorization_servers: [ACCESS_ISSUER, ORIGIN],
 		scopes_supported: [SCOPE],
 		bearer_methods_supported: ["header"],
 		resource_documentation: skillUrl,
@@ -138,16 +146,20 @@ This origin stores no agent credential. ${link(revocationUri)} answers \`GET\` a
 
 ## Discovery
 
-Read these two documents in order. Both are public.
+Read these documents. All of them are public.
 
-1. Protected Resource Metadata: ${link(`${ORIGIN}${PATHS.protectedResource}`)}
-2. Authorization Server metadata: ${link(`${ORIGIN}${PATHS.authorizationServer}`)}
+1. Protected Resource Metadata for this origin: ${link(`${ORIGIN}${PATHS.protectedResource}`)}
+2. Protected Resource Metadata for the English homepage: ${link(`${ORIGIN}${PATHS.protectedResource}/en/`)}
+3. Authorization Server metadata for anonymous access: ${link(`${ORIGIN}${PATHS.authorizationServer}`)}
+4. Cloudflare Access authorization server metadata: ${link(`${ACCESS_ISSUER}/.well-known/oauth-authorization-server`)}
 
-\`issuer\` in the authorization server metadata is \`${ORIGIN}\`. That string is also the single entry in \`authorization_servers\`. The \`agent_auth\` block carries \`skill\` (this file), \`register_uri\`, \`claim_uri\`, \`revocation_uri\`, and the anonymous method above. \`identity_endpoint\` and \`claim_endpoint\` repeat \`register_uri\` and \`claim_uri\` for clients that look up those names.
+\`authorization_servers\` lists Cloudflare Access first (\`${ACCESS_ISSUER}\`) and this origin second. Access is the OAuth authorization server. This origin does not mint tokens. Its authorization server metadata describes anonymous access, and its \`issuer\` is \`${ORIGIN}\`, the second entry in \`authorization_servers\`. The \`agent_auth\` block carries \`skill\` (this file), \`register_uri\`, \`claim_uri\`, \`revocation_uri\`, and the anonymous method above. \`identity_endpoint\` and \`claim_endpoint\` repeat \`register_uri\` and \`claim_uri\` for clients that look up those names.
 
-\`grant_types_supported\` is an empty list. There is no authorization endpoint and no token endpoint.
+\`grant_types_supported\` on this origin is an empty list. There is no authorization endpoint and no token endpoint here. Access publishes those endpoints on its own issuer.
 
-This origin does not answer 401, so there is no \`WWW-Authenticate\` challenge to follow. The two links above are how you find this file.
+The apex redirects to the English homepage, so clients that start at ${link(ORIGIN)} use ${link(`${ORIGIN}/en/`)} as the resource identifier. That identifier's metadata is the second link above, and its \`resource\` value is the identifier itself. The same insertion applies to any other path on this host.
+
+A 401 response carries a \`WWW-Authenticate\` challenge whose \`resource_metadata\` parameter is the metadata URL for the resource that was requested. Public pages answer 200 and do not send that challenge.
 
 ## Public documents
 
@@ -241,7 +253,7 @@ export function jsonText(value: unknown): string {
 	return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-/** Paths relative to `public/` and `dist/client/`. `/agent/auth` is worker-only. */
+/** Paths relative to `public/` and `dist/client/`. `/agent/auth` and path-suffixed protected resource metadata are worker-only. */
 export function fileBodies(): Record<string, string> {
 	return {
 		"auth.md": authMarkdown(),
@@ -282,7 +294,6 @@ function routes(): Record<string, Route> {
 	});
 	return {
 		[PATHS.authMd]: document(files["auth.md"]),
-		[PATHS.protectedResource]: jsonDocument(files[".well-known/oauth-protected-resource"]),
 		[PATHS.authorizationServer]: jsonDocument(files[".well-known/oauth-authorization-server"]),
 		[PATHS.registerAlias]: agent(files["agent/auth/register"]),
 		[PATHS.register]: agent(files["agent/auth/register"]),
@@ -294,6 +305,43 @@ function routes(): Record<string, Route> {
 function normalizePath(pathname: string): string {
 	if (pathname.length > 1 && pathname.endsWith("/")) return pathname.slice(0, -1);
 	return pathname;
+}
+
+/**
+ * RFC 9728 inserts `/.well-known/oauth-protected-resource` between the host and
+ * the resource path. The returned identifier keeps the request path and query,
+ * including a trailing slash.
+ */
+export function resourceIdentifierFromMetadataPath(url: URL): string | null {
+	const { pathname, search } = url;
+	const prefix = PATHS.protectedResource;
+	if (pathname !== prefix && !pathname.startsWith(`${prefix}/`)) return null;
+	const suffix = pathname.slice(prefix.length);
+	let decoded: string;
+	try {
+		decoded = decodeURIComponent(suffix);
+	} catch {
+		return null;
+	}
+	if (decoded.split("/").some((segment) => segment === "." || segment === "..")) return null;
+	if (/[\u0000-\u001f\u007f\\]/.test(decoded)) return null;
+	return `${ORIGIN}${suffix}${search}`;
+}
+
+/** Metadata URL for a resource identifier, per RFC 9728 section 3. */
+export function protectedResourceMetadataUrl(resourceUrl: string): string {
+	const url = new URL(resourceUrl);
+	const suffix = url.pathname === "/" ? "" : url.pathname;
+	return `${url.origin}${PATHS.protectedResource}${suffix}${url.search}`;
+}
+
+function protectedResourceRoute(resource: string): Route {
+	return {
+		body: jsonText(protectedResourceMetadata(resource)),
+		contentType: JSON_TYPE,
+		allow: DOCUMENT_ALLOW,
+		post: false,
+	};
 }
 
 async function discardBody(request: Request): Promise<void> {
@@ -310,8 +358,9 @@ async function discardBody(request: Request): Promise<void> {
  * The request body is never read.
  */
 export async function discoveryResponse(request: Request): Promise<Response | null> {
-	const path = normalizePath(new URL(request.url).pathname);
-	const route = routes()[path];
+	const url = new URL(request.url);
+	const resource = resourceIdentifierFromMetadataPath(url);
+	const route = resource === null ? routes()[normalizePath(url.pathname)] : protectedResourceRoute(resource);
 	if (!route) return null;
 
 	await discardBody(request);
@@ -346,6 +395,25 @@ export async function discoveryResponse(request: Request): Promise<Response | nu
 	return new Response(route.body, { status: 200, headers });
 }
 
+/**
+ * On 401, add the RFC 9728 `resource_metadata` challenge for the requested URL.
+ * Other statuses are returned as they are. Public pages do not use this.
+ */
+export function withProtectedResourceChallenge(request: Request, response: Response): Response {
+	if (response.status !== 401) return response;
+	const existing = response.headers.get("WWW-Authenticate");
+	if (existing?.includes("resource_metadata=")) return response;
+	const headers = new Headers(response.headers);
+	const challenge = `Bearer resource_metadata="${protectedResourceMetadataUrl(request.url)}"`;
+	if (existing) headers.append("WWW-Authenticate", challenge);
+	else headers.set("WWW-Authenticate", challenge);
+	return new Response(response.body, {
+		status: response.status,
+		statusText: response.statusText,
+		headers,
+	});
+}
+
 export function assertDiscovery(): void {
 	const errors: string[] = [];
 	const markdown = authMarkdown();
@@ -357,8 +425,10 @@ export function assertDiscovery(): void {
 	if (h1Count !== 1) errors.push(`auth.md has ${h1Count} H1 headings`);
 
 	const prmUrl = `${ORIGIN}${PATHS.protectedResource}`;
+	const englishPrmUrl = `${prmUrl}/en/`;
 	const asUrl = `${ORIGIN}${PATHS.authorizationServer}`;
-	for (const url of [prmUrl, asUrl, registerUri, claimUri, revocationUri]) {
+	const accessMetadataUrl = `${ACCESS_ISSUER}/.well-known/oauth-authorization-server`;
+	for (const url of [prmUrl, englishPrmUrl, asUrl, accessMetadataUrl, registerUri, claimUri, revocationUri]) {
 		if (!markdown.includes(`](${url})`)) {
 			errors.push(`auth.md is missing an absolute markdown link to ${url}`);
 		}
@@ -369,8 +439,15 @@ export function assertDiscovery(): void {
 
 	const prm = protectedResourceMetadata();
 	if (prm.resource !== ORIGIN) errors.push("PRM resource must be the site origin");
-	if (prm.authorization_servers.length !== 1 || prm.authorization_servers[0] !== ORIGIN) {
-		errors.push("PRM authorization_servers must be the site origin");
+	if (prm.authorization_servers[0] !== ACCESS_ISSUER || !prm.authorization_servers.includes(ORIGIN)) {
+		errors.push("PRM authorization_servers must list Cloudflare Access, then this origin");
+	}
+	if (prm.authorization_servers.length !== 2) {
+		errors.push("PRM authorization_servers must be Access and this origin");
+	}
+	const englishResource = `${ORIGIN}/en/`;
+	if (protectedResourceMetadata(englishResource).resource !== englishResource) {
+		errors.push("path-specific PRM must echo the resource identifier");
 	}
 	if (!prm.scopes_supported.includes(SCOPE)) errors.push("PRM scopes_supported is missing read");
 	if (!prm.bearer_methods_supported.includes("header")) {
@@ -510,6 +587,55 @@ export async function assertDiscoveryResponses(): Promise<void> {
 
 	const slashed = await discoveryResponse(new Request(`${registerUri}/`));
 	if (!slashed || slashed.status !== 200) errors.push("trailing slash on register must still answer");
+
+	const englishResource = `${ORIGIN}/en/`;
+	const englishMetadata = `${ORIGIN}${PATHS.protectedResource}/en/`;
+	const english = await discoveryResponse(new Request(englishMetadata));
+	if (!english || english.status !== 200) errors.push("GET English homepage PRM must be 200");
+	else {
+		if (english.headers.get("content-type") !== JSON_TYPE) {
+			errors.push("English homepage PRM content-type");
+		}
+		const body = JSON.parse(await english.text()) as ReturnType<typeof protectedResourceMetadata>;
+		if (body.resource !== englishResource) {
+			errors.push(`English homepage PRM resource is ${body.resource}`);
+		}
+		if (body.authorization_servers[0] !== ACCESS_ISSUER || !body.authorization_servers.includes(ORIGIN)) {
+			errors.push("English homepage PRM authorization_servers drifted");
+		}
+		if (!body.scopes_supported.includes(SCOPE)) errors.push("English homepage PRM is missing read");
+	}
+	if (protectedResourceMetadataUrl(englishResource) !== englishMetadata) {
+		errors.push("metadata URL insertion does not round-trip the English homepage");
+	}
+	const identifier = resourceIdentifierFromMetadataPath(new URL(englishMetadata));
+	if (identifier !== englishResource) {
+		errors.push(`metadata path did not restore ${englishResource}`);
+	}
+
+	const queried = await discoveryResponse(
+		new Request(`${ORIGIN}${PATHS.protectedResource}/it/?lang=it`),
+	);
+	if (!queried) errors.push("query on a path-specific PRM must still answer");
+	else if (JSON.parse(await queried.text()).resource !== `${ORIGIN}/it/?lang=it`) {
+		errors.push("path-specific PRM must keep the query in resource");
+	}
+
+	const escapedDot = await discoveryResponse(
+		new Request(`${ORIGIN}${PATHS.protectedResource}/%2e%2e/secret`),
+	);
+	if (escapedDot !== null) errors.push("dot segments must not publish protected resource metadata");
+
+	const challenged = withProtectedResourceChallenge(
+		new Request(englishResource),
+		new Response("no", { status: 401 }),
+	);
+	const challenge = `Bearer resource_metadata="${englishMetadata}"`;
+	if (challenged.headers.get("WWW-Authenticate") !== challenge) {
+		errors.push(`401 challenge was ${challenged.headers.get("WWW-Authenticate")}`);
+	}
+	const open = withProtectedResourceChallenge(new Request(englishResource), new Response("ok"));
+	if (open.headers.get("WWW-Authenticate")) errors.push("200 must not send WWW-Authenticate");
 
 	if (errors.length > 0) throw new Error(errors.join("\n"));
 }

@@ -137,10 +137,15 @@ paths:
       operationId: getProtectedResourceMetadata
       summary: OAuth protected resource metadata
       description: |
-        RFC 9728 document. authorization_servers is this origin. The scope
-        read names public access anonymous clients already have.
+        RFC 9728 document. authorization_servers lists Cloudflare Access
+        (https://lucabertelli.cloudflareaccess.com) and this origin.
+        A path on the resource identifier is served under this well-known
+        prefix. The English homepage identifier
+        https://lucabertelli.consulting/en/ is published at
+        /.well-known/oauth-protected-resource/en/ with that resource value.
+        The scope read names public access anonymous clients already have.
         bearer_methods_supported lists header. This origin does not mint
-        bearer tokens.
+        bearer tokens. A 401 carries WWW-Authenticate resource_metadata.
       responses:
         "200":
           description: Protected resource metadata.
@@ -158,10 +163,11 @@ paths:
       operationId: getAuthorizationServerMetadata
       summary: OAuth authorization server metadata
       description: |
-        RFC 8414 document. issuer is https://lucabertelli.consulting, the
-        same value as authorization_servers in the protected resource
-        metadata. agent_auth describes anonymous access. grant_types_supported
-        is empty: there is no token endpoint.
+        RFC 8414 document. issuer is https://lucabertelli.consulting, which
+        is listed in authorization_servers on the protected resource
+        metadata. Cloudflare Access is the first authorization server.
+        agent_auth describes anonymous access. grant_types_supported
+        is empty: this origin has no token endpoint.
       responses:
         "200":
           description: Authorization server metadata.

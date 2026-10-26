@@ -165,7 +165,7 @@ export async function GET() {
 	lines.push(`- API description: ${url("/api/openapi.yaml")}`);
 	lines.push(`- Agent registration (auth.md): ${url("/auth.md")}`);
 	lines.push(
-		`- OAuth protected resource: ${url("/.well-known/oauth-protected-resource")}`,
+		`- OAuth protected resource (RFC 9728): ${url("/.well-known/oauth-protected-resource")}. The English homepage identifier is ${url("/.well-known/oauth-protected-resource/en/")}. authorization_servers lists https://lucabertelli.cloudflareaccess.com and this origin.`,
 	);
 	lines.push(
 		`- OAuth authorization server: ${url("/.well-known/oauth-authorization-server")}`,
