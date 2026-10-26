@@ -66,8 +66,12 @@ The API catalog and the OpenAPI description list the read API:
 - [A2A Agent Card](https://lucabertelli.consulting/.well-known/agent-card.json)
 - [A2A JSON-RPC](https://lucabertelli.consulting/a2a/v1)
 - [Agent Skills index](https://lucabertelli.consulting/.well-known/agent-skills/index.json)
+- [MCP Server Card](https://lucabertelli.consulting/.well-known/mcp/server-card.json)
+- [MCP endpoint](https://lucabertelli.consulting/mcp)
 
 The Agent Card is A2A 1.0. [https://lucabertelli.consulting/a2a/v1](https://lucabertelli.consulting/a2a/v1) accepts `POST` JSON-RPC `SendMessage` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential.
+
+The MCP server card names a Streamable HTTP endpoint. [https://lucabertelli.consulting/mcp](https://lucabertelli.consulting/mcp) accepts `POST` JSON-RPC. The tool `read_practice` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
 
 The Agent Skills index lists `consulting-practice`. The artifact is [https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md](https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md). Its digest is the SHA-256 of that file.
 

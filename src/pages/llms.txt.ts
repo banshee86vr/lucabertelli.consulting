@@ -177,6 +177,9 @@ export async function GET() {
 		`- Agent Skills index: ${url("/.well-known/agent-skills/index.json")}. One skill, consulting-practice, at ${url("/.well-known/agent-skills/consulting-practice/SKILL.md")} (type skill-md, digest sha256 of that file).`,
 	);
 	lines.push(
+		`- MCP Server Card: ${url("/.well-known/mcp/server-card.json")}. Streamable HTTP at ${url("/mcp")} (tool read_practice returns the public index; resources and prompts are off; no session).`,
+	);
+	lines.push(
 		`- Homepage Link header (RFC 8288): rel="api-catalog" ${url("/.well-known/api-catalog")}, rel="service-desc" ${url("/api/openapi.yaml")}, rel="service-doc" ${url("/api/docs.md")}, rel="describedby" ${url("/llms.txt")}. Sent on /, /en/, and /it/.`,
 	);
 	lines.push(

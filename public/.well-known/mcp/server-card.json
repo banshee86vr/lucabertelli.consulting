@@ -1,0 +1,23 @@
+{
+  "serverInfo": {
+    "name": "Luca Bertelli Consulting",
+    "version": "1.0.0"
+  },
+  "description": "Public MCP server for Luca Bertelli Consulting, a freelance Cloud Native and Platform Engineering practice in Italy and the EU. The read_practice tool returns public document URLs. Resources, prompts, and sessions are off.",
+  "url": "https://lucabertelli.consulting/mcp",
+  "transport": {
+    "type": "streamable-http",
+    "endpoint": "https://lucabertelli.consulting/mcp",
+    "supportedProtocolVersions": [
+      "2026-07-28",
+      "2025-11-25",
+      "2025-06-18",
+      "2025-03-26"
+    ]
+  },
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": false
+  }
+}

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: lucabertelli.consulting discovery
-  version: "1.3.0"
+  version: "1.4.0"
   description: |
     This site does not expose a write API and does not issue credentials.
     The resources below are public, unauthenticated, and safe to fetch.
@@ -11,6 +11,7 @@ info:
     accepts JSON-RPC SendMessage and returns a public message. It does not
     create a task or store the request.
     The Agent Skills index is at /.well-known/agent-skills/index.json.
+    The MCP server card is at /.well-known/mcp/server-card.json. POST /mcp is Streamable HTTP. The tool read_practice returns the public index. Resources, prompts, and sessions are off.
 servers:
   - url: https://lucabertelli.consulting
 paths:
@@ -203,6 +204,68 @@ paths:
                   - supportedInterfaces
                   - capabilities
                   - skills
+  /.well-known/mcp/server-card.json:
+    get:
+      operationId: getMcpServerCard
+      summary: MCP Server Card
+      description: SEP-1649 server card. serverInfo has name and version. transport.endpoint is the Streamable HTTP URL /mcp. capabilities lists tools, resources, and prompts.
+      responses:
+        "200":
+          description: MCP server card JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [serverInfo, transport, capabilities]
+                properties:
+                  serverInfo:
+                    type: object
+                    required: [name, version]
+                  transport:
+                    type: object
+                    required: [type, endpoint]
+                  capabilities:
+                    type: object
+                    required: [tools, resources, prompts]
+  /mcp:
+    post:
+      operationId: postMcp
+      summary: MCP Streamable HTTP
+      description: JSON-RPC for the public read_practice tool. Protocol 2026-07-28 uses server/discover. Earlier Streamable HTTP versions use initialize. There is no session, no resource list, and no prompt list. The body is not stored. GET and DELETE are 405.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [jsonrpc, id, method]
+              properties:
+                jsonrpc:
+                  type: string
+                  enum: ["2.0"]
+                id:
+                  type: string
+                method:
+                  type: string
+      responses:
+        "200":
+          description: JSON-RPC result or error.
+          content:
+            application/json:
+              schema:
+                type: object
+        "202":
+          description: Accepted notification. No body.
+        "400":
+          description: Unsupported protocol version or header mismatch.
+        "404":
+          description: Unknown method on protocol 2026-07-28.
+        "406":
+          description: Accept does not list application/json and text/event-stream.
+        "413":
+          description: Request body is larger than 64 KiB.
+        "415":
+          description: Content-Type is not application/json.
   /.well-known/agent-skills/index.json:
     get:
       operationId: getAgentSkillsIndex

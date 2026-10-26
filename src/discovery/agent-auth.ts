@@ -1,5 +1,6 @@
 import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, agentCardText } from "./agent-card.ts";
 import { AGENT_SKILLS_INDEX_URL, SKILL_NAME, SKILL_URL } from "./agent-skills.ts";
+import { MCP_CARD_PATH, MCP_CARD_URL, MCP_URL, mcpCardText } from "./mcp-server.ts";
 
 /**
  * Auth.md discovery for a public, read-only site.
@@ -177,8 +178,12 @@ The API catalog and the OpenAPI description list the read API:
 - [A2A Agent Card](${AGENT_CARD_URL})
 - [A2A JSON-RPC](${A2A_URL})
 - [Agent Skills index](${AGENT_SKILLS_INDEX_URL})
+- [MCP Server Card](${MCP_CARD_URL})
+- [MCP endpoint](${MCP_URL})
 
 The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMessage\` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential.
+
+The MCP server card names a Streamable HTTP endpoint. ${link(MCP_URL)} accepts \`POST\` JSON-RPC. The tool \`read_practice\` returns the public index. Resources, prompts, and sessions are off. The call is not stored and no credential is issued.
 
 The Agent Skills index lists \`${SKILL_NAME}\`. The artifact is ${link(SKILL_URL)}. Its digest is the SHA-256 of that file.
 
@@ -263,13 +268,14 @@ export function jsonText(value: unknown): string {
 	return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-/** Paths relative to `public/` and `dist/client/`. `/agent/auth`, `/a2a/v1`, and path-suffixed protected resource metadata are worker-only. */
+/** Paths relative to `public/` and `dist/client/`. `/agent/auth`, `/a2a/v1`, `/mcp`, and path-suffixed protected resource metadata are worker-only. */
 export function fileBodies(): Record<string, string> {
 	return {
 		"auth.md": authMarkdown(),
 		".well-known/oauth-protected-resource": jsonText(protectedResourceMetadata()),
 		".well-known/oauth-authorization-server": jsonText(authorizationServerMetadata()),
 		[AGENT_CARD_PATH.replace(/^\//, "")]: agentCardText(),
+		[MCP_CARD_PATH.replace(/^\//, "")]: mcpCardText(),
 		"agent/auth/register": jsonText(registrationDocument()),
 		"agent/auth/claim": jsonText(claimDocument()),
 		"agent/auth/revoke": jsonText(revocationDocument()),
@@ -449,6 +455,8 @@ export function assertDiscovery(): void {
 		revocationUri,
 		AGENT_CARD_URL,
 		A2A_URL,
+		MCP_CARD_URL,
+		MCP_URL,
 	]) {
 		if (!markdown.includes(`](${url})`)) {
 			errors.push(`auth.md is missing an absolute markdown link to ${url}`);

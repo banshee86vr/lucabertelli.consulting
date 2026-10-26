@@ -26,6 +26,12 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 
 `POST /a2a/v1` with `Content-Type: application/json` accepts a JSON-RPC `SendMessage` request. The response is a direct message that points at the public documents. The endpoint does not create a task, store the request, or issue a credential. Streaming, push notifications, and the extended agent card are off.
 
+## MCP Server Card
+
+`GET /.well-known/mcp/server-card.json` is the MCP server card. `serverInfo` carries `name` and `version`. `transport.endpoint` is `https://lucabertelli.consulting/mcp` (`streamable-http`). `capabilities` lists tools as on, and resources and prompts as off.
+
+`POST /mcp` with `Content-Type: application/json` and `Accept: application/json, text/event-stream` is Streamable HTTP. `server/discover` answers protocol `2026-07-28`. `initialize` answers `2025-11-25`, `2025-06-18`, and `2025-03-26`. The tool `read_practice` returns the public index. The endpoint does not offer resources, prompts, or a session, and it does not store the request or issue a credential.
+
 ## Agent Skills
 
 `GET /.well-known/agent-skills/index.json` is the [Agent Skills Discovery](https://github.com/cloudflare/agent-skills-discovery-rfc) index, schema `https://schemas.agentskills.io/discovery/0.2.0/schema.json`. It lists `consulting-practice` (`type` `skill-md`). The artifact is [SKILL.md](https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md). `digest` is the SHA-256 of that file.

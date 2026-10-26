@@ -60,6 +60,10 @@
   Content-Type: text/markdown; charset=utf-8
   Cache-Control: public, max-age=3600
 
+/.well-known/mcp/server-card.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=3600
+
 /agent/auth/register
   Content-Type: application/json; charset=utf-8
   Cache-Control: public, max-age=3600

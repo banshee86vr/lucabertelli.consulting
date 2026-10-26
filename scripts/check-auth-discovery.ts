@@ -5,15 +5,17 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { SERVICE_KEYS } from "../src/constants/services.ts";
-import { agentCard, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
+import { agentCard, agentCardResponse, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
 import { authMarkdown, assertDiscoveryResponses, discoveryResponse, fileBodies, ORIGIN } from "../src/discovery/agent-auth.ts";
 import {
 	AGENT_SKILLS_INDEX_PATH,
 	AGENT_SKILLS_INDEX_URL,
 	agentSkillFiles,
+	agentSkillsResponse,
 	assertAgentSkillsResponses,
 	SKILL_PATH,
 } from "../src/discovery/agent-skills.ts";
+import { assertMcpResponses, MCP_CARD_PATH, MCP_CARD_URL, MCP_PATH, MCP_URL, mcpResponse } from "../src/discovery/mcp-server.ts";
 
 const CONTENT_TYPES: Record<string, string> = {
 	"/auth.md": "text/markdown; charset=utf-8",
@@ -22,6 +24,7 @@ const CONTENT_TYPES: Record<string, string> = {
 	"/.well-known/agent-card.json": "application/json; charset=utf-8",
 	"/.well-known/agent-skills/index.json": "application/json; charset=utf-8",
 	"/.well-known/agent-skills/consulting-practice/SKILL.md": "text/markdown; charset=utf-8",
+	"/.well-known/mcp/server-card.json": "application/json; charset=utf-8",
 	"/agent/auth/register": "application/json; charset=utf-8",
 	"/agent/auth/claim": "application/json; charset=utf-8",
 	"/agent/auth/revoke": "application/json; charset=utf-8",
@@ -53,6 +56,11 @@ async function main(): Promise<void> {
 	} catch (error) {
 		errors.push(error instanceof Error ? error.message : String(error));
 	}
+	try {
+		await assertMcpResponses();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
 
 	if (!authMarkdown().includes(AGENT_SKILLS_INDEX_URL)) {
 		errors.push("auth.md must link the agent skills index");
@@ -66,6 +74,18 @@ async function main(): Promise<void> {
 	if (skillFileRequest !== null) errors.push("discovery handler must not claim the skill file");
 	const rpcRequest = await discoveryResponse(new Request(`${ORIGIN}/a2a/v1`));
 	if (rpcRequest !== null) errors.push("discovery handler must not claim the A2A endpoint");
+	const mcpCardRequest = await discoveryResponse(new Request(MCP_CARD_URL));
+	if (mcpCardRequest !== null) errors.push("discovery handler must not claim the MCP server card");
+	const mcpRequest = await discoveryResponse(new Request(MCP_URL, { method: "POST" }));
+	if (mcpRequest !== null) errors.push("discovery handler must not claim the MCP endpoint");
+	for (const url of [MCP_CARD_URL, MCP_URL]) {
+		if ((await agentCardResponse(new Request(url))) !== null) errors.push(`agent card handler claimed ${url}`);
+		if ((await agentSkillsResponse(new Request(url))) !== null) errors.push(`agent skills handler claimed ${url}`);
+		if ((await mcpResponse(new Request(url))) === null) errors.push(`mcp handler missed ${url}`);
+	}
+	if (MCP_CARD_PATH !== "/.well-known/mcp/server-card.json" || MCP_PATH !== "/mcp") {
+		errors.push("MCP paths drifted");
+	}
 
 	const servicesRoot = join(import.meta.dirname, "..", "src", "content", "services");
 	const skills = agentCard().skills;
@@ -102,6 +122,8 @@ async function main(): Promise<void> {
 		if (!existsSync(llmsPath)) errors.push("llms.txt is missing from the build");
 		else if (!readFileSync(llmsPath, "utf8").includes(AGENT_SKILLS_INDEX_URL)) {
 			errors.push("llms.txt does not list the agent skills index");
+		} else if (!readFileSync(llmsPath, "utf8").includes(MCP_CARD_URL)) {
+			errors.push("llms.txt does not list the MCP server card");
 		}
 
 		const headersPath = join(root, "_headers");

@@ -8,6 +8,7 @@
  */
 
 import { ORIGIN } from "./agent-card.ts";
+import { MCP_CARD_URL, MCP_URL } from "./mcp-server.ts";
 
 export const AGENT_SKILLS_SCHEMA = "https://schemas.agentskills.io/discovery/0.2.0/schema.json";
 export const SKILL_NAME = "consulting-practice";
@@ -76,6 +77,10 @@ Read ${ORIGIN}/auth.md. Access is anonymous. No account and no credential are re
 ## Agent card
 
 \`GET\` ${ORIGIN}/.well-known/agent-card.json is the A2A 1.0 card. \`POST\` ${ORIGIN}/a2a/v1 with \`Content-Type: application/json\` accepts JSON-RPC \`SendMessage\` and returns a public message. It does not create a task.
+
+## MCP
+
+\`GET\` ${MCP_CARD_URL} is the MCP server card. \`POST\` ${MCP_URL} with \`Content-Type: application/json\` and \`Accept: application/json, text/event-stream\` is Streamable HTTP. The tool \`read_practice\` returns the public index. Resources, prompts, and sessions are off.
 
 ## Contact
 
@@ -209,6 +214,9 @@ export async function assertAgentSkillsResponses(): Promise<void> {
 	}
 	if (!skill.includes(`${ORIGIN}/llms.txt`) || !skill.includes(`${ORIGIN}/auth.md`)) {
 		errors.push("SKILL.md must point at the public index and auth.md");
+	}
+	if (!skill.includes(MCP_CARD_URL) || !skill.includes(MCP_URL)) {
+		errors.push("SKILL.md must point at the MCP server card and endpoint");
 	}
 
 	let index: AgentSkillsIndex;

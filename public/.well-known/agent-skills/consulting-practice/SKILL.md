@@ -29,6 +29,10 @@ Read https://lucabertelli.consulting/auth.md. Access is anonymous. No account an
 
 `GET` https://lucabertelli.consulting/.well-known/agent-card.json is the A2A 1.0 card. `POST` https://lucabertelli.consulting/a2a/v1 with `Content-Type: application/json` accepts JSON-RPC `SendMessage` and returns a public message. It does not create a task.
 
+## MCP
+
+`GET` https://lucabertelli.consulting/.well-known/mcp/server-card.json is the MCP server card. `POST` https://lucabertelli.consulting/mcp with `Content-Type: application/json` and `Accept: application/json, text/event-stream` is Streamable HTTP. The tool `read_practice` returns the public index. Resources, prompts, and sessions are off.
+
 ## Contact
 
 Write to info@lucabertelli.consulting. Do not send secrets.

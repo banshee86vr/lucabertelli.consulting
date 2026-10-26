@@ -20,6 +20,8 @@ id = "1b5008e8ee4249bf87131391a7045703"
 # The Agent Skills index and SKILL.md are static files too. run_worker_first
 # keeps GET and HEAD on the Worker so the content type is text/markdown or
 # application/json.
+# The MCP server card is a static file. run_worker_first keeps that path and
+# /mcp on the Worker, including POST. The card must not answer the transport.
 # Other static files stay on the asset path.
 [assets]
 binding = "ASSETS"
@@ -36,6 +38,8 @@ run_worker_first = [
   "/.well-known/agent-card.json",
   "/.well-known/agent-skills/index.json",
   "/.well-known/agent-skills/consulting-practice/SKILL.md",
+  "/.well-known/mcp/server-card.json",
+  "/mcp",
   "/a2a/v1",
   "/agent/auth",
   "/agent/auth/*",
