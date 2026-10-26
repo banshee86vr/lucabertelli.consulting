@@ -6,13 +6,22 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { SERVICE_KEYS } from "../src/constants/services.ts";
 import { agentCard, assertAgentCardResponses } from "../src/discovery/agent-card.ts";
-import { assertDiscoveryResponses, discoveryResponse, fileBodies, ORIGIN } from "../src/discovery/agent-auth.ts";
+import { authMarkdown, assertDiscoveryResponses, discoveryResponse, fileBodies, ORIGIN } from "../src/discovery/agent-auth.ts";
+import {
+	AGENT_SKILLS_INDEX_PATH,
+	AGENT_SKILLS_INDEX_URL,
+	agentSkillFiles,
+	assertAgentSkillsResponses,
+	SKILL_PATH,
+} from "../src/discovery/agent-skills.ts";
 
 const CONTENT_TYPES: Record<string, string> = {
 	"/auth.md": "text/markdown; charset=utf-8",
 	"/.well-known/oauth-protected-resource": "application/json; charset=utf-8",
 	"/.well-known/oauth-authorization-server": "application/json; charset=utf-8",
 	"/.well-known/agent-card.json": "application/json; charset=utf-8",
+	"/.well-known/agent-skills/index.json": "application/json; charset=utf-8",
+	"/.well-known/agent-skills/consulting-practice/SKILL.md": "text/markdown; charset=utf-8",
 	"/agent/auth/register": "application/json; charset=utf-8",
 	"/agent/auth/claim": "application/json; charset=utf-8",
 	"/agent/auth/revoke": "application/json; charset=utf-8",
@@ -39,9 +48,22 @@ async function main(): Promise<void> {
 	} catch (error) {
 		errors.push(error instanceof Error ? error.message : String(error));
 	}
+	try {
+		await assertAgentSkillsResponses();
+	} catch (error) {
+		errors.push(error instanceof Error ? error.message : String(error));
+	}
+
+	if (!authMarkdown().includes(AGENT_SKILLS_INDEX_URL)) {
+		errors.push("auth.md must link the agent skills index");
+	}
 
 	const cardRequest = await discoveryResponse(new Request(`${ORIGIN}/.well-known/agent-card.json`));
 	if (cardRequest !== null) errors.push("discovery handler must not claim the agent card");
+	const skillsRequest = await discoveryResponse(new Request(`${ORIGIN}${AGENT_SKILLS_INDEX_PATH}`));
+	if (skillsRequest !== null) errors.push("discovery handler must not claim the agent skills index");
+	const skillFileRequest = await discoveryResponse(new Request(`${ORIGIN}${SKILL_PATH}`));
+	if (skillFileRequest !== null) errors.push("discovery handler must not claim the skill file");
 	const rpcRequest = await discoveryResponse(new Request(`${ORIGIN}/a2a/v1`));
 	if (rpcRequest !== null) errors.push("discovery handler must not claim the A2A endpoint");
 
@@ -65,7 +87,7 @@ async function main(): Promise<void> {
 
 	const root = process.argv[2];
 	if (root) {
-		const bodies = fileBodies();
+		const bodies = { ...fileBodies(), ...(await agentSkillFiles()) };
 		for (const [rel, body] of Object.entries(bodies)) {
 			const full = join(root, rel);
 			if (!existsSync(full)) {
@@ -73,7 +95,13 @@ async function main(): Promise<void> {
 				continue;
 			}
 			const shipped = readFileSync(full, "utf8");
-			if (shipped !== body) errors.push(`${rel} in ${root} does not match src/discovery/agent-auth.ts`);
+			if (shipped !== body) errors.push(`${rel} in ${root} does not match the discovery source`);
+		}
+
+		const llmsPath = join(root, "llms.txt");
+		if (!existsSync(llmsPath)) errors.push("llms.txt is missing from the build");
+		else if (!readFileSync(llmsPath, "utf8").includes(AGENT_SKILLS_INDEX_URL)) {
+			errors.push("llms.txt does not list the agent skills index");
 		}
 
 		const headersPath = join(root, "_headers");

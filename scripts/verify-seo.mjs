@@ -38,6 +38,8 @@ const NON_HTML_ROUTES = new Set([
   "/.well-known/oauth-protected-resource",
   "/.well-known/oauth-authorization-server",
   "/.well-known/agent-card.json",
+  "/.well-known/agent-skills/index.json",
+  "/.well-known/agent-skills/consulting-practice/SKILL.md",
   "/a2a/v1",
   "/agent/auth/register",
   "/agent/auth/claim",

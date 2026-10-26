@@ -65,7 +65,10 @@ The API catalog and the OpenAPI description list the read API:
 - [Security contact](https://lucabertelli.consulting/.well-known/security.txt)
 - [A2A Agent Card](https://lucabertelli.consulting/.well-known/agent-card.json)
 - [A2A JSON-RPC](https://lucabertelli.consulting/a2a/v1)
+- [Agent Skills index](https://lucabertelli.consulting/.well-known/agent-skills/index.json)
 
 The Agent Card is A2A 1.0. [https://lucabertelli.consulting/a2a/v1](https://lucabertelli.consulting/a2a/v1) accepts `POST` JSON-RPC `SendMessage` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential.
+
+The Agent Skills index lists `consulting-practice`. The artifact is [https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md](https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md). Its digest is the SHA-256 of that file.
 
 An HTML page also answers `Accept: text/markdown` with that page's main content.

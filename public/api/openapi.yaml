@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: lucabertelli.consulting discovery
-  version: "1.2.0"
+  version: "1.3.0"
   description: |
     This site does not expose a write API and does not issue credentials.
     The resources below are public, unauthenticated, and safe to fetch.
@@ -10,6 +10,7 @@ info:
     The A2A Agent Card is at /.well-known/agent-card.json. POST /a2a/v1
     accepts JSON-RPC SendMessage and returns a public message. It does not
     create a task or store the request.
+    The Agent Skills index is at /.well-known/agent-skills/index.json.
 servers:
   - url: https://lucabertelli.consulting
 paths:
@@ -202,6 +203,39 @@ paths:
                   - supportedInterfaces
                   - capabilities
                   - skills
+  /.well-known/agent-skills/index.json:
+    get:
+      operationId: getAgentSkillsIndex
+      summary: Agent Skills discovery index
+      description: |
+        Agent Skills Discovery index. $schema is
+        https://schemas.agentskills.io/discovery/0.2.0/schema.json.
+        skills lists name, type, description, url, and digest.
+        digest is sha256 of the artifact bytes.
+      responses:
+        "200":
+          description: Skills index JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - "$schema"
+                  - skills
+  /.well-known/agent-skills/consulting-practice/SKILL.md:
+    get:
+      operationId: getConsultingPracticeSkill
+      summary: Consulting practice skill
+      description: |
+        SKILL.md for consulting-practice. YAML frontmatter name and
+        description match the index entry. Served as text/markdown.
+      responses:
+        "200":
+          description: Skill instructions.
+          content:
+            text/markdown:
+              schema:
+                type: string
   /a2a/v1:
     post:
       operationId: postA2aSendMessage

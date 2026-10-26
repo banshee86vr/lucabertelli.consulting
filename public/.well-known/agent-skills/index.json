@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "consulting-practice",
+      "type": "skill-md",
+      "description": "Read the public site of Luca Bertelli Consulting, a freelance Cloud Native and Platform Engineering practice in Italy and the EU. Use when an agent needs the services, articles, or machine-readable index. Access is anonymous and the site does not create tasks or issue credentials.",
+      "url": "/.well-known/agent-skills/consulting-practice/SKILL.md",
+      "digest": "sha256:c9203f9a7eef6ef436f09442b3bdf136459336ae56a23de038834590c2769c30"
+    }
+  ]
+}

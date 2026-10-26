@@ -17,6 +17,9 @@ id = "1b5008e8ee4249bf87131391a7045703"
 # Worker. The apex redirects to /en/, so clients request the /en/ suffix.
 # The A2A card is also a static file. run_worker_first keeps that path and
 # /a2a/v1 on the Worker, including POST.
+# The Agent Skills index and SKILL.md are static files too. run_worker_first
+# keeps GET and HEAD on the Worker so the content type is text/markdown or
+# application/json.
 # Other static files stay on the asset path.
 [assets]
 binding = "ASSETS"
@@ -31,6 +34,8 @@ run_worker_first = [
   "/.well-known/oauth-protected-resource/*",
   "/.well-known/oauth-authorization-server",
   "/.well-known/agent-card.json",
+  "/.well-known/agent-skills/index.json",
+  "/.well-known/agent-skills/consulting-practice/SKILL.md",
   "/a2a/v1",
   "/agent/auth",
   "/agent/auth/*",

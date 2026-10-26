@@ -26,6 +26,10 @@ The machine-readable description is [openapi.yaml](https://lucabertelli.consulti
 
 `POST /a2a/v1` with `Content-Type: application/json` accepts a JSON-RPC `SendMessage` request. The response is a direct message that points at the public documents. The endpoint does not create a task, store the request, or issue a credential. Streaming, push notifications, and the extended agent card are off.
 
+## Agent Skills
+
+`GET /.well-known/agent-skills/index.json` is the [Agent Skills Discovery](https://github.com/cloudflare/agent-skills-discovery-rfc) index, schema `https://schemas.agentskills.io/discovery/0.2.0/schema.json`. It lists `consulting-practice` (`type` `skill-md`). The artifact is [SKILL.md](https://lucabertelli.consulting/.well-known/agent-skills/consulting-practice/SKILL.md). `digest` is the SHA-256 of that file.
+
 ## Agent registration
 
 Access is anonymous. Protected resource metadata lists Cloudflare Access (`https://lucabertelli.cloudflareaccess.com`) and this origin. The English homepage identifier is published at `/.well-known/oauth-protected-resource/en/`. Read these in order:

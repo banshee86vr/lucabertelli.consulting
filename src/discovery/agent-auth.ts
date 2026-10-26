@@ -1,4 +1,5 @@
 import { A2A_URL, AGENT_CARD_PATH, AGENT_CARD_URL, agentCardText } from "./agent-card.ts";
+import { AGENT_SKILLS_INDEX_URL, SKILL_NAME, SKILL_URL } from "./agent-skills.ts";
 
 /**
  * Auth.md discovery for a public, read-only site.
@@ -175,8 +176,11 @@ The API catalog and the OpenAPI description list the read API:
 - [Security contact](${ORIGIN}/.well-known/security.txt)
 - [A2A Agent Card](${AGENT_CARD_URL})
 - [A2A JSON-RPC](${A2A_URL})
+- [Agent Skills index](${AGENT_SKILLS_INDEX_URL})
 
 The Agent Card is A2A 1.0. ${link(A2A_URL)} accepts \`POST\` JSON-RPC \`SendMessage\` and answers with a message that points at these documents. It does not create a task, store the request, or issue a credential.
+
+The Agent Skills index lists \`${SKILL_NAME}\`. The artifact is ${link(SKILL_URL)}. Its digest is the SHA-256 of that file.
 
 An HTML page also answers \`Accept: text/markdown\` with that page's main content.
 `;

@@ -174,6 +174,9 @@ export async function GET() {
 		`- A2A Agent Card: ${url("/.well-known/agent-card.json")}. JSON-RPC 1.0 at ${url("/a2a/v1")} (SendMessage returns a public message and does not create a task).`,
 	);
 	lines.push(
+		`- Agent Skills index: ${url("/.well-known/agent-skills/index.json")}. One skill, consulting-practice, at ${url("/.well-known/agent-skills/consulting-practice/SKILL.md")} (type skill-md, digest sha256 of that file).`,
+	);
+	lines.push(
 		`- Homepage Link header (RFC 8288): rel="api-catalog" ${url("/.well-known/api-catalog")}, rel="service-desc" ${url("/api/openapi.yaml")}, rel="service-doc" ${url("/api/docs.md")}, rel="describedby" ${url("/llms.txt")}. Sent on /, /en/, and /it/.`,
 	);
 	lines.push(

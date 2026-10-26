@@ -1,6 +1,7 @@
 import { handle } from "@astrojs/cloudflare/handler";
 import { agentCardResponse } from "./discovery/agent-card";
 import { discoveryResponse, withProtectedResourceChallenge } from "./discovery/agent-auth";
+import { agentSkillsResponse } from "./discovery/agent-skills";
 import { withDiscoveryLinks } from "./utils/discovery-links";
 import { negotiateMarkdown } from "./utils/markdown-response";
 
@@ -10,8 +11,11 @@ interface WorkerContext {
 
 export default {
 	async fetch(request: Request, env: unknown, ctx: WorkerContext) {
-		// Answer the Agent Card and Auth.md discovery before Astro. POST must not
-		// fall through to a static file or a 404, and the body is never stored.
+		// Answer Agent Skills, the Agent Card, and Auth.md discovery before Astro.
+		// POST must not fall through to a static file or a 404, and the body is
+		// never stored.
+		const skills = await agentSkillsResponse(request);
+		if (skills) return withProtectedResourceChallenge(request, skills);
 		const agentCard = await agentCardResponse(request);
 		if (agentCard) return withProtectedResourceChallenge(request, agentCard);
 		const discovered = await discoveryResponse(request);
