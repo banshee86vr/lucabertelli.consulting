@@ -86,7 +86,7 @@ export function protectedResourceMetadata(resource = ORIGIN) {
 	return {
 		resource,
 		resource_name: "Luca Bertelli Consulting",
-		resource_logo_uri: `${ORIGIN}/logo.png`,
+		resource_logo_uri: `${ORIGIN}/icon-512.png`,
 		// Access is the OAuth issuer. This origin stays listed so the anonymous
 		// Auth.md issuer is one of the servers the protected resource names.
 		authorization_servers: [ACCESS_ISSUER, ORIGIN],

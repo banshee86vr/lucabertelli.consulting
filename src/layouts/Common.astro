@@ -6,6 +6,7 @@ import CookieBanner from "../components/CookieBanner.astro";
 import { servicesHubPath } from "../constants/services";
 import { getLangFromUrl, getLocalizedPathname, useTranslations } from "../i18n/utils";
 import { SEO } from "astro-seo";
+import { ogImageMeta } from "../generated/og-image-meta";
 import { absoluteUrl, alternatesForPathname } from "../utils/seo";
 import type { UiLang } from "../utils/seo";
 import { buildPersonAndProfessionalService } from "../utils/jsonLd";
@@ -63,8 +64,9 @@ const canonical =
 const pageTitle = titleProp ?? t("seo.site.title");
 const metaDescription = descriptionProp ?? t("seo.site.description");
 
-const defaultOg = "/about/lucabertelli.jpeg";
-const ogImageAbsolute = absoluteUrl(ogImage ?? defaultOg);
+const ogImagePath = ogImage ?? (lang === "it" ? "/og/it.jpg" : "/og/en.jpg");
+const ogImageAbsolute = absoluteUrl(ogImagePath);
+const ogMeta = ogImageMeta[ogImagePath];
 
 const alternates = alternatesForPathname(pathname);
 const languageAlternates = alternates
@@ -147,10 +149,14 @@ const jsonLdPayload = JSON.stringify({
 				optional: {
 					description: metaDescription,
 					locale: lang === "it" ? "it_IT" : "en_US",
+					localeAlternate: [lang === "it" ? "en_US" : "it_IT"],
 					siteName: "Luca Bertelli Consulting",
 				},
 				image: {
-					alt: "Luca Bertelli",
+					alt: pageTitle,
+					...(ogMeta
+						? { type: ogMeta.type, width: ogMeta.width, height: ogMeta.height }
+						: {}),
 				},
 				article:
 					ogType === "article" && articlePublishedTime
@@ -223,8 +229,12 @@ const jsonLdPayload = JSON.stringify({
 			}}
 		/>
 
-		<!-- Fav Icon -->
-		<link rel="icon" type="image/x-icon" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<meta name="theme-color" content="#1c1d20" />
 
 		<link
 			rel="alternate"

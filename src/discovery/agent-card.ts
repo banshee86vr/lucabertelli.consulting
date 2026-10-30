@@ -167,7 +167,7 @@ export function agentCard(): AgentCard {
 			url: ORIGIN,
 		},
 		documentationUrl: `${ORIGIN}/llms.txt`,
-		iconUrl: `${ORIGIN}/logo.png`,
+		iconUrl: `${ORIGIN}/icon-512.png`,
 		supportedInterfaces: [
 			{
 				url: A2A_URL,
@@ -659,7 +659,7 @@ export async function assertAgentCardResponses(): Promise<void> {
 	if (parsed.provider.organization !== "Luca Bertelli Consulting" || parsed.provider.url !== ORIGIN) {
 		errors.push("provider must be this practice");
 	}
-	if (parsed.documentationUrl !== `${ORIGIN}/llms.txt` || parsed.iconUrl !== `${ORIGIN}/logo.png`) {
+	if (parsed.documentationUrl !== `${ORIGIN}/llms.txt` || parsed.iconUrl !== `${ORIGIN}/icon-512.png`) {
 		errors.push("documentationUrl and iconUrl must stay on this origin");
 	}
 
