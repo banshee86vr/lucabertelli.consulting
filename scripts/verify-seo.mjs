@@ -112,6 +112,15 @@ for (const file of files) {
       const graph = JSON.parse(script[1])["@graph"];
       if (!Array.isArray(graph) || graph.length === 0) {
         fail(`${route}: empty JSON-LD @graph`);
+      } else {
+        const person = graph.find((node) => node["@type"] === "Person");
+        const practice = graph.find((node) => node["@type"] === "ProfessionalService");
+        if (!String(person?.image ?? "").endsWith("/about/lucabertelli.jpeg")) {
+          fail(`${route}: Person image is not the portrait`);
+        }
+        if (!String(practice?.logo ?? "").endsWith("/icon-512.png")) {
+          fail(`${route}: ProfessionalService logo is not icon-512.png`);
+        }
       }
     } catch (error) {
       fail(`${route}: JSON-LD does not parse (${error.message})`);
@@ -140,6 +149,64 @@ for (const file of files) {
   const title = html.match(/<title>([^<]*)<\/title>/);
   if (!title || title[1].trim() === "") fail(`${route}: empty <title>`);
   else titles.set(title[1], [...(titles.get(title[1]) ?? []), route]);
+
+  if (!html.includes('rel="icon" type="image/png" href="/icon-192.png"')) {
+    fail(`${route}: missing 192px PNG icon`);
+  }
+  if (!html.includes('rel="icon" type="image/x-icon" href="/favicon.ico"')) {
+    fail(`${route}: missing favicon.ico link`);
+  }
+  if (!html.includes('rel="icon" type="image/svg+xml" href="/favicon.svg"')) {
+    fail(`${route}: SVG icon is missing or has the wrong type`);
+  }
+  if (!html.includes('rel="apple-touch-icon" href="/apple-touch-icon.png"')) {
+    fail(`${route}: missing apple touch icon`);
+  }
+  if (!html.includes('rel="manifest" href="/site.webmanifest"')) {
+    fail(`${route}: missing web manifest`);
+  }
+  if (!html.includes('name="theme-color" content="#1c1d20"')) {
+    fail(`${route}: missing theme-color`);
+  }
+
+  const ogImage = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+  const ogWidth = html.match(/<meta property="og:image:width" content="([^"]+)"/)?.[1];
+  const ogHeight = html.match(/<meta property="og:image:height" content="([^"]+)"/)?.[1];
+  const ogType = html.match(/<meta property="og:image:type" content="([^"]+)"/)?.[1];
+  if (!ogImage || !ogWidth || !ogHeight || !ogType) {
+    fail(`${route}: Open Graph image is missing width, height, or type`);
+  } else {
+    let ogPath = "";
+    try {
+      ogPath = new URL(ogImage).pathname;
+    } catch {
+      fail(`${route}: og:image is not a URL`);
+    }
+    const ogFile = path.join(ROOT, ogPath.replace(/^\//, ""));
+    const actual = fs.existsSync(ogFile) ? imageSize(ogFile) : null;
+    if (!actual) fail(`${route}: og:image ${ogPath} is not a readable image in the build`);
+    else if (
+      String(actual.width) !== ogWidth ||
+      String(actual.height) !== ogHeight ||
+      actual.type !== ogType
+    ) {
+      fail(
+        `${route}: og:image meta ${ogWidth}x${ogHeight} ${ogType} does not match ${actual.width}x${actual.height} ${actual.type}`,
+      );
+    }
+    if (route === "/en" && !ogImage.endsWith("/og/en.jpg")) {
+      fail(`${route}: default share card should be /og/en.jpg`);
+    }
+    if (route === "/it" && !ogImage.endsWith("/og/it.jpg")) {
+      fail(`${route}: default share card should be /og/it.jpg`);
+    }
+    if ((route === "/en" || route === "/it") && (ogWidth !== "1200" || ogHeight !== "630")) {
+      fail(`${route}: default share card should be 1200x630`);
+    }
+    if (/^\/(en|it)\/blog\/[^/]+$/.test(route) && !ogPath.includes("/blog/")) {
+      fail(`${route}: article preview should keep its cover`);
+    }
+  }
 }
 
 // Every alternate must point at a page that declares the same alternate set,
@@ -361,6 +428,133 @@ if (!fs.existsSync(securityTxt)) {
   else if (expiresAt - Date.now() < 30 * 24 * 3600 * 1000) {
     fail(`security.txt expires within 30 days (${expires}); bump the date`);
   }
+}
+
+const icoPath = path.join(ROOT, "favicon.ico");
+if (!fs.existsSync(icoPath)) fail("favicon.ico is missing from the build");
+else {
+  const ico = fs.readFileSync(icoPath);
+  if (ico.length < 6 || ico.readUInt16LE(0) !== 0 || ico.readUInt16LE(2) !== 1) {
+    fail("favicon.ico is not an ICO");
+  }
+  if (ico[0] === 0x3c) fail("favicon.ico is HTML");
+}
+
+for (const [file, width] of [
+  ["icon-192.png", 192],
+  ["icon-512.png", 512],
+  ["apple-touch-icon.png", 180],
+]) {
+  const full = path.join(ROOT, file);
+  const size = fs.existsSync(full) ? imageSize(full) : null;
+  if (!size || size.type !== "image/png" || size.width !== width || size.height !== width) {
+    fail(`${file} should be a ${width}x${width} PNG`);
+  }
+}
+
+const faviconSvg = path.join(ROOT, "favicon.svg");
+if (!fs.existsSync(faviconSvg)) fail("favicon.svg is missing from the build");
+else {
+  const svg = fs.readFileSync(faviconSvg, "utf8");
+  const viewBox = svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);
+  if (!viewBox || viewBox[1] !== viewBox[2]) fail("favicon.svg viewBox is not square");
+  if (!svg.includes("#1c1d20") || !svg.includes("#ffe24c")) {
+    fail("favicon.svg is missing the charcoal plate or the yellow mark");
+  }
+}
+
+const manifestPath = path.join(ROOT, "site.webmanifest");
+if (!fs.existsSync(manifestPath)) fail("site.webmanifest is missing from the build");
+else {
+  let manifest;
+  try {
+    manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  } catch (error) {
+    fail(`site.webmanifest is not JSON (${error.message})`);
+  }
+  if (manifest) {
+    if (manifest.theme_color !== "#1c1d20" || manifest.background_color !== "#1c1d20") {
+      fail("site.webmanifest colors are not #1c1d20");
+    }
+    const icons = Array.isArray(manifest.icons) ? manifest.icons : [];
+    if (icons.length === 0) fail("site.webmanifest has no icons");
+    for (const icon of icons) {
+      const iconPath = String(icon.src ?? "").replace(/^\//, "");
+      if (!iconPath || !fs.existsSync(path.join(ROOT, iconPath))) {
+        fail(`site.webmanifest icon ${icon.src} is not in the build`);
+      }
+    }
+  }
+}
+
+/** Pixel size and MIME from a PNG, JPEG, or WebP file. */
+function imageSize(file) {
+  const buf = fs.readFileSync(file);
+  if (buf.length >= 24 && buf[0] === 0x89 && buf.toString("ascii", 1, 4) === "PNG") {
+    return { type: "image/png", width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
+  }
+  if (buf.length >= 4 && buf[0] === 0xff && buf[1] === 0xd8) {
+    const jpeg = jpegSize(buf);
+    return jpeg ? { type: "image/jpeg", ...jpeg } : null;
+  }
+  if (
+    buf.length >= 12 &&
+    buf.toString("ascii", 0, 4) === "RIFF" &&
+    buf.toString("ascii", 8, 12) === "WEBP"
+  ) {
+    const webp = webpSize(buf);
+    return webp ? { type: "image/webp", ...webp } : null;
+  }
+  return null;
+}
+
+function jpegSize(buf) {
+  let i = 2;
+  while (i + 8 < buf.length) {
+    if (buf[i] !== 0xff) {
+      i += 1;
+      continue;
+    }
+    const marker = buf[i + 1];
+    if (marker === 0xc0 || marker === 0xc1 || marker === 0xc2) {
+      return { height: buf.readUInt16BE(i + 5), width: buf.readUInt16BE(i + 7) };
+    }
+    if (marker === 0xd8 || marker === 0xd9 || (marker >= 0xd0 && marker <= 0xd7)) {
+      i += 2;
+      continue;
+    }
+    const length = buf.readUInt16BE(i + 2);
+    if (length < 2) return null;
+    i += 2 + length;
+  }
+  return null;
+}
+
+function webpSize(buf) {
+  let offset = 12;
+  while (offset + 8 <= buf.length) {
+    const tag = buf.toString("ascii", offset, offset + 4);
+    const size = buf.readUInt32LE(offset + 4);
+    const data = offset + 8;
+    if (tag === "VP8X" && data + 10 <= buf.length) {
+      return {
+        width: 1 + (buf[data + 4] | (buf[data + 5] << 8) | (buf[data + 6] << 16)),
+        height: 1 + (buf[data + 7] | (buf[data + 8] << 8) | (buf[data + 9] << 16)),
+      };
+    }
+    if (tag === "VP8 " && buf[data + 3] === 0x9d && buf[data + 4] === 0x01 && buf[data + 5] === 0x2a) {
+      return {
+        width: buf.readUInt16LE(data + 6) & 0x3fff,
+        height: buf.readUInt16LE(data + 8) & 0x3fff,
+      };
+    }
+    if (tag === "VP8L" && buf[data] === 0x2f) {
+      const bits = buf.readUInt32LE(data + 1);
+      return { width: (bits & 0x3fff) + 1, height: ((bits >> 14) & 0x3fff) + 1 };
+    }
+    offset += 8 + size + (size % 2);
+  }
+  return null;
 }
 
 const authCheck = spawnSync(

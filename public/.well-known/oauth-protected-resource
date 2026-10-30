@@ -1,7 +1,7 @@
 {
   "resource": "https://lucabertelli.consulting",
   "resource_name": "Luca Bertelli Consulting",
-  "resource_logo_uri": "https://lucabertelli.consulting/logo.png",
+  "resource_logo_uri": "https://lucabertelli.consulting/icon-512.png",
   "authorization_servers": [
     "https://lucabertelli.cloudflareaccess.com",
     "https://lucabertelli.consulting"

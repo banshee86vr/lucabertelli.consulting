@@ -75,7 +75,7 @@ export function buildPersonAndProfessionalService(
 		description,
 		email: "info@lucabertelli.consulting",
 		image: absoluteUrl("/about/lucabertelli.jpeg"),
-		logo: absoluteUrl("/logo.png"),
+		logo: absoluteUrl("/icon-512.png"),
 		vatID: "IT05028510237",
 		priceRange: "$$$",
 		knowsLanguage: ["it", "en"],

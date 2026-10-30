@@ -14,6 +14,7 @@
     "predev": "node --experimental-strip-types scripts/check-auth-discovery.ts && node --experimental-strip-types scripts/render-auth-md.ts",
     "prebuild": "node --experimental-strip-types scripts/check-auth-discovery.ts && node --experimental-strip-types scripts/render-auth-md.ts",
     "build": "astro check && astro build",
+    "brand-assets": "node scripts/render-brand-assets.mjs",
     "verify:seo": "node scripts/verify-seo.mjs",
     "submit:indexnow": "node --experimental-strip-types scripts/indexnow.mjs",
     "preview": "astro preview",
@@ -40,7 +41,11 @@
     "web-bot-auth": "^0.2.0"
   },
   "devDependencies": {
+    "@fontsource/plus-jakarta-sans": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
     "semantic-release": "^25.0.9",
+    "sharp": "^0.35.5",
     "terser": "^5.51.2",
     "wrangler": "^4.149.0"
   },

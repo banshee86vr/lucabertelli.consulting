@@ -7,6 +7,7 @@ Use this after deploy to verify the implementation and track reachability over t
 | Surface | URLs | Notes |
 |---------|------|-------|
 | Home | `/en/`, `/it/` | H1 carries the primary query terms. The response `Link` header (RFC 8288) points at the API catalog, OpenAPI description, API docs, and `llms.txt` |
+| Icons and share cards | `/favicon.ico`, `/icon-192.png`, `/icon-512.png`, `/apple-touch-icon.png`, `/favicon.svg`, `/site.webmanifest`, `/og/en.jpg`, `/og/it.jpg` | Square charcoal plate with the yellow LB mark. The default Open Graph image is 1200x630, one file per language. Article and insight covers stay on those pages. Not HTML routes, so they are not part of the 76 sitemap URLs |
 | Services hub | `/en/services/`, `/it/servizi/` | Lists all nine services |
 | Service pages | 9 per language | Localized slugs with commercial intent in the path, e.g. `/it/servizi/consulenza-cyber-resilience-act/` vs `/en/services/cyber-resilience-act-compliance/` |
 | Blog index | `/en/blog/`, `/it/blog/` | Engineering notes only |
@@ -94,7 +95,8 @@ Both audiences enter through the same door, so the work is shared:
 4. **Alternate languages**: view source on `/it/servizi/consulenza-devops/` - the `en` alternate must point to `/en/services/devops-consulting/`, and the reverse must hold. Localized slugs are resolved through `src/i18n/routes.ts`; a new service added without a slug entry there will break this pairing.
 5. **Structured data**: run the [Rich Results Test](https://search.google.com/test/rich-results) on the home page, one service page and one article. Expect `Person`, `ProfessionalService` and `WebSite` everywhere, plus `Service` + `FAQPage` + `BreadcrumbList` on services, `BlogPosting` + `BreadcrumbList` on articles, and `CollectionPage` on the hub and tag pages.
 6. **FAQ rich results**: service pages are the candidates. Confirm the questions are parsed and free of errors.
-7. **Social previews**: Share Debugger - the OG image must load and title/description must match the page.
+7. **Social previews**: Share Debugger - the OG image must load and title/description must match the page. Home and other pages without their own cover use `/og/en.jpg` or `/og/it.jpg` (1200x630). An article keeps its cover.
+7b. **Favicon**: `/favicon.ico` returns an ICO, not HTML, and the homepage links `/icon-192.png` as `image/png`. After the deploy, inspect `https://lucabertelli.consulting/en/` and `https://lucabertelli.consulting/it/` in Search Console. Google rebuilds the favicon from the homepage and can take days or weeks. Then run `pnpm run submit:indexnow`.
 8. **Feeds**: `/it/rss.xml` and `/en/rss.xml` must validate and list the articles of that language only.
 9. **llms.txt**: `/llms.txt` must list the current services (with their FAQ questions), guides, articles and certifications, and `/llms-full.txt` must carry their full text. Both are generated at build, so a stale entry means a content collection was not updated.
 10. **security.txt**: `/.well-known/security.txt` must return 200 as `text/plain` with a future `Expires`. Check it at [securitytxt.org](https://securitytxt.org/) after deploy. For a site selling CRA vulnerability-handling work, its absence would be noticed.
@@ -154,7 +156,7 @@ pnpm run build
 pnpm run verify:seo
 ```
 
-`verify:seo` ([scripts/verify-seo.mjs](../scripts/verify-seo.mjs)) inspects the build for broken internal links, JSON-LD that does not parse, non-reciprocal hreflang, missing canonicals, missing or duplicated `<h1>`, duplicate titles, and pages that drifted out of the sitemap. It exits non-zero on any finding.
+`verify:seo` ([scripts/verify-seo.mjs](../scripts/verify-seo.mjs)) inspects the build for broken internal links, JSON-LD that does not parse, non-reciprocal hreflang, missing canonicals, missing or duplicated `<h1>`, duplicate titles, pages that drifted out of the sitemap, the favicon set, and Open Graph image dimensions. It exits non-zero on any finding.
 
 For a visual pass:
 
