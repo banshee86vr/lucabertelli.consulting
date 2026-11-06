@@ -203,13 +203,13 @@ importers:
         version: 8.1.6(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
       '@x402/core':
         specifier: ^2.28.0
-        version: 2.29.0
+        version: 2.30.0
       '@x402/evm':
         specifier: ^2.28.0
-        version: 2.29.0(typescript@6.0.3)
+        version: 2.30.0(typescript@6.0.3)
       '@x402/hono':
         specifier: ^2.28.0
-        version: 2.29.0(hono@4.13.14)(typescript@6.0.3)
+        version: 2.30.0(hono@4.13.14)(typescript@6.0.3)
       astro:
         specifier: ^7.3.8
         version: 7.4.0(@types/node@24.12.2)(esbuild@0.28.2)(terser@5.51.2)(yaml@2.9.1)
@@ -1435,19 +1435,19 @@ packages:
   '@vscode/l10n@0.0.18':
     resolution: {integrity: sha512-KYSIHVmslkaCDyw013pphY+d7x1qV8IZupYfeIfzNA+nsaWHbn5uPuQRvdRFsa9zFzGeudPuoGoZ1Op4jrJXIQ==}
 
-  '@x402/core@2.29.0':
-    resolution: {integrity: sha512-fkS0JqVwHgczteDlwItLRipOlIzm28U9HWLvYnYpnNbfmepoBT/4ux7LjrR0xGD51JHoC8/r+Qo7uCfoAQYeuw==}
+  '@x402/core@2.30.0':
+    resolution: {integrity: sha512-gvMxCum2QlNI6jI/3NL1jdrmOgtX9sWEWxSIOmeI67/5ndOJvYOtP7JZLSO8o8af+O+A+Vhhjza1NCda0yVppg==}
 
-  '@x402/evm@2.29.0':
-    resolution: {integrity: sha512-Gk4bJ6WoRR3jeT2+vERSPMSkSr1nRL5kjtVh14uoynRm8y+fGFH8xmvlGzuwKT0liA6OLjdr9xjZtN8i0WYk9g==}
+  '@x402/evm@2.30.0':
+    resolution: {integrity: sha512-/iaEB820OPJb1JkUqaCTq90FwjbmBB/rAFaH7ZAL2AmcesSVPO/FjdHD2wmXqBzXkEnPG9f6m1SuNpCtVlA9LQ==}
 
-  '@x402/extensions@2.29.0':
-    resolution: {integrity: sha512-FCpjZ6QR6ZtHTRZBV7VHMt7tc66LnTrpKDERiL3atXlLu4PlmgiulHt9PWE+Ktm5iUbXr3dAYZu2e7XrVd/XgA==}
+  '@x402/extensions@2.30.0':
+    resolution: {integrity: sha512-Lqu8hYkFAIhzarWa8V1272tyolFAW7WjHrxQ7we5P0fEZ8oMXOq1hna2X0FXQetZoOFzBDwSWBBMsrqE8ZzvcQ==}
 
-  '@x402/hono@2.29.0':
-    resolution: {integrity: sha512-ERZU+6CLVPQgRZMjHj24/PFBSYdCIg+Aji5fJnNAw3SDKdvFAC8WnNqgOoL8DL4kITc5ymOdjIYlUJP0ZC0lfw==}
+  '@x402/hono@2.30.0':
+    resolution: {integrity: sha512-ctdA345cQEp5zbCXzVlHrP3jp7Zl5ucQJ7595o6pELPZSBb/uUlCkthlOYWtx/Uv9brdLsoDIjySyXj5Uo2l5Q==}
     peerDependencies:
-      '@x402/paywall': ^2.29.0
+      '@x402/paywall': ^2.30.0
       hono: '>=4.13.7 <5.0.0'
     peerDependenciesMeta:
       '@x402/paywall':
@@ -4747,13 +4747,13 @@ snapshots:
 
   '@vscode/l10n@0.0.18': {}
 
-  '@x402/core@2.29.0':
+  '@x402/core@2.30.0':
     dependencies:
       zod: 4.6.7
 
-  '@x402/evm@2.29.0(typescript@6.0.3)':
+  '@x402/evm@2.30.0(typescript@6.0.3)':
     dependencies:
-      '@x402/core': 2.29.0
+      '@x402/core': 2.30.0
       viem: 2.57.11(typescript@6.0.3)(zod@4.6.7)
       zod: 4.6.7
     transitivePeerDependencies:
@@ -4761,12 +4761,12 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@x402/extensions@2.29.0(typescript@6.0.3)':
+  '@x402/extensions@2.30.0(typescript@6.0.3)':
     dependencies:
       '@noble/curves': 1.9.7
       '@scure/base': 1.2.6
       '@signinwithethereum/siwe': 4.2.1(viem@2.57.11(typescript@6.0.3)(zod@4.6.7))
-      '@x402/core': 2.29.0
+      '@x402/core': 2.30.0
       ajv: 8.20.0
       jose: 5.10.0
       tweetnacl: 1.0.3
@@ -4778,10 +4778,10 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@x402/hono@2.29.0(hono@4.13.14)(typescript@6.0.3)':
+  '@x402/hono@2.30.0(hono@4.13.14)(typescript@6.0.3)':
     dependencies:
-      '@x402/core': 2.29.0
-      '@x402/extensions': 2.29.0(typescript@6.0.3)
+      '@x402/core': 2.30.0
+      '@x402/extensions': 2.30.0(typescript@6.0.3)
       hono: 4.13.14
     transitivePeerDependencies:
       - bufferutil
