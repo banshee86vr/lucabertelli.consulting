@@ -209,7 +209,7 @@ importers:
         version: 2.30.0(typescript@6.0.3)
       '@x402/hono':
         specifier: ^2.28.0
-        version: 2.30.0(hono@4.13.14)(typescript@6.0.3)
+        version: 2.30.0(hono@4.13.16)(typescript@6.0.3)
       astro:
         specifier: ^7.3.8
         version: 7.4.0(@types/node@24.12.2)(esbuild@0.28.2)(terser@5.51.2)(yaml@2.9.1)
@@ -220,8 +220,8 @@ importers:
         specifier: ^18.0.0
         version: 18.0.8
       hono:
-        specifier: ^4.13.14
-        version: 4.13.14
+        specifier: ^4.13.16
+        version: 4.13.16
       http-message-sig:
         specifier: ^0.3.0
         version: 0.3.0
@@ -2174,8 +2174,8 @@ packages:
   highlight.js@10.7.3:
     resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
 
-  hono@4.13.14:
-    resolution: {integrity: sha512-yhRLQ21U6qa9Hsu2N7Qcbh8tE+WKEcoErjIo56LeSGiGXGp9sA7UpE86Ui9uexb61KakiGwuHMn2QdV7w6i6kQ==}
+  hono@4.13.16:
+    resolution: {integrity: sha512-AOLOEhvrV+iH92xXCnFr/5+3KjPKcI3xP63XJtX5spAnkznPdHijlIsUTpi7/9EhWqrTCekw5c5zh1K+YsVw7A==}
     engines: {node: '>=16.9.0'}
 
   hook-std@4.0.0:
@@ -4783,11 +4783,11 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@x402/hono@2.30.0(hono@4.13.14)(typescript@6.0.3)':
+  '@x402/hono@2.30.0(hono@4.13.16)(typescript@6.0.3)':
     dependencies:
       '@x402/core': 2.30.0
       '@x402/extensions': 2.30.0(typescript@6.0.3)
-      hono: 4.13.14
+      hono: 4.13.16
     transitivePeerDependencies:
       - bufferutil
       - ethers
@@ -5591,7 +5591,7 @@ snapshots:
 
   highlight.js@10.7.3: {}
 
-  hono@4.13.14: {}
+  hono@4.13.16: {}
 
   hook-std@4.0.0: {}
 
